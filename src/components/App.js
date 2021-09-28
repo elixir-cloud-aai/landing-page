@@ -6,16 +6,28 @@ import Home from "./Home";
 import NavBar from "./NavBar";
 
 export default class App extends Component {
+  state = {
+    scroll: 0,
+  };
+
+  componentDidMount() {
+    window.onscroll = () => {
+      this.setState({ scroll: document.documentElement.scrollTop });
+    };
+  }
+
   render() {
     return (
       <Router history={history}>
         <div className="flex flex-col min-h-screen">
           <div>
-            <NavBar></NavBar>
+            <NavBar scroll={this.state.scroll}></NavBar>
           </div>
           <div className="flex-grow mb-10">
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route exact path="/">
+                <Home scroll={this.state.scroll}></Home>
+              </Route>
             </Switch>
           </div>
           <div>

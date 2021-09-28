@@ -6,14 +6,7 @@ export default class Home extends Component {
   state = {
     x: 0,
     y: 0,
-    top: 0,
   };
-
-  componentDidMount() {
-    window.onscroll = () => {
-      this.setState({ top: document.documentElement.scrollTop });
-    };
-  }
 
   handleMouseMove = (e) => {
     this.setState({
@@ -23,7 +16,6 @@ export default class Home extends Component {
   };
 
   render() {
-    console.log(this.state.top);
     return (
       <div className="font-pop">
         <div>
@@ -56,7 +48,7 @@ export default class Home extends Component {
               <div>the patient disease data.</div>
             </div>
           </div>
-          <Zoom when={this.state.top > 210 ? true : false}>
+          <Zoom when={this.props.scroll > 210 ? true : false}>
             <div className="p-10">
               <div className="flex items-center px-10">
                 <div className="text-lg text-gray-700 leading-loose">

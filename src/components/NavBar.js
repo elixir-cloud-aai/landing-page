@@ -4,7 +4,6 @@ import history from "../history";
 
 export default class Home extends Component {
   state = {
-    navtop: true,
     links: [
       {
         name: "News & Press",
@@ -21,16 +20,6 @@ export default class Home extends Component {
     ],
     location: history.location.pathname,
   };
-
-  componentDidMount() {
-    window.onscroll = () => {
-      if (document.documentElement.scrollTop <= 1) {
-        this.setState({ navtop: true });
-      } else {
-        this.setState({ navtop: false });
-      }
-    };
-  }
 
   renderLinks = () => {
     return (
@@ -61,7 +50,7 @@ export default class Home extends Component {
         <div
           id="navbar"
           style={
-            this.state.navtop
+            this.props.scroll <= 1
               ? {
                   paddingTop: "2rem",
                   paddingBottom: "2rem",
@@ -74,7 +63,7 @@ export default class Home extends Component {
                 }
           }
           className={
-            this.state.navtop
+            this.props.scroll <= 1
               ? "z-10 fixed px-5 bg-white w-full"
               : "z-10 fixed px-5 bg-white w-full shadow-lg"
           }
