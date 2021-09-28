@@ -80,9 +80,14 @@ export default class Home extends Component {
           }
         >
           <div className="flex items-center justify-between">
-            <Link to="/">
+            <Link
+              to="/"
+              onClick={() => {
+                this.setState({ location: "/" });
+              }}
+            >
               <img
-                src="https://raw.githubusercontent.com/elixir-cloud-aai/logo/dev/logo.128px.png"
+                src="/elixir-cloud-aii.png"
                 className="inline-block w-7 mx-3 pb-1.5"
                 alt="logo"
               ></img>

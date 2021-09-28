@@ -24,8 +24,8 @@ export default class Home extends Component {
               backgroundImage: "url(/Landing.svg)",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 100%",
-              backgroundPositionX: `${this.state.x / 100}px`,
-              backgroundPositionY: `${this.state.y / 100}px`,
+              backgroundPositionX: `${this.state.x / 50}px`,
+              backgroundPositionY: `${this.state.y / 50}px`,
             }}
             onMouseMove={(e) => {
               this.handleMouseMove(e);
@@ -47,7 +47,7 @@ export default class Home extends Component {
               <div>the patient disease data.</div>
             </div>
           </div>
-          <div>
+          <div className="p-10">
             lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod lorem ipsum
             dolor sit amet, consectetur adipiscing elit, sed do eiusmod lorem ipsum dolor sit amet,
             consectetur adipiscing elit, sed do eiusmod lorem ipsum dolor sit amet, consectetur
