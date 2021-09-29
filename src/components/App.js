@@ -12,7 +12,7 @@ export default class App extends Component {
 
   componentDidMount() {
     window.onscroll = () => {
-      this.setState({ scroll: document.documentElement.scrollTop });
+      this.setState({ scroll: window.scrollY });
     };
   }
 

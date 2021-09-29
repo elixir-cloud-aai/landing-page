@@ -48,7 +48,7 @@ export default class Home extends Component {
               <div>the patient disease data.</div>
             </div>
           </div>
-          <Zoom when={this.props.scroll > 210 ? true : false}>
+          <Zoom when={this.props.scroll > window.innerHeight * 0 + 230 ? true : false}>
             <div className="p-10">
               <div className="flex items-center px-10">
                 <div className="text-lg text-gray-700 leading-loose">
