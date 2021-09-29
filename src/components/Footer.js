@@ -54,22 +54,22 @@ export default class Footer extends Component {
         title: "ELIXIR Communities",
         links: [
           {
-            name: "Galaxy Community",
+            name: "Galaxy",
             link: "https://elixir-europe.org/communities/galaxy",
             a: true,
           },
           {
-            name: "Human Data Community",
+            name: "Human Data",
             link: "https://elixir-europe.org/communities/human-data",
             a: true,
           },
           {
-            name: "Rare Disease Community",
+            name: "Rare Disease",
             link: "https://elixir-europe.org/communities/rare-diseases",
             a: true,
           },
           {
-            name: "Marine Metagenomics Community",
+            name: "Marine Metagenomics",
             link: "https://elixir-europe.org/communities/marine-metagenomics",
             a: true,
           },
@@ -100,12 +100,15 @@ export default class Footer extends Component {
 
   renderFooterLinks = () => {
     return (
-      <div className="px-10 flex space-x-20 text-base">
+      <div className="px-5 md:px-10 flex flex-wrap space-x-6 md:space-x-20 text-base">
         {this.state.footer.map((footer) => {
           return (
-            <div className="footer-links space-y-3">
-              <div className="text-lg font-semibold">{footer.title}</div>
-              <div className="space-y-2">
+            <div
+              className="space-y-1.5 md:space-y-3 flex-auto py-3 md:py-0"
+              style={{ margin: "0" }}
+            >
+              <div className="text-sm md:text-lg md:font-semibold">{footer.title}</div>
+              <div className="space-y-1 md:space-y-2">
                 {footer.links.map((link) => {
                   if (link.a) {
                     return (
@@ -113,14 +116,14 @@ export default class Footer extends Component {
                         href={link.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block hover:underline"
+                        className="text-xs md:text-base block hover:underline"
                       >
                         {link.name}
                       </a>
                     );
                   } else {
                     return (
-                      <Link to={link.link} className="block hover:underline">
+                      <Link to={link.link} className="text-xs md:text-base block hover:underline">
                         {link.name}
                       </Link>
                     );
@@ -136,7 +139,7 @@ export default class Footer extends Component {
 
   render() {
     return (
-      <footer className="bg-gray-900 px-10 pt-12 py-5 text-gray-200 font-pop flex text-sm  rounded-t-xl">
+      <footer className="bg-gray-900 px-5 md:px-10 pt-7 md:pt-12 py-3 md:py-5 text-gray-200 font-pop flex md:flex-row flex-col text-sm rounded-t-xl">
         <div className="text-center pb-0 pt-5">
           <div>
             <a
@@ -148,7 +151,7 @@ export default class Footer extends Component {
               <img
                 src="/elixir-cloud-aii.png"
                 alt="elixir-cloud-aii-logo"
-                className="inline-block w-20 mx-5 mr-7"
+                className="inline-block w-14 md:w-20 mx-3 mr-3 md:mr-7"
               ></img>
             </a>
             <a
@@ -157,7 +160,11 @@ export default class Footer extends Component {
               rel="noopener noreferrer"
               className="mb-3 cursor-pointer "
             >
-              <img src="/elixir.png" alt="elixir-logo" className="inline-block w-20 mx-5"></img>
+              <img
+                src="/elixir.png"
+                alt="elixir-logo"
+                className="inline-block w-14 md:w-20 mr-3 md:mx-5"
+              ></img>
             </a>
             <a
               href="https://www.ga4gh.org/"
@@ -165,7 +172,11 @@ export default class Footer extends Component {
               rel="noopener noreferrer"
               className="mb-3 cursor-pointer "
             >
-              <img src="/ga4gh.png" alt="ga4gh-logo" className="inline-block w-20 mx-5"></img>
+              <img
+                src="/ga4gh.png"
+                alt="ga4gh-logo"
+                className="inline-block w-14 md:w-20 mr-3 md:mx-5"
+              ></img>
             </a>
           </div>
           <a
@@ -174,11 +185,12 @@ export default class Footer extends Component {
             rel="noopener noreferrer"
             className="leading-loose mt-5 mx-3 hover:underline"
           >
-            <p>© 2021 Elixir Cloud AII</p>
-            <p> Released under MIT License</p>
+            <span className="text-xs md:block">© 2021 Elixir Cloud AII </span>
+            <span className="text-xs md:hidden">○</span>
+            <span className="text-xs md:block"> Released under MIT License</span>
           </a>
         </div>
-        {this.renderFooterLinks()}
+        <div className="mt-4 md:mt-0">{this.renderFooterLinks()}</div>
       </footer>
     );
   }
