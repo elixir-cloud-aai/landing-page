@@ -104,8 +104,8 @@ export default class Footer extends Component {
         {this.state.footer.map((footer) => {
           return (
             <div
-              className="space-y-1.5 md:space-y-3 flex-auto py-3 md:py-0"
-              style={{ margin: "0" }}
+              className="space-y-1.5 md:space-y-3 flex-auto py-3 md:py-0 m-0"
+              // style={{ marginLeft: "0" }}
             >
               <div className="text-sm md:text-lg md:font-semibold">{footer.title}</div>
               <div className="space-y-1 md:space-y-2">

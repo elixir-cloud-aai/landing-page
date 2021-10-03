@@ -20,7 +20,7 @@ export default class Home extends Component {
       <div className="font-pop">
         <div>
           <div
-            className="px-72 text-center text-5xl font-extrabold h-screen flex items-center text-gray-800 leading-relaxed"
+            className="px-10 md:px-72 text-center text-3xl md:text-5xl font-extrabold h-screen flex items-center text-gray-800 leading-relaxed"
             style={{
               backgroundImage: "url(/Landing.svg)",
               backgroundRepeat: "no-repeat",
@@ -33,7 +33,7 @@ export default class Home extends Component {
             }}
           >
             <div>
-              <div className="text-2xl">
+              <div className="text-base md:text-2xl">
                 ELIXIR Cloud and Authentication & Authorisation Infrastructure
               </div>
               Aims at the{" "}
@@ -44,13 +44,12 @@ export default class Home extends Component {
                 <span className="text-elixirred">harmonisation</span>
                 <span className="text-elixirgreen">security</span>
               </TextLoop>{" "}
-              of
-              <div>the patient disease data.</div>
+              of the patient disease data.
             </div>
           </div>
           <Zoom when={this.props.scroll > window.innerHeight * 0 + 230 ? true : false}>
             <div className="p-10">
-              <div className="flex items-center px-10">
+              <div className="flex items-center px-10 flex-col md:flex-row">
                 <div className="text-lg text-gray-700 leading-loose">
                   The <span className="font-semibold">ELIXIR Cloud and AAI</span> project aims to
                   leverage a coordinated network of{" "}
