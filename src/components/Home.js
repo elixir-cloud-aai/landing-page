@@ -48,7 +48,7 @@ export default class Home extends Component {
             </div>
           </div>
           <Zoom when={this.props.scroll > window.innerHeight * 0 + 230 ? true : false}>
-            <div className="p-10">
+            <div className="p-0 md:p-10">
               <div className="flex items-center px-10 flex-col md:flex-row">
                 <div className="text-lg text-gray-700 leading-loose">
                   The <span className="font-semibold">ELIXIR Cloud and AAI</span> project aims to
