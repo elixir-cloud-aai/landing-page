@@ -4,6 +4,7 @@ import history from "../history";
 import Footer from "./Footer";
 import Home from "./Home";
 import NavBar from "./NavBar";
+import News from "./News";
 
 export default class App extends Component {
   state = {
@@ -27,6 +28,9 @@ export default class App extends Component {
             <Switch>
               <Route exact path="/">
                 <Home scroll={this.state.scroll}></Home>
+              </Route>
+              <Route exact path="/">
+                <News scroll={this.state.scroll}></News>
               </Route>
             </Switch>
           </div>

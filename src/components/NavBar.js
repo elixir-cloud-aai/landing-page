@@ -156,7 +156,7 @@ export default class Home extends Component {
                 alt="logo"
               ></img>
               <div className="inline-block font-semibold text-lg md:text-2xl">
-                Elixir Cloud & AII
+                Elixir Cloud & AAI
               </div>
             </Link>
             <div className="hidden md:block">{this.renderLinks()}</div>
