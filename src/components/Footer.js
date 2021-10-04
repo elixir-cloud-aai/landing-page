@@ -149,8 +149,8 @@ export default class Footer extends Component {
               className="mb-3 cursor-pointer"
             >
               <img
-                src="/elixir-cloud-aii.png"
-                alt="elixir-cloud-aii-logo"
+                src="/elixir-cloud-aai.png"
+                alt="elixir-cloud-aai-logo"
                 className="inline-block w-14 md:w-20 mx-3 mr-3 md:mr-7"
               ></img>
             </a>
@@ -185,7 +185,7 @@ export default class Footer extends Component {
             rel="noopener noreferrer"
             className="leading-loose mt-5 mx-3 hover:underline"
           >
-            <span className="text-xs md:block">© 2021 Elixir Cloud AII </span>
+            <span className="text-xs md:block">© 2021 Elixir Cloud AAI </span>
             <span className="text-xs md:hidden">○</span>
             <span className="text-xs md:block"> Released under MIT License</span>
           </a>

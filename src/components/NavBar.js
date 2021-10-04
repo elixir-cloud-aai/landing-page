@@ -53,7 +53,7 @@ export default class Home extends Component {
         {this.state.navOpen ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer"
+            className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer outline-none"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -69,7 +69,7 @@ export default class Home extends Component {
         ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer"
+            className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer outline-none"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -151,7 +151,7 @@ export default class Home extends Component {
               }}
             >
               <img
-                src="/elixir-cloud-aii.png"
+                src="/elixir-cloud-aai.png"
                 className="inline-block w-6 md:w-7 mx-3 pb-1.5"
                 alt="logo"
               ></img>

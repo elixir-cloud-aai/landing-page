@@ -6,6 +6,7 @@ export default class Home extends Component {
   state = {
     x: 0,
     y: 0,
+    backgroundImgUrl: "url(/Landing.svg)",
   };
 
   handleMouseMove = (e) => {
@@ -15,14 +16,28 @@ export default class Home extends Component {
     });
   };
 
+  renderTextLoop = () => {
+    return (
+      <span className="block md:inline">
+        <TextLoop springConfig={{ stiffness: 180, damping: 8 }} noWrap={false}>
+          <span className="text-elixirblue">aggregation</span>
+          <span className="text-elixirgreen">standardisation</span>
+          <span className="text-elixiryellow">integration</span>
+          <span className="text-elixirred">harmonisation</span>
+          <span className="text-elixirgreen">security</span>
+        </TextLoop>
+      </span>
+    );
+  };
+
   render() {
     return (
       <div className="font-pop">
         <div>
           <div
-            className="px-10 md:px-72 text-center text-3xl md:text-5xl font-extrabold h-screen flex items-center text-gray-800 leading-relaxed"
+            className="px-10 md:px-72 text-center text-4xl md:text-5xl font-extrabold h-screen flex items-center text-gray-800"
             style={{
-              backgroundImage: "url(/Landing.svg)",
+              backgroundImage: window.innerWidth >= 650 ? this.state.backgroundImgUrl : "",
               backgroundRepeat: "no-repeat",
               backgroundSize: "100% 100%",
               backgroundPositionX: `${this.state.x / 50}px`,
@@ -32,22 +47,15 @@ export default class Home extends Component {
               this.handleMouseMove(e);
             }}
           >
-            <div>
-              <div className="text-base md:text-2xl">
+            <div className="leading-relaxed">
+              <div className="text-lg md:text-2xl leading-relaxed font-bold md:font-extrabold">
                 ELIXIR Cloud and Authentication & Authorisation Infrastructure
               </div>
-              Aims at the{" "}
-              <TextLoop springConfig={{ stiffness: 180, damping: 8 }} noWrap={false}>
-                <span className="text-elixirblue">aggregation</span>
-                <span className="text-elixirgreen">standardisation</span>
-                <span className="text-elixiryellow">integration</span>
-                <span className="text-elixirred">harmonisation</span>
-                <span className="text-elixirgreen">security</span>
-              </TextLoop>{" "}
-              of the patient disease data.
+              Aims at the {this.renderTextLoop()} of{" "}
+              <span className="inline md:block">the patient disease data.</span>
             </div>
           </div>
-          <Zoom when={this.props.scroll > window.innerHeight * 0 + 230 ? true : false}>
+          <Zoom when={this.props.scroll > window.innerHeight * 0.25 ? true : false}>
             <div className="p-0 md:p-10">
               <div className="flex items-center px-10 flex-col md:flex-row">
                 <div className="text-lg text-gray-700 leading-loose">
