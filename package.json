@@ -4,9 +4,11 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.3.0",
+    "@notionhq/client": "^0.4.2",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.22.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-reveal": "^1.2.2",
@@ -16,11 +18,12 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "env-cmd -f .env.dev craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
+  "proxy": "https://api.notion.com/v1/",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -41,6 +44,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^9.8.6",
+    "env-cmd": "^10.1.0",
     "postcss": "^7.0.38",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.14"
   }

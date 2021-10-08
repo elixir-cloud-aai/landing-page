@@ -29,7 +29,7 @@ export default class App extends Component {
               <Route exact path="/">
                 <Home scroll={this.state.scroll}></Home>
               </Route>
-              <Route exact path="/">
+              <Route exact path="/news">
                 <News scroll={this.state.scroll}></News>
               </Route>
             </Switch>

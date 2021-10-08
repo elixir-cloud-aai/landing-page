@@ -2,6 +2,6 @@ import React, { Component } from "react";
 
 export default class News extends Component {
   render() {
-    return <div className="p-20">News</div>;
+    return <div className="pt-24">News</div>;
   }
 }
