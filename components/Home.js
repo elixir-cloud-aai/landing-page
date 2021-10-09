@@ -55,7 +55,7 @@ const Home = () => {
         </div>
         <Zoom>
           {/* when={this.props.scroll > window.innerHeight * 0.25 ? true : false} */}
-          <div className="p-0 md:p-10">
+          <div className="p-0 md:px-10">
             <div className="flex items-center px-10 flex-col md:flex-row">
               <div className="text-lg text-gray-700 leading-loose">
                 The <span className="font-semibold">ELIXIR Cloud and AAI</span> project aims to
@@ -90,6 +90,25 @@ const Home = () => {
             </div>
           </div>
         </Zoom>
+        {/* <Zoom>
+          when={this.props.scroll > window.innerHeight * 0.25 ? true : false}
+          <div className="p-0 md:px-10">
+            <div className="flex items-center px-10 flex-col md:flex-row">
+              <div>
+                <img src="/Nerd.svg" alt="Nerd"></img>
+              </div>
+              <div className="text-lg text-gray-700 leading-loose">
+                The ELIXIR Cloud & AAI project will lay the groundwork to deliver the foundational
+                capability of <span className="font-semibold">federation</span> of{" "}
+                <span className="font-semibold">identities</span>, sensitive{" "}
+                <span className="font-semibold">data access, trusted hybrid cloud providers</span>{" "}
+                and sensitive <span className="font-semibold">data analysis services</span> across
+                ELIXIR Nodes by underpinning the conversation between partners with the GA4GH
+                standards and ELIXIR trans-national expertise.
+              </div>
+            </div>
+          </div>
+        </Zoom> */}
       </div>
     </div>
   );
