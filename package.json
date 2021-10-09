@@ -1,0 +1,27 @@
+{
+  "name": "elixir-cloud-aai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && next export",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@notionhq/client": "^0.4.2",
+    "global": "^4.4.0",
+    "next": "11.1.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-reveal": "^1.2.2",
+    "react-text-loop": "^2.3.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.3.7",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2",
+    "postcss": "^8.3.9",
+    "tailwindcss": "^2.2.16"
+  }
+}
