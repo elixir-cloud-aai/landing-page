@@ -31,7 +31,6 @@ const NavBar = ({ scroll }) => {
             <Link href={link.path} key={link.name} passHref>
               <div
                 onClick={() => {
-                  console.log(link.path);
                   setLocation(link.path);
                 }}
                 className={`inline-block px-3 cursor-pointer ${

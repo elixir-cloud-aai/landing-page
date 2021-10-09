@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export",
+    "build:dev": "next build && next export",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@notionhq/client": "^0.4.2",
+    "axios": "^0.22.0",
     "global": "^4.4.0",
     "next": "11.1.2",
     "react": "17.0.2",

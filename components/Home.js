@@ -6,7 +6,7 @@ import window from "global/window";
 const Home = () => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
-  const [backgroundImgUrl, setBackgroundImgUrl] = useState("url(/Landing.png)");
+  const [backgroundImgUrl, setBackgroundImgUrl] = useState("url(/Landing.svg)");
   const [innerWidth, setinnerWidth] = useState(1000);
 
   const handleMouseMove = (e) => {
