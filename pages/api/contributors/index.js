@@ -37,6 +37,7 @@ const handler = async (req, res) => {
           return position.name;
         }),
         createdAt: result.created_time,
+        updatedAt: result.last_edited_time,
       };
     });
     res.status(200).json(results);

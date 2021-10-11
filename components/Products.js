@@ -1,8 +1,25 @@
 import Link from "next/link";
+import { useState } from "react";
 
 const Products = ({ products }) => {
+  const [query, setQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState(products);
+
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
+    const newFilteredProducts = products.filter((product) => {
+      const title = product.title.trim().toLowerCase();
+      if (title.includes(e.target.value)) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    setFilteredProducts(newFilteredProducts);
+  };
+
   const renderProducts = () => {
-    return products.map((product) => {
+    return filteredProducts.map((product) => {
       return (
         <>
           <Link href={`product/${product.id}`} passHref>
@@ -48,6 +65,10 @@ const Products = ({ products }) => {
       <input
         className="md:text-base text-sm px-3 py-2 border-2 rounded-lg outline-none w-full focus:shadow-lg hover:shadow-lg mb-5 placeholder-opacity-50"
         placeholder="Search.."
+        value={query}
+        onChange={(e) => {
+          handleSearch(e);
+        }}
       ></input>
       {renderProducts()}
     </div>

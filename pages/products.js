@@ -4,7 +4,6 @@ import axios from "axios";
 import ProductsComponent from "../components/Products";
 
 const Products = ({ products }) => {
-  console.log(products);
   return (
     <>
       <Head>

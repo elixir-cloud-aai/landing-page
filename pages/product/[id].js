@@ -2,17 +2,32 @@ import Head from "next/head";
 import { server } from "../../config";
 import axios from "axios";
 import Link from "next/link";
+import dayjs from "dayjs";
 
 const Product = ({ data }) => {
   const renderContent = () => {
     return data.content.map((para) => {
-      return para ? (
-        <div className="leading-relaxed my-3 tracking-wide" key={para.id}>
-          {para.text}
-        </div>
-      ) : (
-        <></>
-      );
+      if (para) {
+        return (
+          <div className="leading-relaxed my-3 tracking-wide" key={para.id}>
+            {para.text.map((block) => {
+              if (block.link) {
+                return (
+                  <a
+                    key={block.content}
+                    href={block.link}
+                    className="text-elixirblue hover:underline"
+                  >
+                    {block.content}
+                  </a>
+                );
+              } else {
+                return <span key={block.content}>{block.content}</span>;
+              }
+            })}
+          </div>
+        );
+      }
     });
   };
 
@@ -29,22 +44,29 @@ const Product = ({ data }) => {
           <div className="font-bold text-lg">Useful Links</div>
           <ul className="list-inside list-disc">
             {data.github ? (
-              <li className="text-elixirblue hover:underline">
-                <a href={data.github}>GitHub</a>
+              <li className="my-2">
+                <a href={data.github} className="text-elixirblue hover:underline">
+                  GitHub
+                </a>
               </li>
             ) : (
               <></>
             )}
             {data.web ? (
-              <li className="text-elixirblue hover:underline">
-                <a href={data.web}>Web</a>
+              <li className="my-2">
+                <a href={data.web} className="text-elixirblue hover:underline">
+                  Web
+                </a>
               </li>
             ) : (
               <></>
             )}
           </ul>
         </div>
-        <div className="flex justify-end">
+        <div className=" text-sm text-gray-400 my-5 text-right">
+          Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}
+        </div>
+        <div className="flex justify-end my-5 items-center">
           <Link href="/products" passHref>
             <div className="flex p-3 hover:shadow-md hover:bg-gray-200 border-2 w-36 rounded-lg cursor-pointer">
               <svg

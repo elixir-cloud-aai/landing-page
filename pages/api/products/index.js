@@ -35,11 +35,11 @@ const handler = async (req, res) => {
         github: result.properties.Github.url,
         url: result.url,
         createdAt: result.created_time,
+        updatedAt: result.last_edited_time,
       };
     });
     res.status(200).json(results);
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: "Server error", error: e });
   }
 };

@@ -15,8 +15,15 @@ const handler = async (req, res) => {
       if (result.paragraph.text[0]) {
         return {
           id: result.id,
-          text: result.paragraph.text[0].text.content,
+          text: result.paragraph.text.map((block) => {
+            return {
+              content: block.plain_text,
+              link: block.href,
+              annotations: { ...block.annotations },
+            };
+          }),
           createdAt: result.created_time,
+          updatedAt: result.last_edited_time,
         };
       }
     });
@@ -37,6 +44,7 @@ const handler = async (req, res) => {
       content,
       url: results.url,
       createdAt: results.created_time,
+      updatedAt: results.last_edited_time,
     };
     res.status(200).json(results);
   } catch (e) {
