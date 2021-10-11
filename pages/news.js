@@ -1,5 +1,4 @@
 import Head from "next/head";
-const { Client } = require("@notionhq/client");
 
 const News = () => {
   return (
@@ -11,15 +10,5 @@ const News = () => {
     </div>
   );
 };
-
-export async function getStaticProps(context) {
-  const notion = new Client({
-    auth: process.env.NOTION_TOKEN,
-  });
-  const listUsersResponse = await notion.users.list();
-  return {
-    props: {},
-  };
-}
 
 export default News;
