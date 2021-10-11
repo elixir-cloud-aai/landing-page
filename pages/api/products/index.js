@@ -24,11 +24,7 @@ const handler = async (req, res) => {
       return {
         id: result.id,
         title: result.properties.Name.title[0].text.content,
-        icon: result.icon
-          ? result.icon.file
-            ? result.icon.file.url
-            : result.icon.external.url
-          : "",
+        icon: result.properties.Icon.files[0].name,
         description: result.properties.Description.rich_text[0]
           ? result.properties.Description.rich_text[0].text.content
           : "",

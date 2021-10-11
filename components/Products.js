@@ -25,30 +25,17 @@ const Products = ({ products }) => {
           <Link href={`product/${product.id}`} passHref>
             <div
               key={product.id}
-              className="w-full rounded-lg p-5 border-2 hover:shadow-lg my-5 hover:bg-gray-100 cursor-pointer"
+              className="w-full rounded-lg border-2 hover:shadow-lg my-5 hover:bg-gray-100 cursor-pointer"
             >
-              <div className="flex">
+              <div className="flex md:flex-row flex-col">
                 <img
                   src={product.icon}
-                  style={{ height: "100px", width: "100px" }}
-                  className="rounded-md"
+                  className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
                   alt="Icon"
                 ></img>
-                <div className="ml-8 flex-grow">
+                <div className="flex-grow p-5">
                   <div className="text-xl font-semibold flex justify-between">
                     <div>{product.title}</div>
-                    {/* {product.github != "" ? (
-                      <a href={product.github}>
-                        <img
-                          src="/GitHub.png"
-                          className="items-center"
-                          style={{ height: "25px", width: "25px" }}
-                          alt="GitHub"
-                        ></img>
-                      </a>
-                    ) : (
-                      <></>
-                    )} */}
                   </div>
                   <div className="text-gray-500 text-justify mt-1.5">{product.description}</div>
                 </div>

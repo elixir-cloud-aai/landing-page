@@ -119,7 +119,7 @@ const Footer = () => {
                   } else {
                     return (
                       <Link href={link.link} passHref>
-                        <div className="text-xs md:text-base block hover:underline">
+                        <div className="text-xs md:text-base block hover:underline cursor-pointer">
                           {link.name}
                         </div>
                       </Link>

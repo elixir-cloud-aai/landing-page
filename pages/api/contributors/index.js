@@ -36,6 +36,7 @@ const handler = async (req, res) => {
         positions: result.properties.Position.multi_select.map((position) => {
           return position.name;
         }),
+        image: result.properties.Image.url,
         createdAt: result.created_time,
         updatedAt: result.last_edited_time,
       };

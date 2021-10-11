@@ -57,7 +57,7 @@ const Home = () => {
           {/* when={this.props.scroll > window.innerHeight * 0.25 ? true : false} */}
           <div className="p-0 md:px-10">
             <div className="flex items-center px-10 flex-col md:flex-row">
-              <div className="text-lg text-gray-700 leading-loose">
+              <div className="text-lg text-gray-700 leading-loose text-justify">
                 The <span className="font-semibold">ELIXIR Cloud and AAI</span> project aims to
                 leverage a coordinated network of{" "}
                 <a

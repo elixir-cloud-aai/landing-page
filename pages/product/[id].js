@@ -6,27 +6,39 @@ import dayjs from "dayjs";
 
 const Product = ({ data }) => {
   const renderContent = () => {
-    return data.content.map((para) => {
-      if (para) {
-        return (
-          <div className="leading-relaxed my-3 tracking-wide" key={para.id}>
-            {para.text.map((block) => {
-              if (block.link) {
+    return data.content.map((block) => {
+      if (block) {
+        if (block.type == "paragraph") {
+          return (
+            <div className="leading-relaxed my-3 tracking-wide text-justify" key={block.id}>
+              {block.text.map((segment) => {
                 return (
-                  <a
-                    key={block.content}
-                    href={block.link}
-                    className="text-elixirblue hover:underline"
+                  <span
+                    className={`${segment.annotations.bold ? "font-semibold" : ""} 
+                        ${segment.annotations.italic ? "italic" : ""}
+                        ${segment.annotations.underline ? "underline" : ""}
+                        ${segment.annotations.code ? "font-mono bg-gray-200 p-1 rounded-md" : ""}`}
+                    key={segment.content}
                   >
-                    {block.content}
-                  </a>
+                    {segment.link ? (
+                      <a
+                        key={segment.content}
+                        href={segment.link}
+                        className={`text-elixirblue hover:underline `}
+                      >
+                        {segment.content}
+                      </a>
+                    ) : (
+                      <span key={segment.content}>{segment.content}</span>
+                    )}
+                  </span>
                 );
-              } else {
-                return <span key={block.content}>{block.content}</span>;
-              }
-            })}
-          </div>
-        );
+              })}
+            </div>
+          );
+        } else {
+          return <img src={block.image} alt="Image" className="my-10"></img>;
+        }
       }
     });
   };
@@ -37,8 +49,13 @@ const Product = ({ data }) => {
         <title>Product</title>
       </Head>
       <div className="mt-28 md:mx-64 mx-10 font-pop text-gray-700 tracking-wide">
-        <div className="text-3xl font-bold my-1.5">{data.title}</div>
-        <div className="text-lg text-gray-400 mb-7 font-semibold">{data.description}</div>
+        <div className="flex justify-around">
+          <img src={data.icon} className="rounded-lg w-28 h-28 md:w-32 md:h-32" alt="Icon"></img>
+        </div>
+        <div className="text-3xl font-bold mb-1.5 mt-5 text-center">{data.title}</div>
+        <div className="text-lg text-gray-400 mb-7 font-semibold text-center">
+          {data.description}
+        </div>
         <div className="">{renderContent()}</div>
         <div className="leading-relaxed my-3 tracking-wide">
           <div className="font-bold text-lg">Useful Links</div>
@@ -100,6 +117,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }) => {
   const { data } = await axios.get(`${server}/api/product/${params.id}`);
+  console.log(data);
   return {
     props: {
       data,

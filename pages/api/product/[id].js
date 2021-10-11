@@ -12,9 +12,19 @@ const handler = async (req, res) => {
     };
     var { results } = await notion.request(payload);
     results = results.map((result) => {
-      if (result.paragraph.text[0]) {
+      if (result.image && result.image.type == "external") {
         return {
           id: result.id,
+          type: result.type,
+          image: result.image.external.url,
+          createdAt: result.created_time,
+          updatedAt: result.last_edited_time,
+        };
+      }
+      if (result.paragraph && result.paragraph.text[0]) {
+        return {
+          id: result.id,
+          type: result.type,
           text: result.paragraph.text.map((block) => {
             return {
               content: block.plain_text,
@@ -38,6 +48,7 @@ const handler = async (req, res) => {
       title: results.properties.Name.title[0].text.content,
       github: results.properties.Github.url,
       web: results.properties.Web.url,
+      icon: results.properties.Icon.files[0].name,
       description: results.properties.Description.rich_text[0]
         ? results.properties.Description.rich_text[0].text.content
         : "",
@@ -48,6 +59,7 @@ const handler = async (req, res) => {
     };
     res.status(200).json(results);
   } catch (e) {
+    console.log(e);
     res.status(500).json({ message: "Server error", error: e });
   }
 };
