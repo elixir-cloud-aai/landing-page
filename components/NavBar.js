@@ -103,6 +103,7 @@ const NavBar = ({ scroll }) => {
                     <div
                       onClick={() => {
                         setLocation(link.path);
+                        setNavOpen(false);
                       }}
                       className={`inline-block py-2 text-center cursor-pointer ${
                         location === link.path ? "text-elixirblue" : "text-gray-500"
