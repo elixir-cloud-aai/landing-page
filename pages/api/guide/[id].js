@@ -1,3 +1,6 @@
+import axios from "axios";
+import { server } from "../../../config";
+
 const { Client } = require("@notionhq/client");
 
 const notion = new Client({
@@ -6,6 +9,9 @@ const notion = new Client({
 
 const handler = async (req, res) => {
   try {
+    var contributors = await axios.get(`${server}/api/contributors`);
+    contributors = contributors.data;
+
     var payload = {
       path: `blocks/${req.query.id}/children`,
       method: `GET`,
@@ -43,17 +49,17 @@ const handler = async (req, res) => {
       method: `GET`,
     };
     var results = await notion.request(payload);
+    var author = contributors.find(
+      (contributor) => contributor.id === results.properties.Author.relation[0].id
+    );
     results = {
       id: results.id,
       title: results.properties.Name.title[0].text.content,
-      github: results.properties.Github.url,
-      web: results.properties.Web.url,
-      icon: results.properties.Icon.files[0].name,
       description: results.properties.Description.rich_text[0]
         ? results.properties.Description.rich_text[0].text.content
         : "",
+      author,
       content,
-      url: results.url,
       createdAt: results.created_time,
       updatedAt: results.last_edited_time,
     };

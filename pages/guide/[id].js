@@ -46,45 +46,22 @@ const Product = ({ data }) => {
   return (
     <>
       <Head>
-        <title>Product</title>
+        <title>Guide</title>
       </Head>
       <div className="mt-28 md:mx-64 mx-10 font-pop text-gray-700 tracking-wide">
-        <div className="flex justify-around">
-          <img src={data.icon} className="rounded-lg w-28 h-28 md:w-32 md:h-32" alt="Icon"></img>
-        </div>
         <div className="text-3xl font-bold mb-1.5 mt-5 text-center">{data.title}</div>
         <div className="text-lg text-gray-400 mb-7 font-semibold text-center">
           {data.description}
         </div>
         <div className="">{renderContent()}</div>
-        <div className="leading-relaxed my-3 tracking-wide">
-          <div className="font-bold text-lg">Useful Links</div>
-          <ul className="list-inside list-disc">
-            {data.github ? (
-              <li className="my-2">
-                <a href={data.github} className="text-elixirblue hover:underline">
-                  GitHub
-                </a>
-              </li>
-            ) : (
-              <></>
-            )}
-            {data.web ? (
-              <li className="my-2">
-                <a href={data.web} className="text-elixirblue hover:underline">
-                  Web
-                </a>
-              </li>
-            ) : (
-              <></>
-            )}
-          </ul>
-        </div>
-        <div className=" text-sm text-gray-400 my-5 text-right">
-          Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}
+        <div className="my-5 text-sm text-gray-400 text-right">
+          <div className="my-1">
+            Guide by <span className="hover:underline cursor-pointer">{data.author.name}</span>
+          </div>
+          <div className="my-1">Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}</div>
         </div>
         <div className="flex justify-end my-5 items-center">
-          <Link href="/products" passHref>
+          <Link href="/guides" passHref>
             <div className="flex p-3 hover:shadow-md hover:bg-gray-200 border-2 w-36 rounded-lg cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -110,13 +87,13 @@ const Product = ({ data }) => {
 };
 
 export const getStaticPaths = async () => {
-  const { data } = await axios.get(`${server}/api/products`);
+  const { data } = await axios.get(`${server}/api/guides`);
   const paths = data.map(({ id }) => ({ params: { id: `${id}` } }));
   return { paths, fallback: false };
 };
 
 export const getStaticProps = async ({ params }) => {
-  const { data } = await axios.get(`${server}/api/product/${params.id}`);
+  const { data } = await axios.get(`${server}/api/guide/${params.id}`);
   return {
     props: {
       data,

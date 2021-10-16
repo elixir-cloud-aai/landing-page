@@ -2,7 +2,6 @@ import Link from "next/link";
 
 const Contributors = ({ contributors }) => {
   const renderLinks = (contributor) => {
-    console.log(contributor);
     return (
       <div className="flex pt-0.5">
         {contributor.email ? (
@@ -79,7 +78,7 @@ const Contributors = ({ contributors }) => {
         <>
           <div
             key={contributor.id}
-            className="w-full rounded-lg border-2 hover:shadow-lg my-5 hover:bg-gray-100"
+            className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100"
           >
             <div className="flex md:flex-row flex-col">
               <img

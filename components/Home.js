@@ -54,7 +54,6 @@ const Home = () => {
           </div>
         </div>
         <Zoom>
-          {/* when={this.props.scroll > window.innerHeight * 0.25 ? true : false} */}
           <div className="p-0 md:px-10">
             <div className="flex items-center px-10 flex-col md:flex-row">
               <div className="text-lg text-gray-700 leading-loose text-justify">
@@ -91,12 +90,8 @@ const Home = () => {
           </div>
         </Zoom>
         {/* <Zoom>
-          when={this.props.scroll > window.innerHeight * 0.25 ? true : false}
           <div className="p-0 md:px-10">
             <div className="flex items-center px-10 flex-col md:flex-row">
-              <div>
-                <img src="/Nerd.svg" alt="Nerd"></img>
-              </div>
               <div className="text-lg text-gray-700 leading-loose">
                 The ELIXIR Cloud & AAI project will lay the groundwork to deliver the foundational
                 capability of <span className="font-semibold">federation</span> of{" "}

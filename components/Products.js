@@ -25,7 +25,7 @@ const Products = ({ products }) => {
           <Link href={`product/${product.id}`} passHref>
             <div
               key={product.id}
-              className="w-full rounded-lg border-2 hover:shadow-lg my-5 hover:bg-gray-100 cursor-pointer"
+              className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 cursor-pointer"
             >
               <div className="flex md:flex-row flex-col">
                 <img
