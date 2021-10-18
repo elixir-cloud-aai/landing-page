@@ -68,7 +68,11 @@ const Contributors = ({ contributors }) => {
 
   const renderPositions = (contributor) => {
     return contributor.positions.map((position) => {
-      return <div key={position}>{position}</div>;
+      return (
+        <div className="text-gray-500" key={position}>
+          {position}
+        </div>
+      );
     });
   };
 
@@ -93,7 +97,7 @@ const Contributors = ({ contributors }) => {
                   </div>
                   <div>{renderLinks(contributor)}</div>
                 </div>
-                <div>{renderPositions(contributor)}</div>
+                <div className="mt-1">{renderPositions(contributor)}</div>
               </div>
             </div>
           </div>
@@ -105,7 +109,7 @@ const Contributors = ({ contributors }) => {
   return (
     <div className="mt-28 md:mx-64 mx-10 font-pop text-gray-700">
       <div className="text-3xl font-bold mb-1.5 mt-5 text-center">Contributors</div>
-      <div>{renderContributors()}</div>
+      <div className="my-10">{renderContributors()}</div>
     </div>
   );
 };
