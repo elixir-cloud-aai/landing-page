@@ -1,4 +1,5 @@
 import Head from "next/head";
+import NewsComponent from "../components/News";
 
 const News = () => {
   return (
@@ -6,7 +7,7 @@ const News = () => {
       <Head>
         <title>News</title>
       </Head>
-      <div className="text-lg">Hello</div>
+      <NewsComponent></NewsComponent>
     </div>
   );
 };

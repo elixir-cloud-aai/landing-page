@@ -3,46 +3,9 @@ import { server } from "../../config";
 import axios from "axios";
 import Link from "next/link";
 import dayjs from "dayjs";
+import { renderText } from "../../utils";
 
 const Product = ({ data }) => {
-  const renderContent = () => {
-    return data.content.map((block) => {
-      if (block) {
-        if (block.type == "paragraph") {
-          return (
-            <div className="leading-relaxed my-3 tracking-wide text-justify" key={block.id}>
-              {block.text.map((segment) => {
-                return (
-                  <span
-                    className={`${segment.annotations.bold ? "font-semibold" : ""} 
-                        ${segment.annotations.italic ? "italic" : ""}
-                        ${segment.annotations.underline ? "underline" : ""}
-                        ${segment.annotations.code ? "font-mono bg-gray-200 p-1 rounded-md" : ""}`}
-                    key={segment.content}
-                  >
-                    {segment.link ? (
-                      <a
-                        key={segment.content}
-                        href={segment.link}
-                        className={`text-elixirblue hover:underline `}
-                      >
-                        {segment.content}
-                      </a>
-                    ) : (
-                      <span key={segment.content}>{segment.content}</span>
-                    )}
-                  </span>
-                );
-              })}
-            </div>
-          );
-        } else {
-          return <img src={block.image} alt="Image" className="my-10"></img>;
-        }
-      }
-    });
-  };
-
   return (
     <>
       <Head>
@@ -53,7 +16,7 @@ const Product = ({ data }) => {
         <div className="text-lg text-gray-400 mb-7 font-semibold text-center">
           {data.description}
         </div>
-        <div className="">{renderContent()}</div>
+        <div className="">{renderText(data.content)}</div>
         <div className="my-5 text-sm text-gray-400 text-right">
           <div className="my-1">
             Guide by <span className="hover:underline cursor-pointer">{data.author.name}</span>
