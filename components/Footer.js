@@ -19,58 +19,8 @@ const Footer = () => {
           link: "/funding",
         },
         {
-          name: "Contact Us",
-          link: "/contact",
-        },
-      ],
-    },
-    {
-      title: "Related Links",
-      links: [
-        {
-          name: "ELIXIR Compute Platform",
-          link: "https://elixir-europe.org/platforms/compute",
-          a: true,
-        },
-        {
-          name: "ELIXIR Tools Platform",
-          link: "https://elixir-europe.org/platforms/tools",
-          a: true,
-        },
-        {
-          name: "GA4GH Cloud WS",
-          link: "https://github.com/ga4gh/wiki/wiki",
-          a: true,
-        },
-        {
-          name: "GA4GH Driver Projects",
-          link: "https://www.ga4gh.org/howwework/driver-projects.html",
-          a: true,
-        },
-      ],
-    },
-    {
-      title: "ELIXIR Communities",
-      links: [
-        {
-          name: "Galaxy",
-          link: "https://elixir-europe.org/communities/galaxy",
-          a: true,
-        },
-        {
-          name: "Human Data",
-          link: "https://elixir-europe.org/communities/human-data",
-          a: true,
-        },
-        {
-          name: "Rare Disease",
-          link: "https://elixir-europe.org/communities/rare-diseases",
-          a: true,
-        },
-        {
-          name: "Marine Metagenomics",
-          link: "https://elixir-europe.org/communities/marine-metagenomics",
-          a: true,
+          name: "Partners",
+          link: "/partners",
         },
       ],
     },
@@ -98,44 +48,49 @@ const Footer = () => {
 
   const renderFooterLinks = () => {
     return (
-      <div className="px-5 md:px-10 flex flex-wrap space-x-6 md:space-x-20 text-base">
-        {footers.map((footer) => {
-          return (
-            <div className="space-y-1.5 md:space-y-3 flex-auto py-3 md:py-0 m-0" key={footer.title}>
-              <div className="text-sm md:text-lg md:font-semibold">{footer.title}</div>
-              <div className="space-y-1 md:space-y-2">
-                {footer.links.map((link) => {
-                  if (link.a) {
-                    return (
-                      <a
-                        href={link.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs md:text-base block hover:underline"
-                      >
-                        {link.name}
-                      </a>
-                    );
-                  } else {
-                    return (
-                      <Link href={link.link} passHref>
-                        <div className="text-xs md:text-base block hover:underline cursor-pointer">
+      <>
+        <div className="px-20 md:px-10 flex flex-wrap text-base justify-between md:justify-end">
+          {footers.map((footer) => {
+            return (
+              <div
+                className="space-y-1.5 md:space-y-3 py-3 md:py-0 mx:10 md:mx-20"
+                key={footer.title}
+              >
+                <div className="text-sm md:text-lg md:font-semibold">{footer.title}</div>
+                <div className="space-y-1 md:space-y-2">
+                  {footer.links.map((link) => {
+                    if (link.a) {
+                      return (
+                        <a
+                          href={link.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs md:text-base block hover:underline"
+                        >
                           {link.name}
-                        </div>
-                      </Link>
-                    );
-                  }
-                })}
+                        </a>
+                      );
+                    } else {
+                      return (
+                        <Link href={link.link} passHref>
+                          <div className="text-xs md:text-base block hover:underline cursor-pointer">
+                            {link.name}
+                          </div>
+                        </Link>
+                      );
+                    }
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </>
     );
   };
 
   return (
-    <footer className="bg-gray-900 px-5 md:px-10 pt-7 md:pt-12 py-3 md:py-5 text-gray-200 font-pop flex md:flex-row flex-col text-sm rounded-t-xl">
+    <footer className="bg-gray-900 px-5 md:px-40 pt-7 md:pt-12 py-3 md:py-5 text-gray-200 font-pop flex md:flex-row flex-col text-sm rounded-t-xl">
       <div className="text-center pb-0 pt-5">
         <div>
           <a
@@ -186,7 +141,7 @@ const Footer = () => {
           <span className="text-xs md:block"> Released under MIT License</span>
         </a>
       </div>
-      <div className="mt-4 md:mt-0">{renderFooterLinks()}</div>
+      <div className="mt-4 md:mt-0 flex-grow">{renderFooterLinks()}</div>
     </footer>
   );
 };
