@@ -3,7 +3,7 @@ import Link from "next/link";
 import Slide from "react-reveal/Slide";
 import { useRouter } from "next/router";
 
-const NavBar = ({ scroll }) => {
+const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
   const router = useRouter();
   const [links, setLinks] = useState([
     {
@@ -53,7 +53,7 @@ const NavBar = ({ scroll }) => {
         {navOpen ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer outline-none"
+            className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer outline-none mb-1"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -69,7 +69,7 @@ const NavBar = ({ scroll }) => {
         ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer outline-none"
+            className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer outline-none mb-1"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -91,7 +91,7 @@ const NavBar = ({ scroll }) => {
     return (
       <Slide when={navOpen} duration={5} top={true}>
         <div
-          className={`left-0 w-full bg-white py-5 text-lg top-20 transition duration-200 ease-in-out ${
+          className={`left-0 w-full bg-white py-5 text-lg top-20 transition duration-200 ease-in-out dark:bg-gray-900 ${
             navOpen ? "block" : "hidden"
           }`}
         >
@@ -122,8 +122,46 @@ const NavBar = ({ scroll }) => {
     );
   };
 
+  const renderDarkModeIcon = () => {
+    if (!darkMode) {
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 mb-1.5 md:mb-1 text-gray-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+          />
+        </svg>
+      );
+    } else {
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 mb-1.5 md:mb-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+          />
+        </svg>
+      );
+    }
+  };
+
   return (
-    <div className="text-gray-700 font-pop">
+    <div className="text-gray-700 font-pop dark:text-gray-200 dark:bg-gray-900">
       <div
         id="navbar"
         style={
@@ -141,8 +179,8 @@ const NavBar = ({ scroll }) => {
         }
         className={
           scroll <= 1
-            ? "z-10 fixed px-5 bg-white w-full flex flex-col"
-            : "z-10 fixed px-5 bg-white w-full shadow-lg flex flex-col"
+            ? "z-10 fixed px-5 w-full flex flex-col bg-white dark:bg-gray-900"
+            : "z-10 fixed px-5 w-full shadow-lg flex flex-col bg-white dark:bg-gray-900"
         }
       >
         <div className="flex items-center justify-between">
@@ -163,8 +201,22 @@ const NavBar = ({ scroll }) => {
               </div>
             </div>
           </Link>
-          <div className="hidden md:block">{renderLinks()}</div>
-          <div className="block md:hidden">{renderNavButton()}</div>
+          <div className="flex items-center">
+            <div
+              onClick={() => toggleDarkMode()}
+              className="cursor-pointer block md:hidden p-1 m-1 rounded-md"
+            >
+              {renderDarkModeIcon()}
+            </div>
+            <div className="hidden md:block">{renderLinks()}</div>
+            <div className="block md:hidden">{renderNavButton()}</div>
+            <div
+              onClick={() => toggleDarkMode()}
+              className="cursor-pointer hidden md:block p-1 px-3 m-1 rounded-md"
+            >
+              {renderDarkModeIcon()}
+            </div>
+          </div>
         </div>
         <div>
           <div>{renderNav()}</div>

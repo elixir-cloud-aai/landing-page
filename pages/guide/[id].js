@@ -12,9 +12,11 @@ const Product = ({ data }) => {
       <Head>
         <title>Guide</title>
       </Head>
-      <div className="mt-28 md:mx-64 mx-10 font-pop text-gray-700 tracking-wide">
+      <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700 tracking-wide">
         <Zoom>
-          <div className="text-3xl font-bold mb-1.5 mt-5 text-center">{data.title}</div>
+          <div className="text-3xl font-bold mb-1.5 mt-5 text-center dark:text-gray-200">
+            {data.title}
+          </div>
         </Zoom>
         <Zoom>
           <div className="text-lg text-gray-400 mb-7 font-semibold text-center">
@@ -30,7 +32,7 @@ const Product = ({ data }) => {
         </div>
         <div className="flex justify-end my-5 items-center">
           <Link href="/guides" passHref>
-            <div className="flex p-3 hover:shadow-md hover:bg-gray-200 border-2 w-36 rounded-lg cursor-pointer">
+            <div className="flex p-3 hover:shadow-md hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 border-2 w-36 rounded-lg cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 mx-2"

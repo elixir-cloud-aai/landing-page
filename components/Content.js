@@ -6,7 +6,10 @@ const Content = ({ content }) => {
       if (block.type == "paragraph") {
         return (
           <Zoom>
-            <div className="leading-relaxed my-3 tracking-wide text-justify" key={block.id}>
+            <div
+              className="leading-relaxed my-3 tracking-wide text-justify dark:text-gray-200"
+              key={block.id}
+            >
               {block.text.map((segment) => {
                 return (
                   <span

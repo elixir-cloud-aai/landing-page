@@ -2,7 +2,6 @@ import axios from "axios";
 
 const handler = async (req, res) => {
   try {
-    console.log(req.query);
     var query = "max_results=20&tweet.fields=created_at,lang&exclude=replies&";
     if (req.query.pagination_token) {
       query += `pagination_token=${req.query.pagination_token}&`;

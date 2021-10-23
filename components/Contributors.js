@@ -51,7 +51,7 @@ const Contributors = ({ contributors }) => {
               width="20"
               height="20"
               viewBox="0 0 24 24"
-              className="ml-3"
+              className="ml-3 cursor-pointer"
             >
               <path
                 d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"
@@ -81,7 +81,7 @@ const Contributors = ({ contributors }) => {
       return (
         <>
           <Zoom key={contributor.id}>
-            <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100">
+            <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100  dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900">
               <div className="flex md:flex-row flex-col">
                 <img
                   src={contributor.image}
@@ -90,7 +90,7 @@ const Contributors = ({ contributors }) => {
                 ></img>
                 <div className="flex-grow p-5">
                   <div className="flex justify-between">
-                    <div className="text-xl font-semibold flex justify-between">
+                    <div className="text-xl font-semibold flex justify-between dark:text-gray-200">
                       <div>{contributor.name}</div>
                     </div>
                     <div>{renderLinks(contributor)}</div>
@@ -106,8 +106,10 @@ const Contributors = ({ contributors }) => {
   };
 
   return (
-    <div className="mt-28 md:mx-64 mx-10 font-pop text-gray-700">
-      <div className="text-3xl font-bold mb-1.5 mt-5 text-center">Contributors</div>
+    <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700">
+      <div className="text-3xl font-bold mb-1.5 mt-5 text-center dark:text-gray-200">
+        Contributors
+      </div>
       <div className="my-10">
         <Zoom>{renderContributors()}</Zoom>
       </div>
