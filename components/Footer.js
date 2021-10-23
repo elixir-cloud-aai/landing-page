@@ -53,7 +53,7 @@ const Footer = () => {
           {footers.map((footer) => {
             return (
               <div
-                className="space-y-1.5 md:space-y-3 py-3 md:py-0 mx:10 md:mx-20"
+                className="space-y-1.5 md:space-y-3 py-3 md:py-0 mx-10 md:mx-50"
                 key={footer.title}
               >
                 <div className="text-sm md:text-lg md:font-semibold">{footer.title}</div>
@@ -90,7 +90,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gray-900 px-5 md:px-40 pt-7 md:pt-12 py-3 md:py-5 text-gray-200 font-pop flex md:flex-row flex-col text-sm rounded-t-xl">
+    <footer className="bg-gray-900 px-5 md:px-64 pt-7 md:pt-12 py-3 md:py-5 text-gray-200 font-pop flex md:flex-row flex-col text-sm rounded-t-xl">
       <div className="text-center pb-0 pt-5">
         <div>
           <a

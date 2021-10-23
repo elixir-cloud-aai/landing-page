@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Zoom from "react-reveal/Zoom";
 
 const Partners = ({ partners }) => {
   const [query, setQuery] = useState("");
@@ -20,12 +21,9 @@ const Partners = ({ partners }) => {
   const renderPartners = () => {
     return filteredPartners.map((partner) => {
       return (
-        <>
+        <Zoom key={partner.id}>
           <a href={partner.website} target="_blank" rel="noopener noreferrer">
-            <div
-              key={partner.id}
-              className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 cursor-pointer"
-            >
+            <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 cursor-pointer">
               <div className="flex md:flex-row flex-col">
                 <img
                   src={partner.icon}
@@ -41,7 +39,7 @@ const Partners = ({ partners }) => {
               </div>
             </div>
           </a>
-        </>
+        </Zoom>
       );
     });
   };
@@ -56,7 +54,7 @@ const Partners = ({ partners }) => {
           handleSearch(e);
         }}
       ></input>
-      {renderPartners()}
+      <Zoom>{renderPartners()}</Zoom>
     </div>
   );
 };

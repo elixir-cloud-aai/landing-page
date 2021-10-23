@@ -3,7 +3,8 @@ import { server } from "../../config";
 import axios from "axios";
 import Link from "next/link";
 import dayjs from "dayjs";
-import { renderText } from "../../utils";
+import Content from "../../components/Content";
+import Zoom from "react-reveal/Zoom";
 
 const Product = ({ data }) => {
   return (
@@ -12,37 +13,45 @@ const Product = ({ data }) => {
         <title>Product</title>
       </Head>
       <div className="mt-28 md:mx-64 mx-10 font-pop text-gray-700 tracking-wide">
-        <div className="flex justify-around">
-          <img src={data.icon} className="rounded-lg w-28 h-28 md:w-32 md:h-32" alt="Icon"></img>
-        </div>
-        <div className="text-3xl font-bold mb-1.5 mt-5 text-center">{data.title}</div>
-        <div className="text-lg text-gray-400 mb-7 font-semibold text-center">
-          {data.description}
-        </div>
-        <div className="">{renderText(data.content)}</div>
-        <div className="leading-relaxed my-3 tracking-wide">
-          <div className="font-bold text-lg">Useful Links</div>
-          <ul className="list-inside list-disc">
-            {data.github ? (
-              <li className="my-2">
-                <a href={data.github} className="text-elixirblue hover:underline">
-                  GitHub
-                </a>
-              </li>
-            ) : (
-              <></>
-            )}
-            {data.web ? (
-              <li className="my-2">
-                <a href={data.web} className="text-elixirblue hover:underline">
-                  Web
-                </a>
-              </li>
-            ) : (
-              <></>
-            )}
-          </ul>
-        </div>
+        <Zoom>
+          <div className="flex justify-around">
+            <img src={data.icon} className="rounded-lg w-28 h-28 md:w-32 md:h-32" alt="Icon"></img>
+          </div>
+        </Zoom>
+        <Zoom>
+          <div className="text-3xl font-bold mb-1.5 mt-5 text-center">{data.title}</div>
+        </Zoom>
+        <Zoom>
+          <div className="text-lg text-gray-400 mb-7 font-semibold text-center">
+            {data.description}
+          </div>
+        </Zoom>
+        <Content content={data.content}></Content>
+        <Zoom>
+          <div className="leading-relaxed my-3 tracking-wide">
+            <div className="font-bold text-lg">Useful Links</div>
+            <ul className="list-inside list-disc">
+              {data.github ? (
+                <li className="my-2">
+                  <a href={data.github} className="text-elixirblue hover:underline">
+                    GitHub
+                  </a>
+                </li>
+              ) : (
+                <></>
+              )}
+              {data.web ? (
+                <li className="my-2">
+                  <a href={data.web} className="text-elixirblue hover:underline">
+                    Web
+                  </a>
+                </li>
+              ) : (
+                <></>
+              )}
+            </ul>
+          </div>
+        </Zoom>
         <div className=" text-sm text-gray-400 my-5 text-right">
           Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}
         </div>

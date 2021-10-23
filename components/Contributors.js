@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Zoom from "react-reveal/Zoom";
 
 const Contributors = ({ contributors }) => {
   const renderLinks = (contributor) => {
@@ -80,27 +80,26 @@ const Contributors = ({ contributors }) => {
     return contributors.map((contributor) => {
       return (
         <>
-          <div
-            key={contributor.id}
-            className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100"
-          >
-            <div className="flex md:flex-row flex-col">
-              <img
-                src={contributor.image}
-                className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-36 md:h-36"
-                alt="Icon"
-              ></img>
-              <div className="flex-grow p-5">
-                <div className="flex justify-between">
-                  <div className="text-xl font-semibold flex justify-between">
-                    <div>{contributor.name}</div>
+          <Zoom key={contributor.id}>
+            <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100">
+              <div className="flex md:flex-row flex-col">
+                <img
+                  src={contributor.image}
+                  className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-36 md:h-36"
+                  alt="Icon"
+                ></img>
+                <div className="flex-grow p-5">
+                  <div className="flex justify-between">
+                    <div className="text-xl font-semibold flex justify-between">
+                      <div>{contributor.name}</div>
+                    </div>
+                    <div>{renderLinks(contributor)}</div>
                   </div>
-                  <div>{renderLinks(contributor)}</div>
+                  <div className="mt-1">{renderPositions(contributor)}</div>
                 </div>
-                <div className="mt-1">{renderPositions(contributor)}</div>
               </div>
             </div>
-          </div>
+          </Zoom>
         </>
       );
     });
@@ -109,7 +108,9 @@ const Contributors = ({ contributors }) => {
   return (
     <div className="mt-28 md:mx-64 mx-10 font-pop text-gray-700">
       <div className="text-3xl font-bold mb-1.5 mt-5 text-center">Contributors</div>
-      <div className="my-10">{renderContributors()}</div>
+      <div className="my-10">
+        <Zoom>{renderContributors()}</Zoom>
+      </div>
     </div>
   );
 };

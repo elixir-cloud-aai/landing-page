@@ -3,7 +3,8 @@ import { server } from "../../config";
 import axios from "axios";
 import Link from "next/link";
 import dayjs from "dayjs";
-import { renderText } from "../../utils";
+import Content from "../../components/Content";
+import Zoom from "react-reveal/Zoom";
 
 const Product = ({ data }) => {
   return (
@@ -12,11 +13,15 @@ const Product = ({ data }) => {
         <title>Guide</title>
       </Head>
       <div className="mt-28 md:mx-64 mx-10 font-pop text-gray-700 tracking-wide">
-        <div className="text-3xl font-bold mb-1.5 mt-5 text-center">{data.title}</div>
-        <div className="text-lg text-gray-400 mb-7 font-semibold text-center">
-          {data.description}
-        </div>
-        <div className="">{renderText(data.content)}</div>
+        <Zoom>
+          <div className="text-3xl font-bold mb-1.5 mt-5 text-center">{data.title}</div>
+        </Zoom>
+        <Zoom>
+          <div className="text-lg text-gray-400 mb-7 font-semibold text-center">
+            {data.description}
+          </div>
+        </Zoom>
+        <Content content={data.content} />
         <div className="my-5 text-sm text-gray-400 text-right">
           <div className="my-1">
             Guide by <span className="hover:underline cursor-pointer">{data.author.name}</span>

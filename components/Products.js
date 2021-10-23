@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
+import Zoom from "react-reveal/Zoom";
 
 const Products = ({ products }) => {
   const [query, setQuery] = useState("");
@@ -22,26 +23,25 @@ const Products = ({ products }) => {
     return filteredProducts.map((product) => {
       return (
         <>
-          <Link href={`product/${product.id}`} passHref>
-            <div
-              key={product.id}
-              className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 cursor-pointer"
-            >
-              <div className="flex md:flex-row flex-col">
-                <img
-                  src={product.icon}
-                  className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
-                  alt="Icon"
-                ></img>
-                <div className="flex-grow p-5">
-                  <div className="text-xl font-semibold flex justify-between">
-                    <div>{product.title}</div>
+          <Zoom key={product.id}>
+            <Link href={`product/${product.id}`} passHref>
+              <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 cursor-pointer">
+                <div className="flex md:flex-row flex-col">
+                  <img
+                    src={product.icon}
+                    className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
+                    alt="Icon"
+                  ></img>
+                  <div className="flex-grow p-5">
+                    <div className="text-xl font-semibold flex justify-between">
+                      <div>{product.title}</div>
+                    </div>
+                    <div className="text-gray-500 text-justify mt-1.5">{product.description}</div>
                   </div>
-                  <div className="text-gray-500 text-justify mt-1.5">{product.description}</div>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </Zoom>
         </>
       );
     });
@@ -57,7 +57,7 @@ const Products = ({ products }) => {
           handleSearch(e);
         }}
       ></input>
-      {renderProducts()}
+      <Zoom>{renderProducts()}</Zoom>
     </div>
   );
 };
