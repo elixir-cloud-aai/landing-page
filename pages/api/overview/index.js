@@ -15,7 +15,6 @@ const handler = async (req, res) => {
     };
     var data = await notion.request(payload);
     const productsDBId = data.results[0].id;
-    console.log(productsDBId);
     payload = {
       path: `blocks/${productsDBId}/children`,
       method: `GET`,

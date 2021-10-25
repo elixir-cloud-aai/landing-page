@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { server } from "../config";
 import axios from "axios";
-import OverviewComponent from "../components/overview";
+import OverviewComponent from "../components/Overview";
 
 const Overview = ({ overview }) => {
   return (

@@ -6,7 +6,6 @@ import Zoom from "react-reveal/Zoom";
 
 const News = () => {
   const darkMode = useContext(DarkModeContext);
-  console.log(darkMode);
   const renderLoading = () => {
     return (
       <>
