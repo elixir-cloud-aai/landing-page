@@ -28,8 +28,6 @@ const handler = async (req, res) => {
         description: result.properties.Description.rich_text[0]
           ? result.properties.Description.rich_text[0].text.content
           : "",
-        github: result.properties.Github.url,
-        url: result.url,
         createdAt: result.created_time,
         updatedAt: result.last_edited_time,
       };

@@ -29,31 +29,6 @@ const Product = ({ data }) => {
           </div>
         </Zoom>
         <Content content={data.content}></Content>
-        <Zoom>
-          <div className="leading-relaxed my-3 tracking-wide">
-            <div className="font-bold text-lg dark:text-gray-200">Useful Links</div>
-            <ul className="list-inside list-disc dark:text-gray-200">
-              {data.github ? (
-                <li className="my-2">
-                  <a href={data.github} className="text-elixirblue hover:underline">
-                    GitHub
-                  </a>
-                </li>
-              ) : (
-                <></>
-              )}
-              {data.web ? (
-                <li className="my-2">
-                  <a href={data.web} className="text-elixirblue hover:underline">
-                    Web
-                  </a>
-                </li>
-              ) : (
-                <></>
-              )}
-            </ul>
-          </div>
-        </Zoom>
         <div className=" text-sm text-gray-400 my-5 text-right">
           Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}
         </div>

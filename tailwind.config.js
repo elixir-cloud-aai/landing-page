@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         pop: ["Poppins", "sans-serif"],
+        cursive: ["Satisfy", "cursive"],
       },
       colors: {
         elixirblue: "#3DA9F6",
