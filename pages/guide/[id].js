@@ -5,8 +5,57 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import Content from "../../components/Content";
 import Zoom from "react-reveal/Zoom";
+import { Popover } from "react-tiny-popover";
+import { useState } from "react";
 
 const Product = ({ data }) => {
+  const [show, setShow] = useState(false);
+
+  const renderPopoverContent = () => {
+    return (
+      <div className="border p-3 rounded-lg shadow-lg bg-white dark:bg-gray-900 dark:border-gray-900">
+        <div className="flex">
+          <img src={data.author.image} className="w-20 rounded-full"></img>
+          <div className="ml-3 mt-1">
+            <div className="teext-sm dark:text-gray-100">{data.author.name}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              {data.author.positions.map((position, index) => {
+                return <div key={index}>{position}</div>;
+              })}
+            </div>
+          </div>
+        </div>
+        <hr className="my-3"></hr>
+        <div className="text-gray-500 dark:text-gray-400">
+          {data.author.email && (
+            <div className="flex text-sm">
+              <div>Email</div>
+              <div className="ml-3 text-elixirblue hover:underline">
+                <a href={`mailto:${data.author.email}`}>{data.author.email}</a>
+              </div>
+            </div>
+          )}
+          {data.author.website && (
+            <div className="flex text-sm">
+              <div>Website</div>
+              <div className="ml-3 text-elixirblue hover:underline">
+                <a href={data.author.website}>{data.author.website}</a>
+              </div>
+            </div>
+          )}
+          {data.author.linkedin && (
+            <div className="flex text-sm">
+              <div>LinkedIn</div>
+              <div className="ml-3 text-elixirblue hover:underline">
+                <a href={data.author.linkedin}>{data.author.linkedin}</a>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <Head>
@@ -26,7 +75,20 @@ const Product = ({ data }) => {
         <Content content={data.content} />
         <div className="my-5 text-sm text-gray-400 text-right">
           <div className="my-1">
-            Guide by <span className="hover:underline cursor-pointer">{data.author.name}</span>
+            Guide by{" "}
+            <Popover
+              isOpen={show}
+              positions={["top", "bottom", "left", "right"]}
+              content={renderPopoverContent()}
+              onClickOutside={() => setShow(false)}
+            >
+              <span
+                className="hover:underline cursor-pointer font-bold"
+                onClick={() => setShow(!show)}
+              >
+                {data.author.name}
+              </span>
+            </Popover>
           </div>
           <div className="my-1">Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}</div>
         </div>
