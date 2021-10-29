@@ -86,7 +86,7 @@ const Home = () => {
                 .
               </div>
               <div>
-                <img src="/Earth.svg" alt="globe"></img>
+                <img src="/Earth.svg" alt="globe" width="auto" height="auto"></img>
               </div>
             </div>
           </div>

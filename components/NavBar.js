@@ -195,6 +195,8 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
                 src="/elixir-cloud-aai.png"
                 className="inline-block w-6 md:w-7 mx-3 pb-1.5"
                 alt="logo"
+                width="auto"
+                height="auto"
               ></img>
               <div className="inline-block font-semibold text-lg md:text-2xl">
                 Elixir Cloud & AAI

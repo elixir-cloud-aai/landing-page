@@ -1,16 +1,14 @@
-import Head from "next/head";
 import { server } from "../config";
 import axios from "axios";
 import OverviewComponent from "../components/Overview";
+import { NextSeo } from "next-seo";
 
 const Overview = ({ overview }) => {
   return (
-    <div>
-      <Head>
-        <title>Overview</title>
-      </Head>
+    <>
+      <NextSeo title="Overview" />
       <OverviewComponent data={overview} />
-    </div>
+    </>
   );
 };
 

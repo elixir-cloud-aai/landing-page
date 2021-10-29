@@ -87,7 +87,7 @@ const Content = ({ content }) => {
       } else {
         return (
           <Zoom>
-            <img src={block.image} alt="Image" className="my-10"></img>
+            <img src={block.image} alt="Image" className="my-10" width="auto" height="auto"></img>
           </Zoom>
         );
       }

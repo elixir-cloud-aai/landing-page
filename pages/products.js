@@ -1,14 +1,12 @@
-import Head from "next/head";
 import { server } from "../config";
 import axios from "axios";
 import ProductsComponent from "../components/Products";
+import { NextSeo } from "next-seo";
 
 const Products = ({ products }) => {
   return (
     <>
-      <Head>
-        <title>Products</title>
-      </Head>
+      <NextSeo title="Products" description="Elixir Cloud & AAI devloped products/solution." />
       <ProductsComponent products={products}></ProductsComponent>
     </>
   );

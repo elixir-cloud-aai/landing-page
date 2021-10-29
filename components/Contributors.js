@@ -87,6 +87,8 @@ const Contributors = ({ contributors }) => {
                   src={contributor.image}
                   className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-36 md:h-36"
                   alt="Icon"
+                  width="auto"
+                  height="auto"
                 ></img>
                 <div className="flex-grow p-5">
                   <div className="flex justify-between">

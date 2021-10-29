@@ -1,14 +1,11 @@
-import Head from "next/head";
 import HomeComponent from "../components/Home";
+import { NextSeo } from "next-seo";
 
 const Home = () => {
   return (
-    <div>
-      <Head>
-        <title>Elixir Cloud & AAI</title>
-      </Head>
+    <>
       <HomeComponent></HomeComponent>
-    </div>
+    </>
   );
 };
 

@@ -1,16 +1,17 @@
-import Head from "next/head";
 import axios from "axios";
 import { server } from "../config";
 import ContributorsComponent from "../components/Contributors";
+import { NextSeo } from "next-seo";
 
 const Contributors = ({ contributors }) => {
   return (
-    <div>
-      <Head>
-        <title>Contributors</title>
-      </Head>
+    <>
+      <NextSeo
+        title="Contributors"
+        description="Elixir Cloud & AAI contributor devloping the solutions. "
+      />
       <ContributorsComponent contributors={contributors}></ContributorsComponent>
-    </div>
+    </>
   );
 };
 

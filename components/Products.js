@@ -28,6 +28,8 @@ const Products = ({ products }) => {
                     src={product.icon}
                     className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
                     alt="Icon"
+                    width="auto"
+                    height="auto"
                   ></img>
                   <div className="flex-grow p-5">
                     <div className="text-xl font-semibold flex justify-between">

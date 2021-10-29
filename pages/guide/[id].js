@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { server } from "../../config";
 import axios from "axios";
 import Link from "next/link";
@@ -7,6 +6,7 @@ import Content from "../../components/Content";
 import Zoom from "react-reveal/Zoom";
 import { Popover } from "react-tiny-popover";
 import { useState } from "react";
+import { NextSeo } from "next-seo";
 
 const Product = ({ data }) => {
   const [show, setShow] = useState(false);
@@ -15,7 +15,12 @@ const Product = ({ data }) => {
     return (
       <div className="border p-3 rounded-lg shadow-lg bg-white dark:bg-gray-900 dark:border-gray-900">
         <div className="flex">
-          <img src={data.author.image} className="w-20 rounded-full"></img>
+          <img
+            src={data.author.image}
+            className="w-20 rounded-full"
+            width="auto"
+            height="auto"
+          ></img>
           <div className="ml-3 mt-1">
             <div className="teext-sm dark:text-gray-100">{data.author.name}</div>
             <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -58,9 +63,7 @@ const Product = ({ data }) => {
 
   return (
     <>
-      <Head>
-        <title>Guide</title>
-      </Head>
+      <NextSeo title={data.title} description={data.description} />
       <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700 tracking-wide">
         <Zoom>
           <div className="text-3xl font-bold mb-1.5 mt-5 text-center dark:text-gray-200">

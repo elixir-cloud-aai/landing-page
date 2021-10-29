@@ -1,14 +1,12 @@
-import Head from "next/head";
 import NewsComponent from "../components/News";
+import { NextSeo } from "next-seo";
 
 const News = () => {
   return (
-    <div>
-      <Head>
-        <title>News</title>
-      </Head>
+    <>
+      <NextSeo title="News & FAQ's" description="Elixir Cloud & AAI latest news/twitter feed." />
       <NewsComponent></NewsComponent>
-    </div>
+    </>
   );
 };
 

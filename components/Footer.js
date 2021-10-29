@@ -103,6 +103,8 @@ const Footer = () => {
               src="/elixir-cloud-aai.png"
               alt="elixir-cloud-aai-logo"
               className="inline-block w-14 md:w-20 mx-3 mr-3 md:mr-7"
+              width="auto"
+              height="auto"
             ></img>
           </a>
           <a
@@ -115,6 +117,8 @@ const Footer = () => {
               src="/elixir.png"
               alt="elixir-logo"
               className="inline-block w-14 md:w-20 mr-3 md:mx-5"
+              width="auto"
+              height="auto"
             ></img>
           </a>
           <a
@@ -127,6 +131,8 @@ const Footer = () => {
               src="/ga4gh.png"
               alt="ga4gh-logo"
               className="inline-block w-14 md:w-20 mr-3 md:mx-5"
+              width="auto"
+              height="auto"
             ></img>
           </a>
         </div>

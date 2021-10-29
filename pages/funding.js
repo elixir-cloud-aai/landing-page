@@ -1,13 +1,5 @@
-import Head from "next/head";
-
 const Funding = () => {
-  return (
-    <div>
-      <Head>
-        <title>Funding</title>
-      </Head>
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Funding;

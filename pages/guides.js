@@ -1,16 +1,14 @@
 import axios from "axios";
 import { server } from "../config";
-import Head from "next/head";
 import GuidesComponent from "../components/Guides";
+import { NextSeo } from "next-seo";
 
 const Guides = ({ guides }) => {
   return (
-    <div>
-      <Head>
-        <title>Guides & FAQs</title>
-      </Head>
+    <>
+      <NextSeo title="Guides" />
       <GuidesComponent guides={guides}></GuidesComponent>
-    </div>
+    </>
   );
 };
 
