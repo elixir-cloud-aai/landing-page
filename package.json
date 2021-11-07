@@ -22,7 +22,8 @@
     "react-reveal": "^1.2.2",
     "react-text-loop": "^2.3.0",
     "react-tiny-popover": "^7.0.1",
-    "react-twitter-embed": "^3.0.3"
+    "react-twitter-embed": "^3.0.3",
+    "register-service-worker": "^1.7.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.3.7",
