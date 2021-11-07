@@ -18,14 +18,10 @@ const Footer = () => {
           name: "Funding",
           link: "/funding",
         },
-        {
-          name: "Partners",
-          link: "/partners",
-        },
       ],
     },
     {
-      title: "Contribute",
+      title: "Reach Out",
       links: [
         {
           name: "Slack",
@@ -94,7 +90,7 @@ const Footer = () => {
       <div className="text-center pb-0 pt-5">
         <div>
           <a
-            href="https://elixir-europe.github.io/cloud/"
+            href="https://elixir-cloud.dcc.sib.swiss/"
             target="_blank"
             rel="noopener noreferrer"
             className="mb-3 cursor-pointer"
@@ -142,7 +138,7 @@ const Footer = () => {
           rel="noopener noreferrer"
           className="leading-loose mt-5 mx-3 hover:underline"
         >
-          <span className="text-xs md:block">© 2021 Elixir Cloud AAI </span>
+          <span className="text-xs md:block">© 2021 ELIXIR Cloud AAI </span>
           <span className="text-xs md:hidden">○</span>
           <span className="text-xs md:block"> Released under MIT License</span>
         </a>

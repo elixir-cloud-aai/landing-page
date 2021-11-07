@@ -4,7 +4,7 @@ import { NextSeo } from "next-seo";
 const News = () => {
   return (
     <>
-      <NextSeo title="News & FAQ's" description="Elixir Cloud & AAI latest news/twitter feed." />
+      <NextSeo title="News & FAQ's" description="ELIXIR Cloud & AAI latest news/twitter feed." />
       <NewsComponent></NewsComponent>
     </>
   );

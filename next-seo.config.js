@@ -1,11 +1,11 @@
 const seo = {
-  title: "Elixir Cloud & AAI",
+  title: "ELIXIR Cloud & AAI",
   description:
     "ELIXIR Cloud & AAI develops services towards establishing a federated cloud computing network that enables the analysis of population-scale genomic and phenotypic data across participating, international nodes.",
   openGraph: {
     type: "website",
     url: "https://elixir-cloud-aai-github-io.vercel.app/",
-    title: "Elixir Cloud & AAI",
+    title: "ELIXIR Cloud & AAI",
     description:
       "ELIXIR Cloud & AAI develops services towards establishing a federated cloud computing network that enables the analysis of population-scale genomic and phenotypic data across participating, international nodes.",
     images: [
@@ -13,7 +13,7 @@ const seo = {
         url: "https://elixir-cloud-aai-github-io.vercel.app/elixir-cloud-aai.png",
         width: 800,
         height: 600,
-        alt: "Elixir Cloud & AAI",
+        alt: "ELIXIR Cloud & AAI",
       },
     ],
   },

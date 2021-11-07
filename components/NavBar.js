@@ -15,6 +15,10 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
       path: "/products",
     },
     {
+      name: "Partners",
+      path: "/partners",
+    },
+    {
       name: "Guides & FAQ",
       path: "/guides",
     },
@@ -199,7 +203,7 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
                 height="auto"
               ></img>
               <div className="inline-block font-semibold text-lg md:text-2xl">
-                Elixir Cloud & AAI
+                ELIXIR Cloud & AAI
               </div>
             </div>
           </Link>

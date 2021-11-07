@@ -6,7 +6,7 @@ import { NextSeo } from "next-seo";
 const Partners = ({ partners }) => {
   return (
     <>
-      <NextSeo title="Partners" description="Elixir Cloud & AAI collobrative partners." />
+      <NextSeo title="Partners" description="ELIXIR Cloud & AAI collobrative partners." />
       <PartnersComponent partners={partners}></PartnersComponent>
     </>
   );
