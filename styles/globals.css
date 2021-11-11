@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.space-x-6 > :not([hidden]) ~ :not([hidden]) {
+  margin-left: 0;
+}

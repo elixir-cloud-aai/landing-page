@@ -1,0 +1,16 @@
+{
+  "name": "ELIXIR Cloud & AAI",
+  "short_name": "ELIXIR Cloud & AAI",
+  "description": "ELIXIR Cloud & AAI develops services towards establishing a federated cloud computing network that enables the analysis of population-scale genomic and phenotypic data across participating, international nodes.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3DA9F6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/elixir-cloud-aai.png",
+      "type": "image/png"
+    }
+  ]
+}
