@@ -33,20 +33,6 @@ To set up the development environment, follow the steps:
 npm install
 ```
 
-- For working only on the frontend part change line 1 in file `config/index.js` from:
-
-```jsx
-const devEnv = process.env.NODE_ENV !== "production";
-```
-
-to:
-
-```jsx
-const devEnv = process.env.NODE_ENV === "production";
-```
-
-& skip to the last step.
-
 - For API/backed part create the [Notion](https://www.notion.so/) account.
 - Open the [Elixir Cloud & AAI](https://www.notion.so/Elixir-Cloud-AAI-cdb71fe2334c4e83b920219b2c3b9794) notion page & duplicate it to your account.
 - Create the [Notion developers](https://developers.notion.com/) account with the same email. [Create a new integration](https://developers.notion.com/docs#step-1-create-an-integration) in your account & store the Internal Integration Token. [Link the integration](https://developers.notion.com/docs#step-2-share-a-database-with-your-integration) to the duplicated page in your account.

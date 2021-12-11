@@ -4,41 +4,38 @@ const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-const handler = async (req, res) => {
+const getProducts = async (req, res) => {
   try {
     var payload = {
       path: `search`,
       method: `POST`,
       body: {
-        query: "Partners",
+        query: "Products",
       },
     };
     var data = await notion.request(payload);
-    const partnersDBId = data.results[0].id;
+    const productsDBId = data.results[0].id;
     payload = {
-      path: `databases/${partnersDBId}/query`,
+      path: `databases/${productsDBId}/query`,
       method: `POST`,
     };
     var { results } = await notion.request(payload);
     results = results.map((result) => {
       return {
         id: result.id,
-        name: result.properties.Name.title[0].text.content,
+        title: result.properties.Name.title[0].text.content,
+        icon: result.properties.Icon.files[0].name,
         description: result.properties.Description.rich_text[0]
           ? result.properties.Description.rich_text[0].text.content
           : "",
-        website: result.properties.Website.rich_text[0]
-          ? result.properties.Website.rich_text[0].text.content
-          : "",
-        icon: result.properties.Icon.url,
         createdAt: result.created_time,
         updatedAt: result.last_edited_time,
       };
     });
-    res.status(200).json(results);
+    return results;
   } catch (e) {
-    res.status(500).json({ message: "Server error", error: e });
+    return { message: "Server error", error: e };
   }
 };
 
-export default handler;
+export default getProducts;

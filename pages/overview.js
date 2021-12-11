@@ -1,7 +1,6 @@
-import { server } from "../config";
-import axios from "axios";
 import OverviewComponent from "../components/Overview";
 import { NextSeo } from "next-seo";
+import getOverview from "../utils/overview";
 
 const Overview = ({ overview }) => {
   return (
@@ -13,7 +12,7 @@ const Overview = ({ overview }) => {
 };
 
 export const getStaticProps = async () => {
-  const { data } = await axios.get(`${server}/api/overview`);
+  const data = await getOverview();
 
   return {
     props: {

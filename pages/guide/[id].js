@@ -1,5 +1,3 @@
-import { server } from "../../config";
-import axios from "axios";
 import Link from "next/link";
 import dayjs from "dayjs";
 import Content from "../../components/Content";
@@ -7,6 +5,8 @@ import Zoom from "react-reveal/Zoom";
 import { Popover } from "react-tiny-popover";
 import { useState } from "react";
 import { NextSeo } from "next-seo";
+import getGuide from "../../utils/guide";
+import getGuides from "../../utils/guides";
 
 const Product = ({ data }) => {
   const [show, setShow] = useState(false);
@@ -122,13 +122,15 @@ const Product = ({ data }) => {
 };
 
 export const getStaticPaths = async () => {
-  const { data } = await axios.get(`${server}/api/guides`);
+  const data = await getGuides();
   const paths = data.map(({ id }) => ({ params: { id: `${id}` } }));
   return { paths, fallback: false };
 };
 
 export const getStaticProps = async ({ params }) => {
-  const { data } = await axios.get(`${server}/api/guide/${params.id}`);
+  let data = await getGuide(params.id);
+  data = await JSON.stringify(data);
+  data = await JSON.parse(data);
   return {
     props: {
       data,

@@ -1,5 +1,4 @@
-import axios from "axios";
-import { server } from "../../../config";
+import getContributors from "./contributors";
 
 const { Client } = require("@notionhq/client");
 
@@ -7,13 +6,12 @@ const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-const handler = async (req, res) => {
+const getGuide = async (id) => {
   try {
-    var contributors = await axios.get(`${server}/api/contributors`);
-    contributors = contributors.data;
+    var contributors = await getContributors();
 
     var payload = {
-      path: `blocks/${req.query.id}/children`,
+      path: `blocks/${id}/children`,
       method: `GET`,
     };
     var { results } = await notion.request(payload);
@@ -27,7 +25,7 @@ const handler = async (req, res) => {
           updatedAt: result.last_edited_time,
         };
       }
-      if (result.paragraph && result.paragraph.text[0]) {
+      if (result.paragraph && result.paragraph.text.length > 0) {
         return {
           id: result.id,
           type: result.type,
@@ -45,7 +43,7 @@ const handler = async (req, res) => {
     });
     var content = results;
     var payload = {
-      path: `pages/${req.query.id}`,
+      path: `pages/${id}`,
       method: `GET`,
     };
     var results = await notion.request(payload);
@@ -63,10 +61,10 @@ const handler = async (req, res) => {
       createdAt: results.created_time,
       updatedAt: results.last_edited_time,
     };
-    res.status(200).json(results);
+    return results;
   } catch (e) {
-    res.status(500).json({ message: "Server error", error: e });
+    return { message: "Server error", error: e };
   }
 };
 
-export default handler;
+export default getGuide;
