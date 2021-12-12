@@ -1,49 +1,44 @@
-import axios from "axios";
-import { server } from "../../../config";
-
 const { Client } = require("@notionhq/client");
 
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-const handler = async (req, res) => {
+const getPartners = async (req, res) => {
   try {
-    var contributors = await axios.get(`${server}/api/contributors`);
-    contributors = contributors.data;
     var payload = {
       path: `search`,
       method: `POST`,
       body: {
-        query: "Guides",
+        query: "Partners",
       },
     };
     var data = await notion.request(payload);
-    const productsDBId = data.results[0].id;
+    const partnersDBId = data.results[0].id;
     payload = {
-      path: `databases/${productsDBId}/query`,
+      path: `databases/${partnersDBId}/query`,
       method: `POST`,
     };
     var { results } = await notion.request(payload);
     results = results.map((result) => {
-      var author = contributors.find(
-        (contributor) => contributor.id === result.properties.Author.relation[0].id
-      );
       return {
         id: result.id,
-        title: result.properties.Name.title[0].text.content,
+        name: result.properties.Name.title[0].text.content,
         description: result.properties.Description.rich_text[0]
           ? result.properties.Description.rich_text[0].text.content
           : "",
-        author,
+        website: result.properties.Website.rich_text[0]
+          ? result.properties.Website.rich_text[0].text.content
+          : "",
+        icon: result.properties.Icon.url,
         createdAt: result.created_time,
         updatedAt: result.last_edited_time,
       };
     });
-    res.status(200).json(results);
+    return results;
   } catch (e) {
-    res.status(500).json({ message: "Server error", error: e });
+    return { message: "Server error", error: e };
   }
 };
 
-export default handler;
+export default getPartners;

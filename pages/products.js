@@ -1,7 +1,6 @@
-import { server } from "../config";
-import axios from "axios";
 import ProductsComponent from "../components/Products";
 import { NextSeo } from "next-seo";
+import getProducts from "../utils/products";
 
 const Products = ({ products }) => {
   return (
@@ -13,7 +12,7 @@ const Products = ({ products }) => {
 };
 
 export const getStaticProps = async () => {
-  const { data } = await axios.get(`${server}/api/products`);
+  const data = await getProducts();
 
   return {
     props: {

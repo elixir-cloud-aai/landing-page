@@ -4,10 +4,10 @@ const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-const handler = async (req, res) => {
+const getProduct = async (id) => {
   try {
     var payload = {
-      path: `blocks/${req.query.id}/children`,
+      path: `blocks/${id}/children`,
       method: `GET`,
     };
     var { results } = await notion.request(payload);
@@ -39,7 +39,7 @@ const handler = async (req, res) => {
     });
     var content = results;
     var payload = {
-      path: `pages/${req.query.id}`,
+      path: `pages/${id}`,
       method: `GET`,
     };
     var results = await notion.request(payload);
@@ -55,10 +55,10 @@ const handler = async (req, res) => {
       createdAt: results.created_time,
       updatedAt: results.last_edited_time,
     };
-    res.status(200).json(results);
+    return results;
   } catch (e) {
-    res.status(500).json({ message: "Server error", error: e });
+    return { message: "Server error", error: e };
   }
 };
 
-export default handler;
+export default getProduct;

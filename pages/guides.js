@@ -1,7 +1,6 @@
-import axios from "axios";
-import { server } from "../config";
 import GuidesComponent from "../components/Guides";
 import { NextSeo } from "next-seo";
+import getGuides from "../utils/guides";
 
 const Guides = ({ guides }) => {
   return (
@@ -13,7 +12,7 @@ const Guides = ({ guides }) => {
 };
 
 export const getStaticProps = async () => {
-  const { data } = await axios.get(`${server}/api/guides`);
+  const data = await getGuides();
 
   return {
     props: {

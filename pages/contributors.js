@@ -1,7 +1,6 @@
-import axios from "axios";
-import { server } from "../config";
 import ContributorsComponent from "../components/Contributors";
 import { NextSeo } from "next-seo";
+import getContributors from "../utils/contributors";
 
 const Contributors = ({ contributors }) => {
   return (
@@ -16,7 +15,7 @@ const Contributors = ({ contributors }) => {
 };
 
 export const getStaticProps = async () => {
-  const { data } = await axios.get(`${server}/api/contributors`);
+  const data = await getContributors();
 
   return {
     props: {

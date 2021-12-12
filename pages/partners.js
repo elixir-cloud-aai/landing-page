@@ -1,7 +1,6 @@
-import { server } from "../config";
-import axios from "axios";
 import PartnersComponent from "../components/Partners";
 import { NextSeo } from "next-seo";
+import getPartners from "../utils/partners";
 
 const Partners = ({ partners }) => {
   return (
@@ -13,7 +12,7 @@ const Partners = ({ partners }) => {
 };
 
 export const getStaticProps = async () => {
-  const { data } = await axios.get(`${server}/api/partners`);
+  const data = await getPartners();
 
   return {
     props: {

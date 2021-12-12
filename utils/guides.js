@@ -1,16 +1,19 @@
+import getContributors from "./contributors";
+
 const { Client } = require("@notionhq/client");
 
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-const handler = async (req, res) => {
+const getGuides = async () => {
   try {
+    var contributors = await getContributors();
     var payload = {
       path: `search`,
       method: `POST`,
       body: {
-        query: "Products",
+        query: "Guides",
       },
     };
     var data = await notion.request(payload);
@@ -21,21 +24,24 @@ const handler = async (req, res) => {
     };
     var { results } = await notion.request(payload);
     results = results.map((result) => {
+      var author = contributors.find(
+        (contributor) => contributor.id === result.properties.Author.relation[0].id
+      );
       return {
         id: result.id,
         title: result.properties.Name.title[0].text.content,
-        icon: result.properties.Icon.files[0].name,
         description: result.properties.Description.rich_text[0]
           ? result.properties.Description.rich_text[0].text.content
           : "",
+        author,
         createdAt: result.created_time,
         updatedAt: result.last_edited_time,
       };
     });
-    res.status(200).json(results);
+    return results;
   } catch (e) {
-    res.status(500).json({ message: "Server error", error: e });
+    return { message: "Server error", error: e };
   }
 };
 
-export default handler;
+export default getGuides;

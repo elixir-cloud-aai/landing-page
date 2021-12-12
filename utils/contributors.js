@@ -4,7 +4,7 @@ const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-const handler = async (req, res) => {
+const getContributors = async () => {
   try {
     var payload = {
       path: `search`,
@@ -41,10 +41,10 @@ const handler = async (req, res) => {
         updatedAt: result.last_edited_time,
       };
     });
-    res.status(200).json(results);
+    return results;
   } catch (e) {
-    res.status(500).json({ message: "Server error", error: e });
+    return { message: "Server error", error: e };
   }
 };
 
-export default handler;
+export default getContributors;
