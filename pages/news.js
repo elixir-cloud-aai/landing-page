@@ -1,13 +1,28 @@
-import NewsComponent from "../components/News";
-import { NextSeo } from "next-seo";
+import NewsComponent from '../components/News'
+import { NextSeo } from 'next-seo'
+import axios from 'axios'
+import { elixirBackend } from '../config'
 
-const News = () => {
+const News = ({ news }) => {
   return (
     <>
-      <NextSeo title="News & FAQ's" description="ELIXIR Cloud & AAI latest news/twitter feed." />
-      <NewsComponent></NewsComponent>
+      <NextSeo
+        title="News & FAQ's"
+        description="ELIXIR Cloud & AAI latest news/twitter feed."
+      />
+      <NewsComponent news={news}></NewsComponent>
     </>
-  );
-};
+  )
+}
 
-export default News;
+export const getStaticProps = async () => {
+  const { data } = await axios.get(`${elixirBackend}/news`)
+  return {
+    props: {
+      news: data,
+    },
+    revalidate: 30,
+  }
+}
+
+export default News

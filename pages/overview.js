@@ -1,6 +1,7 @@
-import OverviewComponent from "../components/Overview";
-import { NextSeo } from "next-seo";
-import getOverview from "../utils/overview";
+import OverviewComponent from '../components/Overview'
+import { NextSeo } from 'next-seo'
+import axios from 'axios'
+import { elixirBackend } from '../config'
 
 const Overview = ({ overview }) => {
   return (
@@ -8,18 +9,18 @@ const Overview = ({ overview }) => {
       <NextSeo title="Overview" />
       <OverviewComponent data={overview} />
     </>
-  );
-};
+  )
+}
 
 export const getStaticProps = async () => {
-  const data = await getOverview();
+  const { data } = await axios.get(`${elixirBackend}/overview`)
 
   return {
     props: {
       overview: data,
     },
     revalidate: 30,
-  };
-};
+  }
+}
 
-export default Overview;
+export default Overview

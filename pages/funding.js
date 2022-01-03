@@ -1,5 +1,5 @@
 const Funding = () => {
-  return <div></div>;
-};
+  return <div></div>
+}
 
-export default Funding;
+export default Funding

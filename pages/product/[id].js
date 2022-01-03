@@ -1,10 +1,10 @@
-import Link from "next/link";
-import dayjs from "dayjs";
-import Content from "../../components/Content";
-import Zoom from "react-reveal/Zoom";
-import { NextSeo } from "next-seo";
-import getProducts from "../../utils/products";
-import getProduct from "../../utils/product";
+import Link from 'next/link'
+import dayjs from 'dayjs'
+import Content from '../../components/Content'
+import Zoom from 'react-reveal/Zoom'
+import { NextSeo } from 'next-seo'
+import { elixirBackend } from '../../config'
+import axios from 'axios'
 
 const Product = ({ data }) => {
   return (
@@ -34,7 +34,7 @@ const Product = ({ data }) => {
         </Zoom>
         <Content content={data.content}></Content>
         <div className=" text-sm text-gray-400 my-5 text-right">
-          Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}
+          Updated on {dayjs(data.updatedAt).format('DD MMM YYYY')}
         </div>
         <div className="flex justify-end my-5 items-center ">
           <Link href="/products" passHref>
@@ -59,25 +59,24 @@ const Product = ({ data }) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
 export const getStaticPaths = async () => {
-  const data = await getProducts();
-  const paths = data.map(({ id }) => ({ params: { id: `${id}` } }));
-  return { paths, fallback: false };
-};
+  const { data } = await axios.get(`${elixirBackend}/products`)
+  const paths = data.map(({ id }) => ({ params: { id: `${id}` } }))
+  return { paths, fallback: false }
+}
 
 export const getStaticProps = async ({ params }) => {
-  let data = await getProduct(params.id);
-  data = await JSON.stringify(data);
-  data = await JSON.parse(data);
+  const { data } = await axios.get(`${elixirBackend}/product/${params.id}`)
+
   return {
     props: {
       data,
     },
     revalidate: 30,
-  };
-};
+  }
+}
 
-export default Product;
+export default Product

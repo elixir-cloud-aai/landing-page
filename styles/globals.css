@@ -5,3 +5,7 @@
 .space-x-6 > :not([hidden]) ~ :not([hidden]) {
   margin-left: 0;
 }
+
+.r-1h8ys4a {
+  display: none;
+}

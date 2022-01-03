@@ -1,20 +1,20 @@
-import Link from "next/link";
-import { useState } from "react";
-import Zoom from "react-reveal/Zoom";
+import Link from 'next/link'
+import { useState } from 'react'
+import Zoom from 'react-reveal/Zoom'
 
 const Products = ({ products }) => {
-  const [query, setQuery] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [query, setQuery] = useState('')
+  const [filteredProducts, setFilteredProducts] = useState(products)
 
   const handleSearch = (e) => {
-    setQuery(e.target.value);
+    setQuery(e.target.value)
     const newFilteredProducts = products.filter((product) => {
-      const title = product.title.trim().toLowerCase();
-      const term = e.target.value.trim().toLowerCase();
-      return title.includes(term);
-    });
-    setFilteredProducts(newFilteredProducts);
-  };
+      const title = product.title.trim().toLowerCase()
+      const term = e.target.value.trim().toLowerCase()
+      return title.includes(term)
+    })
+    setFilteredProducts(newFilteredProducts)
+  }
 
   const renderProducts = () => {
     return filteredProducts.map((product) => {
@@ -44,9 +44,9 @@ const Products = ({ products }) => {
             </Link>
           </Zoom>
         </>
-      );
-    });
-  };
+      )
+    })
+  }
 
   return (
     <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700">
@@ -55,12 +55,12 @@ const Products = ({ products }) => {
         placeholder="Search.."
         value={query}
         onChange={(e) => {
-          handleSearch(e);
+          handleSearch(e)
         }}
       ></input>
       {renderProducts()}
     </div>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products

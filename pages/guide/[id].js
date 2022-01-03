@@ -1,15 +1,15 @@
-import Link from "next/link";
-import dayjs from "dayjs";
-import Content from "../../components/Content";
-import Zoom from "react-reveal/Zoom";
-import { Popover } from "react-tiny-popover";
-import { useState } from "react";
-import { NextSeo } from "next-seo";
-import getGuide from "../../utils/guide";
-import getGuides from "../../utils/guides";
+import Link from 'next/link'
+import dayjs from 'dayjs'
+import Content from '../../components/Content'
+import Zoom from 'react-reveal/Zoom'
+import { Popover } from 'react-tiny-popover'
+import { useState } from 'react'
+import { NextSeo } from 'next-seo'
+import axios from 'axios'
+import { elixirBackend } from '../../config'
 
 const Product = ({ data }) => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
 
   const renderPopoverContent = () => {
     return (
@@ -22,10 +22,12 @@ const Product = ({ data }) => {
             height="auto"
           ></img>
           <div className="ml-3 mt-1">
-            <div className="teext-sm dark:text-gray-100">{data.author.name}</div>
+            <div className="teext-sm dark:text-gray-100">
+              {data.author.name}
+            </div>
             <div className="text-xs text-gray-500 dark:text-gray-400">
               {data.author.positions.map((position, index) => {
-                return <div key={index}>{position}</div>;
+                return <div key={index}>{position}</div>
               })}
             </div>
           </div>
@@ -58,8 +60,8 @@ const Product = ({ data }) => {
           )}
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <>
@@ -78,10 +80,10 @@ const Product = ({ data }) => {
         <Content content={data.content} />
         <div className="my-5 text-sm text-gray-400 text-right">
           <div className="my-1">
-            Guide by{" "}
+            Guide by{' '}
             <Popover
               isOpen={show}
-              positions={["top", "bottom", "left", "right"]}
+              positions={['top', 'bottom', 'left', 'right']}
               content={renderPopoverContent()}
               onClickOutside={() => setShow(false)}
             >
@@ -93,7 +95,9 @@ const Product = ({ data }) => {
               </span>
             </Popover>
           </div>
-          <div className="my-1">Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}</div>
+          <div className="my-1">
+            Updated on {dayjs(data.updatedAt).format('DD MMM YYYY')}
+          </div>
         </div>
         <div className="flex justify-end my-5 items-center">
           <Link href="/guides" passHref>
@@ -118,25 +122,24 @@ const Product = ({ data }) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
 export const getStaticPaths = async () => {
-  const data = await getGuides();
-  const paths = data.map(({ id }) => ({ params: { id: `${id}` } }));
-  return { paths, fallback: false };
-};
+  const { data } = await axios.get(`${elixirBackend}/guides`)
+  const paths = data.map(({ id }) => ({ params: { id: `${id}` } }))
+  return { paths, fallback: false }
+}
 
 export const getStaticProps = async ({ params }) => {
-  let data = await getGuide(params.id);
-  data = await JSON.stringify(data);
-  data = await JSON.parse(data);
+  const { data } = await axios.get(`${elixirBackend}/guide/${params.id}`)
+
   return {
     props: {
       data,
     },
     revalidate: 30,
-  };
-};
+  }
+}
 
-export default Product;
+export default Product
