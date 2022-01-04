@@ -22,6 +22,8 @@ to contribute, please contact the [administrator](https://github.com/uniqueg).
 
 ## Setup
 
+#### Local Environment
+
 Any contributor is welcome to contribute to the website.
 
 To set up the development environment, follow the steps:
@@ -33,20 +35,17 @@ To set up the development environment, follow the steps:
 npm install
 ```
 
-- For API/backed part create the [Notion](https://www.notion.so/) account.
-- Open the [Elixir Cloud & AAI](https://www.notion.so/Elixir-Cloud-AAI-cdb71fe2334c4e83b920219b2c3b9794) notion page & duplicate it to your account.
-- Create the [Notion developers](https://developers.notion.com/) account with the same email. [Create a new integration](https://developers.notion.com/docs#step-1-create-an-integration) in your account & store the Internal Integration Token. [Link the integration](https://developers.notion.com/docs#step-2-share-a-database-with-your-integration) to the duplicated page in your account.
-- Create a new file in the root directory with the name `.env.local` & add your Internal Integration Token as Notion Token:
-
-```bash
-NOTION_TOKEN=<YOUR-NOTION-TOKEN>
-```
-
 - Start the local development server by:
 
 ```bash
 npm run dev
 ```
+
+#### Production Enviroment
+
+- Check the file `config.js` to see the backend API url. Change it according to the where the repo [Elixir Cloud & AAI Backend](https://github.com/elixir-cloud-aai/elixir-cloud-aai.github.io-backend) is deployed.
+
+- Deploy by Docker.
 
 ## Versioning
 
