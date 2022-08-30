@@ -48,6 +48,62 @@ NOTION_TOKEN=<YOUR-NOTION-TOKEN>
 npm run dev
 ```
 
+## Deployment
+
+To deploy the app, first set the Notion token:
+
+```bash
+NOTION_TOKEN=<YOUR-NOTION-TOKEN>
+```
+
+Then build the app image with the following command:
+
+```bash
+docker build . --build-arg NOTION_SECRET=${NOTION_TOKEN} -t elixircloud/landing-page:current
+```
+
+> **IMPORTANT NOTE:** Do **not** publish the built container image. It will be
+> easy to access your Notion token.
+
+Then start the service with:
+
+```bash
+docker run exlicircloud/landing-page:current
+```
+
+### Via `docker-compose`
+
+The above instructions are fine for quickly checking out how to deploy the app.
+However, for more stable deployments we strongly recommend that you use
+`docker-compose` to deploy the app.
+
+Place the in file `docker-compose.yaml` inside the project root:
+
+```bash
+  landing-page:
+    image: elixircloud/landing-page:current
+    container_name: landing-page
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NOTION_SECRET: $NOTION_TOKEN
+    restart: unless-stopped
+    expose:
+      - 3000
+```
+
+> Note that this is only a starting point. You may want to adapt it to your
+> particular needs.
+
+Then deploy the service with:
+
+```bash
+docker-compose up --build -d
+```
+
+> To take down the deployment, simply do `docker-compose down`
+
 ## Versioning
 
 The project adopts the semantic versioning scheme for versioning. Currently the
