@@ -2,6 +2,7 @@ import Zoom from "react-reveal/Zoom";
 
 const Contributors = ({ contributors }) => {
   const renderLinks = (contributor) => {
+    console.log(contributor)
     return (
       <div className="flex pt-0.5">
         {contributor.email ? (
@@ -45,7 +46,7 @@ const Contributors = ({ contributors }) => {
           <></>
         )}
         {contributor.linkedin ? (
-          <a>
+          <a href={contributor.linkedin}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"

@@ -47,9 +47,12 @@ const getGuide = async (id) => {
       method: `GET`,
     };
     var results = await notion.request(payload);
-    var author = contributors.find(
-      (contributor) => contributor.id === results.properties.Author.relation[0].id
-    );
+    var author = null;
+    if (results.properties.Author.relation.length !== 0) {
+      author = contributors.find(
+        (contributor) => contributor.id === results.properties.Author.relation[0].id
+      );
+    }
     results = {
       id: results.id,
       title: results.properties.Name.title[0].text.content,
@@ -63,6 +66,7 @@ const getGuide = async (id) => {
     };
     return results;
   } catch (e) {
+    console.log({ message: "Server error", request: "getGuide", error: e });
     return { message: "Server error", error: e };
   }
 };

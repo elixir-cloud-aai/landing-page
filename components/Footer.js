@@ -24,6 +24,11 @@ const Footer = () => {
       title: "Reach Out",
       links: [
         {
+          name: "Email",
+          link: "mailto:cloud-service@elixir-europe.org",
+          a: true,
+        },
+        {
           name: "Slack",
           link: "https://elixir-cloud.slack.com/",
           a: true,
@@ -31,11 +36,6 @@ const Footer = () => {
         {
           name: "Github",
           link: "https://github.com/elixir-cloud-aai/",
-          a: true,
-        },
-        {
-          name: "Twitter",
-          link: "https://twitter.com/ELIXIRcloud_aai",
           a: true,
         },
       ],

@@ -43,6 +43,7 @@ const getContributors = async () => {
     });
     return results;
   } catch (e) {
+    console.log({ message: "Server error", request: "getContributors", error: e });
     return { message: "Server error", error: e };
   }
 };
