@@ -60,16 +60,25 @@ const News = () => {
 
   return (
     <Zoom>
-      <div className="mt-32 md:mx-96 mx-5 p-2 rounded-lg shadow-lg dark:text-gray-200 dark:bg-gray-900 dark:border-gray-800 dark:hover:border-gray-900 border-2">
+      <div className="mt-32 md:mx-96 mx-5">
         <TwitterTimelineEmbed
           key={darkMode}
           sourceType="profile"
-          userId={2375288959}
+          userId={1438493005950947328}
           noFooter={true}
           placeholder={renderLoading()}
           theme={darkMode ? "dark" : "light"}
           transparent={true}
         />
+        {/* <TwitterTimelineEmbed
+          key={darkMode}
+          sourceType="list"
+          id="1565348349200347136"
+          noFooter={true}
+          placeholder={renderLoading()}
+          theme={darkMode ? "dark" : "light"}
+          transparent={true}
+        /> */}
       </div>
     </Zoom>
   );
