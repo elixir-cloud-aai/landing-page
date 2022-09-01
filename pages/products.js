@@ -13,7 +13,6 @@ const Products = ({ products }) => {
 
 export const getStaticProps = async () => {
   const data = await getProducts();
-
   return {
     props: {
       products: data,

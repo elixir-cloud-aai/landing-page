@@ -34,6 +34,7 @@ const getProducts = async (req, res) => {
     });
     return results;
   } catch (e) {
+    console.log({ message: "Server error", request: "getProducts", error: e });
     return { message: "Server error", error: e };
   }
 };

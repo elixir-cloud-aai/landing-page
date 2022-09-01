@@ -60,7 +60,7 @@ const Product = ({ data }) => {
       </div>
     );
   };
-
+  console.log(data.author)
   return (
     <>
       <NextSeo title={data.title} description={data.description} />
@@ -76,7 +76,7 @@ const Product = ({ data }) => {
           </div>
         </Zoom>
         <Content content={data.content} />
-        <div className="my-5 text-sm text-gray-400 text-right">
+        {data.author ? <div className="my-5 text-sm text-gray-400 text-right">
           <div className="my-1">
             Guide by{" "}
             <Popover
@@ -94,7 +94,9 @@ const Product = ({ data }) => {
             </Popover>
           </div>
           <div className="my-1">Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}</div>
-        </div>
+        </div> : <div className="my-5 text-sm text-gray-400 text-right">
+          Contact us at <a href="mailto:cloud-service@elixir-europe.org" className="text-elixirblue">cloud-service@elixir-europe.org</a>
+        </div>}
         <div className="flex justify-end my-5 items-center">
           <Link href="/guides" passHref>
             <div className="flex p-3 hover:shadow-md hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 border-2 w-36 rounded-lg cursor-pointer">
