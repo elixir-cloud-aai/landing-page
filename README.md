@@ -1,4 +1,4 @@
-# Elixir Cloud & AII
+# Elixir Cloud & AAI
 
 ## Introduction
 
