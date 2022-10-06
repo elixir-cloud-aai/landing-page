@@ -15,6 +15,10 @@ const Footer = () => {
           link: "/contributors",
         },
         {
+          name: "Partners",
+          link: "/partners",
+        },
+        {
           name: "Funding",
           link: "/funding",
         },
