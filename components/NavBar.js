@@ -15,10 +15,6 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
       path: "/products",
     },
     {
-      name: "Partners",
-      path: "/partners",
-    },
-    {
       name: "Guides & FAQ",
       path: "/guides",
     },
