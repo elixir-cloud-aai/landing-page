@@ -42,6 +42,9 @@ const getContributors = async () => {
         scholar: result.properties.Scholar.rich_text[0]
           ? result.properties.Scholar.rich_text[0].text.content
           : "",
+        researchgate: result.properties.Researchgate.rich_text[0]
+          ? result.properties.Researchgate.rich_text[0].text.content
+          : "",
         positions: result.properties.Position.multi_select.map((position) => {
           return position.name;
         }),

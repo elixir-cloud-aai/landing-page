@@ -64,13 +64,21 @@ const News = () => {
         <TwitterTimelineEmbed
           key={darkMode}
           sourceType="profile"
-          // userId={1438493005950947328}
-          screenName={ELIXIRcloud_aai}
+          userId={1438493005950947328}
           noFooter={true}
           placeholder={renderLoading()}
           theme={darkMode ? "dark" : "light"}
           transparent={true}
         />
+        {/* <TwitterTimelineEmbed
+          key={darkMode}
+          sourceType="list"
+          id="1565348349200347136"
+          noFooter={true}
+          placeholder={renderLoading()}
+          theme={darkMode ? "dark" : "light"}
+          transparent={true}
+        /> */}
       </div>
     </Zoom>
   );

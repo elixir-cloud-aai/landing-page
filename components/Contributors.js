@@ -26,9 +26,18 @@ const Contributors = ({ contributors }) => {
         ) : (
           <></>
         )}
+        {contributor.researchgate ? (
+          <a href={contributor.researchgate}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="https://img.icons8.com/windows/512/researchgate.png" className="w-6 h-6" alt="researchgate-link" />
+          </a>
+        ) : (
+          <></>
+        )}
         {contributor.scholar ? (
           <a href={contributor.scholar}>
-            <ion-icon name="school-outline"></ion-icon>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="https://img.icons8.com/material-sharp/384/google-scholar.png" className="w-6 h-6" alt="scholar-link" />
           </a>
         ) : (
           <></>
