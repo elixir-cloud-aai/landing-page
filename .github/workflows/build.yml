@@ -1,0 +1,20 @@
+# This workflow will build the application image.
+name: build app
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build app
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repository
+        uses: actions/checkout@v3
+      - name: build app image
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          docker build \
+              -t testapp:1.0.0 \
+              --build-arg NOTION_SECRET=${NOTION_TOKEN} \
+              .
