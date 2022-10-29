@@ -33,6 +33,18 @@ const getContributors = async () => {
         linkedin: result.properties.Linkedin.rich_text[0]
           ? result.properties.Linkedin.rich_text[0].text.content
           : "",
+        github: result.properties.Github.rich_text[0]
+          ? result.properties.Github.rich_text[0].text.content
+          : "",
+        orcid: result.properties.Orcid.rich_text[0]
+          ? result.properties.Orcid.rich_text[0].text.content
+          : "",
+        scholar: result.properties.Scholar.rich_text[0]
+          ? result.properties.Scholar.rich_text[0].text.content
+          : "",
+        researchgate: result.properties.Researchgate.rich_text[0]
+          ? result.properties.Researchgate.rich_text[0].text.content
+          : "",
         positions: result.properties.Position.multi_select.map((position) => {
           return position.name;
         }),
@@ -41,6 +53,7 @@ const getContributors = async () => {
         updatedAt: result.last_edited_time,
       };
     });
+    results.sort((a, b) => a.name.localeCompare(b.name));
     return results;
   } catch (e) {
     console.log({ message: "Server error", request: "getContributors", error: e });
