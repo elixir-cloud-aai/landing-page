@@ -19,10 +19,16 @@ const Home = () => {
     return (
       <span className="block md:inline">
         <TextLoop springConfig={{ stiffness: 180, damping: 8 }} noWrap={false}>
-          <span className="text-elixirblue">Findable</span>
+          <span className="text-elixirred">Findable</span>
           <span className="text-elixirgreen">Accessible</span>
           <span className="text-elixiryellow">Interoperable</span>
-          <span className="text-elixirred">Reusable</span>
+          <span className="text-elixirblue">Reusable</span>
+          <div>
+          	<span className="text-elixirred">F</span>
+          	<span className="text-elixirgreen">A</span>
+          	<span className="text-elixiryellow">I</span>
+          	<span className="text-elixirblue">R</span>
+	  </div>
         </TextLoop>
       </span>
     );
@@ -49,7 +55,7 @@ const Home = () => {
               {/* <div className="text-xl md:text-3xl mb-1 leading-relaxed font-bold md:font-extrabold">
                 ELIXIR Cloud &#38; AAI
               </div> */}
-              Making cloud infrastructure for{" "}
+              Making Cloud Infrastructure for{" "}
               <span className="inline md:block">the Life Sciences {renderTextLoop()}</span>
             </div>
           </Zoom>
