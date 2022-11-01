@@ -1,5 +1,6 @@
 const seo = {
   title: "ELIXIR Cloud & AAI",
+  themeColor: "#3DA9F6",
   description:
     "ELIXIR Cloud & AAI develops services towards establishing a federated cloud computing network that enables the analysis of population-scale genomic and phenotypic data across participating, international nodes.",
   openGraph: {

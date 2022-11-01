@@ -122,7 +122,7 @@ const Contributors = ({ contributors }) => {
                 <img
                   src={contributor.image}
                   className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-36 md:h-36 object-cover"
-                  alt="Icon"
+                  alt={contributor.name}
                   width="auto"
                   height="auto"
                 ></img>
