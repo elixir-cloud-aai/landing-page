@@ -24,11 +24,11 @@ const Home = () => {
           <span className="text-elixiryellow">Interoperable</span>
           <span className="text-elixirblue">Reusable</span>
           <div>
-          	<span className="text-elixirred">F</span>
-          	<span className="text-elixirgreen">A</span>
-          	<span className="text-elixiryellow">I</span>
-          	<span className="text-elixirblue">R</span>
-	  </div>
+            <span className="text-elixirred">F</span>
+            <span className="text-elixirgreen">A</span>
+            <span className="text-elixiryellow">I</span>
+            <span className="text-elixirblue">R</span>
+          </div>
         </TextLoop>
       </span>
     );

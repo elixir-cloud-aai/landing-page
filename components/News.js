@@ -65,6 +65,7 @@ const News = () => {
           key={darkMode}
           sourceType="profile"
           userId="1586382856267464708"
+          noHeader={true}
           noFooter={true}
           placeholder={renderLoading()}
           theme={darkMode ? "dark" : "light"}
