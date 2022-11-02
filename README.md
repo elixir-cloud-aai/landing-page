@@ -8,10 +8,14 @@
 
 This is the repository for the [official website][badge-url-health] of **ELIXIR
 Cloud & AAI**, a transnational effort towards establishing a federated [cloud
-computing][res-cloud-computing] enabling the analysis of population-scale
-genomic and phenotypic data across participating nodes. ELIXIR Cloud & AAI is
-led by the [ELIXIR Compute Platform][res-elixir-compute] and is a Driver Project
-of the [Global Alliance for Genomics and Health][res-ga4gh].
+computing][res-cloud-computing] network enabling the analysis of
+population-scale genomic and phenotypic data across participating nodes.
+
+ELIXIR Cloud & AAI is led by the [ELIXIR Compute Platform][res-elixir-compute]
+and is a Driver Project of the [Global Alliance for Genomics and
+Health][res-ga4gh].
+
+![banner][img-logo-banner]
 
 ## About this repository
 
@@ -145,6 +149,7 @@ thread in our [Q&A forum][contact-qa], or send us an [email][contact-email].
 [contact-email]: <cloud-service@elixir-europe.org>
 [contact-issue-tracker]: <https://github.com/elixir-cloud-aai/landing-page/issues>
 [contact-qa]: <https://github.com/elixir-cloud-aai/elixir-cloud-aai/discussions>
+[img-logo-banner]: public/logo-banner.svg
 [res-cloud-computing]: <https://en.wikipedia.org/wiki/Cloud_computing>
 [res-elixir-compute]: <https://elixir-europe.org/platforms/compute>
 [res-ga4gh]: <https://ga4gh.org/>
