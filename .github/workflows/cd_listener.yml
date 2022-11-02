@@ -1,7 +1,7 @@
 #on:
 #  repository_dispatch:
 #    types: [cd-result]
-
+on: repository_dispatch
 jobs:
   evaluate_cd:
     name: Evaluate continuous deployment outcome
