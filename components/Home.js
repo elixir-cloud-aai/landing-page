@@ -86,9 +86,9 @@ const Home = () => {
                 standards-compliant federated environment to enable population scale genomic and
                 phenotypic data analysis across international boundaries.{" "}
                 <Link href="/overview" passHref>
-                  <div className="text-elixirblue font-semibold hover:underline">
+                  <span className="text-elixirblue font-semibold hover:underline cursor-pointer">
                     More...
-                  </div>
+                  </span>
                 </Link>
               </div>
               <div>
