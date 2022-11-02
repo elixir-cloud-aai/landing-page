@@ -96,13 +96,21 @@ Ensure you have the following software installed:
 
 ### Deploying the website
 
-To deploy the app, first set the Notion token:
+To deploy the app, first clone the repository with _either_ of the following:
 
 ```bash
-NOTION_TOKEN=<YOUR-NOTION-TOKEN>
+git clone https://github.com/elixir-cloud-aai/landing-page.git
+git clone git@github.com:elixir-cloud-aai/landing-page.git
+gh repo clone elixir-cloud-aai/landing-page
 ```
 
-Then build and deploy the app image with the following command:
+Then set the Notion token:
+
+```bash
+export NOTION_TOKEN=<YOUR-NOTION-TOKEN>
+```
+
+Finally, build and deploy the app image with the following command:
 
 ```bash
 docker-compose up --build -d
