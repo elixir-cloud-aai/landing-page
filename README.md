@@ -50,59 +50,47 @@ npm run dev
 
 ## Deployment
 
+### Requirements
+
+Ensure you have the following software installed:
+
+* Docker (19.03.8, build afacb8b7f0)
+* docker-compose (1.23.1, build b02f1306)
+* Git (2.25.1)
+
+> These are the versions used for development/testing. Other versions may or
+> may not work. Please let us know if you encounter any issues with _newer_
+> versions than the ones listed.
+
+### Deploying the website
+
 To deploy the app, first set the Notion token:
 
 ```bash
 NOTION_TOKEN=<YOUR-NOTION-TOKEN>
 ```
 
-Then build the app image with the following command:
-
-```bash
-docker build . --build-arg NOTION_SECRET=${NOTION_TOKEN} -t elixircloud/landing-page:current
-```
-
-> **IMPORTANT NOTE:** Do **not** publish the built container image. It will be
-> easy to access your Notion token.
-
-Then start the service with:
-
-```bash
-docker run exlicircloud/landing-page:current
-```
-
-### Via `docker-compose`
-
-The above instructions are fine for quickly checking out how to deploy the app.
-However, for more stable deployments we strongly recommend that you use
-`docker-compose` to deploy the app.
-
-Place the in file `docker-compose.yaml` inside the project root:
-
-```bash
-  landing-page:
-    image: elixircloud/landing-page:current
-    container_name: landing-page
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        NOTION_SECRET: $NOTION_TOKEN
-    restart: unless-stopped
-    expose:
-      - 3000
-```
-
-> Note that this is only a starting point. You may want to adapt it to your
-> particular needs.
-
-Then deploy the service with:
+Then build and deploy the app image with the following command:
 
 ```bash
 docker-compose up --build -d
 ```
 
-> To take down the deployment, simply do `docker-compose down`
+The website should now be available at `http://localhost` (port 80).
+
+Of course, these deployment instructions are only a starting point. You may
+want to adapt the them to your individual needs.
+
+> **IMPORTANT NOTE:** **Never** publish the built container image! It will be
+> easy to access your Notion token.
+
+### Taking down the website
+
+To stop the server, run:
+
+```bash
+docker-compose down
+```
 
 ## Versioning
 
