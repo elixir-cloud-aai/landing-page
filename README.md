@@ -26,7 +26,7 @@ during build time for fast client-side rendering and better SEO.
 Dynamic content for the website is fetched from [Notion][res-notion], where it
 can be conveniently edited by authorized users. If you are a member of ELIXIR
 Cloud & AAI and would like to contribute dynamic content, please [contact
-us][contact-email].
+us](#contact).
 
 ## Developing
 
@@ -146,7 +146,7 @@ thread in our [Q&A forum][contact-qa], or send us an [email][contact-email].
 [badge-url-ci]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/build.yml>
 [badge-url-health]: <https://elixir-cloud.dcc.sib.swiss/>
 [badge-url-license]: <http://www.apache.org/licenses/LICENSE-2.0>
-[contact-email]: <cloud-service@elixir-europe.org>
+[contact-email]: <mailto:cloud-service@elixir-europe.org>
 [contact-issue-tracker]: <https://github.com/elixir-cloud-aai/landing-page/issues>
 [contact-qa]: <https://github.com/elixir-cloud-aai/elixir-cloud-aai/discussions>
 [img-logo-banner]: public/logo-banner.svg
