@@ -1,7 +1,11 @@
 # This workflow will report/evaluate the CD exit status.
 on:
-  repository_dispatch:
-    types: [cd-result]
+  workflow_dispatch:
+    inputs:
+      exit_status:
+        description: 'CD exit status'
+        type: integer
+        required: true
 jobs:
   evaluate_cd:
     name: Evaluate continuous deployment outcome
@@ -10,6 +14,6 @@ jobs:
       - name: check out repository
         uses: actions/checkout@v3
       - name: report exit status
-        run: 'echo "Exit status: ${{ github.event.client_payload.exit_status }}"'
+        run: 'echo "Exit status: ${{ inputs.exit_status }}"'
       - name: evaluate exit status
-        run: 'exit ${{ github.event.client_payload.exit_status }}'
+        run: 'exit ${{ inputs.exit_status }}'
