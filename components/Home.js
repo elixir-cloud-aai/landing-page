@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import Link from "next/link";
 import TextLoop from "react-text-loop";
 import Zoom from "react-reveal/Zoom";
 import window from "global/window";
@@ -83,7 +84,12 @@ const Home = () => {
                   GA4GH
                 </a>{" "}
                 standards-compliant federated environment to enable population scale genomic and
-                phenotypic data analysis across international boundaries.
+                phenotypic data analysis across international boundaries.{" "}
+                <Link href="/overview" passHref>
+                  <span className="text-elixirblue font-semibold hover:underline cursor-pointer">
+                    More...
+                  </span>
+                </Link>
               </div>
               <div>
                 <img src="/Earth.svg" alt="globe" width="auto" height="auto"></img>
