@@ -76,6 +76,11 @@ Then build and deploy the app image with the following command:
 docker-compose up --build -d
 ```
 
+The website should now be available at `http://localhost` (port 80).
+
+Of course, these deployment instructions are only a starting point. You may
+want to adapt the them to your individual needs.
+
 > **IMPORTANT NOTE:** **Never** publish the built container image! It will be
 > easy to access your Notion token.
 
@@ -86,9 +91,6 @@ To stop the server, run:
 ```bash
 docker-compose down
 ```
-
-Of course, these deployment instructions are only a starting point. You may
-want to adapt the them to your individual needs.
 
 ## Versioning
 
