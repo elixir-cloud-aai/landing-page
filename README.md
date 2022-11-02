@@ -118,7 +118,8 @@ docker-compose up --build -d
 
 The website should now be available at `http://localhost`.
 
-> By default, port 80 is used. You can change this in `docker-compose.yaml`.
+> By default, the website is served at port 80. You can change that in
+> `docker-compose.yaml`.
 
 Of course, these deployment instructions are only a starting point. You may
 want to adapt them to your individual needs.
