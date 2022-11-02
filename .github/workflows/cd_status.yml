@@ -1,4 +1,6 @@
 # This workflow will report/evaluate the CD exit status.
+name: cd status
+
 on:
   workflow_dispatch:
     inputs:
@@ -6,6 +8,7 @@ on:
         description: 'CD exit status'
         type: integer
         required: true
+
 jobs:
   evaluate_cd:
     name: Evaluate continuous deployment outcome
