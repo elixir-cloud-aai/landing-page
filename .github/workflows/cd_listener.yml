@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: check out repository
         uses: actions/checkout@v3
+        with:
+          - ref: cd-listener
       - run: 'echo "Exit status: ${{ github.event.client_payload.exit_status }}'
       - name: evaluate exit status
         run: 'exit ${{ github.event.client_payload.exit_status }}'
