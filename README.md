@@ -1,9 +1,9 @@
 # Elixir Cloud & AAI
 
 [![license][badge-license]][badge-url-license]
+[![website][badge-health]][badge-url-health]
 [![ci][badge-ci]][badge-url-ci]
 [![cd][badge-cd]][badge-url-cd]
-[![website][badge-health]][badge-url-health]
 
 ## Introduction
 
@@ -120,7 +120,7 @@ to request features or report bugs.
 [badge-cd]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/cd_status.yml/badge.svg>
 [badge-ci]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/build.yml/badge.svg>
 [badge-health]: <https://img.shields.io/website?url=https%3A%2F%2Felixir-cloud.dcc.sib.swiss%2F>
-[badge-license]: <https://img.shields.io/badge/license-MIT-orange.svg?style=flat&color=important>
+[badge-license]: <https://img.shields.io/badge/license-MIT-blue.svg>
 [badge-url-cd]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/build.yml>
 [badge-url-ci]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/cd_status.yml>
 [badge-url-health]: <https://elixir-cloud.dcc.sib.swiss/>
