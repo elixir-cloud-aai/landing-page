@@ -1,0 +1,22 @@
+# This workflow will report/evaluate the CD exit status.
+name: cd status
+
+on:
+  workflow_dispatch:
+    inputs:
+      exit_status:
+        description: 'CD exit status'
+        type: integer
+        required: true
+
+jobs:
+  evaluate_cd:
+    name: Evaluate continuous deployment outcome
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repository
+        uses: actions/checkout@v3
+      - name: report exit status
+        run: 'echo "Exit status: ${{ inputs.exit_status }}"'
+      - name: evaluate exit status
+        run: 'exit ${{ inputs.exit_status }}'
