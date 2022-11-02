@@ -1,0 +1,15 @@
+on:
+  repository_dispatch:
+    types: [cd-result]
+
+jobs:
+  evaluate_cd:
+    name: Evaluate continuous deployment outcome
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out repository
+        uses: actions/checkout@v3
+      - run: echo "Exit status: ${{ github.event.client_payload.exit_status }}"
+      - run: echo "Exit status: "${{ github.event.client_payload.exit_status }}
+      - name: evaluate exit status
+        run: exit ${{ github.event.client_payload.exit_status }}
