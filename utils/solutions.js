@@ -4,19 +4,24 @@ const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-const getProducts = async (req, res) => {
+const getSolutions = async (req, res) => {
   try {
     var payload = {
       path: `search`,
       method: `POST`,
       body: {
-        query: "Products",
+        query: "Solutions",
       },
     };
     var data = await notion.request(payload);
-    const productsDBId = data.results[0].id;
+  } catch (e) {
+    console.log({ message: "Server error", request: "getSolutions", error: e });
+    return { message: "Server error", error: e };
+  }
+  try {
+    const solutionsDBId = data.results[0].id;
     payload = {
-      path: `databases/${productsDBId}/query`,
+      path: `databases/${solutionsDBId}/query`,
       method: `POST`,
     };
     var { results } = await notion.request(payload);
@@ -34,9 +39,9 @@ const getProducts = async (req, res) => {
     });
     return results;
   } catch (e) {
-    console.log({ message: "Server error", request: "getProducts", error: e });
+    console.log({ message: "Server error", request: "getSolutions", error: e });
     return { message: "Server error", error: e };
   }
 };
 
-export default getProducts;
+export default getSolutions;
