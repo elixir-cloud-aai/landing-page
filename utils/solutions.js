@@ -14,11 +14,6 @@ const getSolutions = async (req, res) => {
       },
     };
     var data = await notion.request(payload);
-  } catch (e) {
-    console.log({ message: "Server error", request: "getSolutions", error: e });
-    return { message: "Server error", error: e };
-  }
-  try {
     const solutionsDBId = data.results[0].id;
     payload = {
       path: `databases/${solutionsDBId}/query`,
