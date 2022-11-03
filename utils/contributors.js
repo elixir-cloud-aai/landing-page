@@ -14,9 +14,9 @@ const getContributors = async () => {
       },
     };
     var data = await notion.request(payload);
-    const productsDBId = data.results[0].id;
+    const solutionsDBId = data.results[0].id;
     payload = {
-      path: `databases/${productsDBId}/query`,
+      path: `databases/${solutionsDBId}/query`,
       method: `POST`,
     };
     var { results } = await notion.request(payload);

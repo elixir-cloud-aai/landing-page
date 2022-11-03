@@ -4,7 +4,7 @@ const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-const getProduct = async (id) => {
+const getSolution = async (id) => {
   try {
     var payload = {
       path: `blocks/${id}/children`,
@@ -57,9 +57,9 @@ const getProduct = async (id) => {
     };
     return results;
   } catch (e) {
-    console.log({ message: "Server error", request: "getProduct", error: e });
+    console.log({ message: "Server error", request: "getSolution", error: e });
     return { message: "Server error", error: e };
   }
 };
 
-export default getProduct;
+export default getSolution;
