@@ -25,7 +25,7 @@ const Layout = ({ children }) => {
         <nav>
           <NavBar scroll={scroll} toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
         </nav>
-        <main className="flex-grow mb-10">
+        <main className="flex-grow mt-5 mb-10">
           <DarkModeProvider value={darkMode}>{children}</DarkModeProvider>
         </main>
         <footer>
