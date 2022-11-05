@@ -11,8 +11,8 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
       path: "/news",
     },
     {
-      name: "Products",
-      path: "/products",
+      name: "Solutions",
+      path: "/solutions",
     },
     {
       name: "Guides & FAQ",
@@ -22,6 +22,7 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
 
   const [location, setLocation] = useState(router.pathname);
   const [navOpen, setNavOpen] = useState(false);
+  const [showBanner, setShowBanner] = useState(true);
 
   const renderLinks = () => {
     return (
@@ -33,9 +34,8 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
                 onClick={() => {
                   setLocation(link.path);
                 }}
-                className={`inline-block px-3 cursor-pointer ${
-                  location === link.path ? "text-elixirblue" : "text-gray-500"
-                }
+                className={`inline-block px-3 cursor-pointer ${location === link.path ? "text-elixirblue" : "text-gray-500"
+                  }
                   hover:text-elixirblue`}
               >
                 {link.name}
@@ -91,9 +91,8 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
     return (
       <Slide when={navOpen} duration={5} top={true}>
         <div
-          className={`left-0 w-full bg-white py-5 text-lg top-20 transition duration-200 ease-in-out dark:bg-gray-900 ${
-            navOpen ? "block" : "hidden"
-          }`}
+          className={`left-0 w-full bg-white py-5 text-lg top-20 transition duration-200 ease-in-out dark:bg-gray-900 ${navOpen ? "block" : "hidden"
+            }`}
         >
           <div className="flex flex-col justify-center items-center">
             {links.map((link) => {
@@ -105,9 +104,8 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
                         setLocation(link.path);
                         setNavOpen(false);
                       }}
-                      className={`inline-block py-2 text-center cursor-pointer ${
-                        location === link.path ? "text-elixirblue" : "text-gray-500"
-                      }
+                      className={`inline-block py-2 text-center cursor-pointer ${location === link.path ? "text-elixirblue" : "text-gray-500"
+                        }
                         hover:text-elixirblue`}
                     >
                       {link.name}
@@ -161,26 +159,37 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
   };
 
   return (
-    <div className="text-gray-700 font-pop dark:text-gray-200 dark:bg-gray-900">
+    <div className="text-gray-700 font-pop dark:text-gray-200 dark:bg-gray-900 fixed z-10 w-full bg-white">
+      {showBanner &&
+        <div className="text-center py-2 bg-elixirblue text-white md:text-sm text-xs">This website is currently under construction and may have missing, incomplete and/or outdated content
+          <span className="md:-mt-5 mt-0 md:absolute md:right-5 flex justify-center cursor-pointer" onClick={() => {
+            setShowBanner(false);
+          }}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="md:w-5 md:h-5 w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </span>
+        </div>
+      }
       <div
         id="navbar"
         style={
           scroll <= 1
             ? {
-                paddingTop: "2rem",
-                paddingBottom: "2rem",
-                transition: "all 0.5s",
-              }
+              paddingTop: "2rem",
+              paddingBottom: "2rem",
+              transition: "all 0.5s",
+            }
             : {
-                paddingTop: "1rem",
-                paddingBottom: "0.75rem",
-                transition: "all 0.5s",
-              }
+              paddingTop: "1rem",
+              paddingBottom: "0.75rem",
+              transition: "all 0.5s",
+            }
         }
         className={
           scroll <= 1
-            ? "z-10 fixed px-5 w-full flex flex-col bg-white dark:bg-gray-900"
-            : "z-10 fixed px-5 w-full shadow-lg flex flex-col bg-white dark:bg-gray-900"
+            ? "px-5 w-full flex flex-col"
+            : "px-5 w-full shadow-lg flex flex-col "
         }
       >
         <div className="flex items-center justify-between">
