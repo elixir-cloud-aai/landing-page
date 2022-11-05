@@ -14,9 +14,9 @@ const getOverview = async () => {
       },
     };
     var data = await notion.request(payload);
-    const productsDBId = data.results[0].id;
+    const solutionsDBId = data.results[0].id;
     payload = {
-      path: `blocks/${productsDBId}/children`,
+      path: `blocks/${solutionsDBId}/children`,
       method: `GET`,
     };
     var { results } = await notion.request(payload);

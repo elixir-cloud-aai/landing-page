@@ -1,125 +1,173 @@
-# Elixir Cloud & AAI
+# ELIXR Cloud & AAI landing page
 
-## Introduction
+[![license][badge-license]][badge-url-license]
+[![website][badge-health]][badge-url-health]
+[![chat][badge-chat]][badge-url-chat]
+[![ci][badge-ci]][badge-url-ci]
+[![cd][badge-cd]][badge-url-cd]
 
-Official webpage for the ELIXIR Cloud & AAI project.
+This is the repository for the [official website][badge-url-health] of **ELIXIR
+Cloud & AAI**, a transnational effort towards establishing a federated [cloud
+computing][res-cloud-computing] network enabling the analysis of
+population-scale genomic and phenotypic data across participating nodes.
 
-ELIXIR Cloud & AAI develops services towards establishing a federated [cloud
-computing](https://en.wikipedia.org/wiki/Cloud_computing) network that enables
-the analysis of population-scale genomic and phenotypic data across
-participating, international nodes.
+ELIXIR Cloud & AAI is led by the [ELIXIR Compute Platform][res-elixir-compute]
+and is a Driver Project of the [Global Alliance for Genomics and
+Health][res-ga4gh].
 
-## About
+![banner][img-logo-banner]
 
-This website is built using the [Next.js](https://nextjs.org/) framework for
-[React.js](https://reactjs.org/). Most of the pages on the website are built
-statically during build time for fast client-side rendering and better SEO.
+## About this repository
 
-Content for the website is fetched from
-[Notion](https://developers.notion.com/), where it can be conveniently edited
-by authorized users. If you are a member of ELIXIR Cloud & AAI and would like
-to contribute, please contact the [administrator](https://github.com/uniqueg).
+This website is built using the [Next.js][res-next] framework for
+[React.js][res-react]. Most of the pages on the website are built statically
+during build time for fast client-side rendering and better SEO.
 
-## Setup
+Dynamic content for the website is fetched from [Notion][res-notion], where it
+can be conveniently edited by authorized users. If you are a member of ELIXIR
+Cloud & AAI and would like to contribute dynamic content, please [contact
+us](#contact).
 
-Any contributor is welcome to contribute to the website.
+## Developing
 
-To set up the development environment, follow the steps:
+Anyone is welcome to contribute to website development. To set up a development
+environment, follow the steps outlined in this section.
 
-- Fork & clone this repository on your local machine.
-- Install the required dependencies:
+### Development requirements
+
+Ensure you have the following software installed:
+
+* Node (v14.8.0)
+* Node.js (v10.19.0)
+* NPM (6.14.7)
+
+> These are the versions used for development/testing. Other versions may or
+> may not work. Please let us know if you encounter any issues with _newer_
+> versions than the ones listed.
+
+### Setting up the development environment
+
+Fork & clone this repository on your local machine, then install the required
+dependencies with:
 
 ```bash
 npm install
 ```
 
-- For API/backed part create the [Notion](https://www.notion.so/) account.
-- Open the [Elixir Cloud & AAI](https://www.notion.so/Elixir-Cloud-AAI-cdb71fe2334c4e83b920219b2c3b9794) notion page & duplicate it to your account.
-- Create the [Notion developers](https://developers.notion.com/) account with the same email. [Create a new integration](https://developers.notion.com/docs#step-1-create-an-integration) in your account & store the Internal Integration Token. [Link the integration](https://developers.notion.com/docs#step-2-share-a-database-with-your-integration) to the duplicated page in your account.
-- Create a new file in the root directory with the name `.env.local` & add your Internal Integration Token as Notion Token:
+For the API/backend, first create a [Notion][res-notion]. Then, open the
+[ELIXIR Cloud & AAI Notion page][res-notion-elixir-cloud-aai] and duplicate
+it to your account. Then, create a [Notion Developers account][res-notion-devs]
+with the same email. Finally, [create a new integration][res-notion-integration]
+in your account, note down the "Internal Integration Token" and [link the
+integration][res-notion-link-integration] to the to the duplicated page in your
+account.
+
+Create a file `.env.local` in the repository's root directory with the
+following command (don't forget to replace `YOUR_TOKEN` with your internal
+integration token):
 
 ```bash
-NOTION_TOKEN=<YOUR-NOTION-TOKEN>
+cat << EOF > .env.local
+NOTION_TOKEN=<YOUR_TOKEN>
+EOF
 ```
 
-- Start the local development server by:
+Start the local development server with:
 
 ```bash
 npm run dev
 ```
 
-## Deployment
+## Deploying
 
-To deploy the app, first set the Notion token:
+The website can be conveniently deployed via Docker Compose.
 
-```bash
-NOTION_TOKEN=<YOUR-NOTION-TOKEN>
-```
+### Deployment requirements
 
-Then build the app image with the following command:
+Ensure you have the following software installed:
 
-```bash
-docker build . --build-arg NOTION_SECRET=${NOTION_TOKEN} -t elixircloud/landing-page:current
-```
+* Docker (19.03.8, build afacb8b7f0)
+* Docker Compose (1.23.1, build b02f1306)
+* Git (2.25.1)
 
-> **IMPORTANT NOTE:** Do **not** publish the built container image. It will be
-> easy to access your Notion token.
+> These are the versions used for development/testing. Other versions may or
+> may not work. Please let us know if you encounter any issues with _newer_
+> versions than the ones listed.
 
-Then start the service with:
+### Deploying the website
 
-```bash
-docker run exlicircloud/landing-page:current
-```
-
-### Via `docker-compose`
-
-The above instructions are fine for quickly checking out how to deploy the app.
-However, for more stable deployments we strongly recommend that you use
-`docker-compose` to deploy the app.
-
-Place the in file `docker-compose.yaml` inside the project root:
+To deploy the app, first clone the repository with _either_ of the following:
 
 ```bash
-  landing-page:
-    image: elixircloud/landing-page:current
-    container_name: landing-page
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        NOTION_SECRET: $NOTION_TOKEN
-    restart: unless-stopped
-    expose:
-      - 3000
+git clone https://github.com/elixir-cloud-aai/landing-page.git
+git clone git@github.com:elixir-cloud-aai/landing-page.git
+gh repo clone elixir-cloud-aai/landing-page
 ```
 
-> Note that this is only a starting point. You may want to adapt it to your
-> particular needs.
+Then set the Notion token:
 
-Then deploy the service with:
+```bash
+export NOTION_TOKEN=<YOUR-NOTION-TOKEN>
+```
+
+Finally, build and deploy the app image with the following command:
 
 ```bash
 docker-compose up --build -d
 ```
 
-> To take down the deployment, simply do `docker-compose down`
+The website should now be available at `http://localhost`.
 
-## Versioning
+> By default, the website is served at port 80. You can change that in
+> `docker-compose.yaml`.
 
-The project adopts the semantic versioning scheme for versioning. Currently the
-site is in beta stage, so content will change frequently.
+Of course, these deployment instructions are only a starting point. You may
+want to adapt them to your individual needs.
+
+> **IMPORTANT NOTE:** **Never** publish the built container image! It will be
+> easy to access your Notion token.
+
+### Taking down the website
+
+To stop the server, run:
+
+```bash
+docker-compose down
+```
 
 ## License
 
-This project is available under the MIT License also [shipped with this
+This project is available under the Apache 2.0 License also [shipped with this
 repository](LICENSE).
 
 ## Contact
 
-The project is a collaborative effort under the umbrella of [ELIXIR Cloud &
-AAI](https://github.com/elixir-cloud-aai/). Follow the link to get in touch
-with us via chat or email. Please mention the name of this service for any
-inquiry, proposal, question etc. Alternatively, you can also make use of the
-[issue
-tracker](https://github.com/elixir-cloud-aai/elixir-cloud-aai.github.io/issues)
-to request features or report bugs.
+If you have suggestions for or find issue with this website, please use the
+[issue tracker][contact-issue-tracker]. If you would like to reach out to us
+for anything else, you can join our [Slack board][badge-url-chat], start a
+thread in our [Q&A forum][contact-qa], or send us an [email][contact-email].
+
+[badge-chat]: <https://img.shields.io/static/v1?label=chat&message=Slack&color=ff6994>
+[badge-cd]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/cd_status.yml/badge.svg>
+[badge-ci]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/build.yml/badge.svg>
+[badge-health]: <https://img.shields.io/website?url=https%3A%2F%2Felixir-cloud.dcc.sib.swiss%2F>
+[badge-license]: <https://img.shields.io/badge/license-Apache%202.0-blue.svg>
+[badge-url-cd]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/cd_status.yml>
+[badge-url-chat]: <https://join.slack.com/t/elixir-cloud/shared_invite/enQtNzA3NTQ5Mzg2NjQ3LTZjZGI1OGQ5ZTRiOTRkY2ExMGUxNmQyODAxMDdjM2EyZDQ1YWM0ZGFjOTJhNzg5NjE0YmJiZTZhZDVhOWE4MWM>
+[badge-url-ci]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/build.yml>
+[badge-url-health]: <https://elixir-cloud.dcc.sib.swiss/>
+[badge-url-license]: <http://www.apache.org/licenses/LICENSE-2.0>
+[contact-email]: <mailto:cloud-service@elixir-europe.org>
+[contact-issue-tracker]: <https://github.com/elixir-cloud-aai/landing-page/issues>
+[contact-qa]: <https://github.com/elixir-cloud-aai/elixir-cloud-aai/discussions>
+[img-logo-banner]: public/logo-banner.svg
+[res-cloud-computing]: <https://en.wikipedia.org/wiki/Cloud_computing>
+[res-elixir-compute]: <https://elixir-europe.org/platforms/compute>
+[res-ga4gh]: <https://ga4gh.org/>
+[res-next]: <https://nextjs.org/>
+[res-notion]: <https://www.notion.so/>
+[res-notion-devs]: <https://developers.notion.com/>
+[res-notion-elixir-cloud-aai]: <https://www.notion.so/ELIXIR-Cloud-AAI-8f45ae1799b946478ae2a7838ed97dd9>
+[res-notion-integration]: <https://developers.notion.com/docs#step-1-create-an-integration>
+[res-notion-link-integration]: <https://developers.notion.com/docs#step-2-share-a-database-with-your-integration>
+[res-react]: <https://reactjs.org/>

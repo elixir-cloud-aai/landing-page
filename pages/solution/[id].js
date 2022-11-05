@@ -3,10 +3,10 @@ import dayjs from "dayjs";
 import Content from "../../components/Content";
 import Zoom from "react-reveal/Zoom";
 import { NextSeo } from "next-seo";
-import getProducts from "../../utils/products";
-import getProduct from "../../utils/product";
+import getSolutions from "../../utils/solutions";
+import getSolution from "../../utils/solution";
 
-const Product = ({ data }) => {
+const Solution = ({ data }) => {
   return (
     <>
       <NextSeo title={data.title} description={data.description} />
@@ -37,7 +37,7 @@ const Product = ({ data }) => {
           Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}
         </div>
         <div className="flex justify-end my-5 items-center ">
-          <Link href="/products" passHref>
+          <Link href="/solutions" passHref>
             <div className="flex p-3 hover:shadow-md hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 border-2 w-36 rounded-lg cursor-pointer">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -63,13 +63,13 @@ const Product = ({ data }) => {
 };
 
 export const getStaticPaths = async () => {
-  const data = await getProducts();
+  const data = await getSolutions();
   const paths = data.map(({ id }) => ({ params: { id: `${id}` } }));
   return { paths, fallback: false };
 };
 
 export const getStaticProps = async ({ params }) => {
-  let data = await getProduct(params.id);
+  let data = await getSolution(params.id);
   data = await JSON.stringify(data);
   data = await JSON.parse(data);
   return {
@@ -80,4 +80,4 @@ export const getStaticProps = async ({ params }) => {
   };
 };
 
-export default Product;
+export default Solution;

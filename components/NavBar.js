@@ -11,8 +11,8 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
       path: "/news",
     },
     {
-      name: "Products",
-      path: "/products",
+      name: "Solutions",
+      path: "/solutions",
     },
     {
       name: "Guides & FAQ",
@@ -161,7 +161,7 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
   return (
     <div className="text-gray-700 font-pop dark:text-gray-200 dark:bg-gray-900 fixed z-10 w-full bg-white">
       {showBanner &&
-        <div className="text-center py-2 bg-elixirblue text-white md:text-sm text-xs">This website is under construction & may have missing, incomplete or outdated content.
+        <div className="text-center py-2 bg-elixirblue text-white md:text-sm text-xs">This website is currently under construction and may have missing, incomplete and/or outdated content
           <span className="md:-mt-5 mt-0 md:absolute md:right-5 flex justify-center cursor-pointer" onClick={() => {
             setShowBanner(false);
           }}>

@@ -8,7 +8,7 @@ import { NextSeo } from "next-seo";
 import getGuide from "../../utils/guide";
 import getGuides from "../../utils/guides";
 
-const Product = ({ data }) => {
+const Solution = ({ data }) => {
   const [show, setShow] = useState(false);
 
   const renderPopoverContent = () => {
@@ -141,4 +141,4 @@ export const getStaticProps = async ({ params }) => {
   };
 };
 
-export default Product;
+export default Solution;
