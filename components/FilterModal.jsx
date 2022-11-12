@@ -129,6 +129,7 @@ const Modal = ({
           onSubmit={(e) => {
             handleFilter(e);
           }}
+          className="lg:block flex flex-col"
         >
           <div className="filters flex flex-col md:flex-row">
             <div className="flex flex-col md:flex-row w-full">
@@ -166,32 +167,33 @@ const Modal = ({
                 aria-label="select"
                 className={`focus:outline-none focus:border-elixirblue bg-transparent ml-1 border-2 rounded w-full ${darkMode ? `bg-gray-900 text-white border-gray-500` : null}`}
               >
-                <option className={`text-sm  text-gray-900 ${!darkMode ? `text-gray-900` : null} ${darkMode ? `bg-gray-900 text-white border-gray-900` : null}`}>
+                <option className={`text-sm  ${!darkMode ? `text-gray-900` : null} ${darkMode ? `bg-gray-900 text-white border-gray-900` : null}`}>
                   Select Affiliation
                 </option>
                 {affiliations &&
                   affiliations.map((affiliation) => (
                     <option
-                    // TODO: dark mode not working
-                      className={`text-sm  text-gray-900 ${!darkMode ? `text-gray-900` : null} ${darkMode ? `bg-gray-900 text-white border-gray-900` : null}`}
+                      className={`text-sm  ${!darkMode ? `text-gray-900` : null} ${darkMode ? `bg-gray-900 text-white border-gray-900` : null}`}
                       value={affiliation}
                     >
                       {affiliation}
                     </option>
                   ))}
               </select>
+
+              {/* currently hidden, will update after change in db schema */}
               <select
                 aria-label="select"
-                className={`focus:outline-none focus:border-elixirblue bg-transparent ml-1 border-2 rounded w-full ${darkMode ? `bg-gray-900 text-white border-gray-500` : null}`}
+                className={`hidden focus:outline-none focus:border-elixirblue bg-transparent ml-1 border-2 rounded w-full ${darkMode ? `bg-gray-900 text-white border-gray-500` : null}`}
               >
-                <option className={`text-sm  text-gray-900 ${!darkMode ? `text-gray-900` : null} ${darkMode ? `bg-gray-900 text-white border-gray-900` : null}`}>Select Role</option>
+                <option className={`text-sm  ${!darkMode ? `text-gray-900` : null} ${darkMode ? `bg-gray-900 text-white border-gray-900` : null}`}>Select Role</option>
               </select>
             </div>
           </div>
           <button
             type="submit"
             // onClick={onRequestClose}
-            className="bg-elixirblue border-0 rounded-sm text-white cursor-pointer transition-all px-3 py-1"
+            className="bg-elixirblue border-0 rounded-sm text-white cursor-pointer transition-all px-3 py-1 mt-1 md:m-auto"
           >
             Apply
           </button>
@@ -224,7 +226,7 @@ const FilterModal = ({
       <button
         onClick={toggleModal}
         type="button"
-        className="bg-elixirblue border-0 rounded-sm text-white cursor-pointer transition-all px-3 py-1 ml-2"
+        className="bg-elixirblue border-2 border-elixirblue rounded-lg outline-none text-white cursor-pointer transition-all px-3 py-1 ml-2 h-10"
       >
         Filter
       </button>
