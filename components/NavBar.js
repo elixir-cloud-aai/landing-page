@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Slide from "react-reveal/Slide";
 import { useRouter } from "next/router";
+import Avatar from 'react-avatar';
+import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
+import { confirmAlert } from 'react-confirm-alert';
+import { host_uri } from "../config";
 
-const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
+const NavBar = ({ scroll, toggleDarkMode, darkMode, isLoggedIn }) => {
   const router = useRouter();
   const [links, setLinks] = useState([
     {
@@ -19,10 +23,17 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
       path: "/guides",
     },
   ]);
+  const [buttons, setButtons] = useState([
+    {
+      name: "Login",
+      path: "/registry/login",
+    },
+  ]);
 
   const [location, setLocation] = useState(router.pathname);
   const [navOpen, setNavOpen] = useState(false);
   const [showBanner, setShowBanner] = useState(true);
+  const [showOption, setShowOption] = useState(false);
 
   const renderLinks = () => {
     return (
@@ -91,7 +102,7 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
     return (
       <Slide when={navOpen} duration={5} top={true}>
         <div
-          className={`left-0 w-full bg-white py-5 text-lg top-20 transition duration-200 ease-in-out dark:bg-gray-900 ${navOpen ? "block" : "hidden"
+          className={`left-0 w-full bg-white pt-5 text-lg top-20 transition duration-200 ease-in-out dark:bg-gray-900 ${navOpen ? "block" : "hidden"
             }`}
         >
           <div className="flex flex-col justify-center items-center">
@@ -115,6 +126,29 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
               );
             })}
           </div>
+          <hr className="my-3" />
+          {isLoggedIn === 'loading' ? null : isLoggedIn === 'false' ?
+            <div className="flex flex-col justify-center items-center">
+              {buttons.map((button) => {
+                return (
+                  <>
+                    <Link href={button.path} key={button.name} passHref>
+                      <div
+                        onClick={() => {
+                          setLocation(button.path);
+                          setNavOpen(false);
+                        }}
+                        className={`inline-block py-2 text-center cursor-pointer`}
+                      >
+                        {button.name}
+                      </div>
+                    </Link>
+                  </>
+                );
+              })}
+            </div> :
+            renderLoggedInButtons()
+          }
         </div>
       </Slide>
     );
@@ -158,6 +192,119 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
     }
   };
 
+  const renderButtons = () => {
+    return <div>
+      {buttons.map((button) => {
+        return (
+          <Link href={button.path} key={button.name} passHref>
+            <div
+              onClick={() => {
+                setLocation(button.path);
+              }}
+              className={`inline-block px-4 ml-3 cursor-pointer bg-elixirblue rounded-lg text-white py-1.5`}
+            >
+              {button.name}
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  }
+
+  const handleLogout = async () => {
+    const params = JSON.parse(localStorage.getItem('params'));
+    localStorage.removeItem('params');
+    window.location.href = `https://login.elixir-czech.org/oidc/endsession?id_token_hint=${params.id_token}&post_logout_redirect_uri=${host_uri}`;
+  };
+
+  const handleLogoutClick = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg p-10 shadow-xl font-pop">
+            <h1 className="mb-8">
+              Are you sure to logout from{' '}
+              <span className="font-semibold">Registry</span>?
+            </h1>
+            <div className="flex justify-between items-center px-10">
+              <button
+                onClick={onClose}
+                className="w-20 py-1 rounded-lg bg-red-500 text-white hover:shadow-lg"
+              >
+                No
+              </button>
+              <button
+                className="w-20 py-1 rounded-lg bg-elixirgreen text-white hover:shadow-lg"
+                onClick={() => {
+                  handleLogout();
+                  onClose();
+                }}
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        );
+      }
+    });
+  };
+
+  const getAccessToken = () => {
+    const localStorageData = localStorage.params;
+    if (!localStorageData) return;
+    const localStorageDataJson = JSON.parse(localStorageData);
+    return localStorageDataJson.access_token;
+  }
+
+  const handleCopyToClipboard = () => {
+    var accessToken = getAccessToken();
+    navigator.clipboard.writeText(accessToken)
+    // showToast('success', 'Copied to clipboard');
+  }
+
+  // eslint-disable-next-line react/display-name
+  const renderLoggedInButtons = () => {
+    return <div className="flex justify-center">
+      <Menu
+        style={{ backgroundColor: 'transparent' }}
+        menuButton={
+          <MenuButton>
+            <div
+              className="w-max flex justify-between items-center font-open cursor-pointer"
+              onClick={() => {
+                // console.log(showOption);
+                setShowOption(!showOption);
+              }}
+            >
+              <div className="pr-3">{JSON.parse(localStorage.getItem('user')).name}</div>
+              <Avatar
+                name={JSON.parse(localStorage.getItem('user')).name}
+                round={true}
+                size={40}
+                textMarginRatio={0.1}
+              />
+            </div>
+          </MenuButton>
+        }
+        transition
+      >
+        {/* <MenuItem>
+          <Link href="/profile" className="w-full h-max">
+            Profile
+          </Link>
+        </MenuItem> */}
+        <MenuItem onClick={() => handleCopyToClipboard()} className="cursor-pointer bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
+          Copy Token
+        </MenuItem>
+        <MenuItem onClick={() => handleLogoutClick()} className="w-full h-max cursor-pointer bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900">
+          <div>
+            Log out
+          </div>
+        </MenuItem>
+      </Menu>
+    </div>
+  }
+
   return (
     <div className="text-gray-700 font-pop dark:text-gray-200 dark:bg-gray-900 fixed z-10 w-full bg-white">
       {showBanner &&
@@ -193,26 +340,28 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
         }
       >
         <div className="flex items-center justify-between">
-          <Link href="/" passHref>
-            <div
-              onClick={() => {
-                setLocation("/");
-              }}
-              className="cursor-pointer"
-            >
-              <img
-                src="/elixir-cloud-aai.png"
-                className="inline-block w-6 md:w-7 mx-3 pb-1.5"
-                alt="logo"
-                width="auto"
-                height="auto"
-              ></img>
-              <div className="inline-block font-semibold text-lg md:text-2xl">
-                ELIXIR Cloud & AAI
+          <div className="md:flex-1">
+            <Link href="/" passHref >
+              <div
+                onClick={() => {
+                  setLocation("/");
+                }}
+                className="cursor-pointer"
+              >
+                <img
+                  src="/elixir-cloud-aai.png"
+                  className="inline-block w-6 md:w-7 mx-3 pb-1.5"
+                  alt="logo"
+                  width="auto"
+                  height="auto"
+                ></img>
+                <div className="inline-block font-semibold text-lg md:text-2xl">
+                  ELIXIR Cloud & AAI
+                </div>
               </div>
-            </div>
-          </Link>
-          <div className="flex items-center">
+            </Link>
+          </div>
+          <div className="flex items-center justify-center md:flex-1">
             <div
               onClick={() => toggleDarkMode()}
               className="cursor-pointer block md:hidden p-1 m-1 rounded-md"
@@ -228,10 +377,11 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
               {renderDarkModeIcon()}
             </div>
           </div>
+          <div className="flex-1 justify-end hidden md:flex">
+            {isLoggedIn === 'loading' ? null : isLoggedIn === 'false' ? renderButtons() : renderLoggedInButtons()}
+          </div>
         </div>
-        <div>
-          <div>{renderNav()}</div>
-        </div>
+        <div>{renderNav()}</div>
       </div>
     </div>
   );

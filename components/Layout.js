@@ -3,7 +3,7 @@ import Footer from "./Footer";
 import NavBar from "./NavBar";
 import { DarkModeProvider } from "../context/darkMode";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, isLoggedIn }) => {
   const [scroll, setScroll] = useState(0);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -23,7 +23,7 @@ const Layout = ({ children }) => {
     <>
       <div className="flex flex-col min-h-screen">
         <nav>
-          <NavBar scroll={scroll} toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+          <NavBar scroll={scroll} toggleDarkMode={toggleDarkMode} darkMode={darkMode} isLoggedIn={isLoggedIn} />
         </nav>
         <main className="flex-grow mt-5 mb-10">
           <DarkModeProvider value={darkMode}>{children}</DarkModeProvider>
