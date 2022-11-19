@@ -5,29 +5,22 @@ const Modal = ({
   onRequestClose,
   affiliations,
   setFilteredContributors,
-  filteredContributorBySearch,
+  contributors,
+  filterformValues,
+  setFilterformValues,
+  isModalOpen
 }) => {
-
-  // const [pastContributorCheck, setPastContributorCheck] = useState(false);
-  // const [projectLeadCheck, setProjectLeadCheck] = useState(false);
-
   const darkMode = useContext(DarkModeContext);
 
   useEffect(() => {
     function onKeyDown(event) {
-      if (event.keyCode === 27) {
+      if (event.keyCode === 27 && isModalOpen) {
         // Close the modal when the Escape key is pressed
         onRequestClose();
       }
     }
-
-    // Prevent scolling
-    document.body.style.overflow = "hidden";
     document.addEventListener("keydown", onKeyDown);
-
-    // Clear things up when unmounting this component
     return () => {
-      document.body.style.overflow = "visible";
       document.removeEventListener("keydown", onKeyDown);
     };
   });
@@ -50,12 +43,6 @@ const Modal = ({
     return false;
   };
 
-  const haveRole = (role, contributor) => {
-    const position = contributor.positions;
-    if (position.includes(role)) return true;
-    return false;
-  };
-
   const handleFilter = (e) => {
     e.preventDefault();
     // console.log(e);
@@ -69,16 +56,15 @@ const Modal = ({
 
     let filteredContributorByPastContributorCheck,
       filteredContributorByProjectLeadCheck,
-      filteredContributorByAffiliationCheck,
-      filteredContributorByRoleCheck;
+      filteredContributorByAffiliationCheck;
 
-    filteredContributorByPastContributorCheck = filteredContributorBySearch;
+    filteredContributorByPastContributorCheck = contributors;
     if (!includePastContributor) {
-      filteredContributorByPastContributorCheck =
-        filteredContributorBySearch?.filter((contributor) => {
+      filteredContributorByPastContributorCheck = contributors?.filter(
+        (contributor) => {
           return isActiveContributor(contributor);
-        });
-      console.log(filteredContributorByPastContributorCheck);
+        }
+      );
     }
 
     filteredContributorByProjectLeadCheck =
@@ -92,35 +78,26 @@ const Modal = ({
 
     filteredContributorByAffiliationCheck =
       filteredContributorByProjectLeadCheck;
-    if (affiliation !== "Select Affiliation") {
+    if (affiliation !== "") {
       filteredContributorByAffiliationCheck =
         filteredContributorByProjectLeadCheck?.filter((contributor) => {
           return isAffliatedTo(affiliation, contributor);
         });
     }
-
-    filteredContributorByRoleCheck = filteredContributorByAffiliationCheck;
-    if (role !== "Select Role") {
-      filteredContributorByRoleCheck =
-        filteredContributorByAffiliationCheck?.filter((contributor) => {
-          return haveRole(role, contributor);
-        });
-    }
-
-    setFilteredContributors(filteredContributorByRoleCheck)
-
-    onRequestClose();
+    setFilteredContributors(filteredContributorByAffiliationCheck);
   };
 
   return (
     <div
-      className="modal__backdrop fixed inset-0 z-10 bg-black bg-opacity-75 backdrop-blur-2xl flex justify-center items-center"
+      className={`modal__backdrop flex justify-center items-center`}
       onClick={() => {
         onRequestClose();
       }}
     >
       <div
-        className={`modal__container border-2 bg-white rounded-sm p-3 w-full m-80 ${darkMode ? `bg-gray-900 text-white border-gray-900` : null}`}
+        className={`modal__container border-2 bg-white rounded-lg p-3 mt-5 w-full ${
+          darkMode ? `bg-gray-900 text-white border-gray-900` : null
+        }`}
         onClick={(e) => {
           e.stopPropagation();
         }}
@@ -138,8 +115,8 @@ const Modal = ({
                   id="past-contributors"
                   type="checkbox"
                   className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-elixirblue dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  // onChange={()=>setPastContributorCheck(!pastContributorCheck)}
-                  // checked={pastContributorCheck}
+                  onChange={()=>setFilterformValues({...filterformValues, pastContributorCheckBox: !filterformValues.pastContributorCheckBox})}
+                  checked={filterformValues.pastContributorCheckBox}
                 />
                 <label
                   htmlFor="past-contributors"
@@ -153,8 +130,8 @@ const Modal = ({
                   id="project-lead"
                   type="checkbox"
                   className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-elixirblue dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  // onChange={()=>setProjectLeadCheck(!projectLeadCheck)}
-                  // checked={projectLeadCheck}
+                  onChange={()=>setFilterformValues({...filterformValues, projectLeadCheckbox: !filterformValues.projectLeadCheckbox})}
+                  checked={filterformValues.projectLeadCheckbox}
                 />
                 <label
                   htmlFor="project-lead"
@@ -165,34 +142,41 @@ const Modal = ({
               </div>
               <select
                 aria-label="select"
-                className={`focus:outline-none focus:border-elixirblue bg-transparent ml-1 border-2 rounded w-full ${darkMode ? `bg-gray-900 text-white border-gray-500` : null}`}
+                className={`focus:outline-none focus:border-elixirblue bg-transparent ml-1 border-2 rounded w-full ${
+                  darkMode ? `bg-gray-900 text-white border-gray-500` : null
+                }`}
+                onChange={(e)=>setFilterformValues({...filterformValues, affiliationInput: e.target.value})}
+                value={filterformValues.affiliationInput}
               >
-                <option className={`text-sm  ${!darkMode ? `text-gray-900` : null} ${darkMode ? `bg-gray-900 text-white border-gray-900` : null}`}>
+                <option
+                  className={`text-sm  ${!darkMode ? `text-gray-900` : null} ${
+                    darkMode ? `bg-gray-900 text-white border-gray-900` : null
+                  }`}
+                  value={""}
+                >
                   Select Affiliation
                 </option>
                 {affiliations &&
                   affiliations.map((affiliation) => (
                     <option
-                      className={`text-sm  ${!darkMode ? `text-gray-900` : null} ${darkMode ? `bg-gray-900 text-white border-gray-900` : null}`}
+                      className={`text-sm  ${
+                        !darkMode ? `text-gray-900` : null
+                      } ${
+                        darkMode
+                          ? `bg-gray-900 text-white border-gray-900`
+                          : null
+                      }`}
                       value={affiliation}
+                      key={affiliation}
                     >
                       {affiliation}
                     </option>
                   ))}
               </select>
-
-              {/* currently hidden, will update after change in db schema */}
-              <select
-                aria-label="select"
-                className={`hidden focus:outline-none focus:border-elixirblue bg-transparent ml-1 border-2 rounded w-full ${darkMode ? `bg-gray-900 text-white border-gray-500` : null}`}
-              >
-                <option className={`text-sm  ${!darkMode ? `text-gray-900` : null} ${darkMode ? `bg-gray-900 text-white border-gray-900` : null}`}>Select Role</option>
-              </select>
             </div>
           </div>
           <button
             type="submit"
-            // onClick={onRequestClose}
             className="bg-elixirblue border-0 rounded-sm text-white cursor-pointer transition-all px-3 py-1 mt-1 md:m-auto"
           >
             Apply
@@ -206,31 +190,35 @@ const Modal = ({
 const FilterModal = ({
   affiliations,
   setFilteredContributors,
-  filteredContributorBySearch,
+  contributors,
+  toggleModal,
+  isModalOpen,
+  filterformValues,
+  setFilterformValues,
 }) => {
-  const [isModalOpen, setModalIsOpen] = useState(false);
-  const toggleModal = () => {
-    setModalIsOpen(!isModalOpen);
-  };
+
+  useEffect(() => {
+    const modalWrapper = document.getElementById("modal-wrapper")
+    modalWrapper.classList.toggle("h-0", !isModalOpen)
+  }, [isModalOpen])
 
   return (
-    <main>
-      {isModalOpen && (
+    <div 
+    id="modal-wrapper"
+    className={` transition-[height] duration-500 ease-in-out overflow-hidden`}
+    >
+      {(
         <Modal
           onRequestClose={toggleModal}
           affiliations={affiliations}
           setFilteredContributors={setFilteredContributors}
-          filteredContributorBySearch={filteredContributorBySearch}
+          contributors={contributors}
+          filterformValues={filterformValues}
+          setFilterformValues={setFilterformValues}
+          isModalOpen={isModalOpen}
         />
       )}
-      <button
-        onClick={toggleModal}
-        type="button"
-        className="bg-elixirblue border-2 border-elixirblue rounded-lg outline-none text-white cursor-pointer transition-all px-3 py-1 ml-2 h-10"
-      >
-        Filter
-      </button>
-    </main>
+    </div>
   );
 };
 

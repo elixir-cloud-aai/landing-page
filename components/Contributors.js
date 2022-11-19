@@ -10,21 +10,38 @@ const Contributors = ({ contributors }) => {
   const [filteredContributors, setFilteredContributors] =
     useState(contributors);
   const [filteredContributorBySearch, setFilteredContributorBySearch] =
-    useState(contributors);
+    useState(filteredContributors);
   const [affiliations, setAffiliations] = useState([]);
+  const [filterformValues, setFilterformValues] = useState({
+    pastContributorCheckBox : false,
+    projectLeadCheckbox : false,
+    affiliationInput: ''
+  })
+
+  const [isModalOpen, setModalIsOpen] = useState(false);
+  const toggleModal = () => {
+    setModalIsOpen(!isModalOpen);
+  };
+
+  useEffect(()=> {
+    setFilteredContributorBySearch(filteredContributors)
+  }, [filteredContributors])
+
+  // // for testing, to be removed
+  // useEffect(() => {
+    // console.log(filteredContributorBySearch)
+  // }, [filteredContributorBySearch])
 
   const handleSearch = (e) => {
     const term = e.target.value.trim().toLowerCase();
     setQuery(term);
     if (term === "") {
-      setFilteredContributors(contributors);
-      setFilteredContributorBySearch(contributors);
+      setFilteredContributorBySearch(filteredContributors);
       return;
     }
-    const newFilteredContributors = contributors.filter((contributor) => {
+    const newFilteredContributors = filteredContributors.filter((contributor) => {
       return Object.values(contributor).join(" ").toLowerCase().includes(term);
     });
-    setFilteredContributors(newFilteredContributors);
     setFilteredContributorBySearch(newFilteredContributors);
   };
 
@@ -46,6 +63,11 @@ const Contributors = ({ contributors }) => {
   const resetFilters = () => {
     setFilteredContributors(contributors);
     setQuery("");
+    setFilterformValues({
+      pastContributorCheckBox : false,
+      projectLeadCheckbox : false,
+      affiliationInput: ''
+    })
   };
 
   const renderLinks = (contributor) => {
@@ -193,12 +215,12 @@ const Contributors = ({ contributors }) => {
   };
 
   const renderContributors = () => {
-    if (filteredContributors.length == 0) {
+    if (filteredContributorBySearch.length == 0) {
       return (
         <div className="flex w-full">
           <div className="text-xl">No Contributors</div>
           <button
-            className="border-2 border-red-400 text-red-400 pl-5 pr-5 rounded hover:bg-gray-800 hover:border-gray-700 hover:text-white transition-all ml-12"
+            className="border-2 border-elixirred text-elixirred pl-5 pr-5 rounded hover:bg-gray-800 hover:border-gray-900 hover:text-white transition-all ml-12"
             onClick={() => resetFilters()}
           >
             Reset filters
@@ -206,7 +228,7 @@ const Contributors = ({ contributors }) => {
         </div>
       );
     }
-    return filteredContributors.map((contributor) => {
+    return filteredContributorBySearch.map((contributor) => {
       return (
         <>
           <Zoom key={contributor.id}>
@@ -244,7 +266,8 @@ const Contributors = ({ contributors }) => {
       <div className="text-3xl font-bold mb-4 mt-5 text-center dark:text-gray-200">
         Contributors
       </div>
-      <div className="flex w-full items-center justify-between">
+      <div className="flex flex-col">
+      <div className="flex flex-row w-full items-center justify-between">
         <input
           className="h-10 md:text-base text-sm px-3 py-2 border-2 rounded-lg outline-none w-full focus:shadow-lg hover:shadow-lg placeholder-opacity-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 dark:text-gray-200"
           placeholder="Search.."
@@ -253,10 +276,22 @@ const Contributors = ({ contributors }) => {
             handleSearch(e);
           }}
         ></input>
+        <button
+        onClick={toggleModal}
+        type="button"
+        className="bg-elixirblue border-2 border-elixirblue rounded-lg outline-none text-white cursor-pointer px-3 py-1 ml-2 h-10 shadow-md"
+      >
+        Filter
+      </button>
+      </div>
         <FilterModal
           affiliations={affiliations}
           setFilteredContributors={setFilteredContributors}
-          filteredContributorBySearch={filteredContributorBySearch}
+          contributors={contributors}
+          toggleModal={toggleModal}
+          isModalOpen={isModalOpen}
+          filterformValues={filterformValues}
+          setFilterformValues={setFilterformValues}
         />
       </div>
       <div className="my-10">{renderContributors()}</div>
