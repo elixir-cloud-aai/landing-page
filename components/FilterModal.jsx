@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import DarkModeContext from "../context/darkMode";
+import Select from "./@ui/Select";
 
 const Modal = ({
   onRequestClose,
@@ -8,14 +9,13 @@ const Modal = ({
   contributors,
   filterformValues,
   setFilterformValues,
-  isModalOpen
+  isModalOpen,
 }) => {
   const darkMode = useContext(DarkModeContext);
 
   useEffect(() => {
     function onKeyDown(event) {
       if (event.keyCode === 27 && isModalOpen) {
-        // Close the modal when the Escape key is pressed
         onRequestClose();
       }
     }
@@ -24,6 +24,18 @@ const Modal = ({
       document.removeEventListener("keydown", onKeyDown);
     };
   });
+
+  const generateAffliationOptions = () => {
+    let selectAffiliationOptions = [];
+    affiliations?.map((affiliation) => {
+      const newOption = {
+        label: affiliation,
+        value: affiliation,
+      };
+      selectAffiliationOptions = [...selectAffiliationOptions, newOption];
+    });
+    return selectAffiliationOptions;
+  };
 
   const isActiveContributor = (contributor) => {
     const position = contributor.positions;
@@ -45,14 +57,11 @@ const Modal = ({
 
   const handleFilter = (e) => {
     e.preventDefault();
-    // console.log(e);
+    e.stopPropagation()
 
-    // TODO: filter logic
-    const includePastContributor = e.target[0].checked;
-    const projectLeadsOnly = e.target[1].checked;
-    const affiliation = e.target[2].value;
-    const role = e.target[3].value;
-    // console.log(includePastContributor, projectLeadsOnly, affiliation, role);
+    const includePastContributor = !filterformValues.pastContributorCheckBox;
+    const projectLeadsOnly = filterformValues.projectLeadCheckbox;
+    const affiliations = filterformValues.affiliationInput;
 
     let filteredContributorByPastContributorCheck,
       filteredContributorByProjectLeadCheck,
@@ -78,15 +87,24 @@ const Modal = ({
 
     filteredContributorByAffiliationCheck =
       filteredContributorByProjectLeadCheck;
-    if (affiliation !== "") {
-      filteredContributorByAffiliationCheck =
-        filteredContributorByProjectLeadCheck?.filter((contributor) => {
-          return isAffliatedTo(affiliation, contributor);
-        });
+    if (affiliations !== []) {
+      console.log(affiliations)
+      affiliations.map(affiliation => {
+        filteredContributorByAffiliationCheck =
+        filteredContributorByAffiliationCheck?.filter((contributor) => {
+            return isAffliatedTo(affiliation.value, contributor);
+          });
+      })
     }
     setFilteredContributors(filteredContributorByAffiliationCheck);
   };
 
+  const handleSelect = (option) => {
+    setFilterformValues({
+      ...filterformValues,
+      affiliationInput: option,
+    })
+  }
   return (
     <div
       className={`modal__backdrop flex justify-center items-center`}
@@ -115,14 +133,20 @@ const Modal = ({
                   id="past-contributors"
                   type="checkbox"
                   className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-elixirblue dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  onChange={()=>setFilterformValues({...filterformValues, pastContributorCheckBox: !filterformValues.pastContributorCheckBox})}
+                  onChange={() =>
+                    setFilterformValues({
+                      ...filterformValues,
+                      pastContributorCheckBox:
+                        !filterformValues.pastContributorCheckBox,
+                    })
+                  }
                   checked={filterformValues.pastContributorCheckBox}
                 />
                 <label
                   htmlFor="past-contributors"
                   className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                 >
-                  Include Past contributors
+                  Active contributors only
                 </label>
               </div>
               <div className="flex items-center mb-4 w-full">
@@ -130,7 +154,13 @@ const Modal = ({
                   id="project-lead"
                   type="checkbox"
                   className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-elixirblue dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  onChange={()=>setFilterformValues({...filterformValues, projectLeadCheckbox: !filterformValues.projectLeadCheckbox})}
+                  onChange={() =>
+                    setFilterformValues({
+                      ...filterformValues,
+                      projectLeadCheckbox:
+                        !filterformValues.projectLeadCheckbox,
+                    })
+                  }
                   checked={filterformValues.projectLeadCheckbox}
                 />
                 <label
@@ -140,39 +170,12 @@ const Modal = ({
                   Project leads only
                 </label>
               </div>
-              <select
-                aria-label="select"
-                className={`focus:outline-none focus:border-elixirblue bg-transparent ml-1 border-2 rounded w-full ${
-                  darkMode ? `bg-gray-900 text-white border-gray-500` : null
-                }`}
-                onChange={(e)=>setFilterformValues({...filterformValues, affiliationInput: e.target.value})}
+              <Select
+                options={generateAffliationOptions()}
                 value={filterformValues.affiliationInput}
-              >
-                <option
-                  className={`text-sm  ${!darkMode ? `text-gray-900` : null} ${
-                    darkMode ? `bg-gray-900 text-white border-gray-900` : null
-                  }`}
-                  value={""}
-                >
-                  Select Affiliation
-                </option>
-                {affiliations &&
-                  affiliations.map((affiliation) => (
-                    <option
-                      className={`text-sm  ${
-                        !darkMode ? `text-gray-900` : null
-                      } ${
-                        darkMode
-                          ? `bg-gray-900 text-white border-gray-900`
-                          : null
-                      }`}
-                      value={affiliation}
-                      key={affiliation}
-                    >
-                      {affiliation}
-                    </option>
-                  ))}
-              </select>
+                multiple
+                onChange={(o)=> handleSelect(o)}
+              />
             </div>
           </div>
           <button
@@ -196,18 +199,19 @@ const FilterModal = ({
   filterformValues,
   setFilterformValues,
 }) => {
-
   useEffect(() => {
-    const modalWrapper = document.getElementById("modal-wrapper")
-    modalWrapper.classList.toggle("h-0", !isModalOpen)
-  }, [isModalOpen])
+    const modalWrapper = document.getElementById("modal-wrapper");
+    modalWrapper.classList.toggle("h-0", !isModalOpen);
+    modalWrapper.classList.toggle("overflow-hidden", !isModalOpen);
+    modalWrapper.classList.toggle("overflow-[revert]", isModalOpen);
+  }, [isModalOpen]);
 
   return (
-    <div 
-    id="modal-wrapper"
-    className={` transition-[height] duration-500 ease-in-out overflow-hidden`}
+    <div
+      id="modal-wrapper"
+      className={` transition-[height] duration-500 ease-in-out`}
     >
-      {(
+      {
         <Modal
           onRequestClose={toggleModal}
           affiliations={affiliations}
@@ -217,7 +221,7 @@ const FilterModal = ({
           setFilterformValues={setFilterformValues}
           isModalOpen={isModalOpen}
         />
-      )}
+      }
     </div>
   );
 };

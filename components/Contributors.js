@@ -15,7 +15,7 @@ const Contributors = ({ contributors }) => {
   const [filterformValues, setFilterformValues] = useState({
     pastContributorCheckBox : false,
     projectLeadCheckbox : false,
-    affiliationInput: ''
+    affiliationInput: []
   })
 
   const [isModalOpen, setModalIsOpen] = useState(false);
@@ -26,11 +26,6 @@ const Contributors = ({ contributors }) => {
   useEffect(()=> {
     setFilteredContributorBySearch(filteredContributors)
   }, [filteredContributors])
-
-  // // for testing, to be removed
-  // useEffect(() => {
-    // console.log(filteredContributorBySearch)
-  // }, [filteredContributorBySearch])
 
   const handleSearch = (e) => {
     const term = e.target.value.trim().toLowerCase();
@@ -66,7 +61,7 @@ const Contributors = ({ contributors }) => {
     setFilterformValues({
       pastContributorCheckBox : false,
       projectLeadCheckbox : false,
-      affiliationInput: ''
+      affiliationInput: []
     })
   };
 
