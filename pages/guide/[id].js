@@ -1,66 +1,64 @@
+import React, { useState } from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
-import Content from "../../components/Content";
 import Zoom from "react-reveal/Zoom";
 import { Popover } from "react-tiny-popover";
-import { useState } from "react";
 import { NextSeo } from "next-seo";
+import Content from "../../components/Content";
 import getGuide from "../../utils/guide";
 import getGuides from "../../utils/guides";
 
-const Solution = ({ data }) => {
+function Solution({ data }) {
   const [show, setShow] = useState(false);
 
-  const renderPopoverContent = () => {
-    return (
-      <div className="border p-3 rounded-lg shadow-lg bg-white dark:bg-gray-900 dark:border-gray-900">
-        <div className="flex">
-          <img
-            src={data.author.image}
-            className="w-20 rounded-full"
-            width="auto"
-            height="auto"
-          ></img>
-          <div className="ml-3 mt-1">
-            <div className="teext-sm dark:text-gray-100">{data.author.name}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
-              {data.author.positions.map((position, index) => {
-                return <div key={index}>{position}</div>;
-              })}
-            </div>
+  const renderPopoverContent = () => (
+    <div className="border p-3 rounded-lg shadow-lg bg-white dark:bg-gray-900 dark:border-gray-900">
+      <div className="flex">
+        <img
+          src={data.author.image}
+          className="w-20 rounded-full"
+          width="auto"
+          height="auto"
+        />
+        <div className="ml-3 mt-1">
+          <div className="teext-sm dark:text-gray-100">{data.author.name}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            {data.author.positions.map((position, index) => (
+              <div key={index}>{position}</div>
+            ))}
           </div>
         </div>
-        <hr className="my-3"></hr>
-        <div className="text-gray-500 dark:text-gray-400">
-          {data.author.email && (
-            <div className="flex text-sm">
-              <div>Email</div>
-              <div className="ml-3 text-elixirblue hover:underline">
-                <a href={`mailto:${data.author.email}`}>{data.author.email}</a>
-              </div>
-            </div>
-          )}
-          {data.author.website && (
-            <div className="flex text-sm">
-              <div>Website</div>
-              <div className="ml-3 text-elixirblue hover:underline">
-                <a href={data.author.website}>{data.author.website}</a>
-              </div>
-            </div>
-          )}
-          {data.author.linkedin && (
-            <div className="flex text-sm">
-              <div>LinkedIn</div>
-              <div className="ml-3 text-elixirblue hover:underline">
-                <a href={data.author.linkedin}>{data.author.linkedin}</a>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
-    );
-  };
-  console.log(data.author)
+      <hr className="my-3" />
+      <div className="text-gray-500 dark:text-gray-400">
+        {data.author.email && (
+          <div className="flex text-sm">
+            <div>Email</div>
+            <div className="ml-3 text-elixirblue hover:underline">
+              <a href={`mailto:${data.author.email}`}>{data.author.email}</a>
+            </div>
+          </div>
+        )}
+        {data.author.website && (
+          <div className="flex text-sm">
+            <div>Website</div>
+            <div className="ml-3 text-elixirblue hover:underline">
+              <a href={data.author.website}>{data.author.website}</a>
+            </div>
+          </div>
+        )}
+        {data.author.linkedin && (
+          <div className="flex text-sm">
+            <div>LinkedIn</div>
+            <div className="ml-3 text-elixirblue hover:underline">
+              <a href={data.author.linkedin}>{data.author.linkedin}</a>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+  console.log(data.author);
   return (
     <>
       <NextSeo title={data.title} description={data.description} />
@@ -76,27 +74,40 @@ const Solution = ({ data }) => {
           </div>
         </Zoom>
         <Content content={data.content} />
-        {data.author ? <div className="my-5 text-sm text-gray-400 text-right">
-          <div className="my-1">
-            Guide by{" "}
-            <Popover
-              isOpen={show}
-              positions={["top", "bottom", "left", "right"]}
-              content={renderPopoverContent()}
-              onClickOutside={() => setShow(false)}
-            >
-              <span
-                className="hover:underline cursor-pointer font-bold"
-                onClick={() => setShow(!show)}
+        {data.author ? (
+          <div className="my-5 text-sm text-gray-400 text-right">
+            <div className="my-1">
+              Guide by{" "}
+              <Popover
+                isOpen={show}
+                positions={["top", "bottom", "left", "right"]}
+                content={renderPopoverContent()}
+                onClickOutside={() => setShow(false)}
               >
-                {data.author.name}
-              </span>
-            </Popover>
+                <span
+                  className="hover:underline cursor-pointer font-bold"
+                  onClick={() => setShow(!show)}
+                >
+                  {data.author.name}
+                </span>
+              </Popover>
+            </div>
+            <div className="my-1">
+              Updated on
+              {dayjs(data.updatedAt).format("DD MMM YYYY")}
+            </div>
           </div>
-          <div className="my-1">Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}</div>
-        </div> : <div className="my-5 text-sm text-gray-400 text-right">
-          Contact us at <a href="mailto:cloud-service@elixir-europe.org" className="text-elixirblue">cloud-service@elixir-europe.org</a>
-        </div>}
+        ) : (
+          <div className="my-5 text-sm text-gray-400 text-right">
+            Contact us at{" "}
+            <a
+              href="mailto:cloud-service@elixir-europe.org"
+              className="text-elixirblue"
+            >
+              cloud-service@elixir-europe.org
+            </a>
+          </div>
+        )}
         <div className="flex justify-end my-5 items-center">
           <Link href="/guides" passHref>
             <div className="flex p-3 hover:shadow-md hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 border-2 w-36 rounded-lg cursor-pointer">
@@ -121,7 +132,7 @@ const Solution = ({ data }) => {
       </div>
     </>
   );
-};
+}
 
 export const getStaticPaths = async () => {
   const data = await getGuides();

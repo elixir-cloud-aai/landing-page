@@ -6,22 +6,22 @@ const notion = new Client({
 
 const getOverview = async () => {
   try {
-    var payload = {
-      path: `search`,
-      method: `POST`,
+    let payload = {
+      path: "search",
+      method: "POST",
       body: {
         query: "Overview",
       },
     };
-    var data = await notion.request(payload);
+    const data = await notion.request(payload);
     const solutionsDBId = data.results[0].id;
     payload = {
       path: `blocks/${solutionsDBId}/children`,
-      method: `GET`,
+      method: "GET",
     };
-    var { results } = await notion.request(payload);
+    let { results } = await notion.request(payload);
     results = results.map((result) => {
-      if (result.image && result.image.type == "external") {
+      if (result.image && result.image.type === "external") {
         return {
           id: result.id,
           type: result.type,
@@ -30,7 +30,7 @@ const getOverview = async () => {
           updatedAt: result.last_edited_time,
         };
       }
-      if (result.type == "divider") {
+      if (result.type === "divider") {
         return {
           id: result.id,
           type: result.type,
@@ -41,13 +41,11 @@ const getOverview = async () => {
       return {
         id: result.id,
         type: result.type,
-        text: result[result.type].text.map((block) => {
-          return {
-            content: block.plain_text,
-            link: block.href,
-            annotations: { ...block.annotations },
-          };
-        }),
+        text: result[result.type].text.map((block) => ({
+          content: block.plain_text,
+          link: block.href,
+          annotations: { ...block.annotations },
+        })),
         createdAt: result.created_time,
         updatedAt: result.last_edited_time,
       };

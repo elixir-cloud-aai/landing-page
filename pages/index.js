@@ -1,12 +1,8 @@
+import React from "react";
 import HomeComponent from "../components/Home";
-import { NextSeo } from "next-seo";
 
-const Home = () => {
-  return (
-    <>
-      <HomeComponent></HomeComponent>
-    </>
-  );
-};
+function Home() {
+  return <HomeComponent />;
+}
 
 export default Home;

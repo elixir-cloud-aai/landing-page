@@ -8,15 +8,15 @@ const notion = new Client({
 
 const getGuide = async (id) => {
   try {
-    var contributors = await getContributors();
+    const contributors = await getContributors();
 
-    var payload = {
+    let payload = {
       path: `blocks/${id}/children`,
-      method: `GET`,
+      method: "GET",
     };
-    var { results } = await notion.request(payload);
+    let { results } = await notion.request(payload);
     results = results.map((result) => {
-      if (result.image && result.image.type == "external") {
+      if (result.image && result.image.type === "external") {
         return {
           id: result.id,
           type: result.type,
@@ -29,28 +29,28 @@ const getGuide = async (id) => {
         return {
           id: result.id,
           type: result.type,
-          text: result.paragraph.text.map((block) => {
-            return {
-              content: block.plain_text,
-              link: block.href,
-              annotations: { ...block.annotations },
-            };
-          }),
+          text: result.paragraph.text.map((block) => ({
+            content: block.plain_text,
+            link: block.href,
+            annotations: { ...block.annotations },
+          })),
           createdAt: result.created_time,
           updatedAt: result.last_edited_time,
         };
       }
+      return null;
     });
-    var content = results;
-    var payload = {
+    const content = results;
+    payload = {
       path: `pages/${id}`,
-      method: `GET`,
+      method: "GET",
     };
-    var results = await notion.request(payload);
-    var author = null;
+    results = await notion.request(payload);
+    let author = null;
     if (results.properties.Author.relation.length !== 0) {
       author = contributors.find(
-        (contributor) => contributor.id === results.properties.Author.relation[0].id
+        (contributor) =>
+          contributor.id === results.properties.Author.relation[0].id
       );
     }
     results = {

@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Zoom from "react-reveal/Zoom";
 
-const Partners = ({ partners }) => {
+function Partners({ partners }) {
   const [query, setQuery] = useState("");
   const [filteredPartners, setFilteredPartners] = useState(partners);
 
@@ -15,33 +15,32 @@ const Partners = ({ partners }) => {
     setFilteredPartners(newFilteredPartners);
   };
 
-  const renderPartners = () => {
-    return filteredPartners.map((partner) => {
-      return (
-        <Zoom key={partner.id}>
-          <a href={partner.website} target="_blank" rel="noopener noreferrer">
-            <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 cursor-pointer ">
-              <div className="flex md:flex-row flex-col">
-                <img
-                  src={partner.icon}
-                  className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
-                  alt="Icon"
-                  width="auto"
-                  height="auto"
-                ></img>
-                <div className="flex-grow p-5">
-                  <div className="text-xl font-semibold flex justify-between dark:text-gray-200">
-                    <div>{partner.name}</div>
-                  </div>
-                  <div className="text-gray-500 text-justify mt-1.5">{partner.description}</div>
+  const renderPartners = () =>
+    filteredPartners.map((partner) => (
+      <Zoom key={partner.id}>
+        <a href={partner.website} target="_blank" rel="noopener noreferrer">
+          <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 cursor-pointer ">
+            <div className="flex md:flex-row flex-col">
+              <img
+                src={partner.icon}
+                className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
+                alt="Icon"
+                width="auto"
+                height="auto"
+              />
+              <div className="flex-grow p-5">
+                <div className="text-xl font-semibold flex justify-between dark:text-gray-200">
+                  <div>{partner.name}</div>
+                </div>
+                <div className="text-gray-500 text-justify mt-1.5">
+                  {partner.description}
                 </div>
               </div>
             </div>
-          </a>
-        </Zoom>
-      );
-    });
-  };
+          </div>
+        </a>
+      </Zoom>
+    ));
 
   return (
     <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700">
@@ -52,10 +51,10 @@ const Partners = ({ partners }) => {
         onChange={(e) => {
           handleSearch(e);
         }}
-      ></input>
+      />
       {renderPartners()}
     </div>
   );
-};
+}
 
 export default Partners;
