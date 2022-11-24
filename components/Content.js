@@ -1,11 +1,11 @@
+import React from "react";
 import Zoom from "react-reveal/Zoom";
 
 const Content = ({ content }) => {
-  const renderBlock = (block) => {
-    return block.text.map((segment) => {
-      return (
-        <span
-          className={`${segment.annotations.bold ? "font-semibold" : ""} 
+  const renderBlock = (block) =>
+    block.text.map((segment) => (
+      <span
+        className={`${segment.annotations.bold ? "font-semibold" : ""} 
                   ${segment.annotations.italic ? "italic" : ""}
                   ${segment.annotations.underline ? "underline" : ""}
                   ${
@@ -13,85 +13,87 @@ const Content = ({ content }) => {
                       ? "font-mono bg-gray-200 p-1 rounded-md tracking-wider dark:text-gray-800"
                       : ""
                   }`}
-          key={segment.content}
-        >
-          {segment.link ? (
-            <a
-              key={segment.content}
-              href={segment.link}
-              className={`text-elixirblue hover:underline `}
-            >
-              {segment.content}
-            </a>
-          ) : (
-            <span key={segment.content}>{segment.content}</span>
-          )}
-        </span>
-      );
-    });
-  };
+        key={segment.content}
+      >
+        {segment.link ? (
+          <a
+            key={segment.content}
+            href={segment.link}
+            className="text-elixirblue hover:underline "
+          >
+            {segment.content}
+          </a>
+        ) : (
+          <span key={segment.content}>{segment.content}</span>
+        )}
+      </span>
+    ));
 
   return content.map((block) => {
     if (block) {
       if (
-        block.type == "paragraph" ||
-        block.type == "heading_1" ||
-        block.type == "heading_2" ||
-        block.type == "heading_3" ||
-        block.type == "callout" ||
-        block.type == "quote" ||
-        block.type == "code"
+        block.type === "paragraph" ||
+        block.type === "heading_1" ||
+        block.type === "heading_2" ||
+        block.type === "heading_3" ||
+        block.type === "callout" ||
+        block.type === "quote" ||
+        block.type === "code"
       ) {
         let textStyle = "";
-        if (block.type == "heading_1") {
+        if (block.type === "heading_1") {
           textStyle = "text-3xl font-bold";
-        } else if (block.type == "heading_2") {
+        } else if (block.type === "heading_2") {
           textStyle = "text-2xl font-bold";
-        } else if (block.type == "heading_3") {
+        } else if (block.type === "heading_3") {
           textStyle = "text-xl font-semibold";
-        } else if (block.type == "callout") {
+        } else if (block.type === "callout") {
           textStyle =
             "p-2 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 hover:shadow-md shadow-lg border rounded-md text-center";
-        } else if (block.type == "quote") {
+        } else if (block.type === "quote") {
           textStyle = "font-cursive text-2xl";
         } else {
           textStyle = "text-justify";
         }
         return (
-          <Zoom>
+          <Zoom key={block.id}>
             <div
               className={`leading-relaxed my-3 tracking-wide dark:text-gray-200 ${textStyle}`}
-              key={block.id}
             >
               {renderBlock(block)}
             </div>
           </Zoom>
         );
-      } else if (block.type == "bulleted_list_item") {
+      }
+      if (block.type === "bulleted_list_item") {
         return (
-          <Zoom>
-            <ul
-              className={`leading-relaxed my-3 tracking-wide dark:text-gray-200 list-disc`}
-              key={block.id}
-            >
+          <Zoom key={block.id}>
+            <ul className="leading-relaxed my-3 tracking-wide dark:text-gray-200 list-disc">
               <li>{renderBlock(block)}</li>
             </ul>
           </Zoom>
         );
-      } else if (block.type == "divider") {
+      }
+      if (block.type === "divider") {
         return (
-          <Zoom>
+          <Zoom key={block.id}>
             <hr className="my-3 border-t border-gray-300 dark:border-gray-600" />
           </Zoom>
         );
-      } else {
-        return (
-          <Zoom>
-            <img src={block.image} alt="Image" className="my-10" width="auto" height="auto"></img>
-          </Zoom>
-        );
       }
+      return (
+        <Zoom key={block.id}>
+          <img
+            src={block.image}
+            alt="Image"
+            className="my-10"
+            width="auto"
+            height="auto"
+          />
+        </Zoom>
+      );
     }
+    return null;
   });
 };
 

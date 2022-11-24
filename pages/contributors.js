@@ -1,18 +1,19 @@
-import ContributorsComponent from "../components/Contributors";
+import React from "react";
 import { NextSeo } from "next-seo";
+import ContributorsComponent from "../components/Contributors";
 import getContributors from "../utils/contributors";
 
-const Contributors = ({ contributors }) => {
+function Contributors({ contributors }) {
   return (
     <>
       <NextSeo
         title="Contributors"
         description="Elixir Cloud & AAI contributor devloping the solutions. "
       />
-      <ContributorsComponent contributors={contributors}></ContributorsComponent>
+      <ContributorsComponent contributors={contributors} />
     </>
   );
-};
+}
 
 export const getStaticProps = async () => {
   const data = await getContributors();

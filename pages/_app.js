@@ -1,18 +1,21 @@
+import React, { useEffect } from "react";
 import Layout from "../components/Layout";
 import "../styles/globals.css";
 import { DefaultSeo } from "next-seo";
 import SEO from "../next-seo.config";
-import { useEffect } from "react";
 
-const MyApp = ({ Component, pageProps }) => {
+function MyApp({ Component, pageProps }) {
   useEffect(() => {
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
+      window.addEventListener("load", () => {
         navigator.serviceWorker.register("/sw.js").then(
-          function (registration) {
-            console.log("Service Worker registration successful with scope: ", registration.scope);
+          (registration) => {
+            console.log(
+              "Service Worker registration successful with scope: ",
+              registration.scope
+            );
           },
-          function (err) {
+          (err) => {
             console.log("Service Worker registration failed: ", err);
           }
         );
@@ -27,6 +30,6 @@ const MyApp = ({ Component, pageProps }) => {
       </Layout>
     </>
   );
-};
+}
 
 export default MyApp;

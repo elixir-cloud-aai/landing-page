@@ -37,9 +37,9 @@ environment, follow the steps outlined in this section.
 
 Ensure you have the following software installed:
 
-* Node (v14.8.0)
-* Node.js (v10.19.0)
-* NPM (6.14.7)
+- Node (v14.8.0)
+- Node.js (v10.19.0)
+- NPM (6.14.7)
 
 > These are the versions used for development/testing. Other versions may or
 > may not work. Please let us know if you encounter any issues with _newer_
@@ -86,9 +86,9 @@ The website can be conveniently deployed via Docker Compose.
 
 Ensure you have the following software installed:
 
-* Docker (19.03.8, build afacb8b7f0)
-* Docker Compose (1.23.1, build b02f1306)
-* Git (2.25.1)
+- Docker (19.03.8, build afacb8b7f0)
+- Docker Compose (1.23.1, build b02f1306)
+- Git (2.25.1)
 
 > These are the versions used for development/testing. Other versions may or
 > may not work. Please let us know if you encounter any issues with _newer_
@@ -147,27 +147,27 @@ If you have suggestions for or find issue with this website, please use the
 for anything else, you can join our [Slack board][badge-url-chat], start a
 thread in our [Q&A forum][contact-qa], or send us an [email][contact-email].
 
-[badge-chat]: <https://img.shields.io/static/v1?label=chat&message=Slack&color=ff6994>
-[badge-cd]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/cd_status.yml/badge.svg>
-[badge-ci]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/build.yml/badge.svg>
-[badge-health]: <https://img.shields.io/website?url=https%3A%2F%2Felixir-cloud.dcc.sib.swiss%2F>
-[badge-license]: <https://img.shields.io/badge/license-Apache%202.0-blue.svg>
-[badge-url-cd]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/cd_status.yml>
-[badge-url-chat]: <https://join.slack.com/t/elixir-cloud/shared_invite/enQtNzA3NTQ5Mzg2NjQ3LTZjZGI1OGQ5ZTRiOTRkY2ExMGUxNmQyODAxMDdjM2EyZDQ1YWM0ZGFjOTJhNzg5NjE0YmJiZTZhZDVhOWE4MWM>
-[badge-url-ci]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/build.yml>
-[badge-url-health]: <https://elixir-cloud.dcc.sib.swiss/>
-[badge-url-license]: <http://www.apache.org/licenses/LICENSE-2.0>
-[contact-email]: <mailto:cloud-service@elixir-europe.org>
-[contact-issue-tracker]: <https://github.com/elixir-cloud-aai/landing-page/issues>
-[contact-qa]: <https://github.com/elixir-cloud-aai/elixir-cloud-aai/discussions>
+[badge-chat]: https://img.shields.io/static/v1?label=chat&message=Slack&color=ff6994
+[badge-cd]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/cd_status.yml/badge.svg
+[badge-ci]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/build.yml/badge.svg
+[badge-health]: https://img.shields.io/website?url=https%3A%2F%2Felixir-cloud.dcc.sib.swiss%2F
+[badge-license]: https://img.shields.io/badge/license-Apache%202.0-blue.svg
+[badge-url-cd]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/cd_status.yml
+[badge-url-chat]: https://join.slack.com/t/elixir-cloud/shared_invite/enQtNzA3NTQ5Mzg2NjQ3LTZjZGI1OGQ5ZTRiOTRkY2ExMGUxNmQyODAxMDdjM2EyZDQ1YWM0ZGFjOTJhNzg5NjE0YmJiZTZhZDVhOWE4MWM
+[badge-url-ci]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/build.yml
+[badge-url-health]: https://elixir-cloud.dcc.sib.swiss/
+[badge-url-license]: http://www.apache.org/licenses/LICENSE-2.0
+[contact-email]: mailto:cloud-service@elixir-europe.org
+[contact-issue-tracker]: https://github.com/elixir-cloud-aai/landing-page/issues
+[contact-qa]: https://github.com/elixir-cloud-aai/elixir-cloud-aai/discussions
 [img-logo-banner]: public/logo-banner.svg
-[res-cloud-computing]: <https://en.wikipedia.org/wiki/Cloud_computing>
-[res-elixir-compute]: <https://elixir-europe.org/platforms/compute>
-[res-ga4gh]: <https://ga4gh.org/>
-[res-next]: <https://nextjs.org/>
-[res-notion]: <https://www.notion.so/>
-[res-notion-devs]: <https://developers.notion.com/>
-[res-notion-elixir-cloud-aai]: <https://www.notion.so/ELIXIR-Cloud-AAI-8f45ae1799b946478ae2a7838ed97dd9>
-[res-notion-integration]: <https://developers.notion.com/docs#step-1-create-an-integration>
-[res-notion-link-integration]: <https://developers.notion.com/docs#step-2-share-a-database-with-your-integration>
-[res-react]: <https://reactjs.org/>
+[res-cloud-computing]: https://en.wikipedia.org/wiki/Cloud_computing
+[res-elixir-compute]: https://elixir-europe.org/platforms/compute
+[res-ga4gh]: https://ga4gh.org/
+[res-next]: https://nextjs.org/
+[res-notion]: https://www.notion.so/
+[res-notion-devs]: https://developers.notion.com/
+[res-notion-elixir-cloud-aai]: https://www.notion.so/ELIXIR-Cloud-AAI-8f45ae1799b946478ae2a7838ed97dd9
+[res-notion-integration]: https://developers.notion.com/docs#step-1-create-an-integration
+[res-notion-link-integration]: https://developers.notion.com/docs#step-2-share-a-database-with-your-integration
+[res-react]: https://reactjs.org/

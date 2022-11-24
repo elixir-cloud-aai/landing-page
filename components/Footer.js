@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 
-const Footer = () => {
-  const [footers, setFooters] = useState([
+function Footer() {
+  const footers = [
     {
       title: "About Us",
       links: [
@@ -44,50 +44,46 @@ const Footer = () => {
         },
       ],
     },
-  ]);
+  ];
 
-  const renderFooterLinks = () => {
-    return (
-      <>
-        <div className="px-0 md:px-10 flex flex-wrap text-base justify-between md:justify-end">
-          {footers.map((footer) => {
-            return (
-              <div
-                className="space-y-1.5 md:space-y-3 py-3 md:py-0 mx-10 md:mx-50"
-                key={footer.title}
-              >
-                <div className="text-sm md:text-lg md:font-semibold">{footer.title}</div>
-                <div className="space-y-1 md:space-y-2">
-                  {footer.links.map((link) => {
-                    if (link.a) {
-                      return (
-                        <a
-                          href={link.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs md:text-base block hover:underline"
-                        >
-                          {link.name}
-                        </a>
-                      );
-                    } else {
-                      return (
-                        <Link href={link.link} passHref>
-                          <div className="text-xs md:text-base block hover:underline cursor-pointer">
-                            {link.name}
-                          </div>
-                        </Link>
-                      );
-                    }
-                  })}
-                </div>
-              </div>
-            );
-          })}
+  const renderFooterLinks = () => (
+    <div className="px-0 md:px-10 flex flex-wrap text-base justify-between md:justify-end">
+      {footers.map((footer) => (
+        <div
+          className="space-y-1.5 md:space-y-3 py-3 md:py-0 mx-10 md:mx-50"
+          key={footer.title}
+        >
+          <div className="text-sm md:text-lg md:font-semibold">
+            {footer.title}
+          </div>
+          <div className="space-y-1 md:space-y-2">
+            {footer.links.map((link) => {
+              if (link.a) {
+                return (
+                  <a
+                    key={link.link}
+                    href={link.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs md:text-base block hover:underline"
+                  >
+                    {link.name}
+                  </a>
+                );
+              }
+              return (
+                <Link key={link.link} href={link.link} passHref>
+                  <div className="text-xs md:text-base block hover:underline cursor-pointer">
+                    {link.name}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
-      </>
-    );
-  };
+      ))}
+    </div>
+  );
 
   return (
     <footer className="bg-gray-900 px-5 md:px-64 pt-7 md:pt-12 py-3 md:py-5 text-gray-200 font-pop text-sm rounded-t-xl">
@@ -106,7 +102,7 @@ const Footer = () => {
                 className="inline-block w-14 md:w-20 mx-3 mr-3 md:mr-7"
                 width="auto"
                 height="auto"
-              ></img>
+              />
             </a>
             <a
               href="https://elixir-europe.org/"
@@ -120,7 +116,7 @@ const Footer = () => {
                 className="inline-block w-14 md:w-20 mr-3 md:mx-5"
                 width="auto"
                 height="auto"
-              ></img>
+              />
             </a>
             <a
               href="https://www.ga4gh.org/"
@@ -134,7 +130,7 @@ const Footer = () => {
                 className="inline-block w-14 md:w-20 mr-3 md:mx-5"
                 width="auto"
                 height="auto"
-              ></img>
+              />
             </a>
           </div>
           <a
@@ -145,7 +141,10 @@ const Footer = () => {
           >
             <span className="text-xs md:block">© 2021 ELIXIR Cloud AAI </span>
             <span className="text-xs md:hidden">○</span>
-            <span className="text-xs md:block"> Released under MIT License</span>
+            <span className="text-xs md:block">
+              {" "}
+              Released under MIT License
+            </span>
           </a>
         </div>
         <div className="mt-4 md:mt-0 flex-grow">{renderFooterLinks()}</div>
@@ -155,6 +154,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+}
 
 export default Footer;

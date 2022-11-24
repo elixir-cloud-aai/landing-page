@@ -1,12 +1,13 @@
+import React from "react";
 import Link from "next/link";
 import dayjs from "dayjs";
-import Content from "../../components/Content";
 import Zoom from "react-reveal/Zoom";
 import { NextSeo } from "next-seo";
+import Content from "../../components/Content";
 import getSolutions from "../../utils/solutions";
 import getSolution from "../../utils/solution";
 
-const Solution = ({ data }) => {
+function Solution({ data }) {
   return (
     <>
       <NextSeo title={data.title} description={data.description} />
@@ -19,7 +20,7 @@ const Solution = ({ data }) => {
               alt="Icon"
               width="auto"
               height="auto"
-            ></img>
+            />
           </div>
         </Zoom>
         <Zoom>
@@ -32,7 +33,7 @@ const Solution = ({ data }) => {
             {data.description}
           </div>
         </Zoom>
-        <Content content={data.content}></Content>
+        <Content content={data.content} />
         <div className=" text-sm text-gray-400 my-5 text-right">
           Updated on {dayjs(data.updatedAt).format("DD MMM YYYY")}
         </div>
@@ -60,7 +61,7 @@ const Solution = ({ data }) => {
       </div>
     </>
   );
-};
+}
 
 export const getStaticPaths = async () => {
   const data = await getSolutions();

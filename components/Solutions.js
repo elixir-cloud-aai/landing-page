@@ -1,8 +1,8 @@
+import React, { useState } from "react";
 import Link from "next/link";
-import { useState } from "react";
 import Zoom from "react-reveal/Zoom";
 
-const Solutions = ({ solutions }) => {
+function Solutions({ solutions }) {
   const [query, setQuery] = useState("");
   const [filteredSolutions, setFilteredSolutions] = useState(solutions);
 
@@ -16,37 +16,32 @@ const Solutions = ({ solutions }) => {
     setFilteredSolutions(newFilteredSolutions);
   };
 
-  const renderSolutions = () => {
-    return filteredSolutions.map((solution) => {
-      return (
-        <>
-          <Zoom key={solution.id}>
-            <Link href={`solution/${solution.id}`} passHref>
-              <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 hover:bg-gray-100 cursor-pointer">
-                <div className="flex md:flex-row flex-col">
-                  <img
-                    src={solution.icon}
-                    className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
-                    alt="Icon"
-                    width="auto"
-                    height="auto"
-                  ></img>
-                  <div className="flex-grow p-5">
-                    <div className="text-xl font-semibold flex justify-between">
-                      <div className="dark:text-gray-200">{solution.title}</div>
-                    </div>
-                    <div className="text-gray-500 text-justify mt-1.5 dark:text-gray-400">
-                      {solution.description}
-                    </div>
-                  </div>
+  const renderSolutions = () =>
+    filteredSolutions.map((solution) => (
+      <Zoom key={solution.id}>
+        <Link href={`solution/${solution.id}`} passHref>
+          <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 hover:bg-gray-100 cursor-pointer">
+            <div className="flex md:flex-row flex-col">
+              <img
+                src={solution.icon}
+                className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
+                alt="Icon"
+                width="auto"
+                height="auto"
+              />
+              <div className="flex-grow p-5">
+                <div className="text-xl font-semibold flex justify-between">
+                  <div className="dark:text-gray-200">{solution.title}</div>
+                </div>
+                <div className="text-gray-500 text-justify mt-1.5 dark:text-gray-400">
+                  {solution.description}
                 </div>
               </div>
-            </Link>
-          </Zoom>
-        </>
-      );
-    });
-  };
+            </div>
+          </div>
+        </Link>
+      </Zoom>
+    ));
 
   return (
     <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700">
@@ -57,10 +52,10 @@ const Solutions = ({ solutions }) => {
         onChange={(e) => {
           handleSearch(e);
         }}
-      ></input>
+      />
       {renderSolutions()}
     </div>
   );
-};
+}
 
 export default Solutions;

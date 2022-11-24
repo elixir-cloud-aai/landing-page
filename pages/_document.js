@@ -1,3 +1,4 @@
+import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
@@ -14,11 +15,15 @@ class MyDocument extends Document {
           <link
             href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap"
             rel="stylesheet"
-          ></link>
-          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-          <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-          <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+          />
+          <script
+            type="module"
+            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+          />
+          <script
+            noModule
+            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+          />
         </Head>
         <body>
           <Main />

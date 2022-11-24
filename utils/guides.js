@@ -8,26 +8,27 @@ const notion = new Client({
 
 const getGuides = async () => {
   try {
-    var contributors = await getContributors();
-    var payload = {
-      path: `search`,
-      method: `POST`,
+    const contributors = await getContributors();
+    let payload = {
+      path: "search",
+      method: "POST",
       body: {
         query: "Guides",
       },
     };
-    var data = await notion.request(payload);
+    const data = await notion.request(payload);
     const solutionsDBId = data.results[0].id;
     payload = {
       path: `databases/${solutionsDBId}/query`,
-      method: `POST`,
+      method: "POST",
     };
-    var { results } = await notion.request(payload);
+    let { results } = await notion.request(payload);
     results = results.map((result) => {
-      var author = null;
+      let author = null;
       if (result.properties.Author.relation.length !== 0) {
         author = contributors.find(
-          (contributor) => contributor.id === result.properties.Author.relation[0].id
+          (contributor) =>
+            contributor.id === result.properties.Author.relation[0].id
         );
       }
       return {

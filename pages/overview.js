@@ -1,15 +1,16 @@
-import OverviewComponent from "../components/Overview";
+import React from "react";
 import { NextSeo } from "next-seo";
+import OverviewComponent from "../components/Overview";
 import getOverview from "../utils/overview";
 
-const Overview = ({ overview }) => {
+function Overview({ overview }) {
   return (
     <>
       <NextSeo title="Overview" />
       <OverviewComponent data={overview} />
     </>
   );
-};
+}
 
 export const getStaticProps = async () => {
   const data = await getOverview();

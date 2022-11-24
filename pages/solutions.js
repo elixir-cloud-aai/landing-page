@@ -1,15 +1,19 @@
-import SolutionsComponent from "../components/Solutions";
+import React from "react";
 import { NextSeo } from "next-seo";
+import SolutionsComponent from "../components/Solutions";
 import getSolutions from "../utils/solutions";
 
-const Solutions = ({ solutions }) => {
+function Solutions({ solutions }) {
   return (
     <>
-      <NextSeo title="Solutions" description="ELIXIR Cloud & AAI-developed solutions." />
-      <SolutionsComponent solutions={solutions}></SolutionsComponent>
+      <NextSeo
+        title="Solutions"
+        description="ELIXIR Cloud & AAI-developed solutions."
+      />
+      <SolutionsComponent solutions={solutions} />
     </>
   );
-};
+}
 
 export const getStaticProps = async () => {
   const data = await getSolutions();
