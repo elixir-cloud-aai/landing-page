@@ -1,15 +1,19 @@
-import PartnersComponent from "../components/Partners";
+import React from "react";
 import { NextSeo } from "next-seo";
+import PartnersComponent from "../components/Partners";
 import getPartners from "../utils/partners";
 
-const Partners = ({ partners }) => {
+function Partners({ partners }) {
   return (
     <>
-      <NextSeo title="Partners" description="ELIXIR Cloud & AAI collobrative partners." />
-      <PartnersComponent partners={partners}></PartnersComponent>
+      <NextSeo
+        title="Partners"
+        description="ELIXIR Cloud & AAI collobrative partners."
+      />
+      <PartnersComponent partners={partners} />
     </>
   );
-};
+}
 
 export const getStaticProps = async () => {
   const data = await getPartners();

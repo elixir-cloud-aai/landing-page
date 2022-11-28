@@ -6,13 +6,13 @@ const notion = new Client({
 
 const getSolution = async (id) => {
   try {
-    var payload = {
+    let payload = {
       path: `blocks/${id}/children`,
-      method: `GET`,
+      method: "GET",
     };
-    var { results } = await notion.request(payload);
+    let { results } = await notion.request(payload);
     results = results.map((result) => {
-      if (result.image && result.image.type == "external") {
+      if (result.image && result.image.type === "external") {
         return {
           id: result.id,
           type: result.type,
@@ -25,24 +25,23 @@ const getSolution = async (id) => {
         return {
           id: result.id,
           type: result.type,
-          text: result.paragraph.text.map((block) => {
-            return {
-              content: block.plain_text,
-              link: block.href,
-              annotations: { ...block.annotations },
-            };
-          }),
+          text: result.paragraph.text.map((block) => ({
+            content: block.plain_text,
+            link: block.href,
+            annotations: { ...block.annotations },
+          })),
           createdAt: result.created_time,
           updatedAt: result.last_edited_time,
         };
       }
+      return null;
     });
-    var content = results;
-    var payload = {
+    const content = results;
+    payload = {
       path: `pages/${id}`,
-      method: `GET`,
+      method: "GET",
     };
-    var results = await notion.request(payload);
+    results = await notion.request(payload);
     results = {
       id: results.id,
       title: results.properties.Name.title[0].text.content,

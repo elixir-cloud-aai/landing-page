@@ -1,14 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import TextLoop from "react-text-loop";
 import Zoom from "react-reveal/Zoom";
 import window from "global/window";
 
-const Home = () => {
+function Home() {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
-  const [backgroundImgUrl, setBackgroundImgUrl] = useState("url(/Landing_Dark.svg)");
   const [innerWidth, setinnerWidth] = useState(1000);
+  const backgroundImgUrl = "url(/Landing_Dark.svg)";
 
   const handleMouseMove = (e) => {
     setX(e.clientX);
@@ -16,24 +16,22 @@ const Home = () => {
     setinnerWidth(window.innerWidth);
   };
 
-  const renderTextLoop = () => {
-    return (
-      <span className="block md:inline">
-        <TextLoop springConfig={{ stiffness: 180, damping: 8 }} noWrap={false}>
-          <span className="text-elixirred">Findable</span>
-          <span className="text-elixirgreen">Accessible</span>
-          <span className="text-elixiryellow">Interoperable</span>
-          <span className="text-elixirblue">Reusable</span>
-          <div>
-            <span className="text-elixirred">F</span>
-            <span className="text-elixirgreen">A</span>
-            <span className="text-elixiryellow">I</span>
-            <span className="text-elixirblue">R</span>
-          </div>
-        </TextLoop>
-      </span>
-    );
-  };
+  const renderTextLoop = () => (
+    <span className="block md:inline">
+      <TextLoop springConfig={{ stiffness: 180, damping: 8 }} noWrap={false}>
+        <span className="text-elixirred">Findable</span>
+        <span className="text-elixirgreen">Accessible</span>
+        <span className="text-elixiryellow">Interoperable</span>
+        <span className="text-elixirblue">Reusable</span>
+        <div>
+          <span className="text-elixirred">F</span>
+          <span className="text-elixirgreen">A</span>
+          <span className="text-elixiryellow">I</span>
+          <span className="text-elixirblue">R</span>
+        </div>
+      </TextLoop>
+    </span>
+  );
 
   return (
     <div className="font-pop dark:bg-gray-800 dark:text-white">
@@ -57,7 +55,10 @@ const Home = () => {
                 ELIXIR Cloud &#38; AAI
               </div> */}
               Making Cloud Infrastructure for{" "}
-              <span className="inline md:block">the Life Sciences {renderTextLoop()}</span>
+              <span className="inline md:block">
+                the Life Sciences
+                {renderTextLoop()}
+              </span>
             </div>
           </Zoom>
         </div>
@@ -67,7 +68,8 @@ const Home = () => {
               <div className="text-lg text-gray-700 dark:text-gray-200 leading-loose text-justify">
                 The{" "}
                 <span className="font-semibold">
-                  ELIXIR Cloud and Authentication and Authorization Infrastructure (AAI)
+                  ELIXIR Cloud and Authentication and Authorization
+                  Infrastructure (AAI)
                 </span>{" "}
                 project aims to leverage a coordinated network of{" "}
                 <a
@@ -83,8 +85,9 @@ const Home = () => {
                 >
                   GA4GH
                 </a>{" "}
-                standards-compliant federated environment to enable population scale genomic and
-                phenotypic data analysis across international boundaries.{" "}
+                standards-compliant federated environment to enable population
+                scale genomic and phenotypic data analysis across international
+                boundaries.{" "}
                 <Link href="/overview" passHref>
                   <span className="text-elixirblue font-semibold hover:underline cursor-pointer">
                     More...
@@ -92,7 +95,7 @@ const Home = () => {
                 </Link>
               </div>
               <div>
-                <img src="/Earth.svg" alt="globe" width="auto" height="auto"></img>
+                <img src="/Earth.svg" alt="globe" width="auto" height="auto" />
               </div>
             </div>
           </div>
@@ -115,6 +118,6 @@ const Home = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Home;

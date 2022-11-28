@@ -7,7 +7,11 @@
     "build:dev": "next build && next export",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ./",
+    "lint-fix": "eslint ./ --fix",
+    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "dependencies": {
     "@notionhq/client": "^0.4.2",
@@ -26,9 +30,31 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.3.7",
-    "eslint": "7.32.0",
+    "eslint": "^8.28.0",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "11.1.2",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-n": "^15.2.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.31.11",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.2",
+    "lint-staged": "^13.0.3",
     "postcss": "^8.3.9",
+    "prettier": "^2.8.0",
     "tailwindcss": "^2.2.16"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx}": "npm run lint-fix",
+    "*.{js,css,md}": "prettier --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && pretty-quick --staged"
+    }
   }
 }

@@ -3,9 +3,9 @@ import Link from "next/link";
 import Slide from "react-reveal/Slide";
 import { useRouter } from "next/router";
 
-const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
+function NavBar({ scroll, toggleDarkMode, darkMode }) {
   const router = useRouter();
-  const [links, setLinks] = useState([
+  const links = [
     {
       name: "News & Press",
       path: "/news",
@@ -18,107 +18,98 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
       name: "Guides & FAQ",
       path: "/guides",
     },
-  ]);
+  ];
 
   const [location, setLocation] = useState(router.pathname);
   const [navOpen, setNavOpen] = useState(false);
   const [showBanner, setShowBanner] = useState(true);
 
-  const renderLinks = () => {
-    return (
-      <div>
-        {links.map((link) => {
-          return (
+  const renderLinks = () => (
+    <div>
+      {links.map((link) => (
+        <Link href={link.path} key={link.name} passHref>
+          <div
+            onClick={() => {
+              setLocation(link.path);
+            }}
+            className={`inline-block px-3 cursor-pointer ${
+              location === link.path ? "text-elixirblue" : "text-gray-500"
+            }
+                  hover:text-elixirblue`}
+          >
+            {link.name}
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+
+  const renderNavButton = () => (
+    <div>
+      {navOpen ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer outline-none mb-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          onClick={() => setNavOpen(!navOpen)}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      ) : (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer outline-none mb-1"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          onClick={() => setNavOpen(!navOpen)}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      )}
+    </div>
+  );
+
+  const renderNav = () => (
+    <Slide when={navOpen} duration={5} top>
+      <div
+        className={`left-0 w-full bg-white py-5 text-lg top-20 transition duration-200 ease-in-out dark:bg-gray-900 ${
+          navOpen ? "block" : "hidden"
+        }`}
+      >
+        <div className="flex flex-col justify-center items-center">
+          {links.map((link) => (
             <Link href={link.path} key={link.name} passHref>
               <div
                 onClick={() => {
                   setLocation(link.path);
+                  setNavOpen(false);
                 }}
-                className={`inline-block px-3 cursor-pointer ${location === link.path ? "text-elixirblue" : "text-gray-500"
-                  }
-                  hover:text-elixirblue`}
+                className={`inline-block py-2 text-center cursor-pointer ${
+                  location === link.path ? "text-elixirblue" : "text-gray-500"
+                }
+                        hover:text-elixirblue`}
               >
                 {link.name}
               </div>
             </Link>
-          );
-        })}
-      </div>
-    );
-  };
-
-  const renderNavButton = () => {
-    return (
-      <div>
-        {navOpen ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer outline-none mb-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            onClick={() => setNavOpen(!navOpen)}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-gray-500 hover:text-elixirblue cursor-pointer outline-none mb-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            onClick={() => setNavOpen(!navOpen)}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        )}
-      </div>
-    );
-  };
-
-  const renderNav = () => {
-    return (
-      <Slide when={navOpen} duration={5} top={true}>
-        <div
-          className={`left-0 w-full bg-white py-5 text-lg top-20 transition duration-200 ease-in-out dark:bg-gray-900 ${navOpen ? "block" : "hidden"
-            }`}
-        >
-          <div className="flex flex-col justify-center items-center">
-            {links.map((link) => {
-              return (
-                <>
-                  <Link href={link.path} key={link.name} passHref>
-                    <div
-                      onClick={() => {
-                        setLocation(link.path);
-                        setNavOpen(false);
-                      }}
-                      className={`inline-block py-2 text-center cursor-pointer ${location === link.path ? "text-elixirblue" : "text-gray-500"
-                        }
-                        hover:text-elixirblue`}
-                    >
-                      {link.name}
-                    </div>
-                  </Link>
-                </>
-              );
-            })}
-          </div>
+          ))}
         </div>
-      </Slide>
-    );
-  };
+      </div>
+    </Slide>
+  );
 
   const renderDarkModeIcon = () => {
     if (!darkMode) {
@@ -138,53 +129,68 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
           />
         </svg>
       );
-    } else {
-      return (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 mb-1.5 md:mb-1"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-          />
-        </svg>
-      );
     }
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6 mb-1.5 md:mb-1"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+        />
+      </svg>
+    );
   };
 
   return (
     <div className="text-gray-700 font-pop dark:text-gray-200 dark:bg-gray-900 fixed z-10 w-full bg-white">
-      {showBanner &&
-        <div className="text-center py-2 bg-elixirblue text-white md:text-sm text-xs">This website is currently under construction and may have missing, incomplete and/or outdated content
-          <span className="md:-mt-5 mt-0 md:absolute md:right-5 flex justify-center cursor-pointer" onClick={() => {
-            setShowBanner(false);
-          }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="md:w-5 md:h-5 w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+      {showBanner && (
+        <div className="text-center py-2 bg-elixirblue text-white md:text-sm text-xs">
+          This website is currently under construction and may have missing,
+          incomplete and/or outdated content
+          <span
+            className="md:-mt-5 mt-0 md:absolute md:right-5 flex justify-center cursor-pointer"
+            onClick={() => {
+              setShowBanner(false);
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="md:w-5 md:h-5 w-4 h-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </span>
         </div>
-      }
+      )}
       <div
         id="navbar"
         style={
           scroll <= 1
             ? {
-              paddingTop: "2rem",
-              paddingBottom: "2rem",
-              transition: "all 0.5s",
-            }
+                paddingTop: "2rem",
+                paddingBottom: "2rem",
+                transition: "all 0.5s",
+              }
             : {
-              paddingTop: "1rem",
-              paddingBottom: "0.75rem",
-              transition: "all 0.5s",
-            }
+                paddingTop: "1rem",
+                paddingBottom: "0.75rem",
+                transition: "all 0.5s",
+              }
         }
         className={
           scroll <= 1
@@ -206,7 +212,7 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
                 alt="logo"
                 width="auto"
                 height="auto"
-              ></img>
+              />
               <div className="inline-block font-semibold text-lg md:text-2xl">
                 ELIXIR Cloud & AAI
               </div>
@@ -235,6 +241,6 @@ const NavBar = ({ scroll, toggleDarkMode, darkMode }) => {
       </div>
     </div>
   );
-};
+}
 
 export default NavBar;

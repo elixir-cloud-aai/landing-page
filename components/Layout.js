@@ -3,7 +3,7 @@ import Footer from "./Footer";
 import NavBar from "./NavBar";
 import { DarkModeProvider } from "../context/darkMode";
 
-const Layout = ({ children }) => {
+function Layout({ children }) {
   const [scroll, setScroll] = useState(0);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -20,20 +20,22 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <>
-      <div className="flex flex-col min-h-screen">
-        <nav>
-          <NavBar scroll={scroll} toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
-        </nav>
-        <main className="flex-grow mt-5 mb-10">
-          <DarkModeProvider value={darkMode}>{children}</DarkModeProvider>
-        </main>
-        <footer>
-          <Footer></Footer>
-        </footer>
-      </div>
-    </>
+    <div className="flex flex-col min-h-screen">
+      <nav>
+        <NavBar
+          scroll={scroll}
+          toggleDarkMode={toggleDarkMode}
+          darkMode={darkMode}
+        />
+      </nav>
+      <main className="flex-grow mt-5 mb-10">
+        <DarkModeProvider value={darkMode}>{children}</DarkModeProvider>
+      </main>
+      <footer>
+        <Footer />
+      </footer>
+    </div>
   );
-};
+}
 
 export default Layout;

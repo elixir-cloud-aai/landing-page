@@ -1,15 +1,16 @@
-import GuidesComponent from "../components/Guides";
+import React from "react";
 import { NextSeo } from "next-seo";
+import GuidesComponent from "../components/Guides";
 import getGuides from "../utils/guides";
 
-const Guides = ({ guides }) => {
+function Guides({ guides }) {
   return (
     <>
       <NextSeo title="Guides" />
-      <GuidesComponent guides={guides}></GuidesComponent>
+      <GuidesComponent guides={guides} />
     </>
   );
-};
+}
 
 export const getStaticProps = async () => {
   const data = await getGuides();
