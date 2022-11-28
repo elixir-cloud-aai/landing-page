@@ -4,6 +4,8 @@ import { useContext, useEffect, useState } from "react";
 // single select not working properly
 
 const Select = ({ value, onChange, options, multiple }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const darkMode = useContext(DarkModeContext);
   if (!multiple) multiple = false;
   if (!(multiple && Array.isArray(value))) {
     console.error(
@@ -11,8 +13,6 @@ const Select = ({ value, onChange, options, multiple }) => {
     );
     return <>Error</>;
   }
-  const [isOpen, setIsOpen] = useState(false);
-  const darkMode = useContext(DarkModeContext);
   const clearOptions = () => {
     multiple ? onChange([]) : onChange(undefined);
   };
@@ -31,15 +31,15 @@ const Select = ({ value, onChange, options, multiple }) => {
   const isSelectedOption = (selectedOption) => {
     if (multiple) {
       const payload1 = JSON.stringify(selectedOption);
-      let returnValue = null
+      let returnValue = null;
       value.map((v) => {
         const payload2 = JSON.stringify(v);
         if (payload1 === payload2) {
           returnValue = true;
         }
       });
-      if(returnValue !== true) returnValue = false;
-      return returnValue
+      if (returnValue !== true) returnValue = false;
+      return returnValue;
     } else {
       return selectedOption.value == value.value;
     }
@@ -72,8 +72,12 @@ const Select = ({ value, onChange, options, multiple }) => {
               );
             })
           : value.label}
-          {(multiple && value.length==0) ? <span className="text-sm text-gray-500">Select affliation</span>: ""}
-          {/* {(!multiple && !value) ? `Select affliation`: ""} */}
+        {multiple && value.length == 0 ? (
+          <span className="text-sm text-gray-500">Select affliation</span>
+        ) : (
+          ""
+        )}
+        {/* {(!multiple && !value) ? `Select affliation`: ""} */}
       </span>
       {!multiple ? (
         <button
