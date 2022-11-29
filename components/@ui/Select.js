@@ -1,5 +1,5 @@
+import React, { useContext, useState } from "react";
 import DarkModeContext from "../../context/darkMode";
-import { useContext, useEffect, useState } from "react";
 
 /**
  * @params
@@ -52,7 +52,7 @@ const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
     if (multiple===true) {
       const payload1 = JSON.stringify(selectedOption);
       let returnValue = null;
-      value.map((v) => {
+      value.forEach((v) => {
         const payload2 = JSON.stringify(v);
         if (payload1 === payload2) {
           returnValue = true;
@@ -61,7 +61,7 @@ const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
       if (returnValue !== true) returnValue = false;
       return returnValue;
     } else {
-      return selectedOption.value == value.value;
+      return selectedOption.value === value.value;
     }
   };
   return (

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import DarkModeContext from "../context/darkMode";
 import Select from "./@ui/Select";
 
@@ -27,7 +27,7 @@ const Modal = ({
 
   const generateAffliationOptions = () => {
     let selectAffiliationOptions = [];
-    affiliations?.map((affiliation) => {
+    affiliations?.forEach((affiliation) => {
       const newOption = {
         label: affiliation,
         value: affiliation,
@@ -57,7 +57,7 @@ const Modal = ({
 
   const handleFilter = (e) => {
     e.preventDefault();
-    e.stopPropagation()
+    e.stopPropagation();
 
     const includePastContributor = !filterformValues.pastContributorCheckBox;
     const projectLeadsOnly = filterformValues.projectLeadCheckbox;
@@ -88,13 +88,12 @@ const Modal = ({
     filteredContributorByAffiliationCheck =
       filteredContributorByProjectLeadCheck;
     if (affiliations !== []) {
-      console.log(affiliations)
-      affiliations.map(affiliation => {
+      affiliations.forEach((affiliation) => {
         filteredContributorByAffiliationCheck =
-        filteredContributorByAffiliationCheck?.filter((contributor) => {
+          filteredContributorByAffiliationCheck?.filter((contributor) => {
             return isAffliatedTo(affiliation.value, contributor);
           });
-      })
+      });
     }
     setFilteredContributors(filteredContributorByAffiliationCheck);
   };
@@ -103,8 +102,8 @@ const Modal = ({
     setFilterformValues({
       ...filterformValues,
       affiliationInput: option,
-    })
-  }
+    });
+  };
   return (
     <div
       className={`modal__backdrop flex justify-center items-center`}
@@ -146,7 +145,7 @@ const Modal = ({
                   htmlFor="past-contributors"
                   className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                 >
-                  Active contributors only
+                  Active contributors
                 </label>
               </div>
               <div className="flex items-center mb-4 w-full">
@@ -167,7 +166,7 @@ const Modal = ({
                   htmlFor="project-lead"
                   className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                 >
-                  Project leads only
+                  Project leads
                 </label>
               </div>
               <Select
