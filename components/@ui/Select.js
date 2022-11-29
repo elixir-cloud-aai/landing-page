@@ -1,5 +1,5 @@
+import React, { useContext, useState } from "react";
 import DarkModeContext from "../../context/darkMode";
-import { useContext, useEffect, useState } from "react";
 
 // single select not working properly
 
@@ -32,7 +32,7 @@ const Select = ({ value, onChange, options, multiple }) => {
     if (multiple) {
       const payload1 = JSON.stringify(selectedOption);
       let returnValue = null;
-      value.map((v) => {
+      value.forEach((v) => {
         const payload2 = JSON.stringify(v);
         if (payload1 === payload2) {
           returnValue = true;
@@ -41,7 +41,7 @@ const Select = ({ value, onChange, options, multiple }) => {
       if (returnValue !== true) returnValue = false;
       return returnValue;
     } else {
-      return selectedOption.value == value.value;
+      return selectedOption.value === value.value;
     }
   };
   return (
@@ -72,7 +72,7 @@ const Select = ({ value, onChange, options, multiple }) => {
               );
             })
           : value.label}
-        {multiple && value.length == 0 ? (
+        {multiple && value.length === 0 ? (
           <span className="text-sm text-gray-500">Select affliation</span>
         ) : (
           ""
