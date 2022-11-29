@@ -173,8 +173,9 @@ const Modal = ({
               <Select
                 options={generateAffliationOptions()}
                 value={filterformValues.affiliationInput}
-                multiple
+                multiple={true}
                 onChange={(o)=> handleSelect(o)}
+                defaultLabel="Select Affliations"
               />
             </div>
           </div>

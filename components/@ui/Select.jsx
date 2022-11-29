@@ -1,23 +1,43 @@
 import DarkModeContext from "../../context/darkMode";
 import { useContext, useEffect, useState } from "react";
 
-// single select not working properly
+/**
+ * @params
+ * value: Object | Array of objects
+ * onChange: Function
+ * options: Array of objects
+ * multiple: boolean
+ * defaultLabel: String
+ */
 
-const Select = ({ value, onChange, options, multiple }) => {
+/**
+ * object must have `label` and `value` keys. e.g., { label: "test_label", value: "test_value" }
+ * value must be an array of such objects if multiple mode is on
+ * empty array can also be used without following the rule of object
+ * value must be a single object with mentioned keys if single mode is on
+ * onChange must be a function that takes the changed value as parameter
+ */
+const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
   const [isOpen, setIsOpen] = useState(false);
   const darkMode = useContext(DarkModeContext);
-  if (!multiple) multiple = false;
-  if (!(multiple && Array.isArray(value))) {
+
+  if (multiple==true && !(Array.isArray(value))) {
     console.error(
-      "an array should be and only be passed in value prop for multiple select"
+      "Select element custom error: An array should be passed in value prop for multiple select"
+    );
+    return <>Error</>;
+  }
+  if (multiple==false && Array.isArray(value)) {
+    console.error(
+      "Select element custom error: An array should \"only\" be passed in value prop for multiple select"
     );
     return <>Error</>;
   }
   const clearOptions = () => {
-    multiple ? onChange([]) : onChange(undefined);
+    multiple===true ? onChange([]) : onChange(undefined);
   };
   const selectOption = (selectedOption) => {
-    if (multiple) {
+    if (multiple===true) {
       if (isSelectedOption(selectedOption)) {
         onChange(value.filter((opt) => opt.value !== selectedOption.value));
       } else {
@@ -29,7 +49,7 @@ const Select = ({ value, onChange, options, multiple }) => {
   };
 
   const isSelectedOption = (selectedOption) => {
-    if (multiple) {
+    if (multiple===true) {
       const payload1 = JSON.stringify(selectedOption);
       let returnValue = null;
       value.map((v) => {
@@ -54,8 +74,9 @@ const Select = ({ value, onChange, options, multiple }) => {
       }`}
     >
       <span className="flex-grow">
-        {multiple
-          ? value.map((v) => {
+        {multiple===true
+          ? 
+          value.map((v) => {
               if (v?.value === "") return null;
               return (
                 <button
@@ -72,26 +93,12 @@ const Select = ({ value, onChange, options, multiple }) => {
               );
             })
           : value.label}
-        {multiple && value.length == 0 ? (
-          <span className="text-sm text-gray-500">Select affliation</span>
+        {multiple===true && value.length == 0 ? (
+          <span className="text-sm text-gray-500">{defaultLabel}</span>
         ) : (
           ""
         )}
-        {/* {(!multiple && !value) ? `Select affliation`: ""} */}
       </span>
-      {!multiple ? (
-        <button
-          className="bg-transparent text-[#777] border-none outline-none p-0 text-xl focus:text-[#333] hover:text-[#333]"
-          onClick={(e) => {
-            e.stopPropagation();
-            clearOptions();
-          }}
-        >
-          &times;
-        </button>
-      ) : (
-        ""
-      )}
       <div className="bg-[#777] w-0.5 self-stretch"></div>
       <div
         className="border-4 border-solid border-transparent"
