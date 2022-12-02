@@ -8,6 +8,8 @@ services:
        dockerfile: Dockerfile
        args:
          NOTION_SECRET: $NOTION_TOKEN
+     environment:
+     - $NOTION_TOKEN=$NOTION_TOKEN
      restart: unless-stopped
      ports:
       - "80:3000"
