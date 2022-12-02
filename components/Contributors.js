@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Zoom from "react-reveal/Zoom";
 import DarkModeContext from "../context/darkMode";
+import Button from "./@ui/Button";
 import ContributorFilter from "./ContributorFilter";
 
 function Contributors({ contributors }) {
@@ -62,6 +63,7 @@ function Contributors({ contributors }) {
 
   const resetFilters = () => {
     setFilteredContributors(contributors);
+    setFilteredContributorBySearch(contributors)
     setQuery("");
     setFilterformValues({
       pastContributorCheckBox: false,
@@ -219,12 +221,14 @@ function Contributors({ contributors }) {
       return (
         <div className="flex w-full">
           <div className="text-xl">No Contributors</div>
-          <button
-            className="border-2 border-elixirred text-elixirred pl-5 pr-5 rounded hover:bg-gray-800 hover:border-gray-900 hover:text-white transition-all ml-12"
+          <Button
+            // className="border-2 border-elixirred text-elixirred pl-5 pr-5 rounded hover:bg-gray-800 hover:border-gray-900 hover:text-white transition-all ml-12"
             onClick={() => resetFilters()}
+            variant="danger"
+            size="md"
           >
             Reset filters
-          </button>
+          </Button>
         </div>
       );
     }
@@ -274,13 +278,15 @@ function Contributors({ contributors }) {
               handleSearch(e);
             }}
           ></input>
-          <button
+          <Button
+            size={"sm"}
             onClick={toggleModal}
             type="button"
-            className="bg-elixirblue border-2 border-elixirblue rounded-lg outline-none text-white cursor-pointer px-3 py-1 ml-2 h-10 shadow-md"
+            variant={!darkMode ? `primary` : `dark-primary` }
+            customStyle={{height:'35px'}}
           >
             Filter
-          </button>
+          </Button>
         </div>
         <ContributorFilter
           affiliations={affiliations}

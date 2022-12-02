@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import DarkModeContext from "../context/darkMode";
+import Button from "./@ui/Button";
 import Select from "./@ui/Select";
 
 const Modal = ({
@@ -123,11 +124,11 @@ const Modal = ({
           onSubmit={(e) => {
             handleFilter(e);
           }}
-          className="lg:block flex flex-col"
+          className="flex flex-col lg:flex-row items-center justify-center"
         >
-          <div className="filters flex flex-col md:flex-row">
-            <div className="flex flex-col md:flex-row w-full">
-              <div className="flex items-center mb-4 w-full">
+          <div className="filters flex flex-col md:flex-row flex-[10]">
+            <div className="flex flex-col lg:flex-row w-full">
+              <div className="flex items-center mb-4 lg:mb-0 w-full">
                 <input
                   id="past-contributors"
                   type="checkbox"
@@ -148,7 +149,7 @@ const Modal = ({
                   Active contributors
                 </label>
               </div>
-              <div className="flex items-center mb-4 w-full">
+              <div className="flex items-center mb-4 lg:mb-0 w-full">
                 <input
                   id="project-lead"
                   type="checkbox"
@@ -178,12 +179,15 @@ const Modal = ({
               />
             </div>
           </div>
-          <button
+          <Button
             type="submit"
-            className="bg-elixirblue border-0 rounded-sm text-white cursor-pointer transition-all px-3 py-1 mt-1 md:m-auto"
+            className="flex-[2] h-full lg:ml-20 ml-0 mt-4 lg:mt-0"
+            size={"md"}
+            customStyle={{height: '50px'}}
+            variant={ !darkMode? `secondary`: `dark-secondary`}
           >
             Apply
-          </button>
+          </Button>
         </form>
       </div>
     </div>
