@@ -283,7 +283,7 @@ function Contributors({ contributors }) {
             onClick={toggleModal}
             type="button"
             variant={!darkMode ? `primary` : `dark-primary` }
-            customStyle={{height:'35px'}}
+            customStyle={{height:'35px', marginLeft: '11px'}}
           >
             Filter
           </Button>
