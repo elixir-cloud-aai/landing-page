@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Zoom from "react-reveal/Zoom";
+import DarkModeContext from "../context/darkMode";
 
 function Partners({ partners }) {
   const [query, setQuery] = useState("");
   const [filteredPartners, setFilteredPartners] = useState(partners);
+  const darkMode = useContext(DarkModeContext);
 
   const handleSearch = (e) => {
     setQuery(e.target.value);
@@ -22,7 +24,7 @@ function Partners({ partners }) {
           <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 cursor-pointer ">
             <div className="flex md:flex-row flex-col">
               <img
-                src={partner.icon}
+                src={!darkMode ? partner.icon : partner.iconDark}
                 className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
                 alt="Icon"
                 width="auto"
