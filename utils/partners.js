@@ -30,6 +30,7 @@ const getPartners = async () => {
         ? result.properties.Website.rich_text[0].text.content
         : "",
       icon: result.properties.Icon.url,
+      iconDark: result.properties.IconDark.url,
       createdAt: result.created_time,
       updatedAt: result.last_edited_time,
     }));
