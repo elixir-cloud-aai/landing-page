@@ -26,7 +26,7 @@ function NavBar({ scroll, toggleDarkMode, darkMode }) {
 
   useEffect(() => {
     setLocation(router.pathname)
-  })
+  }, [router])
 
   const renderLinks = () => (
     <div>
