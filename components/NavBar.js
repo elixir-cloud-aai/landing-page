@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Slide from "react-reveal/Slide";
 import { useRouter } from "next/router";
@@ -23,6 +23,10 @@ function NavBar({ scroll, toggleDarkMode, darkMode }) {
   const [location, setLocation] = useState(router.pathname);
   const [navOpen, setNavOpen] = useState(false);
   const [showBanner, setShowBanner] = useState(true);
+
+  useEffect(() => {
+    setLocation(router.pathname)
+  })
 
   const renderLinks = () => (
     <div>
