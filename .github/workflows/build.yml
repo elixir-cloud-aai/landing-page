@@ -15,3 +15,5 @@ jobs:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: |
           docker-compose up --build -d
+          sleep 3
+          docker-compose down
