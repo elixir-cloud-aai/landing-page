@@ -14,7 +14,4 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: |
-          docker build \
-              -t testapp:1.0.0 \
-              --build-arg NOTION_SECRET=${NOTION_TOKEN} \
-              .
+          docker-compose up --build -d
