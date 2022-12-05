@@ -33,9 +33,6 @@ function NavBar({ scroll, toggleDarkMode, darkMode }) {
       {links.map((link) => (
         <Link href={link.path} key={link.name} passHref>
           <div
-            onClick={() => {
-              setLocation(link.path);
-            }}
             className={`inline-block px-3 cursor-pointer ${
               location === link.path ? "text-elixirblue" : "text-gray-500"
             }
