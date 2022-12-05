@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Slide from "react-reveal/Slide";
 import { useRouter } from "next/router";
@@ -24,14 +24,15 @@ function NavBar({ scroll, toggleDarkMode, darkMode }) {
   const [navOpen, setNavOpen] = useState(false);
   const [showBanner, setShowBanner] = useState(true);
 
+  useEffect(() => {
+    setLocation(router.pathname)
+  }, [router])
+
   const renderLinks = () => (
     <div>
       {links.map((link) => (
         <Link href={link.path} key={link.name} passHref>
           <div
-            onClick={() => {
-              setLocation(link.path);
-            }}
             className={`inline-block px-3 cursor-pointer ${
               location === link.path ? "text-elixirblue" : "text-gray-500"
             }
