@@ -20,9 +20,6 @@ RUN export NODE_OPTIONS=--openssl-legacy-provider && yarn build && yarn install 
 # Production image, copy all the files and run next
 FROM node:alpine AS runner
 WORKDIR /app
-ARG NOTION_SECRET
-RUN test -n "$NOTION_SECRET" || (echo "Environment variable NOTION_SECRET not set in build context" && false)
-ENV NOTION_TOKEN $NOTION_SECRET
 ENV NODE_ENV production
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
