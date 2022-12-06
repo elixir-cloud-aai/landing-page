@@ -76,7 +76,7 @@ const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
                     e.stopPropagation();
                     selectOption(v);
                   }}
-                  className={`text-xs text-left border border-gray-200 dark:border-gray-700 hover:border-elixirred rounded-lg p-1 hover:bg-elixirred hover:text-white`}
+                  className={`text-xs text-left m-px border border-gray-200 dark:border-gray-700 hover:border-elixirred rounded-lg p-1 hover:bg-elixirred hover:text-white`}
                 >
                   {v?.label}
                   <span className="ml-0.5">&times;</span>

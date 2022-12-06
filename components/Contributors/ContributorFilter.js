@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Select from "../@ui/Select";
 
 const ContributorFilter = ({
@@ -43,12 +43,12 @@ const ContributorFilter = ({
       ...filterformValues,
       affiliationInput: option,
     });
-    handleFilter();
   };
 
-  const handleFilter = (e) => {
+
+  useEffect(() => {
     const includePastContributor = !filterformValues.pastContributorCheckBox;
-    const projectLeadsOnly = !filterformValues.projectLeadCheckbox;
+    const projectLeadsOnly = filterformValues.projectLeadCheckbox;
     const affiliations = filterformValues.affiliationInput;
 
     let filteredContributorByPastContributorCheck,
@@ -84,9 +84,8 @@ const ContributorFilter = ({
       });
     }
     setFilteredContributors(filteredContributorByAffiliationCheck);
-  };
-
-  console.log(filterformValues);
+  // };
+}, [filterformValues])
 
   return (
     <div className={`flex justify-center items-center`}>
@@ -105,7 +104,6 @@ const ContributorFilter = ({
                       pastContributorCheckBox:
                         !filterformValues.pastContributorCheckBox,
                     });
-                    handleFilter();
                   }}
                   checked={filterformValues.pastContributorCheckBox}
                 />
@@ -127,7 +125,6 @@ const ContributorFilter = ({
                       projectLeadCheckbox:
                         !filterformValues.projectLeadCheckbox,
                     });
-                    handleFilter();
                   }}
                   checked={filterformValues.projectLeadCheckbox}
                 />
