@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Zoom from "react-reveal/Zoom";
-import DarkModeContext from "../context/darkMode";
-import Button from "./@ui/Button";
+import DarkModeContext from "../../context/darkMode";
 import ContributorFilter from "./ContributorFilter";
 
 function Contributors({ contributors }) {
@@ -19,9 +18,10 @@ function Contributors({ contributors }) {
     affiliationInput: [],
   });
 
-  const [isModalOpen, setModalIsOpen] = useState(false);
-  const toggleModal = () => {
-    setModalIsOpen(!isModalOpen);
+  const [isFilterOpen, setFilterIsOpen] = useState(false);
+
+  const toggleFilters = () => {
+    setFilterIsOpen(!isFilterOpen);
   };
 
   useEffect(() => {
@@ -63,7 +63,7 @@ function Contributors({ contributors }) {
 
   const resetFilters = () => {
     setFilteredContributors(contributors);
-    setFilteredContributorBySearch(contributors)
+    setFilteredContributorBySearch(contributors);
     setQuery("");
     setFilterformValues({
       pastContributorCheckBox: false,
@@ -219,16 +219,16 @@ function Contributors({ contributors }) {
   const renderContributors = () => {
     if (filteredContributorBySearch.length === 0) {
       return (
-        <div className="flex w-full">
-          <div className="text-xl">No Contributors</div>
-          <Button
-            // className="border-2 border-elixirred text-elixirred pl-5 pr-5 rounded hover:bg-gray-800 hover:border-gray-900 hover:text-white transition-all ml-12"
+        <div className="flex items-center">
+          <div className="text-base text-gray-700 dark:text-gray-300">
+            No Contributors
+          </div>
+          <button
+            className="bg-elixirred text-white ml-3 px-20 py-2 rounded-lg md:text-base text-sm"
             onClick={() => resetFilters()}
-            variant="danger"
-            size="md"
           >
-            Reset filters
-          </Button>
+            Reset
+          </button>
         </div>
       );
     }
@@ -271,32 +271,31 @@ function Contributors({ contributors }) {
       <div className="flex flex-col">
         <div className="flex flex-row w-full items-center justify-between">
           <input
-            className="h-10 md:text-base text-sm px-3 py-2 border-2 rounded-lg outline-none w-full focus:shadow-lg hover:shadow-lg placeholder-opacity-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 dark:text-gray-200"
+            className="h-10 md:text-base text-sm px-3 py-2 border-2 rounded-lg outline-none w-full focus:shadow-lg hover:shadow-lg placeholder-opacity-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-900 dark:hover:border-gray-900 dark:text-gray-200"
             placeholder="Search.."
             value={query}
             onChange={(e) => {
               handleSearch(e);
             }}
           ></input>
-          <Button
-            size={"sm"}
-            onClick={toggleModal}
-            type="button"
-            variant={!darkMode ? `primary` : `dark-primary` }
-            customStyle={{height:'35px', marginLeft: '11px'}}
+          <button
+            className="bg-elixirblue text-white ml-2 px-5 py-2 rounded-md md:text-base text-sm"
+            onClick={toggleFilters}
           >
             Filter
-          </Button>
+          </button>
         </div>
-        <ContributorFilter
-          affiliations={affiliations}
-          setFilteredContributors={setFilteredContributors}
-          contributors={contributors}
-          toggleModal={toggleModal}
-          isModalOpen={isModalOpen}
-          filterformValues={filterformValues}
-          setFilterformValues={setFilterformValues}
-        />
+        {isFilterOpen ? (
+          <ContributorFilter
+            affiliations={affiliations}
+            setFilteredContributors={setFilteredContributors}
+            contributors={contributors}
+            filterformValues={filterformValues}
+            setFilterformValues={setFilterformValues}
+          />
+        ) : (
+          <></>
+        )}
       </div>
       <div className="my-10">{renderContributors()}</div>
     </div>
