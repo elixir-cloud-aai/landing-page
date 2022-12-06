@@ -58,7 +58,7 @@ function Solution({ data }) {
       </div>
     </div>
   );
-  console.log(data.author);
+
   return (
     <>
       <NextSeo title={data.title} description={data.description} />
