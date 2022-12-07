@@ -6,6 +6,7 @@ import { DarkModeProvider } from "../context/darkMode";
 function Layout({ children }) {
   const [scroll, setScroll] = useState(0);
   const [darkMode, setDarkMode] = useState(false);
+  const [showBanner, setShowBanner] = useState(true);
 
   useEffect(() => {
     window.onscroll = () => {
@@ -26,9 +27,11 @@ function Layout({ children }) {
           scroll={scroll}
           toggleDarkMode={toggleDarkMode}
           darkMode={darkMode}
+          showBanner={showBanner}
+          setShowBanner={setShowBanner}
         />
       </nav>
-      <main className="flex-grow mt-5 mb-10">
+      <main className={`flex-grow  mb-10 ${showBanner ? 'mt-14 ': ''}`}>
         <DarkModeProvider value={darkMode}>{children}</DarkModeProvider>
       </main>
       <footer>
