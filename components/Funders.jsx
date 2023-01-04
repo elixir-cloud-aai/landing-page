@@ -67,7 +67,7 @@ function Partners({ funders }) {
                   <span className="font-semibold">Reciepients: </span>
                   <span className="">{renderReciepients(funder.recipients)}</span>
                 </div>
-                <div className="md:text-xl sm:text-base text-sm mt-1 md:mt-0 dark:text-gray-200">
+                <div className="md:text-xl sm:text-base text-sm mt-1 md:mt-0 dark:text-gray-200 flex flex-col md:flex-row md:gap-2">
                   <span className="font-semibold">Duration: </span>
                   <span className="flex">
                     <span className="md:text-xl sm:text-base text-sm ">{formatDate(funder.timeline.start)}</span>
