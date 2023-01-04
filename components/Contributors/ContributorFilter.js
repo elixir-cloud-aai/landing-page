@@ -17,6 +17,7 @@ const ContributorFilter = ({
       };
       selectAffiliationOptions = [...selectAffiliationOptions, newOption];
     });
+    selectAffiliationOptions.sort((a, b) => a.value.localeCompare(b.value));
     return selectAffiliationOptions;
   };
 
@@ -85,7 +86,7 @@ const ContributorFilter = ({
     }
     setFilteredContributors(filteredContributorByAffiliationCheck);
   // };
-}, [filterformValues])
+  }, [filterformValues])
 
   return (
     <div className={`flex justify-center items-center`}>
