@@ -50,6 +50,7 @@ const getContributors = async () => {
       image: result.properties.Image.url,
       createdAt: result.created_time,
       updatedAt: result.last_edited_time,
+      isActive: result.properties.Active.checkbox,
     }));
     results.sort((a, b) => a.name.localeCompare(b.name));
     return results;
