@@ -31,7 +31,7 @@ function Layout({ children }) {
           setShowBanner={setShowBanner}
         />
       </nav>
-      <main className={`flex-grow  mb-10 ${showBanner ? 'mt-14 ': ''}`}>
+      <main className={`flex-grow  mb-10 ${showBanner ? "mt-14 " : ""}`}>
         <DarkModeProvider value={darkMode}>{children}</DarkModeProvider>
       </main>
       <footer>
