@@ -37,7 +37,7 @@ function Home() {
     <div className="font-pop dark:bg-gray-800 dark:text-white">
       <div>
         <div
-          className="px-10 md:px-72 text-center text-4xl md:text-5xl font-extrabold h-screen flex items-center text-gray-800"
+          className="text-center text-4xl md:text-5xl font-extrabold h-screen flex items-center justify-center text-gray-800"
           style={{
             backgroundImage: innerWidth >= 650 ? backgroundImgUrl : "",
             backgroundRepeat: "no-repeat",
