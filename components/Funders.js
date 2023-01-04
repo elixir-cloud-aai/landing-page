@@ -54,6 +54,7 @@ function Partners({ funders }) {
                   height="auto"
                 />
                 <div className="flex-grow p-5">
+<<<<<<< HEAD
                   <div className="text-xl font-semibold dark:text-gray-200">
                     {funder.instrument}
                   </div>
@@ -70,6 +71,34 @@ function Partners({ funders }) {
                     {formatDate(funder.timeline.start) +
                       " - " +
                       formatDate(funder.timeline.end)}
+=======
+                  <div className="md:text-xl sm:text-base text-sm font-semibold dark:text-gray-200">
+                    <div>{funder.instrument}</div>
+                  </div>
+                  <div className="md:text-xl sm:text-base text-sm  mt-1 md:mt-0 dark:text-gray-200">
+                    <span className="font-semibold">Project Title: </span>
+                    <span>{funder.projectTitle}</span>
+                  </div>
+                  <div className="md:text-xl sm:text-base text-sm mt-1 md:mt-0 dark:text-gray-200">
+                    <span className="font-semibold">Reciepients: </span>
+                    <span className="">
+                      {renderReciepients(funder.recipients)}
+                    </span>
+                  </div>
+                  <div className="md:text-xl sm:text-base text-sm mt-1 md:mt-0 dark:text-gray-200 flex flex-col md:flex-row md:gap-2">
+                    <span className="font-semibold">Duration: </span>
+                    <span className="flex">
+                      <span className="md:text-xl sm:text-base text-sm ">
+                        {formatDate(funder.timeline.start)}
+                      </span>
+                      <span className="md:text-xl sm:text-base text-sm ">
+                        -
+                      </span>
+                      <span className="md:text-xl sm:text-base text-sm ">
+                        {formatDate(funder.timeline.end)}
+                      </span>
+                    </span>
+>>>>>>> docs: clarify website design (#71)
                   </div>
                 </div>
               </div>
