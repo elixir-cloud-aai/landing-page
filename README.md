@@ -20,7 +20,7 @@ Health][res-ga4gh].
 ## About this repository
 
 This website is built using the [Next.js][res-next] framework for
-[React.js][res-react]. Most of the pages on the website are built by [Incremental Static Regeneration][https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration] server-side for fast client-side rendering and better SEO.
+[React.js][res-react]. Most of the pages on the website are built by [Incremental Static Regeneration](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration) server-side for fast client-side rendering and better SEO.
 
 Dynamic content for the website is fetched from [Notion][res-notion], where it
 can be conveniently edited by authorized users. If you are a member of ELIXIR
