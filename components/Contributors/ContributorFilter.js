@@ -21,9 +21,8 @@ const ContributorFilter = ({
   };
 
   const isActiveContributor = (contributor) => {
-    const position = contributor.positions;
-    if (position.includes("Past contributor")) return false;
-    return true;
+    if (contributor.isActive) return true;
+    return false;
   };
 
   const isProjectLead = (contributor) => {
