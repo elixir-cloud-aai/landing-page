@@ -3,7 +3,13 @@ import Link from "next/link";
 import Slide from "react-reveal/Slide";
 import { useRouter } from "next/router";
 
-function NavBar({ scroll, toggleDarkMode, darkMode, showBanner, setShowBanner }) {
+function NavBar({
+  scroll,
+  toggleDarkMode,
+  darkMode,
+  showBanner,
+  setShowBanner,
+}) {
   const router = useRouter();
   const links = [
     {
@@ -25,8 +31,8 @@ function NavBar({ scroll, toggleDarkMode, darkMode, showBanner, setShowBanner })
   // const [showBanner, setShowBanner] = useState(true);
 
   useEffect(() => {
-    setLocation(router.pathname)
-  }, [router])
+    setLocation(router.pathname);
+  }, [router]);
 
   const renderLinks = () => (
     <div>
