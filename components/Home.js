@@ -56,7 +56,7 @@ function Home() {
               </div> */}
               Making Cloud Infrastructure for{" "}
               <span className="inline md:block">
-                the Life Sciences
+                the Life Sciences{" "}
                 {renderTextLoop()}
               </span>
             </div>
