@@ -3,6 +3,8 @@ import Layout from "../components/Layout";
 import "../styles/globals.css";
 import { DefaultSeo } from "next-seo";
 import SEO from "../next-seo.config";
+import "vanilla-cookieconsent/dist/cookieconsent.css";
+import CookieConsent from "../components/CookieConsent";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
@@ -28,6 +30,7 @@ function MyApp({ Component, pageProps }) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
+      <CookieConsent />
     </>
   );
 }
