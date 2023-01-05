@@ -17,13 +17,13 @@ const ContributorFilter = ({
       };
       selectAffiliationOptions = [...selectAffiliationOptions, newOption];
     });
+    selectAffiliationOptions.sort((a, b) => a.value.localeCompare(b.value));
     return selectAffiliationOptions;
   };
 
   const isActiveContributor = (contributor) => {
-    const position = contributor.positions;
-    if (position.includes("Past contributor")) return false;
-    return true;
+    if (contributor.isActive) return true;
+    return false;
   };
 
   const isProjectLead = (contributor) => {
@@ -44,7 +44,6 @@ const ContributorFilter = ({
       affiliationInput: option,
     });
   };
-
 
   useEffect(() => {
     const includePastContributor = !filterformValues.pastContributorCheckBox;
@@ -84,8 +83,8 @@ const ContributorFilter = ({
       });
     }
     setFilteredContributors(filteredContributorByAffiliationCheck);
-  // };
-}, [filterformValues])
+    // };
+  }, [filterformValues]);
 
   return (
     <div className={`flex justify-center items-center`}>

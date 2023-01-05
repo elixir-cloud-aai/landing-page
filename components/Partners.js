@@ -29,7 +29,7 @@ function Partners({ partners }) {
                 alt="Icon"
                 width="auto"
                 height="auto"
-                id={ darkMode ? `darkMode`: `` }
+                id={darkMode ? `darkMode` : ``}
               />
               <div className="flex-grow p-5">
                 <div className="text-xl font-semibold flex justify-between dark:text-gray-200">
