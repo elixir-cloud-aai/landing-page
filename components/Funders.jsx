@@ -85,7 +85,7 @@ function Partners({ funders }) {
 
   return (
     <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700">
-      <p className="md:text-xl sm:text-base text-sm mt-1 md:mt-0 dark:text-gray-200 font-bold text-center my-5">We would like to express our gratitude to our funders</p>
+      <p className="text-3xl font-bold mb-4 mt-5 text-center dark:text-gray-200">We would like to express our gratitude to our funders</p>
       <input
         className="md:text-base text-sm px-3 py-2 border-2 rounded-lg outline-none w-full focus:shadow-lg hover:shadow-lg mb-5 placeholder-opacity-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 dark:text-gray-200"
         placeholder="Search.."
