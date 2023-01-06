@@ -7,7 +7,7 @@ function Funding({ funders }) {
   return (
     <>
       <NextSeo
-        title="Partners"
+        title="Funding"
         description="ELIXIR Cloud & AAI collobrative funders."
       />
       <Funders funders={funders} />
