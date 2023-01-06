@@ -252,7 +252,7 @@ function Contributors({ contributors }) {
                     </div>
                     <div>{renderLinks(contributor)}</div>
                   </div>
-                  <div className="mt-1  transition-all">
+                  <div className="mt-1 transition-all">
                     {renderPositions(contributor)}
                   </div>
                 </div>
