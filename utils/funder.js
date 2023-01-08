@@ -1,4 +1,4 @@
-const { Client } = require("@notionhq/client");
+const { Client } = require('@notionhq/client');
 
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -7,17 +7,17 @@ const notion = new Client({
 const getFunders = async () => {
   try {
     let payload = {
-      path: "search",
-      method: "POST",
+      path: 'search',
+      method: 'POST',
       body: {
-        query: "Funders",
+        query: 'Funders',
       },
     };
     const data = await notion.request(payload);
     const partnersDBId = data.results[0].id;
     payload = {
       path: `databases/${partnersDBId}/query`,
-      method: "POST",
+      method: 'POST',
     };
     let { results } = await notion.request(payload);
     results = results.map((result) => ({
@@ -25,7 +25,7 @@ const getFunders = async () => {
       instrument: result.properties.Instrument.title[0].plain_text,
       website: result.properties.Website.url
         ? result.properties.Website.url
-        : "",
+        : '',
       icon: result.properties.Icon.url,
       iconDark: result.properties.IconDark.url,
       projectTitle: result.properties.ProjectTitle.rich_text[0].text.content,
@@ -45,20 +45,17 @@ const getFunders = async () => {
             const projectTitleA = a.projectTitle;
             const projectTitleB = b.projectTitle;
             return projectTitleA - projectTitleB;
-          } else {
-            return instrumentA - instrumentB;
           }
-        } else {
-          return startDateA - startDateB;
+          return instrumentA - instrumentB;
         }
-      } else {
-        return endDateB - endDateA;
+        return startDateA - startDateB;
       }
+      return endDateB - endDateA;
     });
     return results;
   } catch (e) {
-    console.log({ message: "Server error", request: "getFunders", error: e });
-    return { message: "Server error", error: e };
+    console.log({ message: 'Server error', request: 'getFunders', error: e });
+    return { message: 'Server error', error: e };
   }
 };
 

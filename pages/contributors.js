@@ -1,14 +1,13 @@
-import React from "react";
-import { NextSeo } from "next-seo";
-import ContributorsComponent from "../components/Contributors";
-import getContributors from "../utils/contributors";
+import { NextSeo } from 'next-seo';
+import ContributorsComponent from '../components/Contributors';
+import getContributors from '../utils/contributors';
 
 function Contributors({ contributors }) {
   return (
     <>
       <NextSeo
-        title="Contributors"
         description="Elixir Cloud & AAI contributor devloping the solutions. "
+        title="Contributors"
       />
       <ContributorsComponent contributors={contributors} />
     </>

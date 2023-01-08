@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
-import Zoom from "react-reveal/Zoom";
-import DarkModeContext from "../context/darkMode";
+import { useContext, useState } from 'react';
+import Zoom from 'react-reveal/Zoom';
+import DarkModeContext from '../context/darkMode';
 
 function Partners({ partners }) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [filteredPartners, setFilteredPartners] = useState(partners);
   const darkMode = useContext(DarkModeContext);
 
@@ -20,16 +20,16 @@ function Partners({ partners }) {
   const renderPartners = () =>
     filteredPartners.map((partner) => (
       <Zoom key={partner.id}>
-        <a href={partner.website} target="_blank" rel="noopener noreferrer">
+        <a href={partner.website} rel="noopener noreferrer" target="_blank">
           <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 cursor-pointer ">
             <div className="flex md:flex-row flex-col">
               <img
-                src={!darkMode ? partner.icon : partner.iconDark}
-                className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
                 alt="Icon"
-                width="auto"
+                className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
                 height="auto"
-                id={darkMode ? `darkMode` : ``}
+                id={darkMode ? 'darkMode' : ''}
+                src={!darkMode ? partner.icon : partner.iconDark}
+                width="auto"
               />
               <div className="flex-grow p-5">
                 <div className="text-xl font-semibold flex justify-between dark:text-gray-200">
@@ -49,11 +49,11 @@ function Partners({ partners }) {
     <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700">
       <input
         className="md:text-base text-sm px-3 py-2 border-2 rounded-lg outline-none w-full focus:shadow-lg hover:shadow-lg mb-5 placeholder-opacity-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 dark:text-gray-200"
-        placeholder="Search.."
-        value={query}
         onChange={(e) => {
           handleSearch(e);
         }}
+        placeholder="Search.."
+        value={query}
       />
       {renderPartners()}
     </div>
