@@ -1,4 +1,4 @@
-const { Client } = require("@notionhq/client");
+const { Client } = require('@notionhq/client');
 
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -8,11 +8,11 @@ const getSolution = async (id) => {
   try {
     let payload = {
       path: `blocks/${id}/children`,
-      method: "GET",
+      method: 'GET',
     };
     let { results } = await notion.request(payload);
     results = results.map((result) => {
-      if (result.image && result.image.type === "external") {
+      if (result.image && result.image.type === 'external') {
         return {
           id: result.id,
           type: result.type,
@@ -39,7 +39,7 @@ const getSolution = async (id) => {
     const content = results;
     payload = {
       path: `pages/${id}`,
-      method: "GET",
+      method: 'GET',
     };
     results = await notion.request(payload);
     results = {
@@ -48,7 +48,7 @@ const getSolution = async (id) => {
       icon: results.properties.Icon.files[0].name,
       description: results.properties.Description.rich_text[0]
         ? results.properties.Description.rich_text[0].text.content
-        : "",
+        : '',
       content,
       url: results.url,
       createdAt: results.created_time,
@@ -56,8 +56,8 @@ const getSolution = async (id) => {
     };
     return results;
   } catch (e) {
-    console.log({ message: "Server error", request: "getSolution", error: e });
-    return { message: "Server error", error: e };
+    console.log({ message: 'Server error', request: 'getSolution', error: e });
+    return { message: 'Server error', error: e };
   }
 };
 

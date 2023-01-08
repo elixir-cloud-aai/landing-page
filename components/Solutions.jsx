@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import Link from "next/link";
-import Zoom from "react-reveal/Zoom";
+import { useState } from 'react';
+import Link from 'next/link';
+import Zoom from 'react-reveal/Zoom';
 
 function Solutions({ solutions }) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [filteredSolutions, setFilteredSolutions] = useState(solutions);
 
   const handleSearch = (e) => {
@@ -23,11 +23,11 @@ function Solutions({ solutions }) {
           <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 hover:bg-gray-100 cursor-pointer">
             <div className="flex md:flex-row flex-col">
               <img
-                src={solution.icon}
-                className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
                 alt="Icon"
-                width="auto"
+                className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
                 height="auto"
+                src={solution.icon}
+                width="auto"
               />
               <div className="flex-grow p-5">
                 <div className="text-xl font-semibold flex justify-between">
@@ -47,11 +47,11 @@ function Solutions({ solutions }) {
     <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700">
       <input
         className="md:text-base text-sm px-3 py-2 border-2 rounded-lg outline-none w-full focus:shadow-lg hover:shadow-lg mb-5 placeholder-opacity-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 dark:text-gray-200"
-        placeholder="Search.."
-        value={query}
         onChange={(e) => {
           handleSearch(e);
         }}
+        placeholder="Search.."
+        value={query}
       />
       {renderSolutions()}
     </div>

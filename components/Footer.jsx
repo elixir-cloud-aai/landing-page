@@ -1,45 +1,44 @@
-import React from "react";
-import Link from "next/link";
+import Link from 'next/link';
 
 function Footer() {
   const footers = [
     {
-      title: "About Us",
+      title: 'About Us',
       links: [
         {
-          name: "Overview",
-          link: "/overview",
+          name: 'Overview',
+          link: '/overview',
         },
         {
-          name: "Contributors",
-          link: "/contributors",
+          name: 'Contributors',
+          link: '/contributors',
         },
         {
-          name: "Partners",
-          link: "/partners",
+          name: 'Partners',
+          link: '/partners',
         },
         {
-          name: "Funding",
-          link: "/funding",
+          name: 'Funding',
+          link: '/funding',
         },
       ],
     },
     {
-      title: "Reach Out",
+      title: 'Reach Out',
       links: [
         {
-          name: "Email",
-          link: "mailto:cloud-service@elixir-europe.org",
+          name: 'Email',
+          link: 'mailto:cloud-service@elixir-europe.org',
           a: true,
         },
         {
-          name: "Slack",
-          link: "https://join.slack.com/t/elixir-cloud/shared_invite/enQtNzA3NTQ5Mzg2NjQ3LTZjZGI1OGQ5ZTRiOTRkY2ExMGUxNmQyODAxMDdjM2EyZDQ1YWM0ZGFjOTJhNzg5NjE0YmJiZTZhZDVhOWE4MWM",
+          name: 'Slack',
+          link: 'https://join.slack.com/t/elixir-cloud/shared_invite/enQtNzA3NTQ5Mzg2NjQ3LTZjZGI1OGQ5ZTRiOTRkY2ExMGUxNmQyODAxMDdjM2EyZDQ1YWM0ZGFjOTJhNzg5NjE0YmJiZTZhZDVhOWE4MWM',
           a: true,
         },
         {
-          name: "Github",
-          link: "https://github.com/elixir-cloud-aai/",
+          name: 'Github',
+          link: 'https://github.com/elixir-cloud-aai/',
           a: true,
         },
       ],
@@ -61,18 +60,18 @@ function Footer() {
               if (link.a) {
                 return (
                   <a
-                    key={link.link}
-                    href={link.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="text-xs md:text-base block hover:underline"
+                    href={link.link}
+                    key={link.link}
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
                     {link.name}
                   </a>
                 );
               }
               return (
-                <Link key={link.link} href={link.link} passHref>
+                <Link href={link.link} key={link.link} passHref>
                   <div className="text-xs md:text-base block hover:underline cursor-pointer">
                     {link.name}
                   </div>
@@ -91,58 +90,58 @@ function Footer() {
         <div className="text-center pb-0 pt-5">
           <div>
             <a
-              href="https://elixir-cloud.dcc.sib.swiss/"
-              target="_blank"
-              rel="noopener noreferrer"
               className="mb-3 cursor-pointer"
+              href="https://elixir-cloud.dcc.sib.swiss/"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <img
-                src="/elixir-cloud-aai.png"
                 alt="elixir-cloud-aai-logo"
                 className="inline-block w-14 md:w-20 mx-3 mr-3 md:mr-7"
-                width="auto"
                 height="auto"
+                src="/elixir-cloud-aai.png"
+                width="auto"
               />
             </a>
             <a
-              href="https://elixir-europe.org/"
-              target="_blank"
-              rel="noopener noreferrer"
               className="mb-3 cursor-pointer "
+              href="https://elixir-europe.org/"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <img
-                src="/elixir.png"
                 alt="elixir-logo"
                 className="inline-block w-14 md:w-20 mr-3 md:mx-5"
-                width="auto"
                 height="auto"
+                src="/elixir.png"
+                width="auto"
               />
             </a>
             <a
-              href="https://www.ga4gh.org/"
-              target="_blank"
-              rel="noopener noreferrer"
               className="mb-3 cursor-pointer "
+              href="https://www.ga4gh.org/"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <img
-                src="/ga4gh.png"
                 alt="ga4gh-logo"
                 className="inline-block w-14 md:w-20 mr-3 md:mx-5"
-                width="auto"
                 height="auto"
+                src="/ga4gh.png"
+                width="auto"
               />
             </a>
           </div>
           <a
-            href="https://github.com/elixir-cloud-aai/elixir-cloud-aai.github.io/blob/main/LICENSE"
-            target="_blank"
-            rel="noopener noreferrer"
             className="leading-loose mt-5 mx-3 hover:underline"
+            href="https://github.com/elixir-cloud-aai/elixir-cloud-aai.github.io/blob/main/LICENSE"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             <span className="text-xs md:block">© 2021 ELIXIR Cloud AAI </span>
             <span className="text-xs md:hidden">○</span>
             <span className="text-xs md:block">
-              {" "}
+              {' '}
               Released under MIT License
             </span>
           </a>

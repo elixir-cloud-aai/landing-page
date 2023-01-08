@@ -1,21 +1,21 @@
-import React, { useContext, useState } from "react";
-import Zoom from "react-reveal/Zoom";
-import DarkModeContext from "../context/darkMode";
+import { useContext, useState } from 'react';
+import Zoom from 'react-reveal/Zoom';
+import DarkModeContext from '../context/darkMode';
 
 function Partners({ funders }) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [filteredFunders, setFilteredFunders] = useState(funders);
   const darkMode = useContext(DarkModeContext);
 
   const handleSearch = (e) => {
     const term = e.target.value.trim().toLowerCase();
     setQuery(term);
-    if (term === "") {
+    if (term === '') {
       setFilteredFunders(funders);
       return;
     }
     const newFilteredFunders = funders.filter((funder) => {
-      return Object.values(funder).join(" ").toLowerCase().includes(term);
+      return Object.values(funder).join(' ').toLowerCase().includes(term);
     });
     setFilteredFunders(newFilteredFunders);
   };
@@ -24,7 +24,7 @@ function Partners({ funders }) {
     return recipients.map((recipient, i) => {
       return (
         <span key={recipient.id}>
-          {i !== 0 ? ", " : ""}
+          {i !== 0 ? ', ' : ''}
           {recipient.name}
         </span>
       );
@@ -32,26 +32,26 @@ function Partners({ funders }) {
   };
 
   const formatDate = (d) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const date = new Date(d);
-    return date.toLocaleDateString("en-GB", options);
+    return date.toLocaleDateString('en-GB', options);
   };
 
   const renderFunders = () => {
     return filteredFunders?.map((funder) => {
       return (
         <Zoom key={funder.id}>
-          <a href={funder.website} target="_blank" rel="noopener noreferrer">
+          <a href={funder.website} rel="noopener noreferrer" target="_blank">
             <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 cursor-pointer ">
               <div className="flex md:flex-row flex-col">
                 <img
-                  src={!darkMode ? funder.icon : funder.iconDark}
-                  className={`md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5 ${
-                    darkMode ? `darkMode` : ``
-                  }`}
                   alt="Icon"
-                  width="auto"
+                  className={`md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5 ${
+                    darkMode ? 'darkMode' : ''
+                  }`}
                   height="auto"
+                  src={!darkMode ? funder.icon : funder.iconDark}
+                  width="auto"
                 />
                 <div className="flex-grow p-5">
                   <div className="text-xl font-semibold dark:text-gray-200">
@@ -68,7 +68,7 @@ function Partners({ funders }) {
                   <div className="text-base text-gray-500 flex flex-col md:flex-row md:gap-2">
                     <span className="font-semibold">Duration: </span>
                     {formatDate(funder.timeline.start) +
-                      " - " +
+                      ' - ' +
                       formatDate(funder.timeline.end)}
                   </div>
                 </div>
@@ -87,11 +87,11 @@ function Partners({ funders }) {
       </p>
       <input
         className="md:text-base text-sm px-3 py-2 border-2 rounded-lg outline-none w-full focus:shadow-lg hover:shadow-lg mb-5 placeholder-opacity-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 dark:text-gray-200"
-        placeholder="Search.."
-        value={query}
         onChange={(e) => {
           handleSearch(e);
         }}
+        placeholder="Search.."
+        value={query}
       />
       {renderFunders()}
     </div>
