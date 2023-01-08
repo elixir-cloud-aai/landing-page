@@ -20,10 +20,6 @@ function NavBar({
       name: "Solutions",
       path: "/solutions",
     },
-    {
-      name: "Guides & FAQ",
-      path: "/guides",
-    },
   ];
 
   const [location, setLocation] = useState(router.pathname);
