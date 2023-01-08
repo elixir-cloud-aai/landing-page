@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import Footer from "./Footer";
-import NavBar from "./NavBar";
-import { DarkModeProvider } from "../context/darkMode";
+import { useEffect, useState } from 'react';
+import Footer from './Footer';
+import NavBar from './NavBar';
+import { DarkModeProvider } from '../context/darkMode';
 
 function Layout({ children }) {
   const [scroll, setScroll] = useState(0);
@@ -15,8 +15,8 @@ function Layout({ children }) {
   });
 
   const toggleDarkMode = () => {
-    document.body.classList.toggle("dark");
-    document.body.classList.toggle("bg-gray-800");
+    document.body.classList.toggle('dark');
+    document.body.classList.toggle('bg-gray-800');
     setDarkMode(!darkMode);
   };
 
@@ -24,14 +24,14 @@ function Layout({ children }) {
     <div className="flex flex-col min-h-screen">
       <nav>
         <NavBar
-          scroll={scroll}
-          toggleDarkMode={toggleDarkMode}
           darkMode={darkMode}
-          showBanner={showBanner}
+          scroll={scroll}
           setShowBanner={setShowBanner}
+          showBanner={showBanner}
+          toggleDarkMode={toggleDarkMode}
         />
       </nav>
-      <main className={`flex-grow  mb-10 ${showBanner ? "mt-14 " : ""}`}>
+      <main className={`flex-grow  mb-10 ${showBanner ? 'mt-14 ' : ''}`}>
         <DarkModeProvider value={darkMode}>{children}</DarkModeProvider>
       </main>
       <footer>

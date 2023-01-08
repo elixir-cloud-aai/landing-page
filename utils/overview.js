@@ -1,4 +1,4 @@
-const { Client } = require("@notionhq/client");
+const { Client } = require('@notionhq/client');
 
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -7,21 +7,21 @@ const notion = new Client({
 const getOverview = async () => {
   try {
     let payload = {
-      path: "search",
-      method: "POST",
+      path: 'search',
+      method: 'POST',
       body: {
-        query: "Overview",
+        query: 'Overview',
       },
     };
     const data = await notion.request(payload);
     const solutionsDBId = data.results[0].id;
     payload = {
       path: `blocks/${solutionsDBId}/children`,
-      method: "GET",
+      method: 'GET',
     };
     let { results } = await notion.request(payload);
     results = results.map((result) => {
-      if (result.image && result.image.type === "external") {
+      if (result.image && result.image.type === 'external') {
         return {
           id: result.id,
           type: result.type,
@@ -30,7 +30,7 @@ const getOverview = async () => {
           updatedAt: result.last_edited_time,
         };
       }
-      if (result.type === "divider") {
+      if (result.type === 'divider') {
         return {
           id: result.id,
           type: result.type,
@@ -52,8 +52,8 @@ const getOverview = async () => {
     });
     return results;
   } catch (e) {
-    console.log({ message: "Server error", request: "getOverview", error: e });
-    return { message: "Server error", error: e };
+    console.log({ message: 'Server error', request: 'getOverview', error: e });
+    return { message: 'Server error', error: e };
   }
 };
 

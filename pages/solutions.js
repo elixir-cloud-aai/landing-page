@@ -1,14 +1,13 @@
-import React from "react";
-import { NextSeo } from "next-seo";
-import SolutionsComponent from "../components/Solutions";
-import getSolutions from "../utils/solutions";
+import { NextSeo } from 'next-seo';
+import SolutionsComponent from '../components/Solutions';
+import getSolutions from '../utils/solutions';
 
 function Solutions({ solutions }) {
   return (
     <>
       <NextSeo
-        title="Solutions"
         description="ELIXIR Cloud & AAI-developed solutions."
+        title="Solutions"
       />
       <SolutionsComponent solutions={solutions} />
     </>

@@ -1,14 +1,13 @@
-import React from "react";
-import { NextSeo } from "next-seo";
-import PartnersComponent from "../components/Partners";
-import getPartners from "../utils/partners";
+import { NextSeo } from 'next-seo';
+import PartnersComponent from '../components/Partners';
+import getPartners from '../utils/partners';
 
 function Partners({ partners }) {
   return (
     <>
       <NextSeo
-        title="Partners"
         description="ELIXIR Cloud & AAI collobrative partners."
+        title="Partners"
       />
       <PartnersComponent partners={partners} />
     </>

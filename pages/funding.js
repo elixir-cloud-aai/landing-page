@@ -1,14 +1,13 @@
-import React from "react";
-import { NextSeo } from "next-seo";
-import Funders from "../components/Funders";
-import getFunders from "../utils/funder";
+import { NextSeo } from 'next-seo';
+import Funders from '../components/Funders';
+import getFunders from '../utils/funder';
 
 function Funding({ funders }) {
   return (
     <>
       <NextSeo
-        title="Funding"
         description="ELIXIR Cloud & AAI collobrative funders."
+        title="Funding"
       />
       <Funders funders={funders} />
     </>
