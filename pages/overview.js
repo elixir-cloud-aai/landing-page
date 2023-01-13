@@ -1,7 +1,6 @@
-import React from "react";
-import { NextSeo } from "next-seo";
-import OverviewComponent from "../components/Overview";
-import getOverview from "../utils/overview";
+import { NextSeo } from 'next-seo';
+import OverviewComponent from '../components/Overview';
+import getOverview from '../utils/overview';
 
 function Overview({ overview }) {
   return (
