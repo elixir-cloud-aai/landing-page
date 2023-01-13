@@ -24,6 +24,36 @@ function Footer() {
       ],
     },
     {
+      title: "Docs",
+      links: [
+        {
+          name: "Home",
+          link: "https://elixir-cloud-aai.github.io/",
+          a: true,
+        },
+        {
+          name: "Users",
+          link: "https://elixir-cloud-aai.github.io/guides/guide-user/",
+          a: true,
+        },
+        {
+          name: "Developers",
+          link: "https://elixir-cloud-aai.github.io/guides/guide-dev/",
+          a: true,
+        },
+        {
+          name: "Administrators",
+          link: " https://elixir-cloud-aai.github.io/guides/guide-admin/",
+          a: true,
+        },
+        {
+          name: "Contributors",
+          link: "https://elixir-cloud-aai.github.io/guides/guide-contributor/",
+          a: true,
+        },
+      ],
+    },
+    {
       title: 'Reach Out',
       links: [
         {
