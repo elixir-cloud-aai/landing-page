@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import Link from "next/link";
-import dayjs from "dayjs";
-import Zoom from "react-reveal/Zoom";
-import { Popover } from "react-tiny-popover";
-import { NextSeo } from "next-seo";
-import Content from "../../components/Content";
-import getGuide from "../../utils/guide";
-import getGuides from "../../utils/guides";
+import { useState } from 'react';
+import Link from 'next/link';
+import dayjs from 'dayjs';
+import Zoom from 'react-reveal/Zoom';
+import { Popover } from 'react-tiny-popover';
+import { NextSeo } from 'next-seo';
+import Content from '../../components/Content';
+import getGuide from '../../utils/guide';
+import getGuides from '../../utils/guides';
 
 function Solution({ data }) {
   const [show, setShow] = useState(false);
@@ -15,10 +15,10 @@ function Solution({ data }) {
     <div className="border p-3 rounded-lg shadow-lg bg-white dark:bg-gray-900 dark:border-gray-900">
       <div className="flex">
         <img
-          src={data.author.image}
           className="w-20 rounded-full"
-          width="auto"
           height="auto"
+          src={data.author.image}
+          width="auto"
         />
         <div className="ml-3 mt-1">
           <div className="teext-sm dark:text-gray-100">{data.author.name}</div>
@@ -61,7 +61,7 @@ function Solution({ data }) {
 
   return (
     <>
-      <NextSeo title={data.title} description={data.description} />
+      <NextSeo description={data.description} title={data.title} />
       <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700 tracking-wide">
         <Zoom>
           <div className="text-3xl font-bold mb-1.5 mt-5 text-center dark:text-gray-200">
@@ -77,12 +77,12 @@ function Solution({ data }) {
         {data.author ? (
           <div className="my-5 text-sm text-gray-400 text-right">
             <div className="my-1">
-              Guide by{" "}
+              Guide by{' '}
               <Popover
-                isOpen={show}
-                positions={["top", "bottom", "left", "right"]}
                 content={renderPopoverContent()}
+                isOpen={show}
                 onClickOutside={() => setShow(false)}
+                positions={['top', 'bottom', 'left', 'right']}
               >
                 <span
                   className="hover:underline cursor-pointer font-bold"
@@ -94,15 +94,15 @@ function Solution({ data }) {
             </div>
             <div className="my-1">
               Updated on
-              {dayjs(data.updatedAt).format("DD MMM YYYY")}
+              {dayjs(data.updatedAt).format('DD MMM YYYY')}
             </div>
           </div>
         ) : (
           <div className="my-5 text-sm text-gray-400 text-right">
-            Contact us at{" "}
+            Contact us at{' '}
             <a
-              href="mailto:cloud-service@elixir-europe.org"
               className="text-elixirblue"
+              href="mailto:cloud-service@elixir-europe.org"
             >
               cloud-service@elixir-europe.org
             </a>
@@ -112,17 +112,17 @@ function Solution({ data }) {
           <Link href="/guides" passHref>
             <div className="flex p-3 hover:shadow-md hover:bg-gray-200 dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 border-2 w-36 rounded-lg cursor-pointer">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 mx-2"
                 fill="none"
-                viewBox="0 0 24 24"
                 stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
+                  d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
                 />
               </svg>
               Go Back

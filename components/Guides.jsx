@@ -1,6 +1,5 @@
-import React from "react";
-import Link from "next/link";
-import Zoom from "react-reveal/Zoom";
+import Link from 'next/link';
+import Zoom from 'react-reveal/Zoom';
 
 function Guides({ guides }) {
   const renderGuides = () =>

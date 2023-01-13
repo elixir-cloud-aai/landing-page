@@ -1,5 +1,4 @@
-import React from "react";
-import Content from "./Content";
+import Content from './Content';
 
 function Overview({ data }) {
   return (
