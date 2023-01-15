@@ -43,7 +43,7 @@ function Footer() {
         },
         {
           name: 'Administrators',
-          link: ' https://elixir-cloud-aai.github.io/guides/guide-admin/',
+          link: 'https://elixir-cloud-aai.github.io/guides/guide-admin/',
           a: true,
         },
         {
@@ -115,7 +115,7 @@ function Footer() {
   );
 
   return (
-    <footer className="bg-gray-900 px-5 md:px-64 pt-7 md:pt-12 py-3 md:py-5 text-gray-200 font-pop text-sm rounded-t-xl">
+    <footer className="bg-gray-900 px-5 md:px-64 pt-7 md:pt-12 py-3 md:py-9 text-gray-200 font-pop text-sm rounded-t-xl">
       <div className="flex md:flex-row flex-col">
         <div className="text-center pb-0 pt-5">
           <div>
