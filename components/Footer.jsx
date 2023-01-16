@@ -24,6 +24,32 @@ function Footer() {
       ],
     },
     {
+      title: 'Docs',
+      link: 'https://elixir-cloud-aai.github.io/',
+      links: [
+        {
+          name: 'Users',
+          link: 'https://elixir-cloud-aai.github.io/guides/guide-user/',
+          a: true,
+        },
+        {
+          name: 'Developers',
+          link: 'https://elixir-cloud-aai.github.io/guides/guide-dev/',
+          a: true,
+        },
+        {
+          name: 'Administrators',
+          link: 'https://elixir-cloud-aai.github.io/guides/guide-admin/',
+          a: true,
+        },
+        {
+          name: 'Contributors',
+          link: 'https://elixir-cloud-aai.github.io/guides/guide-contributor/',
+          a: true,
+        },
+      ],
+    },
+    {
       title: 'Reach Out',
       links: [
         {
@@ -53,7 +79,11 @@ function Footer() {
           key={footer.title}
         >
           <div className="text-sm md:text-lg md:font-semibold">
-            {footer.title}
+            {footer.link ? (
+              <a href={footer.link}>{footer.title}</a>
+            ) : (
+              <div>{footer.title}</div>
+            )}
           </div>
           <div className="space-y-1 md:space-y-2">
             {footer.links.map((link) => {
@@ -85,7 +115,7 @@ function Footer() {
   );
 
   return (
-    <footer className="bg-gray-900 px-5 md:px-64 pt-7 md:pt-12 py-3 md:py-5 text-gray-200 font-pop text-sm rounded-t-xl">
+    <footer className="bg-gray-900 px-5 md:px-64 pt-7 md:pt-12 py-3 md:py-9 text-gray-200 font-pop text-sm rounded-t-xl">
       <div className="flex md:flex-row flex-col">
         <div className="text-center pb-0 pt-5">
           <div>
