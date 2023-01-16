@@ -25,12 +25,8 @@ function Footer() {
     },
     {
       title: 'Docs',
+      link: 'https://elixir-cloud-aai.github.io/',
       links: [
-        {
-          name: 'Home',
-          link: 'https://elixir-cloud-aai.github.io/',
-          a: true,
-        },
         {
           name: 'Users',
           link: 'https://elixir-cloud-aai.github.io/guides/guide-user/',
@@ -83,7 +79,11 @@ function Footer() {
           key={footer.title}
         >
           <div className="text-sm md:text-lg md:font-semibold">
-            {footer.title}
+            {footer.link ? (
+              <a href={footer.link}>{footer.title}</a>
+            ) : (
+              <div>{footer.title}</div>
+            )}
           </div>
           <div className="space-y-1 md:space-y-2">
             {footer.links.map((link) => {
