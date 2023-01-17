@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import Link from "next/link";
-import TextLoop from "react-text-loop";
-import Zoom from "react-reveal/Zoom";
-import window from "global/window";
+import { useState } from 'react';
+import Link from 'next/link';
+import TextLoop from 'react-text-loop';
+import Zoom from 'react-reveal/Zoom';
+import window from 'global/window';
 
 function Home() {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [innerWidth, setinnerWidth] = useState(1000);
-  const backgroundImgUrl = "url(/Landing_Dark.svg)";
+  const backgroundImgUrl = 'url(/Landing_Dark.svg)';
 
   const handleMouseMove = (e) => {
     setX(e.clientX);
@@ -18,7 +18,7 @@ function Home() {
 
   const renderTextLoop = () => (
     <span className="block md:inline">
-      <TextLoop springConfig={{ stiffness: 180, damping: 8 }} noWrap={false}>
+      <TextLoop noWrap={false} springConfig={{ stiffness: 180, damping: 8 }}>
         <span className="text-elixirred">Findable</span>
         <span className="text-elixirgreen">Accessible</span>
         <span className="text-elixiryellow">Interoperable</span>
@@ -38,15 +38,15 @@ function Home() {
       <div>
         <div
           className="px-10 text-center text-4xl md:text-5xl font-extrabold h-screen flex items-center justify-center text-gray-800"
-          style={{
-            backgroundImage: innerWidth >= 650 ? backgroundImgUrl : "",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "101% 101%",
-            backgroundPositionX: `${(x - 1000) / 100}px`,
-            backgroundPositionY: `${y / 50}px`,
-          }}
           onMouseMove={(e) => {
             handleMouseMove(e);
+          }}
+          style={{
+            backgroundImage: innerWidth >= 650 ? backgroundImgUrl : '',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: '101% 101%',
+            backgroundPositionX: `${(x - 1000) / 100}px`,
+            backgroundPositionY: `${y / 50}px`,
           }}
         >
           <Zoom>
@@ -54,7 +54,7 @@ function Home() {
               {/* <div className="text-xl md:text-3xl mb-1 leading-relaxed font-bold md:font-extrabold">
                 ELIXIR Cloud &#38; AAI
               </div> */}
-              Making Cloud Infrastructure for{" "}
+              Making Cloud Infrastructure for{' '}
               <span className="inline md:block">
                 the Life Sciences {renderTextLoop()}
               </span>
@@ -65,28 +65,28 @@ function Home() {
           <div className="p-0 md:px-10">
             <div className="flex items-center px-10 flex-col md:flex-row">
               <div className="text-lg text-gray-700 dark:text-gray-200 leading-loose text-justify">
-                The{" "}
+                The{' '}
                 <span className="font-semibold">
                   ELIXIR Cloud and Authentication and Authorization
                   Infrastructure (AAI)
-                </span>{" "}
-                project aims to leverage a coordinated network of{" "}
+                </span>{' '}
+                project aims to leverage a coordinated network of{' '}
                 <a
-                  href="https://elixir-europe.org/about-us/who-we-are/nodes"
                   className="text-elixirblue font-semibold hover:underline"
+                  href="https://elixir-europe.org/about-us/who-we-are/nodes"
                 >
                   ELIXIR Nodes
-                </a>{" "}
-                to deliver a{" "}
+                </a>{' '}
+                to deliver a{' '}
                 <a
-                  href="https://www.ga4gh.org/"
                   className="text-elixirblue font-semibold hover:underline"
+                  href="https://www.ga4gh.org/"
                 >
                   GA4GH
-                </a>{" "}
+                </a>{' '}
                 standards-compliant federated environment to enable population
                 scale genomic and phenotypic data analysis across international
-                boundaries.{" "}
+                boundaries.{' '}
                 <Link href="/overview" passHref>
                   <span className="text-elixirblue font-semibold hover:underline cursor-pointer">
                     More...
@@ -94,7 +94,7 @@ function Home() {
                 </Link>
               </div>
               <div>
-                <img src="/Earth.svg" alt="globe" width="auto" height="auto" />
+                <img alt="globe" height="auto" src="/Earth.svg" width="auto" />
               </div>
             </div>
           </div>

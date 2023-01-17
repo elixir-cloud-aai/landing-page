@@ -1,6 +1,6 @@
-import getContributors from "./contributors";
+import getContributors from './contributors';
 
-const { Client } = require("@notionhq/client");
+const { Client } = require('@notionhq/client');
 
 const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -12,11 +12,11 @@ const getGuide = async (id) => {
 
     let payload = {
       path: `blocks/${id}/children`,
-      method: "GET",
+      method: 'GET',
     };
     let { results } = await notion.request(payload);
     results = results.map((result) => {
-      if (result.image && result.image.type === "external") {
+      if (result.image && result.image.type === 'external') {
         return {
           id: result.id,
           type: result.type,
@@ -43,14 +43,14 @@ const getGuide = async (id) => {
     const content = results;
     payload = {
       path: `pages/${id}`,
-      method: "GET",
+      method: 'GET',
     };
     results = await notion.request(payload);
     let author = null;
     if (results.properties.Author.relation.length !== 0) {
       author = contributors.find(
         (contributor) =>
-          contributor.id === results.properties.Author.relation[0].id
+          contributor.id === results.properties.Author.relation[0].id,
       );
     }
     results = {
@@ -58,7 +58,7 @@ const getGuide = async (id) => {
       title: results.properties.Name.title[0].text.content,
       description: results.properties.Description.rich_text[0]
         ? results.properties.Description.rich_text[0].text.content
-        : "",
+        : '',
       author,
       content,
       createdAt: results.created_time,
@@ -66,8 +66,8 @@ const getGuide = async (id) => {
     };
     return results;
   } catch (e) {
-    console.log({ message: "Server error", request: "getGuide", error: e });
-    return { message: "Server error", error: e };
+    console.log({ message: 'Server error', request: 'getGuide', error: e });
+    return { message: 'Server error', error: e };
   }
 };
 
