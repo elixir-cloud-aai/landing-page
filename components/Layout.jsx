@@ -9,6 +9,17 @@ function Layout({ children }) {
   const [showBanner, setShowBanner] = useState(true);
 
   useEffect(() => {
+    const storedTheme = localStorage.getItem('DARK_MODE');
+    if (storedTheme === 'true') {
+      document.body.classList.toggle('dark');
+      document.body.classList.toggle('bg-gray-800');
+    }
+    if (storedTheme !== null) {
+      setDarkMode(storedTheme === 'true');
+    }
+  }, []);
+
+  useEffect(() => {
     window.onscroll = () => {
       setScroll(window.scrollY);
     };
@@ -17,6 +28,7 @@ function Layout({ children }) {
   const toggleDarkMode = () => {
     document.body.classList.toggle('dark');
     document.body.classList.toggle('bg-gray-800');
+    localStorage.setItem('DARK_MODE', !darkMode);
     setDarkMode(!darkMode);
   };
 
