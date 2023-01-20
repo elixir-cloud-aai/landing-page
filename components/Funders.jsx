@@ -1,11 +1,11 @@
 import { useContext, useState } from 'react';
 import Zoom from 'react-reveal/Zoom';
-import DarkModeContext from '../context/darkMode';
+import themeContext from '../context/darkMode';
 
 function Partners({ funders }) {
   const [query, setQuery] = useState('');
   const [filteredFunders, setFilteredFunders] = useState(funders);
-  const darkMode = useContext(DarkModeContext);
+  const theme = useContext(themeContext);
 
   const handleSearch = (e) => {
     const term = e.target.value.trim().toLowerCase();
@@ -47,10 +47,10 @@ function Partners({ funders }) {
                 <img
                   alt="Icon"
                   className={`md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5 ${
-                    darkMode ? 'darkMode' : ''
+                    theme === 'dark' ? 'darkMode' : ''
                   }`}
                   height="auto"
-                  src={!darkMode ? funder.icon : funder.iconDark}
+                  src={theme !== 'dark' ? funder.icon : funder.iconDark}
                   width="auto"
                 />
                 <div className="flex-grow p-5">

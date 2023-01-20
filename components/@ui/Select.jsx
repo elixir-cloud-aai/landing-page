@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import DarkModeContext from '../../context/darkMode';
+import themeContext from '../../context/darkMode';
 
 /**
  * @params
@@ -19,7 +19,7 @@ import DarkModeContext from '../../context/darkMode';
  */
 const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const darkMode = useContext(DarkModeContext);
+  const theme = useContext(themeContext);
 
   if (multiple === true && !Array.isArray(value)) {
     // console.error(
@@ -126,7 +126,9 @@ const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
         {options.map((option) => (
           <li
             className={`text-sm px-3 py-2 hover:bg-gray-500 hover:text-white ${
-              darkMode ? 'bg-gray-900 text-gray-400 border-gray-500 ' : ''
+              theme === 'dark'
+                ? 'bg-gray-900 text-gray-400 border-gray-500 '
+                : ''
             } ${isSelectedOption(option) ? 'bg-elixirblue text-white' : ''}`}
             key={option.value}
             onClick={(e) => {

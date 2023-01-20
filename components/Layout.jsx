@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import Footer from './Footer';
 import NavBar from './NavBar';
-import { DarkModeProvider } from '../context/darkMode';
+import { ThemeProvider } from '../context/darkMode';
 
 function Layout({ children }) {
   const [scroll, setScroll] = useState(0);
-  const [darkMode, setDarkMode] = useState(false);
+  const [theme, setTheme] = useState('light');
   const [showBanner, setShowBanner] = useState(true);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem('dark-theme');
     if (storedTheme !== null) {
-      setDarkMode(storedTheme === 'true');
+      setTheme(storedTheme);
     }
     setShowBanner(!localStorage.getItem('banner-status'));
   }, []);
@@ -23,27 +23,29 @@ function Layout({ children }) {
   });
 
   const toggleDarkMode = () => {
-    localStorage.setItem('dark-theme', !darkMode);
-    setDarkMode(!darkMode);
+    localStorage.setItem('dark-theme', theme === 'light' ? 'dark' : 'light');
+    setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return (
     <div
       className={`flex flex-col min-h-screen body ${
-        darkMode ? 'dark bg-gray-800' : ''
+        theme === 'dark' ? 'dark bg-gray-800' : ''
       }`}
     >
       <nav>
         <NavBar
-          darkMode={darkMode}
           scroll={scroll}
           setShowBanner={setShowBanner}
           showBanner={showBanner}
+          theme={theme}
           toggleDarkMode={toggleDarkMode}
         />
       </nav>
       <main className={`flex-grow  mb-10 ${showBanner ? 'mt-14 ' : ''}`}>
-        <DarkModeProvider value={darkMode}>{children}</DarkModeProvider>
+        <ThemeProvider value={{ theme, toggleDarkMode }}>
+          {children}
+        </ThemeProvider>
       </main>
       <footer>
         <Footer />

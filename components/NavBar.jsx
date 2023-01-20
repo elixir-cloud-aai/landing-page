@@ -3,13 +3,7 @@ import Link from 'next/link';
 import Slide from 'react-reveal/Slide';
 import { useRouter } from 'next/router';
 
-function NavBar({
-  scroll,
-  toggleDarkMode,
-  darkMode,
-  showBanner,
-  setShowBanner,
-}) {
+function NavBar({ scroll, toggleDarkMode, theme, showBanner, setShowBanner }) {
   const router = useRouter();
   const links = [
     {
@@ -115,7 +109,7 @@ function NavBar({
   );
 
   const renderDarkModeIcon = () => {
-    if (!darkMode) {
+    if (theme === 'light') {
       return (
         <svg
           className="h-6 w-6 mb-1.5 md:mb-1 text-gray-500"
