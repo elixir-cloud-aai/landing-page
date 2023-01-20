@@ -161,6 +161,7 @@ function NavBar({
             className="md:-mt-5 mt-0 md:absolute md:right-5 flex justify-center cursor-pointer"
             onClick={() => {
               setShowBanner(false);
+              localStorage.setItem('banner-status', false);
             }}
           >
             <svg
