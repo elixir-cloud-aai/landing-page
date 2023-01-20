@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import 'vanilla-cookieconsent';
+import Cookies from 'js-cookie';
+import ReactGA from 'react-ga4';
 
 const pluginConfig = {
   current_lang: 'en',
@@ -14,6 +16,9 @@ const pluginConfig = {
       transition: 'slide',
       swap_buttons: false,
     },
+  },
+  onAccept: function () {
+    googleAnalyticsCookieScript();
   },
   languages: {
     en: {
@@ -67,6 +72,13 @@ const pluginConfig = {
       },
     },
   },
+};
+
+const googleAnalyticsCookieScript = () => {
+  const cookie = JSON.parse(Cookies.get('cc_cookie'));
+  if (cookie?.categories.includes('necessary')) {
+    ReactGA.initialize(`${process.env.GA_MEASUREMENT_ID}`);
+  }
 };
 
 const CookieConsent = () => {
