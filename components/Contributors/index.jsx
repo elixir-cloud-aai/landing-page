@@ -242,8 +242,8 @@ function Contributors({ contributors }) {
                   src={contributor.image}
                   width="auto"
                 ></img>
-                <div className="flex-grow p-4">
-                  <div className="flex justify-between">
+                <div className="flex flex-col justify-between flex-grow p-4 sm:flex-row">
+                  <div className="flex flex-col">
                     <div className="flex flex-row gap-2 items-center">
                       <div className="text-xl font-semibold flex justify-between dark:text-gray-200">
                         <div>{contributor.name}</div>
@@ -252,11 +252,11 @@ function Contributors({ contributors }) {
                         <div>{contributor.affiliation}</div>
                       </div>
                     </div>
-                    <div>{renderLinks(contributor)}</div>
+                    <div className="mt-1 transition-all">
+                      {renderPositions(contributor)}
+                    </div>
                   </div>
-                  <div className="mt-1 transition-all">
-                    {renderPositions(contributor)}
-                  </div>
+                  <div className="mt-2 sm:mt-0">{renderLinks(contributor)}</div>
                 </div>
               </div>
             </div>
