@@ -31,7 +31,7 @@ const pluginConfig = {
           role: 'accept_all',
         },
         secondary_btn: {
-          text: 'Reject all',
+          text: 'Reject',
           role: 'accept_necessary',
         },
       },
@@ -39,7 +39,7 @@ const pluginConfig = {
         title: 'Cookie Settings',
         save_settings_btn: 'Save settings',
         accept_all_btn: 'Accept all',
-        reject_all_btn: 'Reject all',
+        reject_all_btn: 'Reject',
         close_btn_label: 'Close',
         cookie_table_headers: [
           { col1: 'Name' },
@@ -64,6 +64,16 @@ const pluginConfig = {
             },
           },
           {
+            title: 'Analytics cookies',
+            description:
+              'These cookies will help us to make your experience better with the site',
+            toggle: {
+              value: 'analytics',
+              enabled: true,
+              readonly: false,
+            },
+          },
+          {
             title: 'More information',
             description:
               'For any queries in relation to our policy on cookies and your choices, please <a class="cc-link" href="mailto:cloud-service@elixir-europe.org">contact us</a>.',
@@ -76,7 +86,7 @@ const pluginConfig = {
 
 const googleAnalyticsCookieScript = () => {
   const cookie = JSON.parse(Cookies.get('cc_cookie'));
-  if (cookie?.categories.includes('necessary')) {
+  if (cookie?.categories.includes('analytics')) {
     ReactGA.initialize(`${process.env.GA_MEASUREMENT_ID}`);
   }
 };
