@@ -42,11 +42,11 @@ const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
   const selectOption = (selectedOption) => {
     if (multiple === true) {
       if (isSelectedOption(selectedOption)) {
-        onChange(value.filter((opt) => opt.value !== selectedOption.value));
+        onChange(value?.filter((opt) => opt.value !== selectedOption.value));
       } else {
         onChange([...value, selectedOption]);
       }
-    } else if (selectedOption.value !== value.value) {
+    } else if (selectedOption.value !== value?.value) {
       onChange(selectedOption);
     }
   };
@@ -55,7 +55,7 @@ const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
     if (multiple === true) {
       const payload1 = JSON.stringify(selectedOption);
       let returnValue = null;
-      value.forEach((v) => {
+      value?.forEach((v) => {
         const payload2 = JSON.stringify(v);
         if (payload1 === payload2) {
           returnValue = true;
@@ -66,7 +66,7 @@ const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
       }
       return returnValue;
     }
-    return selectedOption.value === value.value;
+    return selectedOption.value === value?.value;
   };
   return (
     <div
@@ -77,7 +77,7 @@ const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
     >
       <span className="flex-grow">
         {multiple === true
-          ? value.map((v) => {
+          ? value?.map((v) => {
               if (v?.value === '') {
                 return null;
               }
@@ -97,8 +97,13 @@ const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
                 </button>
               );
             })
-          : value.label}
-        {multiple === true && value.length === 0 ? (
+          : !(
+              multiple !== true &&
+              (value?.value === undefined || value?.value === null)
+            ) && value?.label}
+        {(multiple === true && value?.length === 0) ||
+        (multiple !== true &&
+          (value?.value === undefined || value?.value === null)) ? (
           <span className="text-sm dark:text-gray-300">{defaultLabel}</span>
         ) : (
           ''
