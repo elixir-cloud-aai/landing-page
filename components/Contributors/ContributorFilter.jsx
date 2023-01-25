@@ -129,8 +129,8 @@ const ContributorFilter = ({
       <div className={'pl-1 rounded-lg mt-4 w-full'}>
         <form className="flex flex-col lg:flex-row md:items-center md:justify-center">
           <div className="filters flex flex-col md:flex-row flex-[10]">
-            <div className="flex flex-col lg:flex-row w-full">
-              <div className="flex items-center mb-4 lg:mb-0 w-full">
+            <div className="flex flex-col lg:flex-row w-full gap-4">
+              <div className="flex items-center w-full ">
                 <input
                   checked={filterformValues.pastContributorCheckBox}
                   className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-elixirblue dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
@@ -151,7 +151,7 @@ const ContributorFilter = ({
                   Active contributors
                 </label>
               </div>
-              <div className="flex items-center mb-4 lg:mb-0 w-full">
+              <div className="flex items-center w-full">
                 <input
                   checked={filterformValues.projectLeadCheckbox}
                   className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-elixirblue dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
