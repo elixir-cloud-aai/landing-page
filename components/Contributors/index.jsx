@@ -244,12 +244,12 @@ function Contributors({ contributors }) {
                 ></img>
                 <div className="flex flex-col justify-between flex-grow p-4 sm:flex-row">
                   <div className="flex flex-col">
-                    <div className="flex flex-row gap-2 items-center">
+                    <div className="flex flex-row gap-2 items-baseline">
                       <div className="text-xl font-semibold flex justify-between dark:text-gray-200">
-                        <div>{contributor.name}</div>
+                        {contributor.name}
                       </div>
                       <div className="flex text-sm text-gray-500">
-                        <div>{contributor.affiliation}</div>
+                        {contributor.affiliation}
                       </div>
                     </div>
                     <div className="mt-1 transition-all">
