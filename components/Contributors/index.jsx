@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import Zoom from 'react-reveal/Zoom';
-import themeContext from '../../context/darkMode';
+import themeContext from '../../context/defaultTheme';
 import ContributorFilter from './ContributorFilter';
 
 function Contributors({ contributors }) {

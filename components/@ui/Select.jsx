@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import themeContext from '../../context/darkMode';
+import themeContext from '../../context/defaultTheme';
 
 /**
  * @params

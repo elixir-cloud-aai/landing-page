@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import ContentLoader from 'react-content-loader';
 import Zoom from 'react-reveal/Zoom';
-import themeContext from '../context/darkMode';
+import themeContext from '../context/defaultTheme';
 
 function News() {
   const theme = useContext(themeContext);

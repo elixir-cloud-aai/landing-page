@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import Zoom from 'react-reveal/Zoom';
-import themeContext from '../context/darkMode';
+import themeContext from '../context/defaultTheme';
 
 function Partners({ partners }) {
   const [query, setQuery] = useState('');

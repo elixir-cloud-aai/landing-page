@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Footer from './Footer';
 import NavBar from './NavBar';
-import { ThemeProvider } from '../context/darkMode';
+import { ThemeProvider } from '../context/defaultTheme';
 
 function Layout({ children }) {
   const [scroll, setScroll] = useState(0);
