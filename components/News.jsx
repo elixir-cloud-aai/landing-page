@@ -2,10 +2,10 @@ import { useContext } from 'react';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import ContentLoader from 'react-content-loader';
 import Zoom from 'react-reveal/Zoom';
-import DarkModeContext from '../context/darkMode';
+import themeContext from '../context/defaultTheme';
 
 function News() {
-  const darkMode = useContext(DarkModeContext);
+  const theme = useContext(themeContext);
   const renderLoading = () => (
     <>
       <ContentLoader
@@ -60,12 +60,12 @@ function News() {
     <Zoom>
       <div className="mt-32 md:mx-96 mx-5">
         <TwitterTimelineEmbed
-          key={darkMode}
+          key={theme}
           noFooter
           noHeader
           placeholder={renderLoading()}
           sourceType="profile"
-          theme={darkMode ? 'dark' : 'light'}
+          theme={theme === 'light' ? 'light' : 'dark'}
           transparent
           userId="1586382856267464708"
         />
