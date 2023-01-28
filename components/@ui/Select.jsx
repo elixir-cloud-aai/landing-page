@@ -75,7 +75,7 @@ const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
       onClick={() => setIsOpen((prev) => !prev)}
       tabIndex={0}
     >
-      <span className="flex-grow">
+      <span className="flex-grow text-sm">
         {multiple === true
           ? value?.map((v) => {
               if (v?.value === '') {
@@ -84,7 +84,7 @@ const Select = ({ value, onChange, options, multiple, defaultLabel }) => {
               return (
                 <button
                   className={
-                    'text-xs text-left m-px border border-gray-200 dark:border-gray-700 hover:border-elixirred rounded-lg p-1 hover:bg-elixirred hover:text-white'
+                    'text-sm text-left m-px border border-gray-200 dark:border-gray-700 hover:border-elixirred rounded-lg p-1 hover:bg-elixirred hover:text-white'
                   }
                   key={v.value}
                   onClick={(e) => {
