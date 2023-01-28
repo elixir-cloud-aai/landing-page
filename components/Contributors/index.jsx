@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import Zoom from 'react-reveal/Zoom';
-import DarkModeContext from '../../context/darkMode';
+import themeContext from '../../context/defaultTheme';
 import ContributorFilter from './ContributorFilter';
 
 function Contributors({ contributors }) {
   const [showMorePositions, setShowMorePositions] = useState([]);
-  const darkMode = useContext(DarkModeContext);
+  const theme = useContext(themeContext);
   const [query, setQuery] = useState('');
   const [filteredContributors, setFilteredContributors] =
     useState(contributors);
@@ -92,7 +92,7 @@ function Contributors({ contributors }) {
         {contributor.orcid ? (
           <a href={contributor.orcid}>
             <svg
-              fill={!darkMode ? '#000000' : '#ffffff'}
+              fill={theme === 'light' ? '#000000' : '#ffffff'}
               height="24px"
               viewBox="0 0 32 32"
               width="24px"
@@ -107,7 +107,7 @@ function Contributors({ contributors }) {
         {contributor.researchgate ? (
           <a href={contributor.researchgate}>
             <svg
-              fill={!darkMode ? '#000000' : '#ffffff'}
+              fill={theme === 'light' ? '#000000' : '#ffffff'}
               height="26px"
               viewBox="0 0 32 32"
               width="26px"
@@ -123,7 +123,7 @@ function Contributors({ contributors }) {
           <a href={contributor.scholar}>
             <svg
               className=""
-              fill={!darkMode ? '#000000' : '#ffffff'}
+              fill={theme === 'light' ? '#000000' : '#ffffff'}
               height="24px"
               viewBox="0 0 24 24"
               width="24px"
