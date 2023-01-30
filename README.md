@@ -169,7 +169,6 @@ thread in our [Q&A forum][contact-qa], or send us an [email][contact-email].
 [res-cloud-computing]: https://en.wikipedia.org/wiki/Cloud_computing
 [res-elixir-compute]: https://elixir-europe.org/platforms/compute
 [res-ga4gh]: https://ga4gh.org/
-[res-google-analytics-docs]: <https://support.google.com/analytics/answer/9304153>
 [res-next]: https://nextjs.org/
 [res-notion]: https://www.notion.so/
 [res-notion-devs]: https://developers.notion.com/
