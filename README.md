@@ -61,15 +61,24 @@ in your account, note down the "Internal Integration Token" and [link the
 integration][res-notion-link-integration] to the to the duplicated page in your
 account.
 
+For Google Analytics support, you will also need to create a Google Analytics
+account, property and data stream, and note down the measurement ("G-") ID as
+described [here][res-google-analytics-docs] (for setting up data collection,
+follow the instructions to 'Find your "G-" ID' at the bottom of the page).
+
 Create a file `.env.local` in the repository's root directory with the
-following command (don't forget to replace `YOUR_TOKEN` with your internal
-integration token):
+following command (don't forget to replace the values with your own ones):
 
 ```bash
 cat << EOF > .env.local
 NOTION_TOKEN=<YOUR_TOKEN>
+GA_MEASUREMENT_ID=<YOUR_ID>
 EOF
 ```
+
+> An example file with the required variables is also available in
+> `.sample.env`. Instead of the lines above, you can make a copy of the file in
+> `.env` and replace the values with your own.
 
 Start the local development server with:
 
@@ -106,7 +115,8 @@ gh repo clone elixir-cloud-aai/landing-page
 Then set the Notion token:
 
 ```bash
-export NOTION_TOKEN=<YOUR-NOTION-TOKEN>
+export NOTION_TOKEN=<YOUR-TOKEN>
+export GA_MEASUREMENT_ID=<YOUR_ID>
 ```
 
 Finally, build and deploy the app image with the following command:
@@ -163,6 +173,7 @@ thread in our [Q&A forum][contact-qa], or send us an [email][contact-email].
 [res-cloud-computing]: https://en.wikipedia.org/wiki/Cloud_computing
 [res-elixir-compute]: https://elixir-europe.org/platforms/compute
 [res-ga4gh]: https://ga4gh.org/
+[res-google-analytics-docs]: <https://support.google.com/analytics/answer/9304153>
 [res-next]: https://nextjs.org/
 [res-notion]: https://www.notion.so/
 [res-notion-devs]: https://developers.notion.com/
