@@ -64,25 +64,18 @@ in your account, note down the "Internal Integration Token" and [link the
 integration][res-notion-link-integration] to the to the duplicated page in your
 account.
 
-Optionally, for Google Analytics support, you will also need to create a Google
-Analytics account, property and data stream, and note down the measurement
-("G-") ID as described [here][res-google-analytics-docs] (for setting up data
-collection, follow the instructions to 'Find your "G-" ID' at the bottom of the
-page).
-
 Create a file `.env.local` in the repository's root directory with the
 following command (don't forget to replace the values with your own ones):
 
 ```bash
 cat << EOF > .env.local
 NOTION_TOKEN=<YOUR_TOKEN>
-GA_MEASUREMENT_ID=<YOUR_ID>  # delete line if not desired
 EOF
 ```
 
 > An example file with the required variables is also available in
-> `.sample.env`. Instead of the lines above, you can make a copy of the file in
-> `.env` and replace the values with your own.
+> `.sample.env`. Instead of the command above, you can make a copy of the file
+> in `.env` and replace the values with your own.
 
 Start the local development server with:
 
@@ -120,7 +113,6 @@ Then set the Notion token:
 
 ```bash
 export NOTION_TOKEN=<YOUR-TOKEN>
-export GA_MEASUREMENT_ID=<YOUR_ID>  # optional
 ```
 
 Finally, build and deploy the app image with the following command:
