@@ -27,8 +27,8 @@ function Partners({ partners }) {
                 alt="Icon"
                 className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
                 height="auto"
-                id={theme === 'dark' ? 'darkMode' : ''}
-                src={theme === 'light' ? partner.icon : partner.iconDark}
+                id={theme.theme === 'dark' ? 'darkMode' : ''}
+                src={theme.theme === 'light' ? partner.icon : partner.iconDark}
                 width="auto"
               />
               <div className="flex-grow p-5">
