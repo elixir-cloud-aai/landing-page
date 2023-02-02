@@ -11,11 +11,13 @@ function Contributors({ contributors }) {
     useState(contributors);
   const [filteredContributorBySearch, setFilteredContributorBySearch] =
     useState(filteredContributors);
+  const [roles, setRoles] = useState([]);
   const [affiliations, setAffiliations] = useState([]);
   const [filterformValues, setFilterformValues] = useState({
     pastContributorCheckBox: false,
     projectLeadCheckbox: false,
-    affiliationInput: [],
+    roleInput: [],
+    affiliationInput: {},
   });
 
   const [isFilterOpen, setFilterIsOpen] = useState(false);
@@ -46,19 +48,28 @@ function Contributors({ contributors }) {
     setFilteredContributorBySearch(newFilteredContributors);
   };
 
-  const getAffiliationArray = () => {
-    const affiliationSet = new Set();
+  const getRoleArray = () => {
+    const roleSet = new Set();
     contributors.forEach((contributor) => {
       contributor?.positions?.forEach((position) => {
-        affiliationSet.add(position);
+        roleSet.add(position);
       });
+    });
+    const roleArray = [...roleSet];
+    setRoles(roleArray);
+  };
+  const getAffiliationsArray = () => {
+    const affiliationSet = new Set();
+    contributors.forEach((contributor) => {
+      const affiliation = contributor?.affiliation;
+      affiliationSet.add(affiliation);
     });
     const affiliationArray = [...affiliationSet];
     setAffiliations(affiliationArray);
   };
-
   useEffect(() => {
-    getAffiliationArray();
+    getRoleArray();
+    getAffiliationsArray();
   }, []);
 
   const resetFilters = () => {
@@ -68,7 +79,7 @@ function Contributors({ contributors }) {
     setFilterformValues({
       pastContributorCheckBox: false,
       projectLeadCheckbox: false,
-      affiliationInput: [],
+      roleInput: [],
     });
   };
 
@@ -292,6 +303,7 @@ function Contributors({ contributors }) {
             affiliations={affiliations}
             contributors={contributors}
             filterformValues={filterformValues}
+            roles={roles}
             setFilteredContributors={setFilteredContributors}
             setFilterformValues={setFilterformValues}
           />
