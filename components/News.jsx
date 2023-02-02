@@ -58,14 +58,14 @@ function News() {
 
   return (
     <Zoom>
-      <div className="mt-32 md:mx-96 mx-5">
+      <div className="mt-32 md:mx-96 mx-5 rounded-xl dark:bg-gray-900">
         <TwitterTimelineEmbed
-          key={theme}
+          key={theme.theme}
           noFooter
           noHeader
           placeholder={renderLoading()}
           sourceType="profile"
-          theme={theme === 'light' ? 'light' : 'dark'}
+          theme={theme.theme === 'light' ? 'light' : 'dark'}
           transparent
           userId="1586382856267464708"
         />
