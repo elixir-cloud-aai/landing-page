@@ -8,8 +8,8 @@ function Partners({ funders }) {
   const theme = useContext(themeContext);
 
   const handleSearch = (e) => {
-    const term = e.target.value.trim();
-    setQuery(term);
+    setQuery(e.target.value);  
+    const term = e.target.value.trim().toLowerCase();
     if (term === '') {
       setFilteredFunders(funders);
       return;

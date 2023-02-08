@@ -31,8 +31,8 @@ function Contributors({ contributors }) {
   }, [filteredContributors]);
 
   const handleSearch = (e) => {
-    const term = e.target.value.trim();
-    setQuery(term);
+    setQuery(e.target.value);
+    const term = e.target.value.trim().toLowerCase();
     if (term === '') {
       setFilteredContributorBySearch(filteredContributors);
       return;
