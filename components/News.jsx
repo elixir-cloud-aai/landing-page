@@ -7,7 +7,7 @@ import themeContext from '../context/defaultTheme';
 function News() {
   const theme = useContext(themeContext);
   const renderLoading = () => (
-    <>
+    <div className="p-5">
       <ContentLoader
         backgroundColor="#f3f3f3"
         foregroundColor="#ecebeb"
@@ -53,7 +53,7 @@ function News() {
         <circle cx="20" cy="20" r="20" />
       </ContentLoader>
       <hr className="mb-5" />
-    </>
+    </div>
   );
 
   return (
