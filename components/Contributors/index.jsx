@@ -103,7 +103,7 @@ function Contributors({ contributors }) {
         {contributor.orcid ? (
           <a href={contributor.orcid}>
             <svg
-              fill={theme === 'light' ? '#000000' : '#ffffff'}
+              fill={theme.theme === 'light' ? '#000000' : '#ffffff'}
               height="24px"
               viewBox="0 0 32 32"
               width="24px"
@@ -118,7 +118,7 @@ function Contributors({ contributors }) {
         {contributor.researchgate ? (
           <a href={contributor.researchgate}>
             <svg
-              fill={theme === 'light' ? '#000000' : '#ffffff'}
+              fill={theme.theme === 'light' ? '#000000' : '#ffffff'}
               height="26px"
               viewBox="0 0 32 32"
               width="26px"
@@ -134,7 +134,7 @@ function Contributors({ contributors }) {
           <a href={contributor.scholar}>
             <svg
               className=""
-              fill={theme === 'light' ? '#000000' : '#ffffff'}
+              fill={theme.theme === 'light' ? '#000000' : '#ffffff'}
               height="24px"
               viewBox="0 0 24 24"
               width="24px"
