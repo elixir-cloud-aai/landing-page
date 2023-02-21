@@ -20,7 +20,10 @@ Health][res-ga4gh].
 ## About this repository
 
 This website is built using the [Next.js][res-next] framework for
-[React.js][res-react]. Most of the pages on the website are built by [Incremental Static Regeneration](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration) server-side for fast client-side rendering and better SEO.
+[React.js][res-react]. Most of the pages on the website are built by
+[Incremental Static
+Regeneration](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration)
+server-side for fast client-side rendering and better SEO.
 
 Dynamic content for the website is fetched from [Notion][res-notion], where it
 can be conveniently edited by authorized users. If you are a member of ELIXIR
@@ -62,14 +65,17 @@ integration][res-notion-link-integration] to the to the duplicated page in your
 account.
 
 Create a file `.env.local` in the repository's root directory with the
-following command (don't forget to replace `YOUR_TOKEN` with your internal
-integration token):
+following command (don't forget to replace the values with your own ones):
 
 ```bash
 cat << EOF > .env.local
 NOTION_TOKEN=<YOUR_TOKEN>
 EOF
 ```
+
+> An example file with the required variables is also available in
+> `.sample.env`. Instead of the command above, you can make a copy of the file
+> in `.env` and replace the values with your own.
 
 Start the local development server with:
 
@@ -106,7 +112,7 @@ gh repo clone elixir-cloud-aai/landing-page
 Then set the Notion token:
 
 ```bash
-export NOTION_TOKEN=<YOUR-NOTION-TOKEN>
+export NOTION_TOKEN=<YOUR-TOKEN>
 ```
 
 Finally, build and deploy the app image with the following command:

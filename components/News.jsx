@@ -7,7 +7,7 @@ import themeContext from '../context/defaultTheme';
 function News() {
   const theme = useContext(themeContext);
   const renderLoading = () => (
-    <>
+    <div className="p-5">
       <ContentLoader
         backgroundColor="#f3f3f3"
         foregroundColor="#ecebeb"
@@ -53,19 +53,19 @@ function News() {
         <circle cx="20" cy="20" r="20" />
       </ContentLoader>
       <hr className="mb-5" />
-    </>
+    </div>
   );
 
   return (
     <Zoom>
-      <div className="mt-32 md:mx-96 mx-5">
+      <div className="mt-32 md:mx-96 mx-5 dark:bg-gray-900 rounded-xl">
         <TwitterTimelineEmbed
-          key={theme}
+          key={theme.theme}
           noFooter
           noHeader
           placeholder={renderLoading()}
           sourceType="profile"
-          theme={theme === 'light' ? 'light' : 'dark'}
+          theme={theme.theme === 'light' ? 'light' : 'dark'}
           transparent
           userId="1586382856267464708"
         />
