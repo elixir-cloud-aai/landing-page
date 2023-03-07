@@ -14,7 +14,7 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v2.1.0
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: ${{ secrets.DOCKERHUB_LOGIN }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2.4.1
@@ -27,7 +27,7 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha, mode=max
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/landing-page:latest
+          tags: ${{ secrets.DOCKERHUB_ORG }}/landing-page:latest
 
   open-shift:
     name: Deploy to OC
@@ -48,11 +48,11 @@ jobs:
       - name: Create project
         run: oc new-project ${{ secrets.OPENSHIFT_NAMESPACE }} || oc project ${{ secrets.OPENSHIFT_NAMESPACE }}
       - name: Pull from Docker registry
-        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/landing-page:latest
+        run: docker pull ${{ secrets.DOCKERHUB_ORG }}/landing-page:latest
       - name: Login to Rahti registry
         run: sudo docker login -p ${{ secrets.OPENSHIFT_TOKEN }} -u unused docker-registry.rahti.csc.fi
       - name: Push to Rahti registry
-        run: sudo docker tag ${{ secrets.DOCKERHUB_USERNAME }}/landing-page:latest docker-registry.rahti.csc.fi/${{ secrets.OPENSHIFT_NAMESPACE }}/landing-page:latest && sudo docker push docker-registry.rahti.csc.fi/${{ secrets.OPENSHIFT_NAMESPACE }}/landing-page
+        run: sudo docker tag ${{ secrets.DOCKERHUB_ORG }}/landing-page:latest docker-registry.rahti.csc.fi/${{ secrets.OPENSHIFT_NAMESPACE }}/landing-page:latest && sudo docker push docker-registry.rahti.csc.fi/${{ secrets.OPENSHIFT_NAMESPACE }}/landing-page
       - name: Delete app
         id: destroy-app
         run: oc delete all -l app=landing-page-dev
