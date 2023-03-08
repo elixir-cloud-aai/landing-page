@@ -58,5 +58,5 @@ jobs:
         run: oc delete all -l app=landing-page-dev
       - name: Create app with route
         run: |
-          oc new-app landing-page-dev --namespace=${{ secrets.OPENSHIFT_NAMESPACE }}
+          oc new-app landing-page --namespace=${{ secrets.OPENSHIFT_NAMESPACE }} --name=landing-page-dev
           oc expose svc/landing-page --name=elixir
