@@ -59,4 +59,4 @@ jobs:
       - name: Create app with route
         run: |
           oc new-app landing-page --namespace=${{ secrets.OPENSHIFT_NAMESPACE }} --name=landing-page-dev
-          oc expose svc/landing-page --name=elixir
+          oc expose svc/landing-page-dev --name=elixir
