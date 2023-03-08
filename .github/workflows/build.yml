@@ -1,19 +1,62 @@
-# This workflow will build the application image.
-name: build app
+name: Build and Publish app
 
-on: [push, pull_request]
+on:
+  pull_request:
+    branches: [dev]
 
 jobs:
   build:
     name: Build app
     runs-on: ubuntu-latest
     steps:
-      - name: check out repository
+      - name: Check out repository
         uses: actions/checkout@v3
-      - name: build app image
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2.1.0
+        with:
+          username: ${{ secrets.DOCKERHUB_LOGIN }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2.4.1
+      - name: Build and push to Docker Hub
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          file: ./Dockerfile
+          build-args: NOTION_SECRET=${{ secrets.NOTION_TOKEN }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha, mode=max
+          tags: ${{ secrets.DOCKERHUB_ORG }}/landing-page:latest
+
+  open-shift:
+    name: Deploy to OC
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install oc
+        uses: redhat-actions/oc-installer@v1.1
+      - name: Login to OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          insecure_skip_tls_verify: true
+          namespace: ${{ secrets.OPENSHIFT_NAMESPACE }}
+      - name: Create project
+        run: oc new-project ${{ secrets.OPENSHIFT_NAMESPACE }} || oc project ${{ secrets.OPENSHIFT_NAMESPACE }}
+      - name: Pull from Docker registry
+        run: docker pull ${{ secrets.DOCKERHUB_ORG }}/landing-page:latest
+      - name: Login to Rahti registry
+        run: sudo docker login -p ${{ secrets.OPENSHIFT_TOKEN }} -u unused docker-registry.rahti.csc.fi
+      - name: Push to Rahti registry
+        run: sudo docker tag ${{ secrets.DOCKERHUB_ORG }}/landing-page:latest docker-registry.rahti.csc.fi/${{ secrets.OPENSHIFT_NAMESPACE }}/landing-page:latest && sudo docker push docker-registry.rahti.csc.fi/${{ secrets.OPENSHIFT_NAMESPACE }}/landing-page
+      - name: Delete app
+        id: destroy-app
+        run: oc delete all -l app=landing-page-dev
+      - name: Create app with route
         run: |
-          docker-compose up --build -d
-          sleep 3
-          docker-compose down
+          oc new-app landing-page --namespace=${{ secrets.OPENSHIFT_NAMESPACE }} --name=landing-page-dev
+          oc expose svc/landing-page-dev --name=elixir
