@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Link from 'next/link';
 import Zoom from 'react-reveal/Zoom';
+import themeContext from '../context/defaultTheme';
 
 function Solutions({ solutions }) {
   const [query, setQuery] = useState('');
   const [filteredSolutions, setFilteredSolutions] = useState(solutions);
+  const theme = useContext(themeContext);
 
   const handleSearch = (e) => {
     setQuery(e.target.value);
@@ -20,17 +22,19 @@ function Solutions({ solutions }) {
     filteredSolutions.map((solution) => (
       <Zoom key={solution.id}>
         <Link href={`solution/${solution.id}`} passHref>
-          <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 hover:bg-gray-100 cursor-pointer">
-            <div className="flex md:flex-row flex-col">
+          <div className="w-full my-5 border-2 rounded-lg shadow-lg cursor-pointer hover:shadow-md dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 hover:bg-gray-100">
+            <div className="flex flex-col md:flex-row">
               <img
                 alt="Icon"
-                className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
+                className={`md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5 ${
+                  theme === 'dark' ? 'darkMode' : ''
+                }`}
                 height="auto"
-                src={solution.icon}
+                src={theme !== 'dark' ? solutions.icon : solutions.iconDark}
                 width="auto"
               />
               <div className="flex-grow p-5">
-                <div className="text-xl font-semibold flex justify-between">
+                <div className="flex justify-between text-xl font-semibold">
                   <div className="dark:text-gray-200">{solution.title}</div>
                 </div>
                 <div className="text-gray-500 text-justify mt-1.5 dark:text-gray-400">
@@ -44,9 +48,9 @@ function Solutions({ solutions }) {
     ));
 
   return (
-    <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700">
+    <div className="mx-10 mt-32 text-gray-700 md:mx-64 font-pop">
       <input
-        className="md:text-base text-sm px-3 py-2 border-2 rounded-lg outline-none w-full focus:shadow-lg hover:shadow-lg mb-5 placeholder-opacity-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 dark:text-gray-200"
+        className="w-full px-3 py-2 mb-5 text-sm placeholder-opacity-50 border-2 rounded-lg outline-none md:text-base focus:shadow-lg hover:shadow-lg dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 dark:text-gray-200"
         onChange={(e) => {
           handleSearch(e);
         }}
