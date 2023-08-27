@@ -1,13 +1,35 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import TextLoop from 'react-text-loop';
-import Zoom from 'react-reveal/Zoom';
+import TextTransition, { presets } from 'react-text-transition';
+import { Zoom } from 'react-awesome-reveal';
 import window from 'global/window';
+
+const TEXTS = [
+  <span className="text-elixirred" key="findable">
+    Findable
+  </span>,
+  <span className="text-elixirgreen" key="accessible">
+    Accessible
+  </span>,
+  <span className="text-elixiryellow" key="interoperable">
+    Interoperable
+  </span>,
+  <span className="text-elixirblue" key="reusable">
+    Reusable
+  </span>,
+  <div className="flex" key="fair">
+    <span className="text-elixirred">F</span>
+    <span className="text-elixirgreen">A</span>
+    <span className="text-elixiryellow">I</span>
+    <span className="text-elixirblue">R</span>
+  </div>,
+];
 
 function Home() {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [innerWidth, setinnerWidth] = useState(1000);
+  const [index, setIndex] = useState(0);
   const backgroundImgUrl = 'url(/Landing_Dark.svg)';
 
   const handleMouseMove = (e) => {
@@ -16,21 +38,18 @@ function Home() {
     setinnerWidth(window.innerWidth);
   };
 
+  useEffect(() => {
+    const intervalId = setInterval(
+      () => setIndex((index) => index + 1),
+      2000, // every 2 seconds
+    );
+    return () => clearTimeout(intervalId);
+  }, []);
+
   const renderTextLoop = () => (
-    <span className="block md:inline">
-      <TextLoop noWrap={false} springConfig={{ stiffness: 180, damping: 8 }}>
-        <span className="text-elixirred">Findable</span>
-        <span className="text-elixirgreen">Accessible</span>
-        <span className="text-elixiryellow">Interoperable</span>
-        <span className="text-elixirblue">Reusable</span>
-        <div>
-          <span className="text-elixirred">F</span>
-          <span className="text-elixirgreen">A</span>
-          <span className="text-elixiryellow">I</span>
-          <span className="text-elixirblue">R</span>
-        </div>
-      </TextLoop>
-    </span>
+    <TextTransition inline springConfig={presets.gentle}>
+      {TEXTS[index % TEXTS.length]}
+    </TextTransition>
   );
 
   return (
@@ -49,14 +68,14 @@ function Home() {
             backgroundPositionY: `${y / 50}px`,
           }}
         >
-          <Zoom>
+          <Zoom triggerOnce>
             <div className="leading-relaxed dark:text-gray-200">
               {/* <div className="text-xl md:text-3xl mb-1 leading-relaxed font-bold md:font-extrabold">
                 ELIXIR Cloud &#38; AAI
               </div> */}
-              Making Cloud Infrastructure for{' '}
-              <span className="inline md:block">
-                the Life Sciences {renderTextLoop()}
+              Making Cloud Infrastructure for
+              <span className="block">
+                the Life Sciences &nbsp;{renderTextLoop()}
               </span>
             </div>
           </Zoom>

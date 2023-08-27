@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import dayjs from 'dayjs';
-import Zoom from 'react-reveal/Zoom';
+import { Zoom } from 'react-awesome-reveal';
 import { NextSeo } from 'next-seo';
 import Content from '../../components/Content';
 import getSolutions from '../../utils/solutions';

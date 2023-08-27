@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import Link from 'next/link';
-import Zoom from 'react-reveal/Zoom';
+import { Zoom } from 'react-awesome-reveal';
 import themeContext from '../context/defaultTheme';
 
 function Solutions({ solutions }) {
@@ -30,7 +30,7 @@ function Solutions({ solutions }) {
                   theme === 'dark' ? 'darkMode' : ''
                 }`}
                 height="auto"
-                src={theme !== 'dark' ? solutions.icon : solutions.iconDark}
+                src={theme !== 'dark' ? solution.icon : solution.iconDark}
                 width="auto"
               />
               <div className="flex-grow p-5">

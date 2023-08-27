@@ -1,4 +1,4 @@
-import Zoom from 'react-reveal/Zoom';
+import { Zoom } from 'react-awesome-reveal';
 
 const Content = ({ content }) => {
   const renderBlock = (block) =>
