@@ -32,13 +32,14 @@ function Home() {
   const [index, setIndex] = useState(0);
   const backgroundImgUrl = 'url(/Landing_Dark.svg)';
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e = { clientX: 0, clientY: 0 }) => {
     setX(e.clientX);
     setY(e.clientY);
     setinnerWidth(window.innerWidth);
   };
 
   useEffect(() => {
+    handleMouseMove();
     const intervalId = setInterval(
       () => setIndex((index) => index + 1),
       2000, // every 2 seconds
