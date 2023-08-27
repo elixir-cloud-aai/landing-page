@@ -49,30 +49,7 @@ function News() {
   return (
     <Zoom>
       <div className="mt-32 md:mx-96 mx-5 dark:bg-gray-900 rounded-xl">
-        {theme.theme === 'dark' ? (
-          <TwitterTimelineEmbed
-            key="dark"
-            noFooter
-            noHeader
-            placeholder={renderLoading()}
-            screenName="egc_news"
-            sourceType="profile"
-            theme="dark"
-            transparent
-          />
-        ) : (
-          <TwitterTimelineEmbed
-            key="light"
-            noFooter
-            noHeader
-            placeholder={renderLoading()}
-            screenName="egc_news"
-            sourceType="profile"
-            theme="light"
-            transparent
-          />
-        )}
-        {/* <TwitterTimelineEmbed
+        <TwitterTimelineEmbed
           key={theme.theme}
           noFooter
           noHeader
@@ -81,7 +58,7 @@ function News() {
           sourceType="profile"
           theme={theme.theme === 'light' ? 'light' : 'dark'}
           transparent
-        /> */}
+        />
       </div>
     </Zoom>
   );
