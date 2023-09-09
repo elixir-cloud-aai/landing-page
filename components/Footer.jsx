@@ -80,7 +80,9 @@ function Footer() {
         >
           <div className="text-sm md:text-lg md:font-semibold">
             {footer.link ? (
-              <a href={footer.link}>{footer.title}</a>
+              <a className="hover:underline" href={footer.link}>
+                {footer.title}
+              </a>
             ) : (
               <div>{footer.title}</div>
             )}
@@ -101,11 +103,14 @@ function Footer() {
                 );
               }
               return (
-                <Link href={link.link} key={link.link} passHref>
-                  <div className="text-xs md:text-base block hover:underline cursor-pointer">
+                <div
+                  className="text-xs md:text-base block hover:underline cursor-pointer"
+                  key={link.link}
+                >
+                  <Link href={link.link} passHref>
                     {link.name}
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               );
             })}
           </div>
@@ -115,7 +120,7 @@ function Footer() {
   );
 
   return (
-    <footer className="bg-gray-900 px-5 md:px-64 pt-7 md:pt-12 py-3 md:py-9 text-gray-200 font-pop text-sm rounded-t-xl">
+    <footer className="bg-gray-900 px-5 md:px-64 pt-7 md:pt-12 py-3 md:py-9 text-gray-200 font-pop text-sm rounded-t-xl relative">
       <div className="flex md:flex-row flex-col">
         <div className="text-center pb-0 pt-5">
           <div>
@@ -178,7 +183,7 @@ function Footer() {
         </div>
         <div className="mt-4 md:mt-0 flex-grow">{renderFooterLinks()}</div>
       </div>
-      <div className="text-xs text-gray-700 text-right -mt-5">
+      <div className="text-[0.5rem] text-gray-700 text-right -mt-5 absolute bottom-0 md:right-64 right-5">
         Icons by <a href="https://icons8.com/">icons8.com</a>
       </div>
     </footer>

@@ -1,58 +1,48 @@
 import { useContext } from 'react';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import ContentLoader from 'react-content-loader';
-import Zoom from 'react-reveal/Zoom';
+import { Zoom } from 'react-awesome-reveal';
 import themeContext from '../context/defaultTheme';
 
 function News() {
   const theme = useContext(themeContext);
   const renderLoading = () => (
-    <div className="p-5">
+    <div className="border rounded-lg dark:border-gray-700">
       <ContentLoader
         backgroundColor="#f3f3f3"
         foregroundColor="#ecebeb"
         speed={2}
-        viewBox="0 0 476 124"
+        viewBox="0 0 476 70"
       >
-        <rect height="6" rx="3" ry="3" width="88" x="48" y="8" />
-        <rect height="6" rx="3" ry="3" width="88" x="48" y="8" />
-        <rect height="6" rx="3" ry="3" width="52" x="48" y="26" />
-        <rect height="6" rx="3" ry="3" width="410" x="0" y="56" />
-        <rect height="6" rx="3" ry="3" width="380" x="0" y="72" />
-        <rect height="6" rx="3" ry="3" width="178" x="0" y="88" />
-        <circle cx="20" cy="20" r="20" />
+        <rect height="6" rx="3" ry="3" width="88" x="48" y="10" />
+        <rect height="5" rx="3" ry="3" width="410" x="48" y="30" />
+        <rect height="5" rx="3" ry="3" width="410" x="48" y="45" />
+        <circle cx="20" cy="20" r="13" />
       </ContentLoader>
-      <hr className="mb-5" />
+      <hr className="mb-5 dark:border-gray-700" />
       <ContentLoader
         backgroundColor="#f3f3f3"
         foregroundColor="#ecebeb"
         speed={2}
-        viewBox="0 0 476 124"
+        viewBox="0 0 476 70"
       >
-        <rect height="6" rx="3" ry="3" width="88" x="48" y="8" />
-        <rect height="6" rx="3" ry="3" width="88" x="48" y="8" />
-        <rect height="6" rx="3" ry="3" width="52" x="48" y="26" />
-        <rect height="6" rx="3" ry="3" width="410" x="0" y="56" />
-        <rect height="6" rx="3" ry="3" width="380" x="0" y="72" />
-        <rect height="6" rx="3" ry="3" width="178" x="0" y="88" />
-        <circle cx="20" cy="20" r="20" />
+        <rect height="6" rx="3" ry="3" width="88" x="48" y="10" />
+        <rect height="5" rx="3" ry="3" width="410" x="48" y="30" />
+        <rect height="5" rx="3" ry="3" width="410" x="48" y="45" />
+        <circle cx="20" cy="20" r="13" />
       </ContentLoader>
-      <hr className="mb-5" />
+      <hr className="mb-5 dark:border-gray-700" />
       <ContentLoader
         backgroundColor="#f3f3f3"
         foregroundColor="#ecebeb"
         speed={2}
-        viewBox="0 0 476 124"
+        viewBox="0 0 476 70"
       >
-        <rect height="6" rx="3" ry="3" width="88" x="48" y="8" />
-        <rect height="6" rx="3" ry="3" width="88" x="48" y="8" />
-        <rect height="6" rx="3" ry="3" width="52" x="48" y="26" />
-        <rect height="6" rx="3" ry="3" width="410" x="0" y="56" />
-        <rect height="6" rx="3" ry="3" width="380" x="0" y="72" />
-        <rect height="6" rx="3" ry="3" width="178" x="0" y="88" />
-        <circle cx="20" cy="20" r="20" />
+        <rect height="6" rx="3" ry="3" width="88" x="48" y="10" />
+        <rect height="5" rx="3" ry="3" width="410" x="48" y="30" />
+        <rect height="5" rx="3" ry="3" width="410" x="48" y="45" />
+        <circle cx="20" cy="20" r="13" />
       </ContentLoader>
-      <hr className="mb-5" />
     </div>
   );
 
@@ -64,10 +54,10 @@ function News() {
           noFooter
           noHeader
           placeholder={renderLoading()}
+          screenName="egc_news"
           sourceType="profile"
           theme={theme.theme === 'light' ? 'light' : 'dark'}
           transparent
-          userId="1586382856267464708"
         />
       </div>
     </Zoom>

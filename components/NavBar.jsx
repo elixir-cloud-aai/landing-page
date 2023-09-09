@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Slide from 'react-reveal/Slide';
+import { Slide } from 'react-awesome-reveal';
 import { useRouter } from 'next/router';
 
 function NavBar({ scroll, toggleDarkMode, theme, showBanner, setShowBanner }) {

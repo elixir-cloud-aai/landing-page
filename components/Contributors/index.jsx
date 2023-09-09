@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import Zoom from 'react-reveal/Zoom';
+import { Zoom } from 'react-awesome-reveal';
 import themeContext from '../../context/defaultTheme';
 import ContributorFilter from './ContributorFilter';
 
