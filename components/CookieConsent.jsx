@@ -5,15 +5,23 @@ const pluginConfig = {
   current_lang: 'en',
   autoclear_cookies: true,
   page_scripts: true,
-  test: 'ciao',
   force_consent: true,
   gui_options: {
     consent_modal: {
       layout: 'bar',
       position: 'bottom center',
       transition: 'slide',
-      swap_buttons: false,
+      swap_buttons: true,
     },
+  },
+  onAccept: function (cookie) {
+    // check for production environment
+    if (process.env.NODE_ENV === 'production') {
+      // handle analytics cookies
+      if (cookie.categories.includes('analytics')) {
+        window.GAConsentGranted();
+      }
+    }
   },
   languages: {
     en: {
@@ -44,9 +52,9 @@ const pluginConfig = {
         ],
         blocks: [
           {
-            title: 'Cookie usage 📢',
+            title: 'Cookie usage',
             description:
-              'We use cookies to ensure the basic functionalities of the website and to enhance your online experience. You can choose for each category to opt-in/out whenever you want. For more details relative to cookies and other sensitive data, please read the full <a href="/policy" class="cc-link">privacy policy</a>.',
+              'We use cookies to ensure the basic functionalities of the website and to enhance your online experience. You can choose for each category to opt-in/out whenever you want.',
           },
           {
             title: 'Strictly necessary cookies',
@@ -56,6 +64,15 @@ const pluginConfig = {
               value: 'necessary',
               enabled: true,
               readonly: true,
+            },
+          },
+          {
+            title: 'Anylatics cookies',
+            description:
+              'These cookies are used to collect information about how you use our website. The information collected includes the number of visitors, the source of traffic, and the pages visited anonymously.',
+            toggle: {
+              value: 'analytics',
+              enabled: true,
             },
           },
           {
