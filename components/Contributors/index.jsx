@@ -153,6 +153,13 @@ function Contributors({ contributors }) {
         ) : (
           <></>
         )}
+        {contributor.twitter ? (
+          <a href={contributor.twitter}>
+            <ion-icon name="logo-twitter"></ion-icon>
+          </a>
+        ) : (
+          <></>
+        )}
         {contributor.linkedin ? (
           <a href={contributor.linkedin}>
             <ion-icon name="logo-linkedin"></ion-icon>

@@ -35,6 +35,9 @@ const getContributors = async () => {
       github: result.properties.Github.rich_text[0]
         ? result.properties.Github.rich_text[0].text.content
         : '',
+      twitter: result.properties.Twitter.rich_text[0]
+        ? result.properties.Twitter.rich_text[0].text.content
+        : '',
       orcid: result.properties.Orcid.rich_text[0]
         ? result.properties.Orcid.rich_text[0].text.content
         : '',
