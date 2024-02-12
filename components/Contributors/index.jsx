@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Zoom } from 'react-awesome-reveal';
 import themeContext from '../../context/defaultTheme';
 import ContributorFilter from './ContributorFilter';
+import { FaXTwitter } from 'react-icons/fa6';
 
 function Contributors({ contributors }) {
   const [showMorePositions, setShowMorePositions] = useState([]);
@@ -153,9 +154,9 @@ function Contributors({ contributors }) {
         ) : (
           <></>
         )}
-        {contributor.twitter ? (
-          <a href={contributor.twitter}>
-            <ion-icon name="logo-twitter"></ion-icon>
+        {contributor.x ? (
+          <a href={contributor.x}>
+            <FaXTwitter />
           </a>
         ) : (
           <></>
