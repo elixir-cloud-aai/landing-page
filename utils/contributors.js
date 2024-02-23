@@ -38,6 +38,9 @@ const getContributors = async () => {
       x: result.properties.Twitter.rich_text[0]
         ? result.properties.Twitter.rich_text[0].text.content
         : '',
+      mastodon: result.properties.Mastodon.rich_text[0]
+        ? result.properties.Mastodon.rich_text[0].text.content
+        : '',
       orcid: result.properties.Orcid.rich_text[0]
         ? result.properties.Orcid.rich_text[0].text.content
         : '',

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Zoom } from 'react-awesome-reveal';
 import themeContext from '../../context/defaultTheme';
 import ContributorFilter from './ContributorFilter';
-import { FaXTwitter } from 'react-icons/fa6';
+import { FaMastodon, FaXTwitter } from 'react-icons/fa6';
 
 function Contributors({ contributors }) {
   const [showMorePositions, setShowMorePositions] = useState([]);
@@ -157,6 +157,13 @@ function Contributors({ contributors }) {
         {contributor.x ? (
           <a href={contributor.x}>
             <FaXTwitter />
+          </a>
+        ) : (
+          <></>
+        )}
+        {contributor.mastodon ? (
+          <a href={contributor.mastodon}>
+            <FaMastodon />
           </a>
         ) : (
           <></>
