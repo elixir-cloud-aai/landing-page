@@ -5,6 +5,7 @@ import { NextSeo } from 'next-seo';
 import Content from '../../components/Content';
 import getSolutions from '../../utils/solutions';
 import getSolution from '../../utils/solution';
+import Image from 'next/image';
 
 function Solution({ data }) {
   return (
@@ -13,12 +14,12 @@ function Solution({ data }) {
       <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700 tracking-wide">
         <Zoom>
           <div className="flex justify-around">
-            <img
+            <Image
               alt="Icon"
-              className="rounded-lg w-28 h-28 md:w-32 md:h-32"
-              height="auto"
+              className="rounded-lg"
+              height={150}
               src={data.icon}
-              width="auto"
+              width={150}
             />
           </div>
         </Zoom>

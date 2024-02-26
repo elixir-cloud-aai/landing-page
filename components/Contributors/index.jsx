@@ -3,6 +3,7 @@ import { Zoom } from 'react-awesome-reveal';
 import themeContext from '../../context/defaultTheme';
 import ContributorFilter from './ContributorFilter';
 import { FaMastodon, FaXTwitter } from 'react-icons/fa6';
+import Image from 'next/image';
 
 function Contributors({ contributors }) {
   const [showMorePositions, setShowMorePositions] = useState([]);
@@ -261,13 +262,14 @@ function Contributors({ contributors }) {
           <Zoom key={contributor.id}>
             <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100  dark:text-gray-200 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 transition-all">
               <div className="flex md:flex-row flex-col transition-all">
-                <img
+                <Image
                   alt={contributor.name}
                   className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-36 md:h-36 object-cover"
-                  height="auto"
+                  height={150}
                   src={contributor.image}
-                  width="auto"
-                ></img>
+                  // unoptimized
+                  width={150}
+                />
                 <div className="flex flex-col justify-between flex-grow p-4 sm:flex-row">
                   <div className="flex flex-col">
                     <div className="flex flex-row gap-2 items-baseline">

@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import Link from 'next/link';
 import { Zoom } from 'react-awesome-reveal';
 import themeContext from '../context/defaultTheme';
+import Image from 'next/image';
 
 function Solutions({ solutions }) {
   const [query, setQuery] = useState('');
@@ -23,15 +24,15 @@ function Solutions({ solutions }) {
       <Zoom key={solution.id}>
         <Link href={`solution/${solution.id}`} passHref>
           <div className="w-full my-5 border-2 rounded-lg shadow-lg cursor-pointer hover:shadow-md dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 hover:bg-gray-100">
-            <div className="flex flex-col md:flex-row">
-              <img
+            <div className="flex flex-col lg:flex-row">
+              <Image
                 alt="Icon"
-                className={`md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5 ${
+                className={`md:rounded-l-lg md:rounded-t-none rounded-t-lg lg:w-32 lg:h-32 m-auto p-5 lg:mt-0 ${
                   theme === 'dark' ? 'darkMode' : ''
                 }`}
-                height="auto"
+                height={400}
                 src={theme !== 'dark' ? solution.icon : solution.iconDark}
-                width="auto"
+                width={400}
               />
               <div className="flex-grow p-5">
                 <div className="flex justify-between text-xl font-semibold">

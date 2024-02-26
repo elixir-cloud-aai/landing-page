@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 function Footer() {
   const footers = [
@@ -130,12 +131,12 @@ function Footer() {
               rel="noopener noreferrer"
               target="_blank"
             >
-              <img
+              <Image
                 alt="elixir-cloud-aai-logo"
-                className="inline-block w-14 md:w-20 mx-3 mr-3 md:mr-7"
-                height="auto"
+                className="inline-block w-14 md:w-20 mx-3 mr-3 md:mr-7 h-full top-0 left-0 object-cover rounded-2xl"
+                height={200}
                 src="/elixir-cloud-aai.png"
-                width="auto"
+                width={200}
               />
             </a>
             <a
@@ -144,12 +145,12 @@ function Footer() {
               rel="noopener noreferrer"
               target="_blank"
             >
-              <img
+              <Image
                 alt="elixir-logo"
-                className="inline-block w-14 md:w-20 mr-3 md:mx-5"
-                height="auto"
+                className="inline-block w-14 md:w-20 mr-3 md:mx-5 h-full top-0 left-0 object-cover rounded-2xl"
+                height={200}
                 src="/elixir.png"
-                width="auto"
+                width={200}
               />
             </a>
             <a
@@ -158,12 +159,12 @@ function Footer() {
               rel="noopener noreferrer"
               target="_blank"
             >
-              <img
+              <Image
                 alt="ga4gh-logo"
-                className="inline-block w-14 md:w-20 mr-3 md:mx-5"
-                height="auto"
+                className="inline-block w-14 md:w-20 mr-3 md:mx-5 h-full top-0 left-0 object-cover rounded-2xl"
+                height={200}
                 src="/ga4gh.png"
-                width="auto"
+                width={200}
               />
             </a>
           </div>
