@@ -17,7 +17,7 @@ const getSolutions = async () => {
 
     if (!data || !data.results || data.results.length === 0) {
       console.error('No data found for solutions');
-      return { contributors: [], error: null };
+      return { solutions: [], error: null };
     }
 
     const solutionsDBId = data.results[0].id;
@@ -29,7 +29,7 @@ const getSolutions = async () => {
 
     if (!results || results.length === 0) {
       console.error('No results found for solutions');
-      return { contributors: [], error: null };
+      return { solutions: [], error: null };
     }
 
     results = results.map((result) => ({
