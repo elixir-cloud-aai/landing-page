@@ -14,12 +14,24 @@ const getSolutions = async () => {
       },
     };
     const data = await notion.request(payload);
+
+    if (!data || !data.results || data.results.length === 0) {
+      console.error('No data found for solutions');
+      return { contributors: [], error: null };
+    }
+
     const solutionsDBId = data.results[0].id;
     payload = {
       path: `databases/${solutionsDBId}/query`,
       method: 'POST',
     };
     let { results } = await notion.request(payload);
+
+    if (!results || results.length === 0) {
+      console.error('No results found for solutions');
+      return { contributors: [], error: null };
+    }
+
     results = results.map((result) => ({
       id: result.id,
       title: result.properties.Name.title[0].text.content,

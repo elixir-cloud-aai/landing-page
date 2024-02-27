@@ -15,14 +15,36 @@ function Contributors({ contributors }) {
 }
 
 export const getStaticProps = async () => {
-  const data = await getContributors();
+  try {
+    const data = await getContributors();
+    if (data.error) {
+      console.error('Error fetching contributors:', data.error);
+      return {
+        props: {
+          contributors: [],
+          error: 'Error fetching contributors',
+        },
+        revalidate: 30,
+      };
+    }
+    return {
+      props: {
+        contributors: data,
+        error: null,
+      },
+      revalidate: 30,
+    };
+  } catch (error) {
+    console.error('Error in getStaticProps:', error);
 
-  return {
-    props: {
-      contributors: data,
-    },
-    revalidate: 30,
-  };
+    return {
+      props: {
+        contributors: [],
+        error: 'server error',
+      },
+      revalidate: 30,
+    };
+  }
 };
 
 export default Contributors;
