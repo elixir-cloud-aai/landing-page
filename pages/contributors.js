@@ -18,7 +18,6 @@ export const getStaticProps = async () => {
   try {
     const data = await getContributors();
     if (data.error) {
-      console.error('Error fetching contributors:', data.error);
       return {
         props: {
           contributors: [],
@@ -35,8 +34,6 @@ export const getStaticProps = async () => {
       revalidate: 30,
     };
   } catch (error) {
-    console.error('Error in getStaticProps:', error);
-
     return {
       props: {
         contributors: [],

@@ -16,7 +16,6 @@ const getContributors = async () => {
     const data = await notion.request(payload);
 
     if (!data || !data.results || data.results.length === 0) {
-      console.error('No data found for contributors');
       return { contributors: [], error: null };
     }
 
@@ -28,7 +27,6 @@ const getContributors = async () => {
     let { results } = await notion.request(payload);
 
     if (!results || results.length === 0) {
-      console.error('No results found for contributors');
       return { contributors: [], error: null };
     }
 
