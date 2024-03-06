@@ -75,7 +75,8 @@ function Footer() {
     <div className="px-0 md:px-10 flex flex-wrap text-base justify-center md:justify-start 2xl:justify-end">
       {footers.map((footer) => (
         <div
-          className="space-y-1.5 md:space-y-3 py-3 md:py-0 mx-10 md:mx-50 md:my-4"
+          // className="space-y-1.5 md:space-y-3 py-3 md:py-0 mx-10 md:mx-50 md:my-4"
+          className="px-8 py-3 md:py-0 md:mx-4 2xl:mx-50 md:my-4"
           key={footer.title}
         >
           <div className="text-sm md:text-lg md:font-semibold">
