@@ -86,10 +86,10 @@ function Contributors({ contributors }) {
 
   const renderLinks = (contributor) => {
     return (
-      <div className="flex items-baseline h-[30px] px-1 gap-2">
+      <div className="flex items-baseline h-[30px] px-2 gap-2 ">
         {contributor.email ? (
           <a
-            className="h-[26px] flex items-center"
+            className="h-iconHeight flex items-center"
             href={`mailto:${contributor.email}`}
           >
             <ion-icon name="mail-outline"></ion-icon>
@@ -98,7 +98,10 @@ function Contributors({ contributors }) {
           <></>
         )}
         {contributor.website ? (
-          <a className="h-[26px] flex items-center" href={contributor.website}>
+          <a
+            className="h-iconHeight flex items-center"
+            href={contributor.website}
+          >
             <ion-icon name="link-outline"></ion-icon>
           </a>
         ) : (
@@ -107,8 +110,8 @@ function Contributors({ contributors }) {
         {contributor.orcid ? (
           <a href={contributor.orcid}>
             <svg
+              className="h-iconHeight"
               fill={theme.theme === 'light' ? '#000000' : '#ffffff'}
-              height="24px"
               viewBox="0 0 32 32"
               width="24px"
               xmlns="http://www.w3.org/2000/svg"
@@ -122,8 +125,8 @@ function Contributors({ contributors }) {
         {contributor.researchgate ? (
           <a href={contributor.researchgate}>
             <svg
+              className="h-iconHeight"
               fill={theme.theme === 'light' ? '#000000' : '#ffffff'}
-              height="24px"
               viewBox="0 0 32 32"
               width="24px"
               xmlns="http://www.w3.org/2000/svg"
@@ -137,9 +140,8 @@ function Contributors({ contributors }) {
         {contributor.scholar ? (
           <a href={contributor.scholar}>
             <svg
-              className=""
+              className="h-iconHeight"
               fill={theme.theme === 'light' ? '#000000' : '#ffffff'}
-              height="24px"
               viewBox="0 0 24 24"
               width="24px"
               xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +153,10 @@ function Contributors({ contributors }) {
           <></>
         )}
         {contributor.github ? (
-          <a className="h-[26px] flex items-center" href={contributor.github}>
+          <a
+            className="h-iconHeight flex items-center"
+            href={contributor.github}
+          >
             <ion-icon name="logo-github"></ion-icon>
           </a>
         ) : (
@@ -182,7 +187,7 @@ function Contributors({ contributors }) {
         )}
         {contributor.linkedin ? (
           <a
-            className="h-[26px] flex items-center "
+            className="h-iconHeight flex items-center "
             href={contributor.linkedin}
           >
             <ion-icon name="logo-linkedin"></ion-icon>

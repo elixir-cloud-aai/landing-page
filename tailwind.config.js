@@ -6,6 +6,9 @@ module.exports = {
       fontFamily: {
         pop: ['Poppins', 'sans-serif'],
         cursive: ['Satisfy', 'cursive'],
+        spacing: {
+          iconHeight: '26px',
+        },
       },
       colors: {
         elixirblue: '#3DA9F6',
