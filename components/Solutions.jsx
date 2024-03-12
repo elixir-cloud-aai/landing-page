@@ -18,8 +18,28 @@ function Solutions({ solutions }) {
     setFilteredSolutions(newFilteredSolutions);
   };
 
-  const renderSolutions = () =>
-    filteredSolutions.map((solution) => (
+  const resetFilters = () => {
+    setFilteredSolutions(solutions);
+    setQuery('');
+  };
+
+  const renderSolutions = () => {
+    if (filteredSolutions.length === 0) {
+      return (
+        <div className="flex items-center">
+          <div className="text-base text-gray-700 dark:text-gray-300">
+            No Solution
+          </div>
+          <button
+            className="bg-elixirred text-white ml-3 px-20 py-2 rounded-lg md:text-base text-sm"
+            onClick={() => resetFilters()}
+          >
+            Reset
+          </button>
+        </div>
+      );
+    }
+    return filteredSolutions.map((solution) => (
       <Zoom key={solution.id}>
         <Link href={`solution/${solution.id}`} passHref>
           <div className="w-full my-5 border-2 rounded-lg shadow-lg cursor-pointer hover:shadow-md dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 hover:bg-gray-100">
@@ -46,6 +66,7 @@ function Solutions({ solutions }) {
         </Link>
       </Zoom>
     ));
+  };
 
   return (
     <div className="mx-10 mt-32 text-gray-700 md:mx-64 font-pop">

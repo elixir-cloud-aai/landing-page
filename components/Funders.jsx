@@ -37,7 +37,27 @@ function Partners({ funders }) {
     return date.toLocaleDateString('en-GB', options);
   };
 
+  const resetFilters = () => {
+    setFilteredFunders(funders);
+    setQuery('');
+  };
+
   const renderFunders = () => {
+    if (filteredFunders.length === 0) {
+      return (
+        <div className="flex items-center">
+          <div className="text-base text-gray-700 dark:text-gray-300">
+            No Funders
+          </div>
+          <button
+            className="bg-elixirred text-white ml-3 px-20 py-2 rounded-lg md:text-base text-sm"
+            onClick={() => resetFilters()}
+          >
+            Reset
+          </button>
+        </div>
+      );
+    }
     return filteredFunders?.map((funder) => {
       return (
         <Zoom key={funder.id}>

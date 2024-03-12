@@ -17,8 +17,28 @@ function Partners({ partners }) {
     setFilteredPartners(newFilteredPartners);
   };
 
-  const renderPartners = () =>
-    filteredPartners.map((partner) => (
+  const resetFilters = () => {
+    setFilteredPartners(partners);
+    setQuery('');
+  };
+
+  const renderPartners = () => {
+    if (filteredPartners.length === 0) {
+      return (
+        <div className="flex items-center">
+          <div className="text-base text-gray-700 dark:text-gray-300">
+            No Partners
+          </div>
+          <button
+            className="bg-elixirred text-white ml-3 px-20 py-2 rounded-lg md:text-base text-sm"
+            onClick={() => resetFilters()}
+          >
+            Reset
+          </button>
+        </div>
+      );
+    }
+    return filteredPartners.map((partner) => (
       <Zoom key={partner.id}>
         <a href={partner.website} rel="noopener noreferrer" target="_blank">
           <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 cursor-pointer ">
@@ -44,6 +64,7 @@ function Partners({ partners }) {
         </a>
       </Zoom>
     ));
+  };
 
   return (
     <div className="mt-32 md:mx-64 mx-10 font-pop text-gray-700">
