@@ -15,13 +15,33 @@ function Solutions({ solutions }) {
 }
 
 export const getStaticProps = async () => {
-  const data = await getSolutions();
-  return {
-    props: {
-      solutions: data,
-    },
-    revalidate: 30,
-  };
+  try {
+    const data = await getSolutions();
+    if (data.error) {
+      return {
+        props: {
+          solutions: [],
+          error: 'Error fetching solutions',
+        },
+        revalidate: 30,
+      };
+    }
+    return {
+      props: {
+        solutions: data,
+        error: null,
+      },
+      revalidate: 30,
+    };
+  } catch (error) {
+    return {
+      props: {
+        solutions: [],
+        error: 'Server error',
+      },
+      revalidate: 30,
+    };
+  }
 };
 
 export default Solutions;
