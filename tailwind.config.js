@@ -7,6 +7,9 @@ module.exports = {
         pop: ['Poppins', 'sans-serif'],
         cursive: ['Satisfy', 'cursive'],
       },
+      spacing: {
+        iconHeight: '26px',
+      },
       colors: {
         elixirblue: '#3DA9F6',
         elixirgreen: '#5ABA62',
