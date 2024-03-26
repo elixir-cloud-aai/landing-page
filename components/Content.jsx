@@ -1,4 +1,5 @@
 import { Zoom } from 'react-awesome-reveal';
+import Image from 'next/image';
 
 const Content = ({ content }) => {
   const renderBlock = (block) =>
@@ -82,12 +83,12 @@ const Content = ({ content }) => {
       }
       return (
         <Zoom key={block.id}>
-          <img
+          <Image
             alt="Image"
             className="my-10"
-            height="auto"
+            height={1500}
             src={block.image}
-            width="auto"
+            width={1500}
           />
         </Zoom>
       );

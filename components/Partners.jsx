@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { Zoom } from 'react-awesome-reveal';
 import themeContext from '../context/defaultTheme';
+import Image from 'next/image';
 
 function Partners({ partners }) {
   const [query, setQuery] = useState('');
@@ -42,14 +43,14 @@ function Partners({ partners }) {
       <Zoom key={partner.id}>
         <a href={partner.website} rel="noopener noreferrer" target="_blank">
           <div className="w-full rounded-lg border-2 shadow-lg hover:shadow-md my-5 hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 dark:border-gray-800 dark:hover:border-gray-900 cursor-pointer ">
-            <div className="flex md:flex-row flex-col">
-              <img
+            <div className="flex flex-col lg:flex-row">
+              <Image
                 alt="Icon"
-                className="md:rounded-l-lg md:rounded-t-none rounded-t-lg md:w-32 md:h-32 p-5"
-                height="auto"
+                className="md:rounded-l-lg md:rounded-t-none rounded-t-lg m-auto mt-0 p-5 lg:w-32 lg:h-32"
+                height={400}
                 id={theme.theme === 'dark' ? 'darkMode' : ''}
                 src={theme.theme === 'light' ? partner.icon : partner.iconDark}
-                width="auto"
+                width={400}
               />
               <div className="flex-grow p-5">
                 <div className="text-xl font-semibold flex justify-between dark:text-gray-200">

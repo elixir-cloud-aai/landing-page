@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Slide } from 'react-awesome-reveal';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 function NavBar({ scroll, toggleDarkMode, theme, showBanner, setShowBanner }) {
   const router = useRouter();
@@ -199,17 +200,18 @@ function NavBar({ scroll, toggleDarkMode, theme, showBanner, setShowBanner }) {
         <div className="flex items-center justify-between">
           <Link href="/" passHref>
             <div
-              className="cursor-pointer"
+              className="cursor-pointerflex md:space-x-4 sm:space-x-2"
               onClick={() => {
                 setLocation('/');
               }}
             >
-              <img
+              <Image
                 alt="logo"
-                className="inline-block w-6 md:w-7 mx-3 pb-1.5"
-                height="auto"
+                className="inline-block pb-1.5"
+                height={20}
                 src="/elixir-cloud-aai.png"
-                width="auto"
+                style={{ width: 'auto', height: 'auto' }}
+                width={20}
               />
               <div className="inline-block font-semibold text-lg md:text-2xl">
                 ELIXIR Cloud & AAI

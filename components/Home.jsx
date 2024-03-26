@@ -3,6 +3,7 @@ import Link from 'next/link';
 import TextTransition, { presets } from 'react-text-transition';
 import { Zoom } from 'react-awesome-reveal';
 import window from 'global/window';
+import Image from 'next/image';
 
 const TEXTS = [
   <span className="text-elixirred" key="findable">
@@ -114,7 +115,14 @@ function Home() {
                 </Link>
               </div>
               <div>
-                <img alt="globe" height="auto" src="/Earth.svg" width="auto" />
+                <Image
+                  alt="globe"
+                  height={0}
+                  sizes="100vw"
+                  src="/Earth.svg"
+                  style={{ width: '100%', height: 'auto' }}
+                  width={0}
+                />
               </div>
             </div>
           </div>
