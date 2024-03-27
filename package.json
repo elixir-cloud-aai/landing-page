@@ -10,6 +10,7 @@
     "lint": "next lint",
     "lint-fix": "eslint ./ --fix",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,json,md}\"",
     "prepare": "husky install",
     "pre-commit": "lint-staged"
   },
