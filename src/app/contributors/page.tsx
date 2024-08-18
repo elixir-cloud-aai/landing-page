@@ -1,13 +1,12 @@
 import ContributorsComponent from '@/components/contributors';
-import getContributors from '@/utils/contributors';
+import getContributors from '@/api-calls/contributors';
 import { FC } from 'react';
 import { Metadata } from 'next';
 
 export const revalidate = 60;
 
 export const fetchContributors = async () => {
-  const data = await getContributors();
-  return data;
+  return await getContributors();
 };
 
 export const metadata: Metadata = {

@@ -1,6 +1,6 @@
 import OverviewComponent from '@/components/overview';
 import { Overview } from '@/components/overview/types';
-import getOverview from '@/utils/overview';
+import getOverview from '@/api-calls/overview';
 import { Metadata } from 'next';
 import { FC } from 'react';
 

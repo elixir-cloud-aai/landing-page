@@ -1,6 +1,6 @@
 import SolutionComponent from '@/components/solution';
 import { Solution } from '@/components/solution/types';
-import getSolution from '@/utils/solution';
+import getSolution from '@/api-calls/solution';
 import { Metadata, ResolvingMetadata } from 'next';
 import { FC } from 'react';
 
@@ -21,7 +21,7 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const id = params.id;
+  const { id } = params;
   const data: Solution = await fetchSolutionData(id);
   return {
     title: data.title,

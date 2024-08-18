@@ -1,7 +1,7 @@
 'use client';
 import { FC } from 'react';
 import { Zoom } from 'react-awesome-reveal';
-import { ContentComponentProps, Overview } from './types';
+import { ContentComponentProps, Overview } from '../overview/types';
 
 const Content: FC<ContentComponentProps> = ({ content }) => {
   const renderBlock = (block: Overview) =>

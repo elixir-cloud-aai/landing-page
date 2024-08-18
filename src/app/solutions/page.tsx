@@ -1,5 +1,5 @@
 import SolutionsComponent from '@/components/solutions';
-import getSolutions from '@/utils/solutions';
+import getSolutions from '@/api-calls/solutions';
 import { FC } from 'react';
 import { Solutions } from '@/components/solutions/types';
 import { Metadata } from 'next';

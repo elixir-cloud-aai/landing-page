@@ -3,7 +3,7 @@ import { useContext, FC } from 'react';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import ContentLoader from 'react-content-loader';
 import { Zoom } from 'react-awesome-reveal';
-import themeContext from '../../context/defaultTheme';
+import themeContext from '../../context/default-theme';
 
 const News: FC<any> = () => {
   const context = useContext(themeContext);

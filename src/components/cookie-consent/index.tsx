@@ -21,11 +21,12 @@ const pluginConfig: CookieConsentApi.CookieConsentConfig = {
   },
   onFirstConsent: ({ cookie }: { cookie: any }) => {
     // check for production environment
-    if (process.env.NODE_ENV === 'production') {
-      // handle analytics cookies
-      if (cookie.categories.includes('analytics')) {
-        window.GAConsentGranted();
-      }
+    // handle analytics cookies
+    if (
+      process.env.NODE_ENV === 'production' &&
+      cookie.categories.includes('analytics')
+    ) {
+      window.GAConsentGranted();
     }
   },
   language: {

@@ -1,8 +1,8 @@
 'use client';
 import { useContext, useEffect, useState, FC, useCallback } from 'react';
 import { Zoom } from 'react-awesome-reveal';
-import themeContext from '../../context/defaultTheme';
-import ContributorFilter from './ContributorFilter';
+import themeContext from '../../context/default-theme';
+import ContributorFilter from './contributor-filter';
 import { FaMastodon, FaXTwitter, FaGithub, FaLinkedin } from 'react-icons/fa6';
 import { Contributor, ContributorsComponentProps, FormValues } from './types';
 import { MdOutlineEmail } from 'react-icons/md';
@@ -196,7 +196,8 @@ const Contributors: FC<ContributorsComponentProps> = ({ contributors }) => {
     if (affiliations.length > 0) {
       filterContributors = filterContributors.filter((contributor) => {
         return affiliations.some(
-          (affiliation) => affiliation === contributor.affiliation,
+          (affiliation) =>
+            affiliation == 'all' || affiliation === contributor.affiliation,
         );
       });
     }
@@ -384,6 +385,7 @@ const Contributors: FC<ContributorsComponentProps> = ({ contributors }) => {
             roles={roles}
             setFilteredContributors={setFilteredContributors}
             setFilterformValues={setFilterformValues}
+            resetFilters={resetFilters}
           />
         )}
       </div>

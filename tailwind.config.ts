@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        pop: ['Poppins', 'sans-serif'],
+        sans: ['var(--font-poppins)', 'sans-serif'],
         cursive: ['Satisfy', 'cursive'],
       },
       colors: {
@@ -16,4 +16,5 @@ module.exports = {
     },
   },
   plugins: [],
+  darkMode: 'class'
 };

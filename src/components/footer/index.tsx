@@ -90,7 +90,7 @@ const Footer: FC<any> = () => {
           className="px-8 py-3 md:py-0 md:mx-4 2xl:mx-50 md:my-4"
           key={footer.title}
         >
-          <div className="text-sm md:text-lg md:font-semibold">
+          <div className="text-sm md:text-lg md:font-semibold text-left">
             {footer.link ? (
               <a className="hover:underline" href={footer.link}>
                 {footer.title}
@@ -99,7 +99,7 @@ const Footer: FC<any> = () => {
               <div>{footer.title}</div>
             )}
           </div>
-          <div className="space-y-1 md:space-y-2">
+          <div className="space-y-1 md:space-y-2 text-left">
             {footer.links.map((link) => {
               if (link?.a) {
                 return (

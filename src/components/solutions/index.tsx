@@ -2,7 +2,7 @@
 import { useContext, useState, FC } from 'react';
 import Link from 'next/link';
 import { Zoom } from 'react-awesome-reveal';
-import themeContext from '@/context/defaultTheme';
+import themeContext from '@/context/default-theme';
 import { SolutionsComponentProps } from './types';
 
 const Solutions: FC<SolutionsComponentProps> = ({ solutions }) => {

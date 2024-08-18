@@ -1,7 +1,7 @@
 'use client';
 import { FC, useContext, useState } from 'react';
 import { Zoom } from 'react-awesome-reveal';
-import themeContext from '../../context/defaultTheme';
+import themeContext from '../../context/default-theme';
 import { FundersComponentProps, Recipient } from './types';
 
 const Funders: FC<FundersComponentProps> = ({ funders }) => {

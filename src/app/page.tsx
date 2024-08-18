@@ -1,6 +1,6 @@
-import ServiceWorkerRegistration from '@/components/ServiceWorkerRegistration';
+import ServiceWorkerRegistration from '@/components/service-worker-registration';
 import React, { FC } from 'react';
-import HomeComponent from '@/components/Home';
+import HomeComponent from '@/components/home';
 
 const HomePage: FC<any> = () => {
   return (

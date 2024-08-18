@@ -32,3 +32,13 @@ export interface FormValues {
   rolesInput: string[];
   affiliationsInput: string[];
 }
+
+export interface ContributorFilterProps {
+  roles?: string[];
+  affiliations: string[];
+  setFilteredContributors: React.Dispatch<React.SetStateAction<Contributor[]>>;
+  contributors: Contributor[];
+  filterformValues: FormValues;
+  setFilterformValues: React.Dispatch<React.SetStateAction<FormValues>>;
+  resetFilters: () => void;
+}

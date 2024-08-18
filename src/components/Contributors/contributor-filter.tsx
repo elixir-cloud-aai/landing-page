@@ -1,15 +1,6 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import Select from '../@ui/select';
-import { Contributor, FormValues, Option } from './types';
-
-interface ContributorFilterProps {
-  roles?: string[];
-  affiliations: string[];
-  setFilteredContributors: React.Dispatch<React.SetStateAction<Contributor[]>>;
-  contributors: Contributor[];
-  filterformValues: FormValues;
-  setFilterformValues: React.Dispatch<React.SetStateAction<FormValues>>;
-}
+import { ContributorFilterProps, Option } from './types';
 
 const ContributorFilter: FC<ContributorFilterProps> = ({
   roles,
@@ -18,6 +9,7 @@ const ContributorFilter: FC<ContributorFilterProps> = ({
   contributors,
   filterformValues,
   setFilterformValues,
+  resetFilters,
 }) => {
   const generateRoleOptions = () => {
     let selectRoleOptions: Option[] = [];
@@ -42,21 +34,49 @@ const ContributorFilter: FC<ContributorFilterProps> = ({
       selectAffiliationOptions = [...selectAffiliationOptions, newOption];
     });
     selectAffiliationOptions.sort((a, b) => a.value.localeCompare(b.value));
-    selectAffiliationOptions.unshift({ label: 'All', value: null });
+    selectAffiliationOptions.unshift({ label: 'All', value: 'all' });
     return selectAffiliationOptions;
   };
 
-  const handleRoleSelect = (option: string) => {
-    const prevState = structuredClone(filterformValues);
-    prevState.rolesInput = [...prevState.rolesInput, option];
-    setFilterformValues({ ...prevState });
-  };
-
-  const handleAffiliationSelect = (option: string) => {
+  const handleRoleSelect = (option: string, multiple: boolean) => {
+    const prevRoleSet = new Set([...filterformValues.rolesInput]);
+    if (multiple && prevRoleSet.has(option)) {
+      prevRoleSet.delete(option);
+    } else if (!multiple) {
+      prevRoleSet.clear();
+    }
+    prevRoleSet.add(option);
     setFilterformValues((prev) => ({
       ...prev,
-      affiliationsInput: [...prev.affiliationsInput, option],
+      rolesInput: [...prevRoleSet],
     }));
+  };
+
+  const handleAffiliationSelect = (option: string, multiple: boolean) => {
+    const prevAffiliationsSet = new Set([
+      ...filterformValues.affiliationsInput,
+    ]);
+    if (multiple && prevAffiliationsSet.has(option)) {
+      prevAffiliationsSet.delete(option);
+    } else if (!multiple) {
+      prevAffiliationsSet.clear();
+    }
+    prevAffiliationsSet.add(option);
+    setFilterformValues((prev) => ({
+      ...prev,
+      affiliationsInput: [...prevAffiliationsSet],
+    }));
+  };
+
+  const showResetButton = () => {
+    if (
+      filterformValues.projectLeadCheckbox ||
+      filterformValues.pastContributorCheckBox ||
+      filterformValues.affiliationsInput.length > 0 ||
+      filterformValues.rolesInput.length > 0
+    )
+      return true;
+    return false;
   };
 
   return (
@@ -107,18 +127,30 @@ const ContributorFilter: FC<ContributorFilterProps> = ({
               </div>
               <Select
                 defaultLabel="Select Roles"
-                multiple={true}
-                onChange={(value) => handleRoleSelect(value)}
+                multiSelect={true}
+                onChange={(value, multiple) =>
+                  handleRoleSelect(value, multiple)
+                }
                 options={generateRoleOptions()}
                 values={filterformValues.rolesInput}
               />
               <Select
                 defaultLabel="Select Affiliation"
-                multiple={false}
-                onChange={(value) => handleAffiliationSelect(value)}
+                multiSelect={false}
+                onChange={(value, multiple) =>
+                  handleAffiliationSelect(value, multiple)
+                }
                 options={generateAffiliationOptions()}
                 values={filterformValues.affiliationsInput}
               />
+              {showResetButton() && (
+                <button
+                  className="bg-elixirred text-white  ml-2 px-5 py-2 rounded-lg md:text-base text-sm"
+                  onClick={resetFilters}
+                >
+                  Reset
+                </button>
+              )}
             </div>
           </div>
         </form>

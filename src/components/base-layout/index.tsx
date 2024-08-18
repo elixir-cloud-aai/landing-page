@@ -1,8 +1,8 @@
 'use client';
 import React, { useEffect, useState, FC } from 'react';
-import Footer from './Footer';
-import NavBar from './NavBar';
-import { Theme, ThemeProvider } from '../context/defaultTheme';
+import Footer from '../footer';
+import NavBar from '../navbar';
+import { Theme, ThemeProvider } from '../../context/default-theme';
 
 const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
   const [scroll, setScroll] = useState(0);
