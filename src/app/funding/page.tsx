@@ -1,4 +1,4 @@
-import Funders from '@/components/funders';
+import Funders from '@/components/funders/index';
 import getFunders from '@/api-calls/funder';
 import { Metadata } from 'next';
 import { FC } from 'react';

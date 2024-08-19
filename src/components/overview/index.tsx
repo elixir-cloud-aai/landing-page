@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Content from '../content';
+import Content from '../content/index';
 import { OverviewComponentProps } from './types';
 
 const Overview: FC<OverviewComponentProps> = ({ overviews }) => {

@@ -1,4 +1,4 @@
-import ContributorsComponent from '@/components/contributors';
+import ContributorsComponent from '@/components/contributors/index';
 import getContributors from '@/api-calls/contributors';
 import { FC } from 'react';
 import { Metadata } from 'next';

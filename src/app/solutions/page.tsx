@@ -1,4 +1,4 @@
-import SolutionsComponent from '@/components/solutions';
+import SolutionsComponent from '@/components/solutions/index';
 import getSolutions from '@/api-calls/solutions';
 import { FC } from 'react';
 import { Solutions } from '@/components/solutions/types';

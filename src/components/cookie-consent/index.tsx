@@ -44,8 +44,8 @@ const pluginConfig: CookieConsentApi.CookieConsentConfig = {
         preferencesModal: {
           title: 'Cookie Settings',
           savePreferencesBtn: 'Save settings',
-          acceptAllBtn: 'Accept all',
-          acceptNecessaryBtn: 'Reject all',
+          acceptAllBtn: 'Accept',
+          acceptNecessaryBtn: 'Reject',
           closeIconLabel: 'Close',
           sections: [
             {
