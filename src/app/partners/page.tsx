@@ -6,7 +6,7 @@ import { FC } from 'react';
 
 export const revalidate = 60;
 
-export const fetchPartners = async () => {
+const fetchPartners = async () => {
   let data = await getPartners();
   data = JSON.stringify(data);
   data = JSON.parse(data);

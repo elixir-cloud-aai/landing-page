@@ -10,7 +10,7 @@ type Props = {
   params: { id: string };
 };
 
-export const fetchSolutionData = async (id: string) => {
+const fetchSolutionData = async (id: string) => {
   let data = await getSolution(id);
   data = JSON.stringify(data);
   data = JSON.parse(data);

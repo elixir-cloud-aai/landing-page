@@ -6,7 +6,7 @@ import { Funder } from '@/components/funders/types';
 
 export const revalidate = 60;
 
-export const fetchFunders = async () => {
+const fetchFunders = async () => {
   let data = await getFunders();
   data = JSON.stringify(data);
   data = JSON.parse(data);

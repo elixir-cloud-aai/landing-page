@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 
 export const revalidate = 60;
 
-export const fetchSolutions = async () => {
+const fetchSolutions = async () => {
   let data = await getSolutions();
   data = JSON.stringify(data);
   data = JSON.parse(data);
