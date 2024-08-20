@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { Poppins } from 'next/font/google';
-import '@/styles/globals.css';
+import '../styles/globals.css';
 import React from 'react';
-import seo from '@/seo/base-seo';
-import GAScript from '@/analytics/ga';
-import CookieConsent from '@/components/cookie-consent';
+import seo from '../seo/base-seo';
+import GAScript from '../analytics/ga';
+import CookieConsent from '../components/cookie-consent';
 import Script from 'next/script';
-import BaseLayout from '@/components/base-layout';
+import BaseLayout from '../components/base-layout';
 
 const poppins = Poppins({
   style: 'normal',

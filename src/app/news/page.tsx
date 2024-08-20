@@ -1,4 +1,4 @@
-import NewsComponent from '@/components/news/index';
+import NewsComponent from '../../components/news/index';
 import { Metadata } from 'next';
 import { FC } from 'react';
 

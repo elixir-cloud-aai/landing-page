@@ -1,6 +1,6 @@
-import SolutionComponent from '@/components/solution/index';
-import { Solution } from '@/components/solution/types';
-import getSolution from '@/api-calls/solution';
+import SolutionComponent from '../../../components/solution/index';
+import { Solution } from '../../../components/solution/types';
+import getSolution from '../../../api-calls/solution';
 import { Metadata, ResolvingMetadata } from 'next';
 import { FC } from 'react';
 

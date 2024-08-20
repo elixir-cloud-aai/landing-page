@@ -1,8 +1,8 @@
-import Funders from '@/components/funders/index';
-import getFunders from '@/api-calls/funder';
+import Funders from '../../components/funders/index';
+import getFunders from '../../api-calls/funder';
 import { Metadata } from 'next';
 import { FC } from 'react';
-import { Funder } from '@/components/funders/types';
+import { Funder } from '../../components/funders/types';
 
 export const revalidate = 60;
 

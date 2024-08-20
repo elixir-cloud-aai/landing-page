@@ -1,5 +1,5 @@
 'use client';
-import Content from '@/components/content/index';
+import Content from '../content/index';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { FC } from 'react';

@@ -1,6 +1,6 @@
-import PartnersComponent from '@/components/partners/index';
-import { Partner } from '@/components/partners/types';
-import getPartners from '@/api-calls/partners';
+import PartnersComponent from '../../components/partners/index';
+import { Partner } from '../../components/partners/types';
+import getPartners from '../../api-calls/partners';
 import { Metadata } from 'next';
 import { FC } from 'react';
 

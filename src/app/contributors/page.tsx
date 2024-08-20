@@ -1,8 +1,8 @@
-import ContributorsComponent from '@/components/contributors/index';
-import getContributors from '@/api-calls/contributors';
+import ContributorsComponent from '../../components/contributors/index';
+import getContributors from '../../api-calls/contributors';
 import { FC } from 'react';
 import { Metadata } from 'next';
-import { Contributor } from '@/components/contributors/types';
+import { Contributor } from '../../components/contributors/types';
 
 export const revalidate = 60;
 
