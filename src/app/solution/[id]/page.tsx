@@ -1,6 +1,6 @@
-import SolutionComponent from '../../../components/solution/index';
-import { Solution } from '../../../components/solution/types';
-import getSolution from '../../../api-calls/solution';
+import SolutionComponent from '@/components/solution';
+import { Solution } from '@/components/solution/types';
+import getSolution from '@/api-calls/solution';
 import { Metadata, ResolvingMetadata } from 'next';
 import { FC } from 'react';
 
@@ -9,10 +9,7 @@ type Props = {
 };
 
 const fetchSolutionData = async (id: string) => {
-  let data = await getSolution(id);
-  data = JSON.stringify(data);
-  data = JSON.parse(data);
-  return data;
+  return await getSolution(id);
 };
 
 export async function generateMetadata(

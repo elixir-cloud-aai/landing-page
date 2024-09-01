@@ -1,5 +1,5 @@
 import { FC, useContext } from 'react';
-import themeContext from '../../context/default-theme';
+import themeContext from '@/context/default-theme';
 
 interface Option {
   label: string;

@@ -107,7 +107,7 @@ const pluginConfig: CookieConsentApi.CookieConsentConfig = {
   },
 };
 
-const CookieConsent: FC<any> = () => {
+const CookieConsent: FC = () => {
   useEffect(() => {
     if (!document.getElementById('cc--main')) {
       CookieConsentApi.run(pluginConfig);

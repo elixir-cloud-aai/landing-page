@@ -12,7 +12,7 @@ interface FooterLinks {
   links: LinkObject[];
 }
 
-const Footer: FC<any> = () => {
+const Footer: FC = () => {
   const footers: FooterLinks[] = [
     {
       title: 'About Us',

@@ -3,9 +3,9 @@ import { useContext, FC } from 'react';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import ContentLoader from 'react-content-loader';
 import { Zoom } from 'react-awesome-reveal';
-import themeContext from '../../context/default-theme';
+import themeContext from '@/context/default-theme';
 
-const News: FC<any> = () => {
+const News: FC = () => {
   const context = useContext(themeContext);
   const renderLoading = () => (
     <div className="border rounded-lg dark:border-gray-700">

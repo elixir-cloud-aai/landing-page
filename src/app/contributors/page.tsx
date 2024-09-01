@@ -1,8 +1,8 @@
-import ContributorsComponent from '../../components/contributors/index';
-import getContributors from '../../api-calls/contributors';
+import ContributorsComponent from '@/components/contributors';
+import getContributors from '@/api-calls/contributors';
 import { FC } from 'react';
 import { Metadata } from 'next';
-import { Contributor } from '../../components/contributors/types';
+import { Contributor } from '@/components/contributors/types';
 
 export const revalidate = 60;
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: 'Elixir Cloud & AAI contributor developing the solutions.',
 };
 
-const Contributors: FC<any> = async () => {
+const Contributors: FC = async () => {
   const contributors: Contributor[] = await fetchContributors();
   return <ContributorsComponent contributors={contributors} />;
 };

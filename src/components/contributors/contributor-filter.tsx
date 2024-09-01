@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import Select from '../@ui/Select';
+import Select from '../@ui/select';
 import { ContributorFilterProps, Option } from './types';
 
 const ContributorFilter: FC<ContributorFilterProps> = ({

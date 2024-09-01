@@ -1,14 +1,8 @@
-import ServiceWorkerRegistration from '../components/service-worker-registration';
-import React, { FC } from 'react';
-import HomeComponent from '../components/home';
+import HomeComponent from '@/components/home';
+import { FC } from 'react';
 
-const HomePage: FC<any> = () => {
-  return (
-    <>
-      <ServiceWorkerRegistration />
-      <HomeComponent />
-    </>
-  );
+const HomePage: FC = () => {
+  return <HomeComponent />;
 };
 
 export default HomePage;

@@ -1,16 +1,13 @@
-import Funders from '../../components/funders/index';
-import getFunders from '../../api-calls/funder';
+import Funders from '@/components/funders/index';
+import getFunders from '@/api-calls/funder';
 import { Metadata } from 'next';
 import { FC } from 'react';
-import { Funder } from '../../components/funders/types';
+import { Funder } from '@/components/funders/types';
 
 export const revalidate = 60;
 
 const fetchFunders = async () => {
-  let data = await getFunders();
-  data = JSON.stringify(data);
-  data = JSON.parse(data);
-  return data;
+  return await getFunders();
 };
 
 export const metadata: Metadata = {
@@ -18,7 +15,7 @@ export const metadata: Metadata = {
   description: 'ELIXIR Cloud & AAI collaborative funders.',
 };
 
-const FundingPage: FC<any> = async () => {
+const FundingPage: FC = async () => {
   const funders: Funder[] = await fetchFunders();
   return <Funders funders={funders} />;
 };

@@ -25,7 +25,7 @@ const TEXTS = [
   </div>,
 ];
 
-const Home: FC<any> = () => {
+const Home: FC = () => {
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [innerWidth, setinnerWidth] = useState(1000);

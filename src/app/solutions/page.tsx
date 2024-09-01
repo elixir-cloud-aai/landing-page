@@ -1,23 +1,20 @@
-import SolutionsComponent from '../../components/solutions/index';
-import getSolutions from '../../api-calls/solutions';
+import SolutionsComponent from '@/components/solutions/index';
+import getSolutions from '@/api-calls/solutions';
 import { FC } from 'react';
-import { Solutions } from '../../components/solutions/types';
+import { Solutions } from '@/components/solutions/types';
 import { Metadata } from 'next';
 
 export const revalidate = 60;
 
 const fetchSolutions = async () => {
-  let data = await getSolutions();
-  data = JSON.stringify(data);
-  data = JSON.parse(data);
-  return data;
+  return await getSolutions();
 };
 
 export const metadata: Metadata = {
   title: 'Solutions',
   description: 'ELIXIR Cloud & AAI-developed solutions.',
 };
-const SolutionsPage: FC<any> = async () => {
+const SolutionsPage: FC = async () => {
   const data: Solutions[] = await fetchSolutions();
 
   return <SolutionsComponent solutions={data} />;

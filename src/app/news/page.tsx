@@ -1,4 +1,4 @@
-import NewsComponent from '../../components/news/index';
+import NewsComponent from '@/components/news';
 import { Metadata } from 'next';
 import { FC } from 'react';
 
@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: 'ELIXIR Cloud & AAI latest news/twitter feed.',
 };
 
-const NewsPage: FC<any> = () => {
+const NewsPage: FC = () => {
   return <NewsComponent />;
 };
 
