@@ -4,51 +4,59 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build:dev": "next build && next export",
+    "build:dev": "next build",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "lint-fix": "eslint ./ --fix",
-    "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,scss,json,md}\"",
     "prepare": "husky install",
     "pre-commit": "lint-staged"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@notionhq/client": "^0.4.2",
-    "axios": "^0.22.0",
+    "@notionhq/client": "^2.2.15",
+    "axios": "^1.7.3",
     "dayjs": "^1.10.7",
+    "elixir-cloud-aai": "file:.",
     "global": "^4.4.0",
-    "next": "^13.4.19",
-    "next-seo": "^4.28.1",
-    "react": "18.2.0",
+    "globals": "^15.9.0",
+    "next": "^14.2.5",
+    "next-seo": "^6.5.0",
+    "react": "^18.3.1",
     "react-awesome-reveal": "^4.2.5",
-    "react-content-loader": "^6.0.3",
-    "react-dom": "18.2.0",
+    "react-content-loader": "^7.0.2",
+    "react-dom": "^18.3.1",
     "react-icons": "^5.0.1",
     "react-text-transition": "^3.1.0",
-    "react-tiny-popover": "^7.0.1",
+    "react-tiny-popover": "^8.0.4",
     "react-twitter-embed": "^4.0.4",
-    "vanilla-cookieconsent": "^2.8.9"
+    "vanilla-cookieconsent": "^3.0.1"
   },
   "devDependencies": {
+    "@types/node": "^22.2.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.3.7",
-    "eslint": "7.30.0",
-    "eslint-config-next": "^13.1.1",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-prettier": "^4.2.1",
+    "eslint": "9.9.0",
+    "eslint-config-next": "^14.2.5",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-check-file": "^2.8.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.31.11",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "husky": "^8.0.2",
-    "lint-staged": "^13.0.3",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.9",
     "postcss": "^8.3.9",
-    "prettier": "^2.8.0",
-    "tailwindcss": "^2.2.16"
+    "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.9",
+    "typescript": "^5.5.4"
   },
   "lint-staged": {
-    "**/*.{js,jsx}": "npm run lint-fix",
-    "*.{js,css,md}": "prettier --write"
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   },
   "husky": {
     "hooks": {
