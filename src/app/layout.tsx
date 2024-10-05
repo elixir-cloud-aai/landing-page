@@ -1,7 +1,6 @@
 import GAScript from '@/analytics/ga';
 import BaseLayout from '@/components/base-layout';
 import CookieConsent from '@/components/cookie-consent';
-import ServiceWorkerRegistration from '@/components/service-worker-registration';
 import seo from '@/seo/base-seo';
 import '@/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
@@ -32,7 +31,6 @@ export default function RootLayout({
       <body>
         {process.env.NODE_ENV === 'production' && <GAScript />}
         <BaseLayout>{children}</BaseLayout>
-        <ServiceWorkerRegistration />
         <CookieConsent />
       </body>
     </html>
