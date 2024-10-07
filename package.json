@@ -11,7 +11,8 @@
     "lint-fix": "eslint ./ --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,scss,json,md}\"",
     "prepare": "husky install",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -22,8 +23,10 @@
     "elixir-cloud-aai": "file:.",
     "global": "^4.4.0",
     "globals": "^15.9.0",
-    "next": "^14.2.5",
+    "next": "^14.2.13",
+    "next-pwa": "^5.6.0",
     "next-seo": "^6.5.0",
+    "next-sitemap": "^4.2.3",
     "react": "^18.3.1",
     "react-awesome-reveal": "^4.2.5",
     "react-content-loader": "^7.0.2",
