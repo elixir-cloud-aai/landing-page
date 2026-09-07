@@ -52,8 +52,12 @@ const getOverview = async () => {
     });
     return results;
   } catch (e) {
-    console.log({ message: 'Server error', request: 'getOverview', error: e });
-    return { message: 'Server error', error: e };
+    console.error({
+      message: 'Server error',
+      request: 'getOverview',
+      error: e instanceof Error ? e.message : String(e),
+    });
+    return [];
   }
 };
 

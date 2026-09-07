@@ -74,12 +74,12 @@ const getContributors = async () => {
     results.sort((a: any, b: any) => a.name.localeCompare(b.name));
     return results;
   } catch (e) {
-    console.log({
+    console.error({
       message: 'Server error',
       request: 'getContributors',
-      error: e,
+      error: e instanceof Error ? e.message : String(e),
     });
-    return { message: 'Server error', error: e };
+    return [];
   }
 };
 

@@ -132,73 +132,80 @@ const Footer: FC = () => {
   );
 
   return (
-    <footer className="bg-gray-900 px-5 md:px-64 pt-7 md:pt-12 py-3 md:py-9 text-gray-200 font-pop text-sm rounded-t-xl relative">
-      <div className="flex md:flex-row flex-col">
-        <div className="text-center pb-0 pt-5">
-          <div>
+    <footer className="bg-gray-900 text-gray-300 font-pop text-sm rounded-t-2xl">
+      <div className="max-w-7xl mx-auto px-6 py-10 md:py-12">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-10">
+          {/* Brand & Licensing */}
+          <div className="flex flex-col items-center md:items-start">
+            <div className="flex flex-wrap justify-center md:justify-start items-center gap-6 md:gap-8 mb-6">
+              <a
+                href="https://elixir-cloud.dcc.sib.swiss/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-transform hover:scale-105"
+              >
+                <img
+                  src="/elixir-cloud-aai.png"
+                  alt="elixir-cloud-aai-logo"
+                  className="h-10 md:h-14 w-auto object-contain"
+                />
+              </a>
+              <a
+                href="https://elixir-europe.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-transform hover:scale-105"
+              >
+                <img
+                  src="/elixir.png"
+                  alt="elixir-logo"
+                  className="h-10 md:h-14 w-auto object-contain"
+                />
+              </a>
+              <a
+                href="https://www.ga4gh.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-transform hover:scale-105"
+              >
+                <img
+                  src="/ga4gh.png"
+                  alt="ga4gh-logo"
+                  className="h-10 md:h-14 w-auto object-contain"
+                />
+              </a>
+            </div>
+
             <a
-              className="mb-3 cursor-pointer"
-              href="https://elixir-cloud.dcc.sib.swiss/"
-              rel="noopener noreferrer"
+              href="https://github.com/elixir-cloud-aai/elixir-cloud-aai.github.io/blob/main/LICENSE"
               target="_blank"
-            >
-              <img
-                alt="elixir-cloud-aai-logo"
-                className="inline-block w-14 md:w-20 mx-3 mr-3 md:mr-7"
-                height="auto"
-                src="/elixir-cloud-aai.png"
-                width="auto"
-              />
-            </a>
-            <a
-              className="mb-3 cursor-pointer "
-              href="https://elixir-europe.org/"
               rel="noopener noreferrer"
-              target="_blank"
+              className="text-xs text-gray-400 hover:text-white transition-colors flex flex-col md:flex-row items-center gap-1 md:gap-2"
             >
-              <img
-                alt="elixir-logo"
-                className="inline-block w-14 md:w-20 mr-3 md:mx-5"
-                height="auto"
-                src="/elixir.png"
-                width="auto"
-              />
-            </a>
-            <a
-              className="mb-3 cursor-pointer "
-              href="https://www.ga4gh.org/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <img
-                alt="ga4gh-logo"
-                className="inline-block w-14 md:w-20 mr-3 md:mx-5"
-                height="auto"
-                src="/ga4gh.png"
-                width="auto"
-              />
+              <span>© 2021 ELIXIR Cloud AAI</span>
+              <span className="hidden md:inline text-gray-600">•</span>
+              <span>Released under MIT License</span>
             </a>
           </div>
-          <a
-            className="leading-loose mt-5 mx-3 hover:underline"
-            href="https://github.com/elixir-cloud-aai/elixir-cloud-aai.github.io/blob/main/LICENSE"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <span className="text-xs md:block">© 2021 ELIXIR Cloud AAI </span>
-            <span className="text-xs md:hidden">○</span>
-            <span className="text-xs md:block">
-              {' '}
-              Released under MIT License
-            </span>
-          </a>
+
+          {/* Navigation Links */}
+          <div className="flex-grow w-full md:w-auto flex justify-center md:justify-end">
+            {renderFooterLinks()}
+          </div>
         </div>
-        <div className="mt-4 md:mt-0 flex-grow text-center">
-          {renderFooterLinks()}
+
+        {/* Attribution Bar */}
+        <div className="mt-10 pt-5 border-t border-gray-800 flex justify-center md:justify-end">
+          <span className="text-xs text-gray-500">
+            Icons by{' '}
+            <a
+              href="https://icons8.com/"
+              className="hover:text-gray-300 transition-colors underline decoration-gray-700 underline-offset-2"
+            >
+              icons8.com
+            </a>
+          </span>
         </div>
-      </div>
-      <div className="text-[0.5rem] text-gray-700 text-right -mt-5 absolute bottom-0 md:right-64 right-5">
-        Icons by <a href="https://icons8.com/">icons8.com</a>
       </div>
     </footer>
   );

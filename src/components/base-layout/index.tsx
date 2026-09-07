@@ -36,7 +36,7 @@ const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
         theme === 'dark' ? 'dark bg-gray-800' : ''
       }`}
     >
-      <nav>
+      <nav className={'pb-10'}>
         <NavBar
           scroll={scroll}
           setShowBanner={setShowBanner}
@@ -45,7 +45,7 @@ const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
           toggleDarkMode={toggleDarkMode}
         />
       </nav>
-      <main className={`flex-grow  mb-10 ${showBanner ? 'mt-14 ' : ''}`}>
+      <main className={`flex-grow  ${showBanner ? 'mt-0 ' : ''}`}>
         <ThemeProvider value={{ theme: theme as Theme, toggleDarkMode }}>
           {children}
         </ThemeProvider>

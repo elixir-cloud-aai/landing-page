@@ -19,8 +19,8 @@ export async function generateMetadata(
   const { id } = params;
   const data: Solution = await fetchSolutionData(id);
   return {
-    title: data.title,
-    description: data.description,
+    title: data.title || 'Solution',
+    description: data.description || 'ELIXIR Cloud & AAI-developed solution.',
   };
 }
 

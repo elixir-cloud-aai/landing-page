@@ -36,8 +36,12 @@ const getPartners = async () => {
     }));
     return results;
   } catch (e) {
-    console.log({ message: 'Server error', request: 'getPartners', error: e });
-    return { message: 'Server error', error: e };
+    console.error({
+      message: 'Server error',
+      request: 'getPartners',
+      error: e instanceof Error ? e.message : String(e),
+    });
+    return [];
   }
 };
 

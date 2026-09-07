@@ -1,3 +1,9 @@
-# https://www.robotstxt.org/robotstxt.html
+# *
 User-agent: *
-Disallow:
+Allow: /
+
+# Host
+Host: https://elixir-cloud.dcc.sib.swiss
+
+# Sitemaps
+Sitemap: https://elixir-cloud.dcc.sib.swiss/sitemap.xml
