@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { FC } from 'react';
+import { TextHoverEffect } from '../ui/text-hover-effect';
 
 interface LinkObject {
   name: string;
@@ -35,32 +36,32 @@ const Footer: FC = () => {
         },
       ],
     },
-    {
-      title: 'Docs',
-      link: 'https://elixir-cloud-aai.github.io/',
-      links: [
-        {
-          name: 'Users',
-          link: 'https://elixir-cloud-aai.github.io/guides/guide-user/',
-          a: true,
-        },
-        {
-          name: 'Developers',
-          link: 'https://elixir-cloud-aai.github.io/guides/guide-dev/',
-          a: true,
-        },
-        {
-          name: 'Administrators',
-          link: 'https://elixir-cloud-aai.github.io/guides/guide-admin/',
-          a: true,
-        },
-        {
-          name: 'Contributors',
-          link: 'https://elixir-cloud-aai.github.io/guides/guide-contributor/',
-          a: true,
-        },
-      ],
-    },
+    // {
+    //   title: 'Docs',
+    //   link: 'https://elixir-cloud-aai.github.io/',
+    //   links: [
+    //     {
+    //       name: 'Users',
+    //       link: 'https://elixir-cloud-aai.github.io/guides/guide-user/',
+    //       a: true,
+    //     },
+    //     {
+    //       name: 'Developers',
+    //       link: 'https://elixir-cloud-aai.github.io/guides/guide-dev/',
+    //       a: true,
+    //     },
+    //     {
+    //       name: 'Administrators',
+    //       link: 'https://elixir-cloud-aai.github.io/guides/guide-admin/',
+    //       a: true,
+    //     },
+    //     {
+    //       name: 'Contributors',
+    //       link: 'https://elixir-cloud-aai.github.io/guides/guide-contributor/',
+    //       a: true,
+    //     },
+    //   ],
+    // },
     {
       title: 'Reach Out',
       links: [
@@ -84,7 +85,7 @@ const Footer: FC = () => {
   ];
 
   const renderFooterLinks = () => (
-    <div className="px-0 md:px-10 flex flex-wrap text-base justify-center md:justify-start 2xl:justify-end">
+    <div className="px-0 md:px-10 flex py-2 flex-wrap text-base justify-center md:justify-start 2xl:justify-end">
       {footers.map((footer) => (
         <div
           className="px-8 py-3 md:py-0 md:mx-4 2xl:mx-50 md:my-4"
@@ -104,7 +105,7 @@ const Footer: FC = () => {
               if (link?.a) {
                 return (
                   <a
-                    className="text-xs md:text-base block hover:underline"
+                    className="text-xs py-2 md:text-base block hover:underline"
                     href={link.link}
                     key={link.link}
                     rel="noopener noreferrer"
@@ -116,7 +117,7 @@ const Footer: FC = () => {
               }
               return (
                 <div
-                  className="text-xs md:text-base block hover:underline cursor-pointer"
+                  className="text-xs md:text-base py-2 block hover:underline cursor-pointer"
                   key={link.link}
                 >
                   <Link href={link.link} passHref>
@@ -132,9 +133,9 @@ const Footer: FC = () => {
   );
 
   return (
-    <footer className="bg-gray-900 text-gray-300 font-pop text-sm rounded-t-2xl">
-      <div className="max-w-7xl mx-auto px-6 py-10 md:py-12">
-        <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-10">
+    <footer className="bg-gray-900  text-gray-300 font-pop text-sm  rounded-t-2xl">
+      <div className="max-w-7xl mx-auto  px-6 py-10 md:py-12">
+        <div className="flex flex-col mt-20 md:flex-row justify-between items-center md:items-start gap-10">
           {/* Brand & Licensing */}
           <div className="flex flex-col items-center md:items-start">
             <div className="flex flex-wrap justify-center md:justify-start items-center gap-6 md:gap-8 mb-6">
@@ -180,9 +181,9 @@ const Footer: FC = () => {
               href="https://github.com/elixir-cloud-aai/elixir-cloud-aai.github.io/blob/main/LICENSE"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-gray-400 hover:text-white transition-colors flex flex-col md:flex-row items-center gap-1 md:gap-2"
+              className="text-xs py-2 text-gray-400 hover:text-white transition-colors flex flex-col md:flex-row items-center gap-1 md:gap-2"
             >
-              <span>© 2021 ELIXIR Cloud AAI</span>
+              <span>© 2026 ELIXIR Cloud AAI</span>
               <span className="hidden md:inline text-gray-600">•</span>
               <span>Released under MIT License</span>
             </a>
@@ -195,7 +196,7 @@ const Footer: FC = () => {
         </div>
 
         {/* Attribution Bar */}
-        <div className="mt-10 pt-5 border-t border-gray-800 flex justify-center md:justify-end">
+        {/* <div className="mt-10 pt-5 border-t border-gray-800 flex justify-center md:justify-end">
           <span className="text-xs text-gray-500">
             Icons by{' '}
             <a
@@ -205,8 +206,9 @@ const Footer: FC = () => {
               icons8.com
             </a>
           </span>
-        </div>
+        </div> */}
       </div>
+      <TextHoverEffect text="ELIXIRONCLOUD" />
     </footer>
   );
 };

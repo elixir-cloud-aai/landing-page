@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "slug": "tes-dashboard",
+    "name": "TES Dashboard",
+
+    "category": "Cloud & Bioinformatics",
+    "type": "Web Application",
+    "status": "Development",
+
+    "featured": true,
+    "popular": true,
+
+    "shortDescription": "A modern dashboard for monitoring and managing federated Task Execution Service (TES) instances and workflow execution across cloud infrastructures.",
+
+    "description": "TES Dashboard is a full-stack platform built for the ELIXIR Cloud ecosystem to provide centralized visibility and management of distributed TES infrastructure. It enables users to monitor federated TES nodes, submit computational tasks and workflows, track executions, inspect logs, and visualize network health from a single interface.",
+
+    "longDescription": "The TES Dashboard brings distributed Task Execution Service infrastructure into a unified management interface. It provides real-time service monitoring, interactive federation topology visualization, task and workflow execution tracking, batch processing, node and instance management, middleware configuration, authentication, and network diagnostics. The platform supports CWL, Nextflow, and Snakemake workflows and is designed to operate across federated cloud environments.",
+
+    "problem": "Federated cloud infrastructures can involve multiple TES instances, execution engines, workflows, and services that are difficult to monitor and manage from separate interfaces. Operators need a centralized view of infrastructure health, task execution, workflow progress, and network connectivity.",
+
+    "solution": "Built a centralized TES management dashboard that connects federated TES instances and provides real-time visibility into service health, network topology, computational tasks, workflows, batch executions, logs, and infrastructure configuration.",
+
+    "features": [
+      "Real-time TES service monitoring",
+      "Federated TES node management",
+      "Interactive network topology visualization",
+      "Task submission and execution tracking",
+      "CWL, Nextflow, and Snakemake workflow support",
+      "Batch workflow processing",
+      "Real-time workflow status tracking",
+      "Task, workflow, and batch logs",
+      "Service health and connectivity checks",
+      "TES instance and location management",
+      "Middleware configuration and monitoring",
+      "Session-based authentication and permissions",
+      "Network performance metrics",
+      "REST API for dashboard operations"
+    ],
+
+    "highlights": [
+      "Built for federated cloud infrastructure",
+      "Real-time TES health monitoring",
+      "Interactive federation topology",
+      "Multi-engine workflow execution",
+      "Centralized task and workflow management",
+      "Docker-based deployment"
+    ],
+
+    "technologies": [
+      "React",
+      "JavaScript",
+      "TypeScript",
+      "Flask",
+      "Python",
+      "REST API",
+      "Docker",
+      "Docker Compose",
+      "Nginx",
+      "Node.js",
+      "MongoDB",
+      "Keycloak",
+      "Nextflow",
+      "CWL",
+      "Snakemake"
+    ],
+
+    "tools": ["Git", "GitHub", "Docker", "Postman", "ArgoCD", "Cloudflare"],
+
+    "role": "Full-Stack Developer",
+
+    "team": "Development Team",
+
+    "duration": "Ongoing",
+
+    "year": 2026,
+
+    "platforms": ["Web", "Cloud"],
+
+    "images": {
+      "cover": "",
+      "thumbnail": "",
+      "gallery": []
+    },
+
+    "links": {
+      "live": null,
+      "github": "https://github.com/elixir-cloud-aai/tes-dashboard",
+      "caseStudy": "/projects/tes-dashboard"
+    },
+
+    "metrics": [
+      {
+        "value": "6+",
+        "label": "Federated TES nodes"
+      },
+      {
+        "value": "3+",
+        "label": "Cloud environments"
+      },
+      {
+        "value": "3",
+        "label": "Workflow engines"
+      }
+    ],
+
+    "challenges": [
+      "Monitoring distributed TES instances across a federation",
+      "Providing real-time service and execution status",
+      "Visualizing relationships between federated TES nodes",
+      "Supporting multiple workflow execution engines",
+      "Managing asynchronous task and workflow execution",
+      "Designing a centralized interface for distributed infrastructure"
+    ],
+
+    "results": [
+      "Centralized monitoring of federated TES infrastructure",
+      "Unified task and workflow management",
+      "Real-time visibility into execution and service health",
+      "Interactive visualization of TES network topology",
+      "Support for CWL, Nextflow, and Snakemake workflows",
+      "Containerized deployment for reproducible environments"
+    ],
+
+    "tags": [
+      "Cloud",
+      "Bioinformatics",
+      "TES",
+      "ELIXIR",
+      "React",
+      "Flask",
+      "Python",
+      "Docker",
+      "Nextflow",
+      "Distributed Systems"
+    ],
+
+    "cta": {
+      "primary": "View Project",
+      "secondary": "View GitHub"
+    },
+
+    "seo": {
+      "title": "TES Dashboard | Federated Cloud Infrastructure",
+      "description": "Explore TES Dashboard, a full-stack platform for monitoring and managing federated Task Execution Service instances, workflows, tasks, and cloud infrastructure.",
+      "keywords": [
+        "TES Dashboard",
+        "Task Execution Service",
+        "ELIXIR Cloud",
+        "federated cloud",
+        "bioinformatics",
+        "workflow execution",
+        "Nextflow",
+        "CWL",
+        "Snakemake",
+        "React",
+        "Flask",
+        "Docker"
+      ]
+    }
+  }
+]

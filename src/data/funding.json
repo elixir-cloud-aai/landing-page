@@ -1,0 +1,222 @@
+[
+  {
+    "id": "1",
+    "funder": "ELIXIR Commissioned Services: Technology",
+    "project": "24-TECH-Compute",
+    "recipients": ["ELIXIR Compute Platform"],
+    "startDate": "2024-01-01",
+    "endDate": "2026-12-31",
+    "formattedDuration": "1 January 2024 - 31 December 2026",
+    "category": "ELIXIR Services"
+  },
+  {
+    "id": "2",
+    "funder": "Google Summer of Code",
+    "project": "Python Flask microservice for importing, storing, and sharing research artifacts",
+    "recipients": ["Rahul Jagwani"],
+    "startDate": "2024-05-27",
+    "endDate": "2024-08-26",
+    "formattedDuration": "27 May 2024 - 26 August 2024",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "3",
+    "funder": "Google Summer of Code",
+    "project": "Dashboard Web Components (React, Vue etc) for file upload and handling",
+    "recipients": ["Pratiksha Sankhe"],
+    "startDate": "2024-05-27",
+    "endDate": "2024-08-26",
+    "formattedDuration": "27 May 2024 - 26 August 2024",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "4",
+    "funder": "Google Summer of Code",
+    "project": "Python library for packaging and reusing Cloud Computing workload traces",
+    "recipients": ["Karanjot Singh"],
+    "startDate": "2024-05-27",
+    "endDate": "2024-08-26",
+    "formattedDuration": "27 May 2024 - 26 August 2024",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "5",
+    "funder": "Google Summer of Code",
+    "project": "TESK - A GA4GH-TES based Kubernetes batch execution service",
+    "recipients": ["Javed Habib"],
+    "startDate": "2024-05-27",
+    "endDate": "2024-08-26",
+    "formattedDuration": "27 May 2024 - 26 August 2024",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "6",
+    "funder": "Google Summer of Code",
+    "project": "Crypt4GH Support for GA4GH Task Execution Service API Implementations",
+    "recipients": ["Athitheya Gobinathan"],
+    "startDate": "2024-05-27",
+    "endDate": "2024-08-26",
+    "formattedDuration": "27 May 2024 - 26 August 2024",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "7",
+    "funder": "Google Summer of Code",
+    "project": "Extensible GA4GH Client Library/SDK and Command Line Interface implemented in Rust",
+    "recipients": ["Aarav Mehta"],
+    "startDate": "2024-05-27",
+    "endDate": "2024-08-26",
+    "formattedDuration": "27 May 2024 - 26 August 2024",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "8",
+    "funder": "ELIXIR Platform Task",
+    "project": "Container Orchestration (2022-23)",
+    "recipients": ["ELIXIR Compute Platform"],
+    "startDate": "2022-01-01",
+    "endDate": "2023-12-31",
+    "formattedDuration": "1 January 2022 - 31 December 2023",
+    "category": "ELIXIR Platform Tasks"
+  },
+  {
+    "id": "9",
+    "funder": "Google Summer of Code",
+    "project": "Common compliance testing framework for every OpenAPI specification",
+    "recipients": ["Lakshya Garg"],
+    "startDate": "2023-05-29",
+    "endDate": "2023-08-28",
+    "formattedDuration": "29 May 2023 - 28 August 2023",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "10",
+    "funder": "Google Summer of Code",
+    "project": "Dashboard Web Components (React, Vue etc) for Workflow and Task Runs",
+    "recipients": ["Javed Habib"],
+    "startDate": "2023-05-29",
+    "endDate": "2023-08-28",
+    "formattedDuration": "29 May 2023 - 28 August 2023",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "11",
+    "funder": "Google Summer of Code",
+    "project": "Web Components for discovering and using scientific software in the Cloud",
+    "recipients": ["Assel Abzalova"],
+    "startDate": "2023-05-29",
+    "endDate": "2023-08-28",
+    "formattedDuration": "29 May 2023 - 28 August 2023",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "12",
+    "funder": "ELIXIR Strategic Implementation Study",
+    "project": "Making container services integratable, sustainable and widely adopted",
+    "recipients": ["ELIXIR Compute Platform", "ELIXIR Tools Platform"],
+    "startDate": "2021-06-01",
+    "endDate": "2023-05-31",
+    "formattedDuration": "1 June 2021 - 31 May 2023",
+    "category": "ELIXIR Implementation Studies"
+  },
+  {
+    "id": "13",
+    "funder": "Google Summer of Code",
+    "project": "TES Callback endpoint and mechanism in TESK",
+    "recipients": ["Suyash Gupta"],
+    "startDate": "2022-06-13",
+    "endDate": "2022-09-12",
+    "formattedDuration": "13 June 2022 - 12 September 2022",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "14",
+    "funder": "Google Summer of Code",
+    "project": "Compliance testing framework for the Task Execution Service API",
+    "recipients": ["Lakshya Garg"],
+    "startDate": "2022-06-13",
+    "endDate": "2022-09-12",
+    "formattedDuration": "13 June 2022 - 12 September 2022",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "15",
+    "funder": "Google Summer of Code",
+    "project": "Federating workflow execution using GA4GH Cloud APIs",
+    "recipients": ["Ayush Kumar"],
+    "startDate": "2022-06-13",
+    "endDate": "2022-09-12",
+    "formattedDuration": "13 June 2022 - 12 September 2022",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "16",
+    "funder": "Google Summer of Code",
+    "project": "Implement reusable GA4GH UI clients",
+    "recipients": ["Vipul Chhabra"],
+    "startDate": "2021-06-07",
+    "endDate": "2021-08-23",
+    "formattedDuration": "7 June 2021 - 23 August 2021",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "17",
+    "funder": "Google Summer of Code",
+    "project": "Implement TES in Galaxy/Pulsar",
+    "recipients": ["Anurag Gupta"],
+    "startDate": "2021-06-07",
+    "endDate": "2021-08-23",
+    "formattedDuration": "7 June 2021 - 23 August 2021",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "18",
+    "funder": "Google Summer of Code",
+    "project": "Brokering Continuous Delivery through the ELIXIR Cloud service registry",
+    "recipients": ["Akash Saini"],
+    "startDate": "2021-06-07",
+    "endDate": "2021-08-23",
+    "formattedDuration": "7 June 2021 - 23 August 2021",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "19",
+    "funder": "ELIXIR Strategic Implementation Study",
+    "project": "Deploying Reproducible Containers and Workflows Across Cloud Environments",
+    "recipients": ["ELIXIR Compute Platform", "ELIXIR Tools Platform"],
+    "startDate": "2019-06-01",
+    "endDate": "2021-05-31",
+    "formattedDuration": "1 June 2019 - 31 May 2021",
+    "category": "ELIXIR Implementation Studies"
+  },
+  {
+    "id": "20",
+    "funder": "ELIXIR Platform Task",
+    "project": "Container Orchestration",
+    "recipients": ["ELIXIR Compute Platform"],
+    "startDate": "2019-06-01",
+    "endDate": "2021-05-31",
+    "formattedDuration": "1 June 2019 - 31 May 2021",
+    "category": "ELIXIR Platform Tasks"
+  },
+  {
+    "id": "21",
+    "funder": "Google Summer of Code",
+    "project": "Dynamically adding data to DRS",
+    "recipients": ["Sarthak Gupta"],
+    "startDate": "2020-05-18",
+    "endDate": "2020-08-17",
+    "formattedDuration": "18 May 2020 - 17 August 2020",
+    "category": "Google Summer of Code"
+  },
+  {
+    "id": "22",
+    "funder": "Google Summer of Code",
+    "project": "Task distribution logic for GA4GH Cloud APIs",
+    "recipients": ["Vani Singh"],
+    "startDate": "2019-05-27",
+    "endDate": "2019-08-26",
+    "formattedDuration": "27 May 2019 - 26 August 2019",
+    "category": "Google Summer of Code"
+  }
+]

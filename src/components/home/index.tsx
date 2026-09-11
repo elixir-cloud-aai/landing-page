@@ -157,7 +157,7 @@ const Home: FC = () => {
             <Zoom triggerOnce>
               <div className="flex flex-col justify-center">
                 <div className="inline-flex w-fit items-center rounded-full border border-elixirblue/20 bg-elixirblue/8 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-elixirblue shadow-sm dark:border-elixirblue/30 dark:bg-elixirblue/10">
-                  ELIXIR Cloud & AAI
+                  ELIXIR On-Cloud
                 </div>
 
                 <div className="mt-8 space-y-6">
@@ -194,7 +194,7 @@ const Home: FC = () => {
 
             <Zoom triggerOnce>
               <div className="flex items-center justify-center">
-                <div className="relative my-16 h-[700px] w-full max-w-lg overflow-hidden rounded-xl bg-white p-10 shadow-sm ring-1 shadow-black/10 ring-black/10 sm:my-24 sm:h-[300px] md:my-32 md:h-[400px] dark:bg-neutral-900">
+                <div className="relative my-16 h-[700px] w-full max-w-lg overflow-hidden rounded-xl bg-white p-10 shadow-sm ring-1 shadow-black/10 ring-black/10 sm:my-24 sm:h-[300px] md:my-32 md:h-[400px] dark:bg-[#111827]">
                   <h2 className="mb-4 text-2xl font-semibold text-neutral-900 dark:text-white">
                     All over the world
                   </h2>

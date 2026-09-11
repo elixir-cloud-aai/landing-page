@@ -4,7 +4,7 @@ import { FC } from 'react';
 
 export const metadata: Metadata = {
   title: `News & FAQ's`,
-  description: 'ELIXIR Cloud & AAI latest news/twitter feed.',
+  description: 'ELIXIR On-Cloud latest news/twitter feed.',
 };
 
 const NewsPage: FC = () => {

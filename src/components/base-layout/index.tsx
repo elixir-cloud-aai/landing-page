@@ -27,7 +27,7 @@ const Layout: FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const toggleDarkMode = () => {
     localStorage.setItem('dark-theme', theme === 'light' ? 'dark' : 'light');
-    setTheme(theme === 'light' ? 'dark' : 'light');
+    setTheme(theme === 'light' ? 'dark' : 'dark');
   };
 
   return (

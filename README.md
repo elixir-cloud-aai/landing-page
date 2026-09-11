@@ -11,7 +11,7 @@ Cloud & AAI**, a transnational effort towards establishing a federated [cloud
 computing][res-cloud-computing] network enabling the analysis of
 population-scale genomic and phenotypic data across participating nodes.
 
-ELIXIR Cloud & AAI is led by the [ELIXIR Compute Platform][res-elixir-compute]
+ELIXIR On-Cloud is led by the [ELIXIR Compute Platform][res-elixir-compute]
 and is a Driver Project of the [Global Alliance for Genomics and
 Health][res-ga4gh].
 
@@ -57,7 +57,7 @@ npm install
 ```
 
 For the API/backend, first create a [Notion][res-notion]. Then, open the
-[ELIXIR Cloud & AAI Notion page][res-notion-elixir-cloud-aai] and duplicate
+[ELIXIR On-Cloud Notion page][res-notion-elixir-cloud-aai] and duplicate
 it to your account. Then, create a [Notion Developers account][res-notion-devs]
 with the same email. Finally, [create a new integration][res-notion-integration]
 in your account, note down the "Internal Integration Token" and [link the

@@ -1,0 +1,578 @@
+[
+  {
+    "name": "Aarav Mehta",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '24 Contributor"],
+    "email": "[aarav05mehta@gmail.com](mailto:aarav05mehta@gmail.com)",
+    "github": "https://github.com/aaravm",
+    "linkedin": "https://www.linkedin.com/in/aarav-mehta-445959250/"
+  },
+  {
+    "name": "Aditya Arora",
+    "image": "https://thumbs2.imgbox.com/a1/c5/6rDy1YsR_t.jpeg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor"],
+    "email": "[adityarora97@gmail.com](mailto:adityarora97@gmail.com)",
+    "github": "https://github.com/alohamora",
+    "linkedin": "https://www.linkedin.com/in/adityarora97/"
+  },
+  {
+    "name": "Akash Saini",
+    "image": "https://thumbs2.imgbox.com/e8/6d/yTLjdO5j_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '21 Contributor"],
+    "email": "[akash2237778@gmail.com](mailto:akash2237778@gmail.com)",
+    "github": "https://github.com/akash2237778",
+    "linkedin": "https://www.linkedin.com/in/akash-saini-ak7778/"
+  },
+  {
+    "name": "Alex Kanitz",
+    "image": "https://thumbs2.imgbox.com/b1/26/QB7uw6VJ_t.jpg",
+    "lat": 47.3769,
+    "lng": 8.5417,
+    "roles": [
+      "ELIXIR Switzerland",
+      "ELIXIR Compute Platform: WP4 Lead",
+      "GA4GH Driver Project Champion"
+    ],
+    "email": "[alexander.kanitz@alumni.ethz.ch](mailto:alexander.kanitz@alumni.ethz.ch)",
+    "github": "https://github.com/uniqueg",
+    "linkedin": "https://www.linkedin.com/in/alexanderkanitz/"
+  },
+  {
+    "name": "Álvaro González",
+    "image": "https://thumbs2.imgbox.com/aa/fe/CHM5t4od_t.jpg",
+    "lat": 60.1699,
+    "lng": 24.9384,
+    "roles": ["ELIXIR Finland"],
+    "email": "[alvaro.gonzalez@csc.fi](mailto:alvaro.gonzalez@csc.fi)",
+    "github": "https://github.com/lvarin",
+    "linkedin": "https://www.linkedin.com/in/alvaro-gonzalez-alvarez-b6194811/"
+  },
+  {
+    "name": "Ania Niewielska",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 52.3667,
+    "lng": 4.9041,
+    "roles": ["EMBL-EBI"]
+  },
+  {
+    "name": "Anurag Gupta",
+    "image": "https://thumbs2.imgbox.com/5f/e8/f96Rv1li_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '21 Contributor"],
+    "email": "[aguptaking@gmail.com](mailto:aguptaking@gmail.com)",
+    "github": "https://github.com/git-anurag-hub",
+    "linkedin": "https://www.linkedin.com/in/anurag-gupta-1201"
+  },
+  {
+    "name": "Assel Abzalova",
+    "image": "https://thumbs2.imgbox.com/8a/d4/O7LRZQ3R_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '23 Contributor"],
+    "email": "[abzalovassel@gmail.com](mailto:abzalovassel@gmail.com)",
+    "github": "https://github.com/ltwmori",
+    "linkedin": "https://www.linkedin.com/in/assel-abzalova/"
+  },
+  {
+    "name": "Athitheya Gobinathan",
+    "image": "https://images2.imgbox.com/d7/74/fDlt2gDl_o.jpeg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '24 Contributor"],
+    "email": "[athith.g@gmail.com](mailto:athith.g@gmail.com)",
+    "linkedin": "https://www.linkedin.com/in/athith-g/"
+  },
+  {
+    "name": "Ayush Kumar",
+    "image": "https://thumbs2.imgbox.com/29/6b/Cjv19dlT_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '22 Contributor"],
+    "email": "[ayush5120k@gmail.com](mailto:ayush5120k@gmail.com)",
+    "github": "https://github.com/Ayush5120",
+    "linkedin": "https://www.linkedin.com/in/ayush-kumar-514a17197/"
+  },
+  {
+    "name": "CJ Herrmann",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 47.5596,
+    "lng": 7.5886,
+    "roles": ["ELIXIR Switzerland"],
+    "email": "[christina.herrmann@unibas.ch](mailto:christina.herrmann@unibas.ch)",
+    "github": "https://github.com/ninsch3000"
+  },
+  {
+    "name": "Dominik František Bučík",
+    "image": "https://thumbs2.imgbox.com/0c/c0/lEzzLUMh_t.jpg",
+    "lat": 49.1951,
+    "lng": 16.6068,
+    "roles": [
+      "ELIXIR Czech Republic",
+      "ELIXIR Compute Platform: WP2 Lead",
+      "GA4GH Driver Project Champion"
+    ],
+    "email": "[bucik@ics.muni.cz](mailto:bucik@ics.muni.cz)",
+    "github": "https://github.com/dBucik",
+    "linkedin": "https://www.linkedin.com/in/dominik-frantisek-bucik/"
+  },
+  {
+    "name": "Gavin Farrell",
+    "image": "https://thumbs2.imgbox.com/4b/50/9doaR6Ji_t.jpg",
+    "lat": 51.5074,
+    "lng": -0.1278,
+    "roles": [
+      "ELIXIR Hub",
+      "ELIXIR Compute Platform: Officer",
+      "ELIXIR Data Platform: Officer"
+    ],
+    "email": "[gavin.farrell@elixir-europe.org](mailto:gavin.farrell@elixir-europe.org)",
+    "linkedin": "https://www.linkedin.com/in/gavin-farrell97/"
+  },
+  {
+    "name": "Harald Wegener",
+    "image": "https://thumbs2.imgbox.com/5a/43/LV2WlbJq_t.jpg",
+    "lat": 52.52,
+    "lng": 13.405,
+    "roles": ["ELIXIR Germany", "ELIXIR Compute Platform: Lead"],
+    "email": "[harald.wagener@bih-charite.de](mailto:harald.wagener@bih-charite.de)",
+    "github": "https://github.com/oliof"
+  },
+  {
+    "name": "Ivar Janmaat",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 52.3676,
+    "lng": 4.9041,
+    "roles": ["ELIXIR Netherlands", "ELIXIR Compute Platform: WP4 Lead"]
+  },
+  {
+    "name": "Javed Habib",
+    "image": "https://thumbs2.imgbox.com/b0/74/gqA1eWDN_t.jpeg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": [
+      "OSS Contributor",
+      "GSoC '23 Contributor",
+      "GSoC '24 Contributor"
+    ],
+    "email": "[jh4official@gmail.com](mailto:jh4official@gmail.com)",
+    "github": "https://github.com/JaeAeich",
+    "linkedin": "https://www.linkedin.com/in/javed-habib/"
+  },
+  {
+    "name": "Jemal Tahir",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 60.1699,
+    "lng": 24.9384,
+    "roles": ["ELIXIR Finland"],
+    "email": "[jemal.tahir@csc.fi](mailto:jemal.tahir@csc.fi)",
+    "github": "https://github.com/jemaltahir",
+    "linkedin": "https://www.linkedin.com/in/jemalmoha/"
+  },
+  {
+    "name": "Jonathan Tedds",
+    "image": "https://thumbs2.imgbox.com/62/81/IZKpt0ny_t.jpg",
+    "lat": 51.5074,
+    "lng": -0.1278,
+    "roles": [
+      "ELIXIR Hub",
+      "ELIXIR Compute Platform: Coordinator",
+      "ELIXIR Tools Platform: Coordinator",
+      "ELIXIR EOSC CoordinatorMore..."
+    ],
+    "email": "[jonathan.tedds@elixir-europe.org](mailto:jonathan.tedds@elixir-europe.org)",
+    "github": "https://github.com/jtedds",
+    "linkedin": "https://www.linkedin.com/in/jtedds/"
+  },
+  {
+    "name": "Joris Vankerschaver",
+    "image": "https://thumbs2.imgbox.com/a1/06/2XyPM1Jn_t.jpg",
+    "lat": 50.8503,
+    "lng": 4.3517,
+    "roles": ["External Contributor"]
+  },
+  {
+    "name": "Juha Törnroos",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 60.1699,
+    "lng": 24.9384,
+    "roles": ["ELIXIR Finland", "ELIXIR Compute Platform: Lead"],
+    "email": "[juha.tornroos@csc.fi](mailto:juha.tornroos@csc.fi)",
+    "github": "https://github.com/juhtornr",
+    "linkedin": "https://es.linkedin.com/in/juha-t%C3%B6rnroos-1b6ba766"
+  },
+  {
+    "name": "Justin Clark-Casey",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 52.3667,
+    "lng": 4.9041,
+    "roles": ["EMBL-EBI"]
+  },
+  {
+    "name": "Karanjot Singh",
+    "image": "https://thumbs2.imgbox.com/a5/8f/2Q4Te0Tq_t.jpeg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '24 Contributor"],
+    "email": "[karanjots801@gmail.com](mailto:karanjots801@gmail.com)",
+    "github": "https://github.com/karanjot786",
+    "linkedin": "https://in.linkedin.com/in/karanjot786"
+  },
+  {
+    "name": "Kersten Breuer",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 52.52,
+    "lng": 13.405,
+    "roles": ["ELIXIR Germany"]
+  },
+  {
+    "name": "Kevin Sayers",
+    "image": "https://thumbs2.imgbox.com/f0/2e/mJ5xmbPz_t.jpg",
+    "lat": 47.3769,
+    "lng": 8.5417,
+    "roles": ["ELIXIR Switzerland"],
+    "email": "[sayerskt@gmail.com](mailto:sayerskt@gmail.com)",
+    "linkedin": "https://www.linkedin.com/in/sayersk/"
+  },
+  {
+    "name": "Konstantinos Liosis",
+    "image": "https://thumbs2.imgbox.com/cc/a5/Syy59wVW_t.jpg",
+    "lat": 40.7128,
+    "lng": -74.006,
+    "roles": ["OSS Contributor"],
+    "email": "[liosisk@mskcc.org](mailto:liosisk@mskcc.org)",
+    "github": "https://github.com/stikos",
+    "linkedin": "https://www.linkedin.com/in/liosiskc/"
+  },
+  {
+    "name": "Kostis Zagganas",
+    "image": "https://thumbs2.imgbox.com/4e/7c/s7QWpTC6_t.jpg",
+    "lat": 37.9838,
+    "lng": 23.7275,
+    "roles": ["ELIXIR Greece"],
+    "email": "[konstantinos.zagganas@gmail.com](mailto:konstantinos.zagganas@gmail.com)",
+    "github": "https://github.com/zagganas",
+    "linkedin": "https://www.linkedin.com/in/kostis-zagganas/"
+  },
+  {
+    "name": "Lakshya Garg",
+    "image": "https://thumbs2.imgbox.com/9c/73/nvSgeW5X_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": [
+      "OSS Contributor",
+      "GSoC '22 Contributor",
+      "GSoC '23 Contributor"
+    ],
+    "email": "[garg.lakshya@gmail.com](mailto:garg.lakshya@gmail.com)",
+    "github": "https://github.com/LakiG",
+    "linkedin": "https://www.linkedin.com/in/lakshyaagarg/"
+  },
+  {
+    "name": "Liam Beckman",
+    "image": "https://thumbs2.imgbox.com/c9/0e/zeQld7uu_t.jpg",
+    "lat": 38.9072,
+    "lng": -77.0369,
+    "roles": ["External Contributor"],
+    "email": "[lbeckman314@gmail.com](mailto:lbeckman314@gmail.com)",
+    "linkedin": "https://www.linkedin.com/in/liam-beckman-ab3183a6"
+  },
+  {
+    "name": "Ludek Matyska",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 49.1951,
+    "lng": 16.6068,
+    "roles": ["ELIXIR Czech Republic", "ELIXIR Compute Platform: Lead"]
+  },
+  {
+    "name": "Lukáš Hejtmánek",
+    "image": "https://thumbs2.imgbox.com/4e/b5/XlHJBigD_t.jpg",
+    "lat": 49.1951,
+    "lng": 16.6068,
+    "roles": ["ELIXIR Czech Republic"],
+    "email": "[xhejtman@ics.muni.cz](mailto:xhejtman@ics.muni.cz)",
+    "github": "https://github.com/xhejtman"
+  },
+  {
+    "name": "Manthos Pitoulias",
+    "image": "https://thumbs2.imgbox.com/eb/55/NdqbW4HS_t.jpg",
+    "lat": 51.5074,
+    "lng": -0.1278,
+    "roles": [
+      "ELIXIR Hub",
+      "ELIXIR Tools Platform: Officer",
+      "ELIXIR Training Platform: Officer"
+    ],
+    "email": "[manthos.pitoulias@elixir-europe.org](mailto:manthos.pitoulias@elixir-europe.org)",
+    "github": "https://github.com/mattpito",
+    "linkedin": "https://www.linkedin.com/in/manthospitoulias/"
+  },
+  {
+    "name": "Marius Dieckmann",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 52.52,
+    "lng": 13.405,
+    "roles": ["ELIXIR Germany"]
+  },
+  {
+    "name": "Martin Kuba",
+    "image": "https://thumbs2.imgbox.com/e0/37/zITw2Uzp_t.jpg",
+    "lat": 49.1951,
+    "lng": 16.6068,
+    "roles": ["ELIXIR Czech Republic", "GA4GH Driver Project Champion"],
+    "email": "[makub@ics.muni.cz](mailto:makub@ics.muni.cz)",
+    "github": "https://github.com/martin-kuba",
+    "linkedin": "https://www.linkedin.com/in/martin-kuba-9637a0"
+  },
+  {
+    "name": "Michael R. Crusoe",
+    "image": "https://thumbs2.imgbox.com/32/a9/BIErFjDk_t.jpg",
+    "lat": 52.52,
+    "lng": 13.405,
+    "roles": ["ELIXIR Germany", "ELIXIR Compute Platform: WP5 Lead"],
+    "email": "[michael.crusoe@vu.nl](mailto:michael.crusoe@vu.nl)",
+    "github": "https://github.com/mr-c",
+    "linkedin": "https://www.linkedin.com/in/biocrusoe/"
+  },
+  {
+    "name": "Mikael Linden",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 60.1699,
+    "lng": 24.9384,
+    "roles": ["ELIXIR Finland"]
+  },
+  {
+    "name": "Milan Daneček",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 49.1951,
+    "lng": 16.6068,
+    "roles": ["ELIXIR Czech Republic"],
+    "email": "[milan.danecek@cesnet.cz](mailto:milan.danecek@cesnet.cz)",
+    "github": "https://github.com/milkydan"
+  },
+  {
+    "name": "Nidhi",
+    "image": "https://thumbs2.imgbox.com/61/0e/hetIqfww_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor"],
+    "email": "[nidhi09071999@gmail.com](mailto:nidhi09071999@gmail.com)",
+    "github": "https://github.com/Nidhi091999",
+    "linkedin": "https://www.linkedin.com/in/nidhi-780603266"
+  },
+  {
+    "name": "Nils Hoffmann",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 50.9413,
+    "lng": 6.9583,
+    "roles": [
+      "ELIXIR Germany",
+      "ELIXIR Compute Platform: Coordinator DE",
+      "ELIXIR Interop Platform: Coordinator DE"
+    ],
+    "email": "[n.hoffmann@fz-juelich.de](mailto:n.hoffmann@fz-juelich.de)",
+    "github": "https://github.com/nilshoffmann"
+  },
+  {
+    "name": "Pavel Nikonorov",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 50.8503,
+    "lng": 4.3517,
+    "roles": ["External Contributor"],
+    "email": "[pavel@genxt.network](mailto:pavel@genxt.network)",
+    "linkedin": "https://www.linkedin.com/in/pavelnikonorov"
+  },
+  {
+    "name": "Philip R. Kensche",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 52.52,
+    "lng": 13.405,
+    "roles": ["ELIXIR Germany"]
+  },
+  {
+    "name": "Pratiksha Sankhe",
+    "image": "https://thumbs2.imgbox.com/6e/58/qtBxnxSw_t.jpeg",
+    "lat": 19.076,
+    "lng": 72.8777,
+    "roles": ["OSS Contributor", "GSoC '24 Contributor"],
+    "email": "[sankhepratiksha3@gmail.com](mailto:sankhepratiksha3@gmail.com)",
+    "github": "https://github.com/psankhe28",
+    "linkedin": "https://www.linkedin.com/in/pratiksha-sankhe/"
+  },
+  {
+    "name": "Rahul Jagwani",
+    "image": "https://thumbs2.imgbox.com/d9/06/Dipo1joV_t.jpeg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '24 Contributor"],
+    "email": "[rahuljagwani1012@gmail.com](mailto:rahuljagwani1012@gmail.com)",
+    "github": "https://github.com/Rahuljagwani",
+    "linkedin": "https://www.linkedin.com/in/rahuljagwani/"
+  },
+  {
+    "name": "Salihu Baba-Saliu",
+    "image": "https://thumbs2.imgbox.com/2c/7a/tkRNoHV8_t.jpeg",
+    "lat": 9.0765,
+    "lng": 7.3986,
+    "roles": ["OSS Contributor"],
+    "email": "[salihudickson@gmail.com](mailto:salihudickson@gmail.com)",
+    "github": "https://github.com/SalihuDickson",
+    "linkedin": "https://www.linkedin.com/in/salihu-baba-saliu-a046ab22b/"
+  },
+  {
+    "name": "Sarthak Gupta",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '20 Contributor"],
+    "email": "[sarthakgupta072@gmail.com](mailto:sarthakgupta072@gmail.com)",
+    "github": "https://github.com/sarthakgupta072",
+    "linkedin": "https://www.linkedin.com/in/sarthakgupta072"
+  },
+  {
+    "name": "Shubham Kapoor",
+    "image": "https://thumbs2.imgbox.com/ac/d0/9SCsQkUF_t.jpg",
+    "lat": 60.1699,
+    "lng": 24.9384,
+    "roles": ["ELIXIR Finland"],
+    "email": "[shubham.kapoor@sib.swiss](mailto:shubham.kapoor@sib.swiss)"
+  },
+  {
+    "name": "Soham Ratnaparkhi",
+    "image": "https://thumbs2.imgbox.com/36/f4/ScnnFoxk_t.jpeg",
+    "lat": 18.5204,
+    "lng": 73.8567,
+    "roles": ["OSS Contributor"],
+    "email": "[soham.ratnaparkhi@gmail.com](mailto:soham.ratnaparkhi@gmail.com)",
+    "github": "https://github.com/SohamRatnaparkhi",
+    "linkedin": "https://www.linkedin.com/in/soham-ratnaparkhi-3a3775ab/"
+  },
+  {
+    "name": "Stian Soyland-Reyes",
+    "image": "https://thumbs2.imgbox.com/c8/0b/mT1tsCdn_t.jpg",
+    "lat": 53.4808,
+    "lng": -2.2426,
+    "roles": ["ELIXIR United Kingdom", "RO-Crate: Lead"],
+    "email": "[soiland-reyes@manchester.ac.uk](mailto:soiland-reyes@manchester.ac.uk)",
+    "github": "https://github.com/stain/",
+    "linkedin": "https://www.linkedin.com/in/stain/"
+  },
+  {
+    "name": "Susheel Varma",
+    "image": "https://thumbs2.imgbox.com/54/8d/mWRtkCMt_t.jpg",
+    "lat": 51.5074,
+    "lng": -0.1278,
+    "roles": ["ELIXIR Hub"],
+    "email": "[susheel.varma@gmail.com](mailto:susheel.varma@gmail.com)",
+    "github": "https://github.com/susheel",
+    "linkedin": "https://www.linkedin.com/in/susheelvarma/"
+  },
+  {
+    "name": "Suyash Gupta",
+    "image": "https://thumbs2.imgbox.com/9b/bb/KvrxGjIw_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '22 Contributor"],
+    "email": "[sgalpha01@gmail.com](mailto:sgalpha01@gmail.com)",
+    "github": "https://github.com/sgalpha01",
+    "linkedin": "https://www.linkedin.com/in/sgalpha01/"
+  },
+  {
+    "name": "Sven Twardziok",
+    "image": "https://thumbs2.imgbox.com/ec/f0/2AL9Iixq_t.jpg",
+    "lat": 52.52,
+    "lng": 13.405,
+    "roles": ["ELIXIR Germany", "ELIXIR Compute Platform: WP3 Lead"],
+    "email": "[sven.twardziok@bih-charite.de](mailto:sven.twardziok@bih-charite.de)",
+    "github": "https://github.com/svedziok",
+    "linkedin": "https://www.linkedin.com/in/sven-twardziok-0bb538a0/"
+  },
+  {
+    "name": "Tanya Kumari",
+    "image": "https://thumbs2.imgbox.com/17/86/t2tAjI5w_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor"],
+    "email": "[tanyaincodingjourney@gmail.com](mailto:tanyaincodingjourney@gmail.com)",
+    "github": "https://github.com/tanya17-05",
+    "linkedin": "https://www.linkedin.com/in/tanya1705/"
+  },
+  {
+    "name": "Tewodros Deneke",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 60.1699,
+    "lng": 24.9384,
+    "roles": ["ELIXIR Finland"]
+  },
+  {
+    "name": "Thanasis Vergoulis",
+    "image": "https://thumbs2.imgbox.com/a1/14/ukVhJr63_t.png",
+    "lat": 38.0,
+    "lng": 23.75,
+    "roles": ["ELIXIR Greece", "ELIXIR Compute Platform: WP5 Lead"],
+    "email": "[vergoulis@athenarc.gr](mailto:vergoulis@athenarc.gr)",
+    "github": "https://github.com/vergoulis",
+    "linkedin": "https://www.linkedin.com/in/thanasis-vergoulis-863b8152"
+  },
+  {
+    "name": "Tommi Nyrönen",
+    "image": "https://thumbs2.imgbox.com/a3/a3/arEQPMi5_t.jpg",
+    "lat": 60.1699,
+    "lng": 24.9384,
+    "roles": ["ELIXIR Finland", "ELIXIR Head of Node"],
+    "email": "[nyronen@csc.fi](mailto:nyronen@csc.fi)",
+    "github": "https://github.com/nyronen",
+    "linkedin": "https://www.linkedin.com/in/nyronen"
+  },
+  {
+    "name": "Valentin Schneider-Lunitz",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 52.52,
+    "lng": 13.405,
+    "roles": ["ELIXIR Germany"],
+    "email": "[valentin.schneider-lunitz@bih-charite.de](mailto:valentin.schneider-lunitz@bih-charite.de)"
+  },
+  {
+    "name": "Vani Singh",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '19 Contributor"],
+    "email": "[vanisingh@live.co.uk](mailto:vanisingh@live.co.uk)",
+    "github": "https://github.com/vaniisgh"
+  },
+  {
+    "name": "Viktória Spišaková",
+    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "lat": 49.1951,
+    "lng": 16.6068,
+    "roles": ["ELIXIR Czech Republic", "ELIXIR Compute Platform: WP4 Lead"],
+    "email": "[spisakova@ics.muni.cz](mailto:spisakova@ics.muni.cz)"
+  },
+  {
+    "name": "Vincent Emonet",
+    "image": "https://thumbs2.imgbox.com/fb/64/UPS7HTjd_t.jpg",
+    "lat": 46.2044,
+    "lng": 6.1432,
+    "roles": ["ELIXIR Switzerland"],
+    "email": "[vincent.emonet@gmail.com](mailto:vincent.emonet@gmail.com)",
+    "github": "https://github.com/vemonet",
+    "linkedin": "https://www.linkedin.com/in/vincent-emonet/"
+  },
+  {
+    "name": "Vipul Chhabra",
+    "image": "https://thumbs2.imgbox.com/98/e4/VXMCaHQN_t.jpg",
+    "lat": 28.6139,
+    "lng": 77.209,
+    "roles": ["OSS Contributor", "GSoC '21 Contributor"],
+    "email": "[vipulchhabraiiit@gmail.com](mailto:vipulchhabraiiit@gmail.com)",
+    "github": "https://github.com/vipulchhabra99",
+    "linkedin": "https://www.linkedin.com/in/vipul-chhabra/"
+  }
+]

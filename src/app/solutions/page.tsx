@@ -12,7 +12,7 @@ const fetchSolutions = async () => {
 
 export const metadata: Metadata = {
   title: 'Solutions',
-  description: 'ELIXIR Cloud & AAI-developed solutions.',
+  description: 'ELIXIR On-Cloud-developed solutions.',
 };
 const SolutionsPage: FC = async () => {
   const data: Solutions[] = await fetchSolutions();

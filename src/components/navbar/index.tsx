@@ -36,12 +36,20 @@ const NavBar: FC<NavbarProps> = ({
   const links = useMemo(
     () => [
       {
-        name: 'News & Press',
-        path: '/news',
+        name: 'Projects',
+        path: '/projects',
       },
       {
-        name: 'Solutions',
-        path: '/solutions',
+        name: 'Products',
+        path: '/products',
+      },
+      {
+        name: 'Services',
+        path: '/services',
+      },
+      {
+        name: 'Docs',
+        path: 'https://elixir-on-cloud.github.io/',
       },
     ],
     [],
@@ -124,25 +132,20 @@ const NavBar: FC<NavbarProps> = ({
               : 'bg-white px-4 py-3 dark:bg-gray-900'
           }
         >
-          <Link href="/" passHref>
-            <div
-              className="z-20 flex cursor-pointer items-center"
-              onClick={() => {
-                setLocation('/');
-              }}
-            >
-              <img
-                alt="logo"
-                className="mx-2 inline-block w-7 pb-1"
-                height="auto"
-                src="/elixir-cloud-aai.png"
-                width="auto"
-              />
-              <div className="text-lg font-semibold md:text-2xl">
-                ELIXIR Cloud & AAI
-              </div>
+          {/* <Link href="/" passHref> */}
+          <a href="/" className="z-20 flex cursor-pointer items-center">
+            <img
+              alt="logo"
+              className="mx-2 inline-block w-7 pb-1"
+              height="auto"
+              src="/elixir-cloud-aai.png"
+              width="auto"
+            />
+            <div className="text-lg font-semibold md:text-2xl">
+              ELIXIR On-Cloud
             </div>
-          </Link>
+          </a>
+          {/* </Link> */}
 
           <div className="absolute inset-0 hidden items-center justify-center gap-4 lg:flex">
             {links.map((link) => (
@@ -187,9 +190,7 @@ const NavBar: FC<NavbarProps> = ({
                   src="/elixir-cloud-aai.png"
                   width="auto"
                 />
-                <div className="text-base font-semibold">
-                  ELIXIR Cloud & AAI
-                </div>
+                <div className="text-base font-semibold">ELIXIR On-Cloud</div>
               </div>
             </Link>
             <div className="flex items-center gap-2">

@@ -20,7 +20,7 @@ export async function generateMetadata(
   const data: Solution = await fetchSolutionData(id);
   return {
     title: data.title || 'Solution',
-    description: data.description || 'ELIXIR Cloud & AAI-developed solution.',
+    description: data.description || 'ELIXIR On-Cloud-developed solution.',
   };
 }
 
