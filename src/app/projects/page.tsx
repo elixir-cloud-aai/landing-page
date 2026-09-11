@@ -50,7 +50,7 @@ export default function ProjectsPage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-28">
-          <div className="grid items-center gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+          <div className="grid items-center gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 dark:text-white">
             {/* LEFT — Content */}
             <div className="fle  flex-col items-start">
               <div className="bg-white/6 backdrop-blur-[2px] backdrop-saturate-[109%]">
@@ -63,15 +63,16 @@ export default function ProjectsPage() {
                 </Badge>
 
                 <h1 className="max-w-2xl text-5xl font-bold tracking-[-0.045em] sm:text-6xl lg:text-7xl dark:text-white">
-                  Ideas turned into{' '}
+                  Explore the{' '}
                   <span className="bg-gradient-to-r from-red-500 via-green-500 to-yellow-300 bg-clip-text font-extrabold text-transparent">
-                    real products.
+                    work.
                   </span>
                 </h1>
 
                 <p className="mt-7 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg dark:text-white">
-                  A collection of software, experiments, platforms, and digital
-                  products I've designed, engineered, and shipped.
+                  A collection of projects, platforms, experiments, and tools
+                  built by our community of developers, researchers, and
+                  open-source contributors.
                 </p>
 
                 {/* Stats */}
@@ -168,7 +169,7 @@ export default function ProjectsPage() {
           <SectionHeading
             eyebrow="Featured work"
             title="Projects worth exploring"
-            description="A closer look at some of the products and systems I've worked on."
+            description="A selection of projects, platforms, experiments, and tools built by our community of developers, researchers, and open-source contributors."
           />
 
           <div className="mt-10 space-y-8">
