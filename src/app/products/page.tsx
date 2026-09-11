@@ -89,9 +89,9 @@ export default function Home() {
           {/* Description */}
 
           <p className="mx-auto mt-8 max-w-2xl text-pretty text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-            A carefully curated collection of digital products, practical
-            resources and powerful tools designed to help you move faster and
-            turn ideas into action.
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum,
+            doloremque cum ex dolorem enim ipsum dolore amet magnam nobis eius
+            minus labore tempore. Atque cum corporis dolorum quaerat quos.
           </p>
 
           {/* CTA */}
@@ -101,7 +101,7 @@ export default function Home() {
               size="lg"
               className="group h-12 rounded-full px-7 text-base shadow-lg shadow-primary/20"
             >
-              Explore collection
+              Explore
               <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
 
@@ -116,7 +116,7 @@ export default function Home() {
 
           {/* Social proof */}
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
+          {/* <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <CircleCheck className="h-4 w-4 text-primary" />
 
@@ -138,7 +138,7 @@ export default function Home() {
 
               <span>One-time payment</span>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Floating decorative cards */}
@@ -200,9 +200,9 @@ export default function Home() {
             </h2>
 
             <p className="mt-5 max-w-xl leading-7 text-muted-foreground">
-              Practical digital products created to help you learn, create,
-              automate and build without wasting time on unnecessary
-              information.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
+              error blanditiis ab enim fugit assumenda excepturi ad at
+              provident.
             </p>
           </div>
 
@@ -244,14 +244,14 @@ export default function Home() {
               </Badge>
 
               <h2 className="mt-6 text-4xl font-bold tracking-tight">
-                Less noise.
+                Lorem Epsum.
                 <br />
                 More useful stuff.
               </h2>
 
               <p className="mt-5 max-w-md leading-7 text-muted-foreground">
-                Everything is designed with one goal in mind: helping you get
-                from curiosity to execution faster.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Cupiditate eaque rem aliquam, fuga eveniet dolorem.
               </p>
             </div>
 
@@ -259,25 +259,25 @@ export default function Home() {
               <FeatureCard
                 icon={<Zap />}
                 title="Practical"
-                description="Clear, actionable information you can actually use."
+                description="lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod."
               />
 
               <FeatureCard
                 icon={<Sparkles />}
                 title="Focused"
-                description="No unnecessary fluff or complicated theory."
+                description="lorem ipsum dolor sit amet consectetur adipisicing."
               />
 
               <FeatureCard
                 icon={<Download />}
                 title="Instant access"
-                description="Get your digital resources immediately."
+                description="lorem ipsum dolor sit amet."
               />
 
               <FeatureCard
                 icon={<ShieldCheck />}
                 title="Yours forever"
-                description="Pay once and access your purchase anytime."
+                description="lorem ipsum dolor sit amet consectetur."
               />
             </div>
           </div>
@@ -307,8 +307,8 @@ export default function Home() {
             </h2>
 
             <p className="mx-auto mt-5 max-w-lg leading-7 text-muted-foreground">
-              Explore the collection and find the resource that helps you take
-              your next step.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga
+              omnis nam velit vitae?
             </p>
 
             <Button size="lg" className="group mt-8 h-12 rounded-full px-7">
