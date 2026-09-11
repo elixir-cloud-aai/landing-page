@@ -342,7 +342,7 @@ export default function ContributorsPage() {
     </main>
   );
 }
-function ContributorListItem({ person }) {
+function ContributorListItem({ person }: { person: Contributor }) {
   const roles = person.roles || [];
 
   return (

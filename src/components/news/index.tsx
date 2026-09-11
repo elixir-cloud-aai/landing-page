@@ -1,10 +1,19 @@
-```tsx
 'use client';
 
 import { useContext, FC, useEffect, useRef, useState } from 'react';
 import ContentLoader from 'react-content-loader';
 import { Zoom } from 'react-awesome-reveal';
 import themeContext from '@/context/default-theme';
+
+declare global {
+  interface Window {
+    twttr?: {
+      widgets?: {
+        load: (element: HTMLDivElement) => void;
+      };
+    };
+  }
+}
 
 const News: FC = () => {
   const context = useContext(themeContext);
@@ -23,10 +32,7 @@ const News: FC = () => {
     );
 
     const loadTimeline = () => {
-      if (
-        window.twttr?.widgets &&
-        timelineRef.current
-      ) {
+      if (window.twttr?.widgets && timelineRef.current) {
         window.twttr.widgets.load(timelineRef.current);
         setLoaded(true);
       }
@@ -86,10 +92,7 @@ const News: FC = () => {
       <div className="mx-5 mt-32 rounded-xl dark:bg-gray-900 md:mx-96">
         {!loaded && renderLoading()}
 
-        <div
-          ref={timelineRef}
-          className={loaded ? 'block' : 'hidden'}
-        >
+        <div ref={timelineRef} className={loaded ? 'block' : 'hidden'}>
           <a
             className="twitter-timeline"
             data-theme={theme}
@@ -106,4 +109,3 @@ const News: FC = () => {
 };
 
 export default News;
-```;

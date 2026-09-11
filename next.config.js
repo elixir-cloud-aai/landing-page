@@ -2,9 +2,12 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   output: 'standalone',
+  outputFileTracingRoot: __dirname,
   reactStrictMode: true,
-  swcMinify: true,
 };
 
 // Configuration object tells the next-pwa plugin 

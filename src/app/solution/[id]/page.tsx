@@ -5,7 +5,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import { FC } from 'react';
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 const fetchSolutionData = async (id: string) => {
@@ -16,7 +16,7 @@ export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;
   const data: Solution = await fetchSolutionData(id);
   return {
     title: data.title || 'Solution',
@@ -24,8 +24,8 @@ export async function generateMetadata(
   };
 }
 
-const SolutionPage: FC<{ params: { id: string } }> = async ({ params }) => {
-  const id = params.id;
+const SolutionPage: FC<Props> = async ({ params }) => {
+  const { id } = await params;
   const data: Solution = await fetchSolutionData(id);
   return <SolutionComponent data={data} />;
 };
