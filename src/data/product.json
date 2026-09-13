@@ -1,86 +1,266 @@
 [
   {
     "id": 1,
-    "slug": "lorem-ipsum-product",
-    "name": "Lorem Ipsum",
-    "shortName": "Lorem Ipsum",
-    "category": "Digital Product",
-    "type": "guide",
-    "price": {
-      "amount": 299,
-      "currency": "INR",
-      "originalPrice": 599,
-      "discount": 50
-    },
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere, lorem vitae tincidunt consequat, justo purus malesuada.",
-    "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    "longDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    "slug": "protes",
+    "name": "proTES",
+    "shortName": "proTES",
+    "category": "GA4GH Infrastructure",
+    "type": "service",
+    "description": "A scalable GA4GH Task Execution Service API gateway for federating TES nodes across on-premise, hybrid, and multi-cloud environments.",
+    "shortDescription": "Federate GA4GH TES nodes with configurable middleware, workload routing, and centralized request handling.",
+    "longDescription": "proTES is a robust and scalable GA4GH Task Execution Service API gateway designed for federated compute networks. It provides a centralized entry point for independently operated TES instances while allowing configurable middleware to control request processing, workload distribution, validation, access control, and endpoint selection.",
     "features": [
-      "Lorem ipsum dolor sit amet",
-      "Consectetur adipiscing elit",
-      "Sed do eiusmod tempor",
-      "Ut labore et dolore magna",
-      "Quis nostrud exercitation",
-      "Duis aute irure dolor",
-      "Excepteur sint occaecat"
+      "Federate multiple GA4GH TES endpoints",
+      "Pluggable middleware architecture",
+      "Configurable workload distribution",
+      "OAuth2 bearer authentication",
+      "MongoDB-backed task tracking",
+      "RabbitMQ and Celery for asynchronous task tracking",
+      "Docker Compose and Kubernetes deployment",
+      "YAML-based configuration"
     ],
     "benefits": [
-      "Lorem ipsum dolor sit amet",
-      "Improve productivity",
-      "Save time and effort",
-      "Discover practical workflows",
-      "Build better processes"
+      "Connect independent compute environments through a single TES gateway",
+      "Route workloads according to infrastructure and data requirements",
+      "Add custom request and response processing through middleware",
+      "Support on-premise, hybrid, and multi-cloud deployments",
+      "Centralize authentication, routing, and telemetry capabilities"
     ],
     "targetAudience": [
-      "Entrepreneurs",
-      "Creators",
-      "Freelancers",
-      "Professionals"
+      "Cloud administrators",
+      "Infrastructure engineers",
+      "GA4GH platform operators",
+      "Bioinformatics platform developers",
+      "Research computing teams"
     ],
     "includes": [
-      "Lorem ipsum guide",
-      "Resource library",
-      "Practical examples",
-      "Templates and workflows"
+      "GA4GH TES API gateway",
+      "Middleware plugin system",
+      "Load-balancing middleware",
+      "Data-locality middleware",
+      "OAuth2 authentication",
+      "Docker Compose configuration",
+      "Kubernetes deployment support"
     ],
-    "format": "Digital Product",
-    "delivery": "Instant digital download",
-    "image": "/products/placeholder.png",
-    "gallery": [
-      "/products/placeholder.png",
-      "/products/placeholder.png",
-      "/products/placeholder.png"
-    ],
-    "rating": 4.8,
-    "reviewCount": 127,
-    "badge": "Bestseller",
+    "format": "Open-source software",
+    "delivery": "Self-hosted deployment",
+    "image": "/products/protes.png",
+    "gallery": ["/products/protes.png"],
+    "badge": "Featured",
     "featured": true,
     "popular": true,
-    "stock": null,
     "digital": true,
     "cta": {
-      "primary": "Get Started",
-      "secondary": "View Details"
+      "primary": "Explore proTES",
+      "secondary": "View Documentation"
     },
     "payment": {
-      "available": true,
-      "provider": "Razorpay"
+      "available": false,
+      "provider": null
     },
     "faq": [
       {
-        "question": "Lorem ipsum dolor sit amet?",
-        "answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+        "question": "What is proTES used for?",
+        "answer": "proTES acts as a gateway between clients and federated GA4GH TES instances, providing routing, middleware, authentication, and other centralized capabilities."
       },
       {
-        "question": "Consectetur adipiscing elit?",
-        "answer": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "question": "Can proTES run across cloud and on-premise infrastructure?",
+        "answer": "Yes. proTES is designed to federate TES nodes across on-premise, hybrid, and multi-cloud environments."
+      },
+      {
+        "question": "Can custom middleware be added?",
+        "answer": "Yes. Its plugin architecture allows developers to implement and inject middleware for use cases such as access control, validation, request processing, and endpoint selection."
       }
     ],
-    "tags": ["Lorem", "Ipsum", "Digital Product", "Productivity"],
+    "tags": [
+      "GA4GH",
+      "TES",
+      "Cloud",
+      "Federation",
+      "Middleware",
+      "Kubernetes",
+      "Open Source"
+    ],
     "seo": {
-      "title": "Lorem Ipsum - Digital Product",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "keywords": ["lorem ipsum", "digital product", "productivity", "guide"]
+      "title": "proTES - GA4GH TES API Gateway",
+      "description": "Federate GA4GH TES nodes across on-premise, hybrid, and multi-cloud environments with proTES.",
+      "keywords": [
+        "proTES",
+        "GA4GH TES",
+        "TES gateway",
+        "GA4GH cloud",
+        "workflow execution",
+        "middleware",
+        "federated compute"
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "slug": "tesk",
+    "name": "TESK",
+    "shortName": "TESK",
+    "category": "Task Execution",
+    "type": "service",
+    "description": "A GA4GH Task Execution Service implementation that translates TES tasks into Kubernetes workloads.",
+    "shortDescription": "Run GA4GH TES workloads on Kubernetes with task orchestration, storage management, and containerized execution.",
+    "longDescription": "TESK is an implementation of the GA4GH Task Execution Service standard designed to execute computational tasks on Kubernetes. It exposes TES-compatible endpoints, translates incoming tasks into Kubernetes jobs, manages task-specific storage, and orchestrates executor pods throughout the task lifecycle.",
+    "features": [
+      "GA4GH TES API implementation",
+      "Kubernetes-native task execution",
+      "Automatic translation of TES requests into Kubernetes jobs",
+      "Task-specific executor pods",
+      "Persistent volume management",
+      "Input and output file handling",
+      "Containerized workflow execution",
+      "Support for standard Kubernetes clusters"
+    ],
+    "benefits": [
+      "Run TES workloads directly on Kubernetes infrastructure",
+      "Use containerized execution for reproducible workloads",
+      "Automatically manage task lifecycle and execution resources",
+      "Integrate TES-compatible workflow managers",
+      "Separate API, orchestration, storage, and executor responsibilities"
+    ],
+    "targetAudience": [
+      "Kubernetes administrators",
+      "Cloud infrastructure engineers",
+      "Bioinformatics developers",
+      "Workflow platform developers",
+      "Research computing teams"
+    ],
+    "includes": [
+      "TES API service",
+      "Task execution controller",
+      "Kubernetes executor components",
+      "Input and output handling",
+      "Persistent volume management",
+      "Deployment documentation"
+    ],
+    "format": "Open-source software",
+    "delivery": "Self-hosted Kubernetes deployment",
+    "image": "/products/tesk.png",
+    "gallery": ["/products/tesk.png"],
+    "badge": "GA4GH",
+    "featured": false,
+    "popular": true,
+    "digital": true,
+    "cta": {
+      "primary": "Explore TESK",
+      "secondary": "View Documentation"
+    },
+    "payment": {
+      "available": false,
+      "provider": null
+    },
+    "faq": [
+      {
+        "question": "What does TESK do?",
+        "answer": "TESK implements the GA4GH TES standard and translates TES task requests into Kubernetes workloads for execution."
+      },
+      {
+        "question": "What infrastructure does TESK require?",
+        "answer": "TESK is designed to run on Kubernetes. Workloads involving task input and output handling also require suitable Kubernetes storage."
+      },
+      {
+        "question": "Can TESK run containerized workloads?",
+        "answer": "Yes. TESK executes task components as Kubernetes pods using container images."
+      }
+    ],
+    "tags": [
+      "GA4GH",
+      "TES",
+      "Kubernetes",
+      "Containers",
+      "Workflow Execution",
+      "Open Source"
+    ],
+    "seo": {
+      "title": "TESK - GA4GH Task Execution on Kubernetes",
+      "description": "Run GA4GH TES workloads on Kubernetes with TESK, a Kubernetes-based task execution engine.",
+      "keywords": [
+        "TESK",
+        "GA4GH TES",
+        "Kubernetes",
+        "task execution",
+        "workflow execution",
+        "bioinformatics"
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "slug": "license-chat-ci",
+    "name": "License Chat CI",
+    "shortName": "License Chat CI",
+    "category": "Developer Tooling",
+    "type": "service",
+    "description": "A developer-focused tool for integrating license analysis and compliance workflows into software projects.",
+    "shortDescription": "Developer tooling for integrating license checks and compliance workflows into your development pipeline.",
+    "longDescription": "License Chat CI is a developer-oriented service intended to help teams incorporate software license analysis and compliance checks into their development workflows.",
+    "features": [
+      "License analysis",
+      "Developer-focused workflow",
+      "CI integration",
+      "Automated compliance checks",
+      "Project-level reporting"
+    ],
+    "benefits": [
+      "Identify licensing issues earlier in development",
+      "Integrate compliance checks into CI workflows",
+      "Reduce manual license review effort",
+      "Make licensing information easier for development teams to understand"
+    ],
+    "targetAudience": [
+      "Software developers",
+      "DevOps engineers",
+      "Open-source maintainers",
+      "Platform teams"
+    ],
+    "includes": [
+      "License analysis tooling",
+      "CI workflow integration",
+      "Compliance reporting"
+    ],
+    "format": "Developer tooling",
+    "delivery": "CI/CD integration",
+    "image": "/products/license-chat-ci.png",
+    "gallery": ["/products/license-chat-ci.png"],
+    "badge": "Developer Tool",
+    "featured": false,
+    "popular": false,
+    "digital": true,
+    "cta": {
+      "primary": "Explore License Chat CI",
+      "secondary": "View Documentation"
+    },
+    "payment": {
+      "available": false,
+      "provider": null
+    },
+    "faq": [
+      {
+        "question": "Who is License Chat CI for?",
+        "answer": "It is intended for software development teams that want to incorporate license analysis and compliance checks into their development or CI workflows."
+      }
+    ],
+    "tags": [
+      "Licensing",
+      "CI/CD",
+      "Developer Tools",
+      "Compliance",
+      "Open Source"
+    ],
+    "seo": {
+      "title": "License Chat CI - Developer License Tooling",
+      "description": "Developer tooling for integrating software license analysis and compliance workflows into CI pipelines.",
+      "keywords": [
+        "License Chat CI",
+        "software licensing",
+        "license compliance",
+        "CI/CD",
+        "developer tools"
+      ]
     }
   }
 ]

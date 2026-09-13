@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://elixir-cloud.dcc.sib.swiss/funding</loc><lastmod>2026-09-11T06:03:16.031Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://elixir-cloud.dcc.sib.swiss/overview</loc><lastmod>2026-09-11T06:03:16.039Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://elixir-cloud.dcc.sib.swiss/partners</loc><lastmod>2026-09-11T06:03:16.039Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://elixir-cloud.dcc.sib.swiss/news</loc><lastmod>2026-09-11T06:03:16.039Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://elixir-cloud.dcc.sib.swiss/products</loc><lastmod>2026-09-11T06:03:16.039Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://elixir-cloud.dcc.sib.swiss/solutions</loc><lastmod>2026-09-11T06:03:16.039Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://elixir-cloud.dcc.sib.swiss/contributors</loc><lastmod>2026-09-11T06:03:16.039Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://elixir-cloud.dcc.sib.swiss/projects</loc><lastmod>2026-09-11T06:03:16.039Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://elixir-cloud.dcc.sib.swiss</loc><lastmod>2026-09-11T06:03:16.039Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://elixir-cloud.dcc.sib.swiss/news</loc><lastmod>2026-09-13T20:11:50.993Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://elixir-cloud.dcc.sib.swiss/funding</loc><lastmod>2026-09-13T20:11:51.003Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://elixir-cloud.dcc.sib.swiss/overview</loc><lastmod>2026-09-13T20:11:51.003Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://elixir-cloud.dcc.sib.swiss/solutions</loc><lastmod>2026-09-13T20:11:51.003Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://elixir-cloud.dcc.sib.swiss/partners</loc><lastmod>2026-09-13T20:11:51.003Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://elixir-cloud.dcc.sib.swiss/projects</loc><lastmod>2026-09-13T20:11:51.003Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://elixir-cloud.dcc.sib.swiss/contributors</loc><lastmod>2026-09-13T20:11:51.003Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://elixir-cloud.dcc.sib.swiss/products</loc><lastmod>2026-09-13T20:11:51.003Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://elixir-cloud.dcc.sib.swiss</loc><lastmod>2026-09-13T20:11:51.003Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

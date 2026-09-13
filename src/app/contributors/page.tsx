@@ -43,12 +43,25 @@ function isGSoC(roles: string[] = []) {
   return roles.some((role) => role.toLowerCase().includes('gsoc'));
 }
 
-const contributorMarkers: GlobeMarker[] = contributors.map((contributor) => ({
-  lat: contributor.lat,
-  lng: contributor.lng,
-  src: contributor.image,
-  label: contributor.name,
-}));
+const contributorMarkers: GlobeMarker[] = contributors
+  .filter(
+    (
+      contributor,
+    ): contributor is typeof contributor & {
+      lat: number;
+      lng: number;
+      image: string;
+    } =>
+      contributor.lat !== null &&
+      contributor.lng !== null &&
+      !!contributor.image,
+  )
+  .map((contributor) => ({
+    lat: contributor.lat,
+    lng: contributor.lng,
+    src: contributor.image,
+    label: contributor.name,
+  }));
 
 export default function ContributorsPage() {
   const [query, setQuery] = useState('');
@@ -74,7 +87,9 @@ export default function ContributorsPage() {
       return matchesSearch && matchesFilter;
     });
   }, [query, filter]);
-
+  const [highlightedContributor, setHighlightedContributor] = useState<
+    string | null
+  >(null);
   const gsocCount = people.filter((person) => isGSoC(person.roles)).length;
   const ossCount = people.filter((person) =>
     person.roles?.some((role) =>
@@ -114,7 +129,7 @@ export default function ContributorsPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden border-b">
-        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
           <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-8">
             {/* LEFT — Content */}
             <div className="relative z-10 max-w-xl">
@@ -157,11 +172,10 @@ export default function ContributorsPage() {
                 </div>
               </div>
 
-              {/* Small supporting text */}
-              <div className="mt-8 flex items-center gap-3 text-sm text-muted-foreground">
+              {/* <div className="mt-8 flex items-center gap-3 text-sm text-muted-foreground">
                 <div className="h-px w-8 bg-border" />
                 <span>Contributors from around the world</span>
-              </div>
+              </div> */}
             </div>
 
             {/* RIGHT — Globe */}
@@ -180,7 +194,51 @@ export default function ContributorsPage() {
                     autoRotateSpeed: 0.3,
                   }}
                   onMarkerClick={(marker) => {
-                    console.log('Clicked marker:', marker.label);
+                    const contributor = people.find(
+                      (person) => person.name === marker.label,
+                    );
+
+                    if (!contributor) {
+                      console.log('Contributor not found:', marker.label);
+                      return;
+                    }
+
+                    console.log('Clicked contributor:', contributor.name);
+
+                    setQuery('');
+                    setFilter('all');
+
+                    const contributorIndex = people.findIndex(
+                      (person) => person.name === contributor.name,
+                    );
+
+                    setVisibleCount(
+                      Math.max(INITIAL_COUNT, contributorIndex + 1),
+                    );
+
+                    setHighlightedContributor(contributor.name);
+
+                    const elementId = `contributor-${encodeURIComponent(
+                      contributor.name,
+                    )}`;
+
+                    setTimeout(() => {
+                      const element = document.getElementById(elementId);
+
+                      console.log('Scrolling to:', elementId);
+                      console.log('Element:', element);
+
+                      if (element) {
+                        element.scrollIntoView({
+                          behavior: 'smooth',
+                          block: 'center',
+                        });
+                      }
+                    }, 100);
+
+                    setTimeout(() => {
+                      setHighlightedContributor(null);
+                    }, 2500);
                   }}
                   onMarkerHover={(marker) => {
                     if (marker) {
@@ -190,14 +248,12 @@ export default function ContributorsPage() {
                 />
               </div>
 
-              {/* Subtle fade into page */}
               <div className="pointer-events-none absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-background to-transparent" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Directory */}
       <section className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
         {/* Header & Controls */}
         <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
@@ -290,13 +346,29 @@ export default function ContributorsPage() {
             {viewMode === 'grid' ? (
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {visibleContributors.map((person) => (
-                  <ContributorCard key={person.name} person={person} />
+                  <div
+                    key={person.name}
+                    id={`contributor-${encodeURIComponent(person.name)}`}
+                  >
+                    <ContributorCard
+                      person={person}
+                      highlighted={highlightedContributor === person.name}
+                    />
+                  </div>
                 ))}
               </div>
             ) : (
               <div className="flex flex-col gap-3">
                 {visibleContributors.map((person) => (
-                  <ContributorListItem key={person.name} person={person} />
+                  <div
+                    key={person.name}
+                    id={`contributor-${encodeURIComponent(person.name)}`}
+                  >
+                    <ContributorListItem
+                      person={person}
+                      highlighted={highlightedContributor === person.name}
+                    />
+                  </div>
                 ))}
               </div>
             )}
@@ -342,11 +414,23 @@ export default function ContributorsPage() {
     </main>
   );
 }
-function ContributorListItem({ person }: { person: Contributor }) {
+function ContributorListItem({
+  person,
+  highlighted = false,
+}: {
+  person: Contributor;
+  highlighted?: boolean;
+}) {
   const roles = person.roles || [];
 
   return (
-    <div className="group relative flex flex-col justify-between gap-4 rounded-xl border bg-card p-4 transition-all hover:border-primary/30 hover:shadow-md sm:flex-row sm:items-center">
+    <div
+      className={cn(
+        'group relative flex flex-col justify-between gap-4 rounded-xl border bg-card p-4 transition-all hover:border-primary/30 hover:shadow-md sm:flex-row sm:items-center',
+        highlighted &&
+          'border-primary ring-2 ring-primary/60 bg-primary/[0.06]',
+      )}
+    >
       {/* Left section: Avatar & Info */}
       <div className="flex items-center gap-3.5 min-w-0">
         <div className="relative shrink-0">
@@ -484,20 +568,38 @@ function FilterButton({
   );
 }
 
-function ContributorCard({ person }: { person: Contributor }) {
+function ContributorCard({
+  person,
+  highlighted = false,
+}: {
+  person: Contributor;
+  highlighted?: boolean;
+}) {
   const roles = person.roles ?? [];
 
   return (
-    <Card className="group relative flex bg-white/6 backdrop-blur-[2px] backdrop-saturate-[109%]  h-full flex-col justify-between overflow-hidden rounded-2xl border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5">
-      {/* Soft background glow on hover */}
+    <Card
+      className={cn(
+        'group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border p-5',
+        'bg-white/6 backdrop-blur-[2px] backdrop-saturate-[109%]',
+        'transition-all duration-500',
+
+        'hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5',
+
+        highlighted && [
+          'border-primary',
+          'ring-2 ring-primary/60',
+          'shadow-[0_0_0_4px_rgba(59,130,246,0.12),0_0_35px_rgba(59,130,246,0.30)]',
+          'bg-primary/[0.06]',
+          'scale-[1.02]',
+        ],
+      )}
+    >
       <div className="pointer-events-none bg-white/6 backdrop-blur-[2px] backdrop-saturate-[109%]  absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/10 blur-2xl transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
 
-      {/* Top / Main Body Content */}
       <div className="relative flex-1 space-y-4">
-        {/* Identity Row */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
-            {/* Avatar */}
             <div className="relative shrink-0">
               <div className="h-12 w-12 overflow-hidden rounded-xl border bg-muted shadow-sm">
                 {person.image ? (
@@ -516,7 +618,6 @@ function ContributorCard({ person }: { person: Contributor }) {
               <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-card bg-emerald-500" />
             </div>
 
-            {/* Name & Title */}
             <div className="min-w-0">
               <h3 className="truncate text-base font-semibold text-card-foreground">
                 {person.name}
@@ -527,7 +628,6 @@ function ContributorCard({ person }: { person: Contributor }) {
             </div>
           </div>
 
-          {/* Primary Role Badge */}
           {isGSoC(roles) && (
             <Badge
               variant="secondary"
@@ -538,7 +638,6 @@ function ContributorCard({ person }: { person: Contributor }) {
           )}
         </div>
 
-        {/* Expertise Badges */}
         <div className="space-y-1.5 pt-1">
           <p className="text-[10px] font-semibold tracking-wider text-muted-foreground/70 uppercase">
             Expertise

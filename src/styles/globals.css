@@ -105,4 +105,33 @@ ion-icon {
   html {
     @apply font-sans;
   }
+  @keyframes contributor-highlight {
+    0% {
+      box-shadow:
+        0 0 0 0 rgba(59, 130, 246, 0),
+        0 0 0 rgba(59, 130, 246, 0);
+    }
+
+    35% {
+      box-shadow:
+        0 0 0 6px rgba(59, 130, 246, 0.18),
+        0 0 35px rgba(59, 130, 246, 0.35);
+    }
+
+    70% {
+      box-shadow:
+        0 0 0 3px rgba(59, 130, 246, 0.12),
+        0 0 25px rgba(59, 130, 246, 0.25);
+    }
+
+    100% {
+      box-shadow:
+        0 0 0 0 rgba(59, 130, 246, 0),
+        0 0 0 rgba(59, 130, 246, 0);
+    }
+  }
+
+  .contributor-highlight {
+    animation: contributor-highlight 1.2s ease-out 2;
+  }
 }

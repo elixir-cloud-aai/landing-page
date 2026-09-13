@@ -27,7 +27,8 @@
     "roles": ["OSS Contributor", "GSoC '21 Contributor"],
     "email": "[akash2237778@gmail.com](mailto:akash2237778@gmail.com)",
     "github": "https://github.com/akash2237778",
-    "linkedin": "https://www.linkedin.com/in/akash-saini-ak7778/"
+    "linkedin": "https://www.linkedin.com/in/akash-saini-ak7778/",
+    "website": "https://akash2237778.github.io/"
   },
   {
     "name": "Alex Kanitz",
@@ -44,7 +45,7 @@
     "linkedin": "https://www.linkedin.com/in/alexanderkanitz/"
   },
   {
-    "name": "Álvaro González",
+    "name": "Álvaro González Álvarez",
     "image": "https://thumbs2.imgbox.com/aa/fe/CHM5t4od_t.jpg",
     "lat": 60.1699,
     "lng": 24.9384,
@@ -68,7 +69,8 @@
     "roles": ["OSS Contributor", "GSoC '21 Contributor"],
     "email": "[aguptaking@gmail.com](mailto:aguptaking@gmail.com)",
     "github": "https://github.com/git-anurag-hub",
-    "linkedin": "https://www.linkedin.com/in/anurag-gupta-1201"
+    "linkedin": "https://www.linkedin.com/in/anurag-gupta-1201",
+    "website": "https://www.anuragxd.com"
   },
   {
     "name": "Assel Abzalova",
@@ -136,13 +138,14 @@
     "linkedin": "https://www.linkedin.com/in/gavin-farrell97/"
   },
   {
-    "name": "Harald Wegener",
+    "name": "Harald Wagener",
     "image": "https://thumbs2.imgbox.com/5a/43/LV2WlbJq_t.jpg",
     "lat": 52.52,
     "lng": 13.405,
     "roles": ["ELIXIR Germany", "ELIXIR Compute Platform: Lead"],
     "email": "[harald.wagener@bih-charite.de](mailto:harald.wagener@bih-charite.de)",
-    "github": "https://github.com/oliof"
+    "github": "https://github.com/oliof",
+    "website": "https://haraldwagener.com/"
   },
   {
     "name": "Ivar Janmaat",
@@ -297,7 +300,8 @@
     "lng": 16.6068,
     "roles": ["ELIXIR Czech Republic"],
     "email": "[xhejtman@ics.muni.cz](mailto:xhejtman@ics.muni.cz)",
-    "github": "https://github.com/xhejtman"
+    "github": "https://github.com/xhejtman",
+    "website": "https://is.muni.cz/osoba/xhejtman"
   },
   {
     "name": "Manthos Pitoulias",
@@ -386,7 +390,8 @@
     "lng": 4.3517,
     "roles": ["External Contributor"],
     "email": "[pavel@genxt.network](mailto:pavel@genxt.network)",
-    "linkedin": "https://www.linkedin.com/in/pavelnikonorov"
+    "linkedin": "https://www.linkedin.com/in/pavelnikonorov",
+    "website": "https://www.genxt.network"
   },
   {
     "name": "Philip R. Kensche",
@@ -454,14 +459,15 @@
     "linkedin": "https://www.linkedin.com/in/soham-ratnaparkhi-3a3775ab/"
   },
   {
-    "name": "Stian Soyland-Reyes",
+    "name": "Stian Soiland-Reyes",
     "image": "https://thumbs2.imgbox.com/c8/0b/mT1tsCdn_t.jpg",
     "lat": 53.4808,
     "lng": -2.2426,
     "roles": ["ELIXIR United Kingdom", "RO-Crate: Lead"],
     "email": "[soiland-reyes@manchester.ac.uk](mailto:soiland-reyes@manchester.ac.uk)",
     "github": "https://github.com/stain/",
-    "linkedin": "https://www.linkedin.com/in/stain/"
+    "linkedin": "https://www.linkedin.com/in/stain/",
+    "website": "https://s11.no/"
   },
   {
     "name": "Susheel Varma",
@@ -471,7 +477,8 @@
     "roles": ["ELIXIR Hub"],
     "email": "[susheel.varma@gmail.com](mailto:susheel.varma@gmail.com)",
     "github": "https://github.com/susheel",
-    "linkedin": "https://www.linkedin.com/in/susheelvarma/"
+    "linkedin": "https://www.linkedin.com/in/susheelvarma/",
+    "website": "https://susheelvarma.com"
   },
   {
     "name": "Suyash Gupta",
@@ -501,7 +508,8 @@
     "roles": ["OSS Contributor"],
     "email": "[tanyaincodingjourney@gmail.com](mailto:tanyaincodingjourney@gmail.com)",
     "github": "https://github.com/tanya17-05",
-    "linkedin": "https://www.linkedin.com/in/tanya1705/"
+    "linkedin": "https://www.linkedin.com/in/tanya1705/",
+    "website": "https://tanya17-05.github.io/"
   },
   {
     "name": "Tewodros Deneke",
@@ -518,7 +526,8 @@
     "roles": ["ELIXIR Greece", "ELIXIR Compute Platform: WP5 Lead"],
     "email": "[vergoulis@athenarc.gr](mailto:vergoulis@athenarc.gr)",
     "github": "https://github.com/vergoulis",
-    "linkedin": "https://www.linkedin.com/in/thanasis-vergoulis-863b8152"
+    "linkedin": "https://www.linkedin.com/in/thanasis-vergoulis-863b8152",
+    "website": "http://thanasis-vergoulis.com/"
   },
   {
     "name": "Tommi Nyrönen",
@@ -563,7 +572,8 @@
     "roles": ["ELIXIR Switzerland"],
     "email": "[vincent.emonet@gmail.com](mailto:vincent.emonet@gmail.com)",
     "github": "https://github.com/vemonet",
-    "linkedin": "https://www.linkedin.com/in/vincent-emonet/"
+    "linkedin": "https://www.linkedin.com/in/vincent-emonet/",
+    "website": "https://vemonet.github.io/"
   },
   {
     "name": "Vipul Chhabra",
@@ -573,6 +583,21 @@
     "roles": ["OSS Contributor", "GSoC '21 Contributor"],
     "email": "[vipulchhabraiiit@gmail.com](mailto:vipulchhabraiiit@gmail.com)",
     "github": "https://github.com/vipulchhabra99",
-    "linkedin": "https://www.linkedin.com/in/vipul-chhabra/"
+    "linkedin": "https://www.linkedin.com/in/vipul-chhabra/",
+    "website": "https://vipulchhabra.netlify.app/"
+  },
+  {
+    "name": "Kushagra Nagori",
+    "image": null,
+    "lat": null,
+    "lng": null,
+    "roles": ["OSS Contributor"]
+  },
+  {
+    "name": "Pushkar Mishra",
+    "image": null,
+    "lat": null,
+    "lng": null,
+    "roles": ["OSS Contributor"]
   }
 ]

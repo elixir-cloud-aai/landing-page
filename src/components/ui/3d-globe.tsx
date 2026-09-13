@@ -214,6 +214,8 @@ function Marker({
           center
           sprite
           distanceFactor={10}
+          occlude={false}
+          zIndexRange={[100, 0]}
           style={{
             pointerEvents: isVisible ? 'auto' : 'none',
             opacity: isVisible ? 1 : 0,
@@ -221,24 +223,53 @@ function Marker({
           }}
         >
           <div
-            className={cn(
-              'cursor-pointer overflow-hidden rounded-full bg-neutral-900 shadow-lg transition-transform duration-200',
-              hovered && 'scale-125 shadow-xl ring-1 ring-white/50',
-            )}
-            style={{
-              width: '8px',
-              height: '8px',
-            }}
+            className="relative cursor-pointer"
             onMouseEnter={handlePointerEnter}
             onMouseLeave={handlePointerLeave}
             onClick={handleClick}
           >
-            <img
-              src={marker.src}
-              alt={marker.label || 'Marker'}
-              className="h-full w-full object-cover"
-              draggable={false}
-            />
+            {/* Profile marker */}
+            <div
+              className={cn(
+                'overflow-hidden rounded-lg bg-neutral-900 shadow-lg transition-all duration-200',
+                hovered && 'scale-75 shadow-xl ring-2 ring-white/70',
+              )}
+              style={{
+                width: '8px',
+                height: '8px',
+              }}
+            >
+              <img
+                src={marker.src}
+                alt={marker.label || 'Marker'}
+                className="h-full w-full object-cover"
+                draggable={false}
+              />
+            </div>
+
+            {/* Hover tooltip */}
+            {hovered && marker.label && (
+              <div
+                className="absolute bottom-full left-1/2 z-50 mb-2 whitespace-nowrap"
+                style={{
+                  pointerEvents: 'none',
+                  transform: 'translateX(-50%) translateZ(0)',
+                  WebkitFontSmoothing: 'antialiased',
+                  textRendering: 'geometricPrecision',
+                }}
+              >
+                <div
+                  className="rounded-lg border border-white/10 bg-neutral-950/95 px-2 py-1 font-medium text-white shadow-2xl"
+                  style={{
+                    fontSize: '6px',
+                    lineHeight: '10px',
+                    transform: 'translateZ(0)',
+                  }}
+                >
+                  {marker.label}
+                </div>
+              </div>
+            )}
           </div>
         </Html>
       </group>
@@ -501,7 +532,6 @@ const defaultConfig: Required<Globe3DConfig> = {
   pointLightIntensity: 1.5,
   backgroundColor: null,
 };
-
 export function Globe3D({
   markers = [],
   config = {},
@@ -514,36 +544,148 @@ export function Globe3D({
     [config],
   );
 
+  // const [selectedMarker, setSelectedMarker] =
+  //   useState<GlobeMarker | null>(null);
+
+  const handleMarkerClick = useCallback(
+    (marker: GlobeMarker) => {
+      onMarkerClick?.(marker);
+    },
+    [onMarkerClick],
+  );
   return (
-    <div className={cn('relative h-[500px] w-full', className)}>
-      <Canvas
-        gl={{
-          antialias: true,
-          alpha: true,
-          powerPreference: 'high-performance',
-        }}
-        dpr={[1, 2]}
-        camera={{
-          fov: 45,
-          near: 0.1,
-          far: 1000,
-          position: [0, 0, mergedConfig.radius * 3.5],
-        }}
-        style={{
-          background: mergedConfig.backgroundColor || 'transparent',
-        }}
-      >
-        <Suspense fallback={<LoadingFallback />}>
-          <Scene
-            markers={markers}
-            config={mergedConfig}
-            onMarkerClick={onMarkerClick}
-            onMarkerHover={onMarkerHover}
-          />
-        </Suspense>
-      </Canvas>
+    <div className={cn('relative w-full', className)}>
+      {/* Globe */}
+      <div className="relative h-[500px] w-full">
+        <Canvas
+          gl={{
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance',
+          }}
+          dpr={[1, 2]}
+          camera={{
+            fov: 45,
+            near: 0.1,
+            far: 1000,
+            position: [0, 0, mergedConfig.radius * 3.5],
+          }}
+          style={{
+            background: mergedConfig.backgroundColor || 'transparent',
+          }}
+        >
+          <Suspense fallback={<LoadingFallback />}>
+            <Scene
+              markers={markers}
+              config={mergedConfig}
+              onMarkerClick={handleMarkerClick}
+              onMarkerHover={onMarkerHover}
+            />
+          </Suspense>
+        </Canvas>
+      </div>
+
+      {/* Selected Contributor */}
+      {/* {selectedMarker?.profile && (
+        <div className="mx-auto mt-8 w-full max-w-2xl px-4">
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-neutral-950/80 p-6 backdrop-blur-xl">
+            {/* Close *
+            <button
+              onClick={() => setSelectedMarker(null)}
+              className="absolute right-4 top-4 text-neutral-500 transition-colors hover:text-white"
+              aria-label="Close profile"
+            >
+              ×
+            </button>
+
+            <div className="flex items-start gap-5">
+              {/* Profile image *
+              <img
+                src={
+                  selectedMarker.profile.image ||
+                  selectedMarker.src
+                }
+                alt={selectedMarker.profile.name}
+                className="h-20 w-20 shrink-0 rounded-full object-cover ring-1 ring-white/10"
+              />
+
+              {/* Main info *
+              <div className="min-w-0 flex-1">
+                <h3 className="text-xl font-semibold text-white">
+                  {selectedMarker.profile.name}
+                </h3>
+
+                {selectedMarker.profile.roles &&
+                  selectedMarker.profile.roles.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {selectedMarker.profile.roles.map(
+                        (role, index) => (
+                          <span
+                            key={`${role}-${index}`}
+                            className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-neutral-300"
+                          >
+                            {role}
+                          </span>
+                        ),
+                      )}
+                    </div>
+                  )}
+              </div>
+            </div>
+
+            {/* Contact / links *
+            {(selectedMarker.profile.email ||
+              selectedMarker.profile.github ||
+              selectedMarker.profile.linkedin ||
+              selectedMarker.profile.website) && (
+              <div className="mt-6 flex flex-wrap gap-3 border-t border-white/10 pt-5">
+                {selectedMarker.profile.email && (
+                  <a
+                    href={`mailto:${selectedMarker.profile.email}`}
+                    className="text-sm text-neutral-400 transition-colors hover:text-white"
+                  >
+                    Email
+                  </a>
+                )}
+
+                {selectedMarker.profile.github && (
+                  <a
+                    href={selectedMarker.profile.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-neutral-400 transition-colors hover:text-white"
+                  >
+                    GitHub ↗
+                  </a>
+                )}
+
+                {selectedMarker.profile.linkedin && (
+                  <a
+                    href={selectedMarker.profile.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-neutral-400 transition-colors hover:text-white"
+                  >
+                    LinkedIn ↗
+                  </a>
+                )}
+
+                {selectedMarker.profile.website && (
+                  <a
+                    href={selectedMarker.profile.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-neutral-400 transition-colors hover:text-white"
+                  >
+                    Website ↗
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )} */}
     </div>
   );
 }
-
 export default Globe3D;
