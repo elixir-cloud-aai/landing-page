@@ -7,7 +7,8 @@ import { Metadata } from 'next';
 export const revalidate = 60;
 
 const fetchSolutions = async () => {
-  return await getSolutions();
+  const data = await getSolutions();
+  return Array.isArray(data) ? data : [];
 };
 
 export const metadata: Metadata = {

@@ -9,7 +9,13 @@ services:
        args:
          NOTION_SECRET: $NOTION_TOKEN
      environment:
-     - NOTION_TOKEN=$NOTION_TOKEN
+      - NOTION_TOKEN=$NOTION_TOKEN
+     networks:
+      - appnet
      restart: unless-stopped
      ports:
       - "80:3000"
+
+networks:
+    appnet:
+        driver: bridge
