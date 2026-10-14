@@ -1,0 +1,62 @@
+{
+  "services": [
+    {
+      "id": "elixir-on-cloud-registry",
+      "name": "ELIXIR On-Cloud Registry",
+      "tagline": "The service registry of the ELIXIR On-Cloud network",
+      "blurb": "The ELIXIR On-Cloud deployment of the GA4GH Service Registry, with a web dashboard for browsing and monitoring registered services across environments.",
+      "description": "The ELIXIR On-Cloud Registry is a running deployment of the Cloud Registry product, the GA4GH Service Registry API implementation for the ELIXIR Cloud. It gives the network one place to see which services exist, who runs them, in which environment and at which version. The web dashboard is built for managing and monitoring registered services across all environments.",
+      "audience": [
+        "Anyone looking for services in the ELIXIR On-Cloud network",
+        "Node operators registering their services"
+      ],
+      "features": [
+        "Services overview listing each registered service with its ID, name, artifact, organization, environment and version",
+        "Service Types view",
+        "Service Info view",
+        "Light and dark theme toggle"
+      ],
+      "standards": ["GA4GH Service Registry"],
+      "relatedProductId": "cloud-registry",
+      "nodes": [],
+      "status": "Live",
+      "tags": ["GA4GH", "Service Registry", "Discovery"],
+      "logo": null,
+      "deploymentUrl": "https://registry.elixir-on.cloud",
+      "docsUrl": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/cloud-registry",
+      "owners": [
+        {
+          "name": "Valentin Schneider-Lunitz",
+          "email": null,
+          "image": "/images/contributors/valentin-schneider-lunitz.jpg"
+        }
+      ]
+    },
+    {
+      "id": "elixir-on-cloud-demonstrator",
+      "name": "ELIXIR On-Cloud Demonstrator",
+      "tagline": "TODO: confirm with the existing TES Dashboard content",
+      "blurb": "TODO: write from the existing TES Dashboard card. Draft suggestion: A live demonstrator of GA4GH TES-based task execution across the ELIXIR On-Cloud network.",
+      "description": null,
+      "audience": [],
+      "features": [],
+      "standards": ["GA4GH TES"],
+      "relatedProductId": null,
+      "nodes": ["German Node"],
+      "status": null,
+      "tags": ["GA4GH", "TES", "Demonstrator"],
+      "logo": null,
+      "deploymentUrl": null,
+      "docsUrl": null,
+      "repoUrl": null,
+      "owners": [
+        {
+          "name": "Valentin Schneider-Lunitz",
+          "email": null,
+          "image": "/images/contributors/valentin-schneider-lunitz.jpg"
+        }
+      ]
+    }
+  ]
+}

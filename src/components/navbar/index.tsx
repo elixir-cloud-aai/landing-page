@@ -136,14 +136,14 @@ const NavBar: FC<NavbarProps> = ({
           <a href="/" className="z-20 flex cursor-pointer items-center">
             <img
               alt="logo"
-              className="mx-2 inline-block w-7 pb-1"
+              className="mx-2 inline-block w-36 pb-1"
               height="auto"
-              src="/elixir-cloud-aai.png"
+              src="/ELIXIR On-Cloud Logo Pack/On-Cloud_LockUp.png"
               width="auto"
             />
-            <div className="text-lg font-semibold md:text-2xl">
+            {/* <div className="text-lg font-semibold md:text-2xl">
               ELIXIR On-Cloud
-            </div>
+            </div> */}
           </a>
           {/* </Link> */}
 

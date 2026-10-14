@@ -3,10 +3,9 @@ import projects from '@/data/project.json';
 import {
   ArrowUpRight,
   CalendarDays,
-  CheckCircle2,
   Code2,
   ExternalLink,
-  Layers3,
+  Mail,
   Sparkles,
   Users,
   Zap,
@@ -27,7 +26,7 @@ export default function ProjectsPage() {
   const otherProjects = projects.filter((project) => !project.featured);
 
   return (
-    <main className="min-h-screen  overflow-hidden bg-background">
+    <main className="min-h-screen overflow-hidden bg-background">
       <AnimatedGridPattern
         numSquares={30}
         maxOpacity={0.5}
@@ -38,99 +37,70 @@ export default function ProjectsPage() {
           'inset-x-0 inset-y-[-30%] h-[200%] skew-y-12',
         )}
       />
-      {/* Ambient background */}
-      {/* <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-1/2 top-[-350px] h-[700px] w-[1000px] -translate-x-1/2 rounded-full bg-primary/10 blur-[140px]" />
-
-        <div className="absolute right-[-250px] top-[40%] h-[500px] w-[500px] rounded-full bg-purple-500/5 blur-[120px]" />
-
-        <div className="absolute bottom-[-250px] left-[-250px] h-[500px] w-[500px] rounded-full bg-blue-500/5 blur-[120px]" />
-      </div> */}
 
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-28">
           <div className="grid items-center gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 dark:text-white">
-            {/* LEFT — Content */}
-            <div className="fle  flex-col items-start">
-              <div className="bg-white/6 backdrop-blur-[2px] backdrop-saturate-[109%]">
-                <Badge
-                  variant="secondary"
-                  className="mb-7 rounded-full px-4 py-1.5"
-                >
-                  <Sparkles className="mr-2 h-3.5 w-3.5" />
-                  Selected work
-                </Badge>
+            <div className="flex flex-col items-start">
+              <Badge
+                variant="secondary"
+                className="mb-7 rounded-full px-4 py-1.5"
+              >
+                <Sparkles className="mr-2 h-3.5 w-3.5" />
+                Selected work
+              </Badge>
 
-                <h1 className="max-w-2xl text-5xl font-bold tracking-[-0.045em] sm:text-6xl lg:text-7xl dark:text-white">
-                  Explore the{' '}
-                  <span className="bg-gradient-to-r from-red-500 via-green-500 to-yellow-300 bg-clip-text font-extrabold text-transparent">
-                    work.
-                  </span>
-                </h1>
+              <h1 className="max-w-2xl text-5xl font-bold tracking-[-0.045em] sm:text-6xl lg:text-7xl">
+                Explore the{' '}
+                <span className="bg-gradient-to-r from-red-500 via-green-500 to-yellow-300 bg-clip-text font-extrabold text-transparent">
+                  work.
+                </span>
+              </h1>
 
-                <p className="mt-7 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg dark:text-white">
-                  A collection of projects, platforms, experiments, and tools
-                  built by our community of developers, researchers, and
-                  open-source contributors.
-                </p>
+              <p className="mt-7 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
+                A collection of projects, platforms, experiments, and tools
+                built by our community.
+              </p>
 
-                {/* Stats */}
-                <div className="mt-12 flex flex-wrap items-center gap-x-10 gap-y-6 dark:text-white">
-                  <div>
-                    <div className="text-3xl font-bold tracking-tight">
-                      {projects.length}+
-                    </div>
-                    <div className="mt-1 text-sm text-muted-foreground">
-                      Projects shipped
-                    </div>
+              {/* Stats */}
+              <div className="mt-12 flex flex-wrap items-center gap-x-10 gap-y-6">
+                <div>
+                  <div className="text-3xl font-bold tracking-tight">
+                    {projects.length}+
                   </div>
-
-                  <div className="h-10 w-px bg-border" />
-
-                  <div>
-                    <div className="text-3xl font-bold tracking-tight">
-                      {
-                        new Set(projects.flatMap((p) => p.technologies || []))
-                          .size
-                      }
-                      +
-                    </div>
-                    <div className="mt-1 text-sm text-muted-foreground">
-                      Technologies
-                    </div>
-                  </div>
-
-                  <div className="h-10 w-px bg-border" />
-
-                  <div>
-                    <div className="text-3xl font-bold tracking-tight">
-                      {new Set(projects.map((p) => p.category)).size}+
-                    </div>
-                    <div className="mt-1 text-sm text-muted-foreground">
-                      Industries
-                    </div>
+                  <div className="mt-1 text-sm text-muted-foreground">
+                    Projects shipped
                   </div>
                 </div>
-
-                {/* Small availability indicator */}
-                <div className="mt-12 flex items-center gap-2 text-sm text-muted-foreground dark:text-white">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-60" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-                  </span>
-                  Building & shipping new things
+                <div className="h-10 w-px bg-border" />
+                <div>
+                  <div className="text-3xl font-bold tracking-tight">
+                    {
+                      new Set(projects.flatMap((p) => p.technologies || []))
+                        .size
+                    }
+                    +
+                  </div>
+                  <div className="mt-1 text-sm text-muted-foreground">
+                    Technologies
+                  </div>
+                </div>
+                <div className="h-10 w-px bg-border" />
+                <div>
+                  <div className="text-3xl font-bold tracking-tight">
+                    {new Set(projects.map((p) => p.category)).size}+
+                  </div>
+                  <div className="mt-1 text-sm text-muted-foreground">
+                    Industries
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* RIGHT — Terminal */}
+            {/* Terminal */}
             <div className="relative lg:translate-y-2">
-              {/* Very subtle glow behind terminal */}
               <div className="absolute -inset-8 -z-10 rounded-full bg-primary/[0.04] blur-3xl" />
-
-              {/* <div className="relative overflow-hidden rounded-2xl border bg-card/70 shadow-2xl shadow-black/10 backdrop-blur"> */}
-
               <Terminal
                 commands={[
                   'git clone github.com/elixir-cloud-aai/tes-dashboard',
@@ -157,7 +127,6 @@ export default function ProjectsPage() {
                 typingSpeed={45}
                 delayBetweenCommands={1200}
               />
-              {/* </div> */}
             </div>
           </div>
         </div>
@@ -169,7 +138,7 @@ export default function ProjectsPage() {
           <SectionHeading
             eyebrow="Featured work"
             title="Projects worth exploring"
-            description="A selection of projects, platforms, experiments, and tools built by our community of developers, researchers, and open-source contributors."
+            description="A selection of high-impact platforms and coordinating projects."
           />
 
           <div className="mt-10 space-y-8">
@@ -190,9 +159,8 @@ export default function ProjectsPage() {
           <SectionHeading
             eyebrow="More work"
             title="Other projects"
-            description="More experiments, products and engineering work."
+            description="More experiments and tools."
           />
-
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {otherProjects.map((project) => (
               <ProjectCard key={project.id} project={project} />
@@ -200,34 +168,6 @@ export default function ProjectsPage() {
           </div>
         </section>
       )}
-
-      {/* CTA */}
-      <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8 dark:text-white  ">
-        <div className="relative overflow-hidden rounded-3xl border bg-card px-6 py-16 text-center sm:px-12">
-          <div className="absolute left-1/2 top-0 -z-0 h-48 w-96 -translate-x-1/2 rounded-full bg-primary/10 blur-[100px]" />
-
-          <div className="relative z-10 mx-auto max-w-2xl">
-            <Badge variant="outline" className="rounded-full">
-              <Zap className="mr-2 h-3.5 w-3.5" />
-              Have an idea?
-            </Badge>
-
-            <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl">
-              Let's build something useful.
-            </h2>
-
-            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-              Have a product idea, business problem, or project in mind? Let's
-              turn it into something people can actually use.
-            </p>
-
-            <Button size="lg" className="mt-8 rounded-full px-7">
-              Start a conversation
-              <ArrowUpRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }
@@ -246,25 +186,50 @@ function FeaturedProject({
   return (
     <Card className="group overflow-hidden rounded-3xl border-border/60 bg-card/70 shadow-sm backdrop-blur transition-all duration-300 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
       <div
-        className={`grid lg:grid-cols-2 ${
-          reversed ? 'lg:[&>*:first-child]:order-2' : ''
-        }`}
+        className={`grid lg:grid-cols-2 ${reversed ? 'lg:[&>*:first-child]:order-2' : ''}`}
       >
         {/* Image */}
-        <div className="relative min-h-[300px] overflow-hidden bg-muted lg:min-h-[480px]">
-          <Image
-            src={project.images.cover}
-            alt={project.name}
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-          />
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+        {/* Image */}
+        <div className="relative min-h-[300px] overflow-hidden bg-muted lg:min-h-[480px]">
+          {typeof project.images?.cover === 'string' &&
+          project.images.cover.trim() !== '' &&
+          (project.images.cover.startsWith('/') ||
+            /^https?:\/\/.+/i.test(project.images.cover)) ? (
+            <Image
+              src={project.images.cover}
+              alt={project.name}
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-muted">
+              {project.logo ? (
+                <Image
+                  src={project.logo}
+                  alt={`${project.name} logo`}
+                  width={240}
+                  height={120}
+                  className="h-auto max-h-28 w-auto object-contain"
+                />
+              ) : (
+                <div className="text-center">
+                  <p className="text-2xl font-semibold">{project.name}</p>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {project.type || 'Coordinating Project'}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
           <div className="absolute left-5 top-5 flex flex-wrap gap-2">
             <Badge className="rounded-full bg-background/90 text-foreground backdrop-blur hover:bg-background">
               {project.category}
             </Badge>
-
             <Badge
               variant="secondary"
               className="rounded-full bg-black/50 text-white backdrop-blur"
@@ -296,7 +261,6 @@ function FeaturedProject({
                 Featured
               </Badge>
             )}
-
             <span className="text-sm text-muted-foreground">
               {project.year}
             </span>
@@ -317,13 +281,11 @@ function FeaturedProject({
               label="Role"
               value={project.role}
             />
-
             <Meta
               icon={<CalendarDays className="h-4 w-4" />}
               label="Duration"
               value={project.duration}
             />
-
             <Meta
               icon={<Users className="h-4 w-4" />}
               label="Team"
@@ -331,34 +293,60 @@ function FeaturedProject({
             />
           </div>
 
+          {/* Liaisons Section */}
+          {project.liaisons && project.liaisons.length > 0 && (
+            <div className="mt-6 rounded-2xl bg-muted/40 p-4 border border-border/50">
+              <p className="mb-3 text-xs font-medium uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
+                <Users className="h-3.5 w-3.5" /> Project Liaisons
+              </p>
+              <div className="space-y-2">
+                {project.liaisons.map((liaison: any) => (
+                  <div
+                    key={liaison.email}
+                    className="flex items-center justify-between text-sm"
+                  >
+                    <span className="font-medium">{liaison.fullName}</span>
+                    <a
+                      href={`mailto:${liaison.email}`}
+                      className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      <Mail className="h-3 w-3" />
+                      {liaison.email}
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <Separator className="my-7" />
 
           {/* Tech stack */}
-          <div>
-            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-muted-foreground">
-              Built with
-            </p>
-
-            <div className="flex flex-wrap gap-2">
-              {project.technologies?.map((technology: string) => (
-                <Badge
-                  key={technology}
-                  variant="outline"
-                  className="rounded-lg px-3 py-1.5 font-normal"
-                >
-                  {technology}
-                </Badge>
-              ))}
+          {project.technologies?.length > 0 && (
+            <div>
+              <p className="mb-3 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                Built with
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {project.technologies.map((technology: string) => (
+                  <Badge
+                    key={technology}
+                    variant="outline"
+                    className="rounded-lg px-3 py-1.5 font-normal"
+                  >
+                    {technology}
+                  </Badge>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Metrics */}
           {project.metrics?.length > 0 && (
             <div className="mt-7 grid grid-cols-3 gap-3">
-              {project.metrics.slice(0, 3).map((metric: any) => (
+              {project.metrics.map((metric: any) => (
                 <div key={metric.label} className="rounded-xl bg-muted/50 p-3">
                   <p className="text-lg font-bold">{metric.value}</p>
-
                   <p className="mt-0.5 text-[11px] leading-4 text-muted-foreground">
                     {metric.label}
                   </p>
@@ -369,9 +357,15 @@ function FeaturedProject({
 
           {/* Actions */}
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button className="rounded-xl">
-              {project.cta?.primary || 'View Project'}
-              <ArrowUpRight className="ml-2 h-4 w-4" />
+            <Button className="rounded-xl" asChild>
+              <a
+                href={project.url || project.links?.live}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {project.cta?.primary || 'View Project'}
+                <ArrowUpRight className="ml-2 h-4 w-4" />
+              </a>
             </Button>
 
             {project.links?.github && (
@@ -413,22 +407,18 @@ function FeaturedProject({
 function ProjectCard({ project }: { project: any }) {
   return (
     <Card className="group overflow-hidden rounded-3xl border-border/60 bg-card/70 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5">
-      {/* Image */}
       <div className="relative aspect-[16/10] overflow-hidden bg-muted">
         <img
-          src={project.images.thumbnail || project.images.cover}
+          src={project.images?.thumbnail || project.images?.cover || ''}
           alt={project.name}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-
         <div className="absolute left-4 top-4">
           <Badge className="rounded-full bg-background/90 text-foreground backdrop-blur hover:bg-background">
             {project.category}
           </Badge>
         </div>
-
         <div className="absolute bottom-4 right-4">
           <Badge
             variant="secondary"
@@ -445,12 +435,10 @@ function ProjectCard({ project }: { project: any }) {
             <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
               {project.type}
             </p>
-
             <h3 className="mt-2 text-xl font-semibold tracking-tight transition-colors group-hover:text-primary">
               {project.name}
             </h3>
           </div>
-
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border bg-background transition-all duration-300 group-hover:-translate-y-1 group-hover:bg-primary group-hover:text-primary-foreground">
             <ArrowUpRight className="h-4 w-4" />
           </div>
@@ -461,48 +449,51 @@ function ProjectCard({ project }: { project: any }) {
         </p>
 
         {/* Tech */}
-        <div className="mt-5 flex flex-wrap gap-2">
-          {project.technologies?.slice(0, 4).map((technology: string) => (
-            <Badge
-              key={technology}
-              variant="secondary"
-              className="rounded-lg px-2.5 py-1 text-xs font-normal"
-            >
-              {technology}
-            </Badge>
-          ))}
-
-          {project.technologies?.length > 4 && (
-            <Badge
-              variant="outline"
-              className="rounded-lg px-2.5 py-1 text-xs font-normal"
-            >
-              +{project.technologies.length - 4}
-            </Badge>
-          )}
-        </div>
+        {project.technologies?.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-2">
+            {project.technologies.slice(0, 4).map((technology: string) => (
+              <Badge
+                key={technology}
+                variant="secondary"
+                className="rounded-lg px-2.5 py-1 text-xs font-normal"
+              >
+                {technology}
+              </Badge>
+            ))}
+            {project.technologies.length > 4 && (
+              <Badge
+                variant="outline"
+                className="rounded-lg px-2.5 py-1 text-xs font-normal"
+              >
+                +{project.technologies.length - 4}
+              </Badge>
+            )}
+          </div>
+        )}
       </CardContent>
 
       <CardFooter className="px-6 pb-6 pt-0">
         <div className="flex w-full items-center justify-between border-t pt-5">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <CalendarDays className="h-3.5 w-3.5" />
-            {project.year}
+            {project.year || 'N/A'}
           </div>
 
-          <Button variant="ghost" size="sm" className="rounded-lg px-3">
-            Explore
-            <ArrowUpRight className="ml-1.5 h-3.5 w-3.5" />
+          <Button variant="ghost" size="sm" className="rounded-lg px-3" asChild>
+            <a
+              href={project.url || project.links?.live}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Explore
+              <ArrowUpRight className="ml-1.5 h-3.5 w-3.5" />
+            </a>
           </Button>
         </div>
       </CardFooter>
     </Card>
   );
 }
-
-/* ================================================= */
-/* Section Heading                                  */
-/* ================================================= */
 
 function SectionHeading({
   eyebrow,
@@ -518,31 +509,11 @@ function SectionHeading({
       <p className="mb-2 text-sm font-medium uppercase tracking-widest text-primary">
         {eyebrow}
       </p>
-
       <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
-
       <p className="mt-3 leading-7 text-muted-foreground">{description}</p>
     </div>
   );
 }
-
-/* ================================================= */
-/* Hero Stat                                        */
-/* ================================================= */
-
-function HeroStat({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="px-3">
-      <p className="text-xl font-bold sm:text-2xl">{value}</p>
-
-      <p className="mt-1 text-xs text-muted-foreground sm:text-sm">{label}</p>
-    </div>
-  );
-}
-
-/* ================================================= */
-/* Meta                                             */
-/* ================================================= */
 
 function Meta({
   icon,
@@ -557,11 +528,9 @@ function Meta({
     <div>
       <div className="mb-1.5 flex items-center gap-1.5 text-muted-foreground">
         {icon}
-
         <span className="text-[11px] uppercase tracking-wider">{label}</span>
       </div>
-
-      <p className="line-clamp-1 text-sm font-medium">{value}</p>
+      <p className="line-clamp-1 text-sm font-medium">{value || 'N/A'}</p>
     </div>
   );
 }

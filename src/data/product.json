@@ -1,266 +1,196 @@
-[
-  {
-    "id": 1,
-    "slug": "protes",
-    "name": "proTES",
-    "shortName": "proTES",
-    "category": "GA4GH Infrastructure",
-    "type": "service",
-    "description": "A scalable GA4GH Task Execution Service API gateway for federating TES nodes across on-premise, hybrid, and multi-cloud environments.",
-    "shortDescription": "Federate GA4GH TES nodes with configurable middleware, workload routing, and centralized request handling.",
-    "longDescription": "proTES is a robust and scalable GA4GH Task Execution Service API gateway designed for federated compute networks. It provides a centralized entry point for independently operated TES instances while allowing configurable middleware to control request processing, workload distribution, validation, access control, and endpoint selection.",
-    "features": [
-      "Federate multiple GA4GH TES endpoints",
-      "Pluggable middleware architecture",
-      "Configurable workload distribution",
-      "OAuth2 bearer authentication",
-      "MongoDB-backed task tracking",
-      "RabbitMQ and Celery for asynchronous task tracking",
-      "Docker Compose and Kubernetes deployment",
-      "YAML-based configuration"
-    ],
-    "benefits": [
-      "Connect independent compute environments through a single TES gateway",
-      "Route workloads according to infrastructure and data requirements",
-      "Add custom request and response processing through middleware",
-      "Support on-premise, hybrid, and multi-cloud deployments",
-      "Centralize authentication, routing, and telemetry capabilities"
-    ],
-    "targetAudience": [
-      "Cloud administrators",
-      "Infrastructure engineers",
-      "GA4GH platform operators",
-      "Bioinformatics platform developers",
-      "Research computing teams"
-    ],
-    "includes": [
-      "GA4GH TES API gateway",
-      "Middleware plugin system",
-      "Load-balancing middleware",
-      "Data-locality middleware",
-      "OAuth2 authentication",
-      "Docker Compose configuration",
-      "Kubernetes deployment support"
-    ],
-    "format": "Open-source software",
-    "delivery": "Self-hosted deployment",
-    "image": "/products/protes.png",
-    "gallery": ["/products/protes.png"],
-    "badge": "Featured",
-    "featured": true,
-    "popular": true,
-    "digital": true,
-    "cta": {
-      "primary": "Explore proTES",
-      "secondary": "View Documentation"
-    },
-    "payment": {
-      "available": false,
-      "provider": null
-    },
-    "faq": [
-      {
-        "question": "What is proTES used for?",
-        "answer": "proTES acts as a gateway between clients and federated GA4GH TES instances, providing routing, middleware, authentication, and other centralized capabilities."
-      },
-      {
-        "question": "Can proTES run across cloud and on-premise infrastructure?",
-        "answer": "Yes. proTES is designed to federate TES nodes across on-premise, hybrid, and multi-cloud environments."
-      },
-      {
-        "question": "Can custom middleware be added?",
-        "answer": "Yes. Its plugin architecture allows developers to implement and inject middleware for use cases such as access control, validation, request processing, and endpoint selection."
+{
+  "products": [
+    {
+      "id": "tesk",
+      "name": "TESK",
+      "tagline": "Task Execution Service for Kubernetes",
+      "blurb": "An implementation of the GA4GH Task Execution Service (TES) API that runs containerized tasks on any Kubernetes cluster.",
+      "description": "TESK is a task execution engine based on the GA4GH TES standard that runs on Kubernetes. It exposes the TES endpoints, validates incoming task requests and translates them into Kubernetes batch jobs, so tasks run on any standard Kubernetes cluster. It can also stage task inputs and outputs and integrate with workflow managers.",
+      "audience": [
+        "Admins deploying a TES endpoint",
+        "Workflow-manager integrators"
+      ],
+      "features": [
+        "Implements the GA4GH Task Execution Service (TES) API",
+        "Translates TES tasks into Kubernetes batch jobs",
+        "Designed to support any Kubernetes cluster",
+        "Handles task inputs and outputs using temporary persistent volume claims (PVCs) as scratch space",
+        "Integrates with workflow managers via an FTP account or an accessible PVC",
+        "Each task gets its own taskmaster, PVC and executor pods; only the API pod is shared across tasks"
+      ],
+      "howItWorks": [
+        "The API pod (Tomcat web server) receives and validates TES requests and turns them into Kubernetes jobs.",
+        "The API pod creates a taskmaster pod for each task.",
+        "The taskmaster starts a filer pod that creates a PVC as scratch space and downloads input files into the locations given in the TES request.",
+        "The taskmaster runs the executors as pods, one after the other.",
+        "The filer runs once more to push outputs to remote locations; then the PVC is scrubbed and deleted and the task completes."
+      ],
+      "requirements": [
+        "A working Kubernetes cluster, version 1.9 or later",
+        "A default storage class supporting RWO mode (needed for tasks with I/O)",
+        "An FTP account or an accessible PVC (only for workflow-manager integration)"
+      ],
+      "deployment": ["Kubernetes (Helm chart in charts/tesk)"],
+      "relatedRepos": [
+        {
+          "name": "tesk-api",
+          "description": "Service implementing the TES API; translates tasks into Kubernetes batch calls",
+          "url": "https://github.com/elixir-cloud-aai/tesk-api"
+        },
+        {
+          "name": "tesk-core",
+          "description": "Code launched as images into the cluster by tesk-api",
+          "url": "https://github.com/elixir-cloud-aai/tesk-core"
+        }
+      ],
+      "standards": ["GA4GH TES"],
+      "tags": ["GA4GH", "TES", "Kubernetes"],
+      "license": "Apache-2.0",
+      "logo": "/images/products/tesk.png",
+      "repoUrl": "https://github.com/elixir-cloud-aai/TESK",
+      "docsUrl": "https://tesk.readthedocs.io",
+      "owner": {
+        "name": "Alex Kanitz",
+        "email": "alexander.kanitz@unibas.ch",
+        "image": "/images/contributors/alex-kanitz.jpg"
       }
-    ],
-    "tags": [
-      "GA4GH",
-      "TES",
-      "Cloud",
-      "Federation",
-      "Middleware",
-      "Kubernetes",
-      "Open Source"
-    ],
-    "seo": {
-      "title": "proTES - GA4GH TES API Gateway",
-      "description": "Federate GA4GH TES nodes across on-premise, hybrid, and multi-cloud environments with proTES.",
-      "keywords": [
-        "proTES",
-        "GA4GH TES",
-        "TES gateway",
-        "GA4GH cloud",
-        "workflow execution",
-        "middleware",
-        "federated compute"
-      ]
-    }
-  },
-  {
-    "id": 2,
-    "slug": "tesk",
-    "name": "TESK",
-    "shortName": "TESK",
-    "category": "Task Execution",
-    "type": "service",
-    "description": "A GA4GH Task Execution Service implementation that translates TES tasks into Kubernetes workloads.",
-    "shortDescription": "Run GA4GH TES workloads on Kubernetes with task orchestration, storage management, and containerized execution.",
-    "longDescription": "TESK is an implementation of the GA4GH Task Execution Service standard designed to execute computational tasks on Kubernetes. It exposes TES-compatible endpoints, translates incoming tasks into Kubernetes jobs, manages task-specific storage, and orchestrates executor pods throughout the task lifecycle.",
-    "features": [
-      "GA4GH TES API implementation",
-      "Kubernetes-native task execution",
-      "Automatic translation of TES requests into Kubernetes jobs",
-      "Task-specific executor pods",
-      "Persistent volume management",
-      "Input and output file handling",
-      "Containerized workflow execution",
-      "Support for standard Kubernetes clusters"
-    ],
-    "benefits": [
-      "Run TES workloads directly on Kubernetes infrastructure",
-      "Use containerized execution for reproducible workloads",
-      "Automatically manage task lifecycle and execution resources",
-      "Integrate TES-compatible workflow managers",
-      "Separate API, orchestration, storage, and executor responsibilities"
-    ],
-    "targetAudience": [
-      "Kubernetes administrators",
-      "Cloud infrastructure engineers",
-      "Bioinformatics developers",
-      "Workflow platform developers",
-      "Research computing teams"
-    ],
-    "includes": [
-      "TES API service",
-      "Task execution controller",
-      "Kubernetes executor components",
-      "Input and output handling",
-      "Persistent volume management",
-      "Deployment documentation"
-    ],
-    "format": "Open-source software",
-    "delivery": "Self-hosted Kubernetes deployment",
-    "image": "/products/tesk.png",
-    "gallery": ["/products/tesk.png"],
-    "badge": "GA4GH",
-    "featured": false,
-    "popular": true,
-    "digital": true,
-    "cta": {
-      "primary": "Explore TESK",
-      "secondary": "View Documentation"
     },
-    "payment": {
-      "available": false,
-      "provider": null
-    },
-    "faq": [
-      {
-        "question": "What does TESK do?",
-        "answer": "TESK implements the GA4GH TES standard and translates TES task requests into Kubernetes workloads for execution."
-      },
-      {
-        "question": "What infrastructure does TESK require?",
-        "answer": "TESK is designed to run on Kubernetes. Workloads involving task input and output handling also require suitable Kubernetes storage."
-      },
-      {
-        "question": "Can TESK run containerized workloads?",
-        "answer": "Yes. TESK executes task components as Kubernetes pods using container images."
+    {
+      "id": "protes",
+      "name": "proTES",
+      "tagline": "Middleware gateway for GA4GH TES",
+      "blurb": "A GA4GH TES gateway that injects configurable middleware into task requests before forwarding them to independent TES nodes.",
+      "description": "proTES is a scalable GA4GH TES API gateway that provides centralized features to a federated network of independently operated TES instances. When a TES request arrives, proTES applies the configured middlewares and then forwards it to a suitable TES instance. It can act as a compatibility layer, a load balancer, a public entry point to an enclave of compute nodes, or a way to collect telemetry. A plugin system makes it easy to write middlewares for access control, request/response processing or validation, and for choosing endpoints based on data-use restrictions and client preferences.",
+      "audience": [
+        "Operators of federated compute networks",
+        "Developers writing TES middleware"
+      ],
+      "features": [
+        "Flexible middleware injection through a plugin system",
+        "Federates containerized workloads across on-premise, hybrid and multi-cloud TES nodes",
+        "Built-in load balancing plugin (pro_tes.middleware.task_distribution.random) that distributes tasks randomly across TES endpoints",
+        "Built-in 'bring compute to the data' plugin (pro_tes.middleware.task_distribution.distance) that minimizes how far input data travels",
+        "OAuth2 bearer-token authorization out of the box",
+        "Declarative YAML configuration, based on the FOCA microservice archetype",
+        "Asynchronous tracking of forwarded tasks via RabbitMQ and scalable Celery workers",
+        "Helm chart for production and Docker Compose for development"
+      ],
+      "techStack": [
+        "Flask",
+        "MongoDB",
+        "RabbitMQ",
+        "Celery",
+        "FOCA",
+        "Helm",
+        "Docker Compose"
+      ],
+      "requirements": ["Docker", "docker-compose", "Git"],
+      "deployment": [
+        "Kubernetes (Helm chart, see deployment/README)",
+        "Docker Compose (development/testing)"
+      ],
+      "quickStart": [
+        "git clone https://github.com/elixir-europe/proTES.git && cd proTES",
+        "docker-compose up -d --build",
+        "Open the Swagger UI at http://localhost:8080/ga4gh/tes/v1/ui"
+      ],
+      "status": "Beta; the API may change without notice",
+      "standards": ["GA4GH TES"],
+      "tags": ["GA4GH", "TES", "Gateway", "Middleware"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/proTES",
+      "docsUrl": null,
+      "owner": {
+        "name": "Alex Kanitz",
+        "email": "alexander.kanitz@unibas.ch",
+        "image": "/images/contributors/alex-kanitz.jpg"
       }
-    ],
-    "tags": [
-      "GA4GH",
-      "TES",
-      "Kubernetes",
-      "Containers",
-      "Workflow Execution",
-      "Open Source"
-    ],
-    "seo": {
-      "title": "TESK - GA4GH Task Execution on Kubernetes",
-      "description": "Run GA4GH TES workloads on Kubernetes with TESK, a Kubernetes-based task execution engine.",
-      "keywords": [
-        "TESK",
-        "GA4GH TES",
-        "Kubernetes",
-        "task execution",
-        "workflow execution",
-        "bioinformatics"
-      ]
-    }
-  },
-  {
-    "id": 3,
-    "slug": "license-chat-ci",
-    "name": "License Chat CI",
-    "shortName": "License Chat CI",
-    "category": "Developer Tooling",
-    "type": "service",
-    "description": "A developer-focused tool for integrating license analysis and compliance workflows into software projects.",
-    "shortDescription": "Developer tooling for integrating license checks and compliance workflows into your development pipeline.",
-    "longDescription": "License Chat CI is a developer-oriented service intended to help teams incorporate software license analysis and compliance checks into their development workflows.",
-    "features": [
-      "License analysis",
-      "Developer-focused workflow",
-      "CI integration",
-      "Automated compliance checks",
-      "Project-level reporting"
-    ],
-    "benefits": [
-      "Identify licensing issues earlier in development",
-      "Integrate compliance checks into CI workflows",
-      "Reduce manual license review effort",
-      "Make licensing information easier for development teams to understand"
-    ],
-    "targetAudience": [
-      "Software developers",
-      "DevOps engineers",
-      "Open-source maintainers",
-      "Platform teams"
-    ],
-    "includes": [
-      "License analysis tooling",
-      "CI workflow integration",
-      "Compliance reporting"
-    ],
-    "format": "Developer tooling",
-    "delivery": "CI/CD integration",
-    "image": "/products/license-chat-ci.png",
-    "gallery": ["/products/license-chat-ci.png"],
-    "badge": "Developer Tool",
-    "featured": false,
-    "popular": false,
-    "digital": true,
-    "cta": {
-      "primary": "Explore License Chat CI",
-      "secondary": "View Documentation"
     },
-    "payment": {
-      "available": false,
-      "provider": null
-    },
-    "faq": [
-      {
-        "question": "Who is License Chat CI for?",
-        "answer": "It is intended for software development teams that want to incorporate license analysis and compliance checks into their development or CI workflows."
+    {
+      "id": "cloud-registry",
+      "name": "Cloud Registry",
+      "tagline": "GA4GH Service Registry for the ELIXIR Cloud",
+      "blurb": "An implementation of the GA4GH Service Registry API for registering and discovering GA4GH-compliant services in a federated cloud network.",
+      "description": "Cloud Registry implements the GA4GH Service Registry API for the ELIXIR Cloud. Service entries comply with the ExternalService schema defined by the GA4GH Service Registry specification. Once deployed, the API is served under /ga4gh/registry/v1/ with an interactive Swagger UI at /ga4gh/registry/v1/ui, and it can be probed with simple HTTP calls, for example GET /services.",
+      "audience": [
+        "Admins deploying a service registry",
+        "Developers building on GA4GH service discovery"
+      ],
+      "features": [
+        "Implements the GA4GH Service Registry API",
+        "Service entries follow the GA4GH ExternalService schema",
+        "Interactive Swagger UI for exploring the API",
+        "Docker Compose deployment for development and testing",
+        "Helm chart for cloud-native deployments",
+        "Developer API documentation hosted on ReadTheDocs"
+      ],
+      "requirements": ["git", "docker", "docker-compose"],
+      "deployment": [
+        "Docker Compose (development/testing)",
+        "Kubernetes (Helm chart in deployment/)"
+      ],
+      "quickStart": [
+        "git clone git@github.com:elixir-cloud-aai/cloud-registry.git && cd cloud-registry",
+        "docker-compose up --build -d",
+        "Open http://localhost:8080/ga4gh/registry/v1/ui"
+      ],
+      "status": "Beta; the API may change without notice",
+      "standards": ["GA4GH Service Registry"],
+      "tags": ["GA4GH", "Service Registry", "Discovery"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/cloud-registry",
+      "docsUrl": "https://cloud-registry.readthedocs.io/en/latest/",
+      "owner": {
+        "name": "Alex Kanitz",
+        "email": "alexander.kanitz@unibas.ch",
+        "image": "/images/contributors/alex-kanitz.jpg"
       }
-    ],
-    "tags": [
-      "Licensing",
-      "CI/CD",
-      "Developer Tools",
-      "Compliance",
-      "Open Source"
-    ],
-    "seo": {
-      "title": "License Chat CI - Developer License Tooling",
-      "description": "Developer tooling for integrating software license analysis and compliance workflows into CI pipelines.",
-      "keywords": [
-        "License Chat CI",
-        "software licensing",
-        "license compliance",
-        "CI/CD",
-        "developer tools"
-      ]
+    },
+    {
+      "id": "cloud-components",
+      "name": "Cloud Components",
+      "tagline": "The component library for federated cloud services",
+      "blurb": "Modular, customizable and extensible web components for building interfaces that interact with cloud infrastructure.",
+      "description": "ELIXIR Cloud Components (ECC) is a library of web components for interacting with cloud infrastructure. Because they are standard web components, they are framework-agnostic and can be dropped into React, Vue, vanilla HTML or any other front-end stack. Components can be restyled to match your brand and extended with your own.",
+      "audience": ["Front-end developers building cloud service UIs"],
+      "features": [
+        "Built as web components, so they work in React, Vue, vanilla HTML and other frameworks",
+        "Modular and extensible, with documented guidance for making your own components",
+        "Themeable: brand color, corner radius, depth, density, sizing, font size and motion are configurable",
+        "Client components for GA4GH services, for example a WES runs component (@elixir-cloud/wes)"
+      ],
+      "usageExample": {
+        "language": "jsx",
+        "code": "import { ECCClientGa4ghWesRuns } from '@elixir-cloud/wes/dist/react/runs/index';\n\n<ECCClientGa4ghWesRuns baseURL=\"https://your-wes-endpoint.com\" />"
+      },
+      "techStack": ["Web Components"],
+      "standards": ["GA4GH WES"],
+      "tags": ["Web Components", "UI", "GA4GH", "WES"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/cloud-components",
+      "docsUrl": "https://cloud-components.2.rahtiapp.fi/docs/introduction",
+      "extraLinks": [
+        {
+          "label": "Installation",
+          "url": "https://cloud-components.2.rahtiapp.fi/docs/installation"
+        },
+        {
+          "label": "Customization",
+          "url": "https://cloud-components.2.rahtiapp.fi/docs/customization"
+        },
+        {
+          "label": "Usage",
+          "url": "https://cloud-components.2.rahtiapp.fi/docs/usage"
+        }
+      ],
+      "owner": {
+        "name": "Anurag",
+        "email": null,
+        "image": "/images/contributors/anurag.jpg"
+      }
     }
-  }
-]
+  ]
+}
