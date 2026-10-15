@@ -24,9 +24,19 @@ const baseSeo: Metadata = {
     siteId: '@ELIXIRcloud_aai',
   },
   icons: [
-    { rel: 'icon', url: '/elixir-cloud-aai.png' },
-    { rel: 'apple-touch-icon', url: '/elixir-cloud-aai.png', sizes: '76x76' },
-    { rel: 'mask-icon', url: '/elixir-cloud-aai.png' },
+    {
+      rel: 'icon',
+      url: 'ELIXIR On-Cloud Logo Pack/On-Cloud_logomark_MONO.png',
+    },
+    {
+      rel: 'apple-touch-icon',
+      url: 'ELIXIR On-Cloud Logo Pack/On-Cloud_logomark_MONO.png',
+      sizes: '76x76',
+    },
+    {
+      rel: 'mask-icon',
+      url: 'ELIXIR On-Cloud Logo Pack/On-Cloud_logomark_MONO.png',
+    },
   ],
   manifest: '/manifest.json',
 };

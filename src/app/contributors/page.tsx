@@ -18,6 +18,7 @@ import { FaLinkedin } from 'react-icons/fa6';
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
 import { cn } from 'cn';
 import { Globe3D, GlobeMarker } from '@/components/ui/3d-globe';
+import Image from 'next/image';
 
 type Contributor = {
   name: string;
@@ -580,107 +581,132 @@ function ContributorCard({
   return (
     <Card
       className={cn(
-        'group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border p-5',
-        'bg-white/6 backdrop-blur-[2px] backdrop-saturate-[109%]',
-        'transition-all duration-500',
-
-        'hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5',
-
+        'group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border p-6',
+        'bg-gradient-to-b from-white/10 via-white/5 to-white/[0.02] backdrop-blur-xl border-white/15 dark:from-card/80 dark:to-card/40',
+        'transition-all duration-500 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20',
         highlighted && [
-          'border-primary',
-          'ring-2 ring-primary/60',
-          'shadow-[0_0_0_4px_rgba(59,130,246,0.12),0_0_35px_rgba(59,130,246,0.30)]',
-          'bg-primary/[0.06]',
-          'scale-[1.02]',
+          'border-primary ring-2 ring-primary/60 shadow-[0_0_40px_rgba(59,130,246,0.35)] bg-primary/[0.08]',
         ],
       )}
     >
-      <div className="pointer-events-none bg-white/6 backdrop-blur-[2px] backdrop-saturate-[109%]  absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/10 blur-2xl transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
+      {/* Top accent line & ambient glow */}
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-primary/20 blur-3xl transition-all duration-700 opacity-0 group-hover:opacity-100" />
 
-      <div className="relative flex-1 space-y-4">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-3 min-w-0">
+      <div className="relative z-10 space-y-5">
+        {/* Header: Avatar, Name, and GSoC Badge */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center gap-4 min-w-0">
             <div className="relative shrink-0">
-              <div className="h-12 w-12 overflow-hidden rounded-xl border bg-muted shadow-sm">
+              <div className="h-16 w-16 overflow-hidden rounded-2xl border-2 border-primary/20 bg-muted shadow-lg transition-transform duration-500 group-hover:scale-105 group-hover:border-primary/50">
                 {person.image ? (
-                  <img
+                  <Image
                     src={person.image}
                     alt={person.name}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
+                    width={64}
+                    height={64}
+                    className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-primary/10 text-sm font-bold text-primary">
+                  <div className="flex h-full w-full items-center justify-center bg-primary/15 text-base font-bold text-primary">
                     {initials(person.name)}
                   </div>
                 )}
               </div>
-              <span className="absolute -bottom-0.5 -right-0.5 h-3.5 w-3.5 rounded-full border-2 border-card bg-emerald-500" />
+              <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-background bg-emerald-500 shadow-sm" />
             </div>
 
             <div className="min-w-0">
-              <h3 className="truncate text-base font-semibold text-card-foreground">
+              <h3 className="text-lg font-bold tracking-tight text-foreground group-hover:text-primary transition-colors truncate">
                 {person.name}
               </h3>
-              <p className="truncate text-xs text-muted-foreground">
-                Open source contributor
-              </p>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="inline-block h-2 w-2 rounded-full bg-primary animate-pulse" />
+                <p className="text-xs font-medium text-muted-foreground">
+                  Open Source Contributor
+                </p>
+              </div>
             </div>
           </div>
 
           {isGSoC(roles) && (
             <Badge
               variant="secondary"
-              className="shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary hover:bg-primary/15"
+              className="shrink-0 rounded-full bg-gradient-to-r from-primary/20 to-purple-500/20 px-3 py-1 text-xs font-bold text-primary border border-primary/30 shadow-sm flex items-center gap-1"
             >
+              <Sparkles className="h-3 w-3" />
               GSoC
             </Badge>
           )}
         </div>
 
-        <div className="space-y-1.5 pt-1">
-          <p className="text-[10px] font-semibold tracking-wider text-muted-foreground/70 uppercase">
-            Expertise
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {roles.slice(0, 3).map((role) => (
-              <Badge
-                key={role}
-                variant="outline"
-                className="rounded-md border-border/60 bg-muted/30 px-2 py-0.5 text-xs font-normal text-muted-foreground"
-              >
-                {role}
-              </Badge>
-            ))}
-            {roles.length > 3 && (
-              <Badge
-                variant="outline"
-                className="rounded-md border-border/60 bg-muted/20 px-2 py-0.5 text-xs font-normal text-muted-foreground"
-              >
-                +{roles.length - 3}
-              </Badge>
-            )}
+        {/* Roles & Expertise Badges */}
+        {roles.length > 0 && (
+          <div className="space-y-2 pt-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                Expertise & Focus
+              </span>
+              <span className="text-[10px] text-muted-foreground/60">
+                {roles.length} skills
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {roles.slice(0, 4).map((role) => (
+                <Badge
+                  key={role}
+                  variant="outline"
+                  className="rounded-lg border-white/10 bg-white/5 px-2.5 py-1 text-xs font-normal text-muted-foreground/90 backdrop-blur-sm transition-colors group-hover:border-primary/20"
+                >
+                  {role}
+                </Badge>
+              ))}
+              {roles.length > 4 && (
+                <Badge
+                  variant="outline"
+                  className="rounded-lg border-white/10 bg-white/5 px-2 py-1 text-xs font-normal text-muted-foreground/70"
+                >
+                  +{roles.length - 4}
+                </Badge>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Footer Action Area */}
-      <div className="relative mt-5 flex items-center justify-between border-t border-border/50 pt-3">
-        <div className="flex items-center gap-1">
+      <div className="relative z-10 mt-6 flex items-center justify-between border-t border-white/10 pt-4">
+        <div className="flex items-center gap-2">
           {person.github && (
-            <IconButton href={person.github} label="GitHub">
+            <a
+              href={person.github}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="GitHub Profile"
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
+            >
               <GitBranch className="h-4 w-4" />
-            </IconButton>
+            </a>
           )}
           {person.linkedin && (
-            <IconButton href={person.linkedin} label="LinkedIn">
+            <a
+              href={person.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn Profile"
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
+            >
               <FaLinkedin className="h-4 w-4" />
-            </IconButton>
+            </a>
           )}
           {person.email && (
-            <IconButton href={`mailto:${person.email}`} label="Email">
+            <a
+              href={`mailto:${person.email}`}
+              aria-label="Send Email"
+              className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
+            >
               <Mail className="h-4 w-4" />
-            </IconButton>
+            </a>
           )}
         </div>
 
@@ -688,21 +714,22 @@ function ContributorCard({
           <Button
             asChild
             size="sm"
-            variant="ghost"
-            className="h-8 gap-1 rounded-md px-2.5 text-xs font-medium hover:bg-primary hover:text-primary-foreground"
+            className="h-9 gap-1.5 rounded-xl px-4 text-xs font-semibold shadow-md shadow-primary/20 bg-primary text-primary-foreground hover:opacity-90 transition-all"
           >
             <a
               href={person.github}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-1"
+              className="flex items-center gap-1.5"
             >
-              View profile
-              <ArrowUpRight className="h-3.5 w-3.5" />
+              View Profile
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </Button>
         ) : (
-          <span className="text-xs text-muted-foreground/60">Contributor</span>
+          <span className="text-xs font-medium text-muted-foreground/60 px-3 py-1 rounded-lg bg-white/5 border border-white/10">
+            Contributor
+          </span>
         )}
       </div>
     </Card>

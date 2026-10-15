@@ -1,7 +1,7 @@
 [
   {
     "name": "Aarav Mehta",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '24 Contributor"],
@@ -11,7 +11,7 @@
   },
   {
     "name": "Aditya Arora",
-    "image": "https://thumbs2.imgbox.com/a1/c5/6rDy1YsR_t.jpeg",
+    "image": "/contributors/aditya_arora.jpg",
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor"],
@@ -21,7 +21,7 @@
   },
   {
     "name": "Akash Saini",
-    "image": "https://thumbs2.imgbox.com/e8/6d/yTLjdO5j_t.jpg",
+    "image": "/contributors/akash_saini.jpg",
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '21 Contributor"],
@@ -32,7 +32,7 @@
   },
   {
     "name": "Alex Kanitz",
-    "image": "https://thumbs2.imgbox.com/b1/26/QB7uw6VJ_t.jpg",
+    "image": "/contributors/alex_kanitz.jpg",
     "lat": 47.3769,
     "lng": 8.5417,
     "roles": [
@@ -46,7 +46,7 @@
   },
   {
     "name": "Álvaro González Álvarez",
-    "image": "https://thumbs2.imgbox.com/aa/fe/CHM5t4od_t.jpg",
+    "image": "/contributors/alvaro_gonzalez.jpg",
     "lat": 60.1699,
     "lng": 24.9384,
     "roles": ["ELIXIR Finland"],
@@ -56,14 +56,14 @@
   },
   {
     "name": "Ania Niewielska",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 52.3667,
     "lng": 4.9041,
     "roles": ["EMBL-EBI"]
   },
   {
     "name": "Anurag Gupta",
-    "image": "https://thumbs2.imgbox.com/5f/e8/f96Rv1li_t.jpg",
+    "image": "/contributors/anurag_gupta.jpg",
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '21 Contributor"],
@@ -74,7 +74,7 @@
   },
   {
     "name": "Assel Abzalova",
-    "image": "https://thumbs2.imgbox.com/8a/d4/O7LRZQ3R_t.jpg",
+    "image": null,
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '23 Contributor"],
@@ -84,7 +84,7 @@
   },
   {
     "name": "Athitheya Gobinathan",
-    "image": "https://images2.imgbox.com/d7/74/fDlt2gDl_o.jpeg",
+    "image": "/contributors/athitheya_gobinathan.jpg",
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '24 Contributor"],
@@ -93,7 +93,7 @@
   },
   {
     "name": "Ayush Kumar",
-    "image": "https://thumbs2.imgbox.com/29/6b/Cjv19dlT_t.jpg",
+    "image": "/contributors/ayush_kumar.jpg",
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '22 Contributor"],
@@ -103,7 +103,7 @@
   },
   {
     "name": "CJ Herrmann",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 47.5596,
     "lng": 7.5886,
     "roles": ["ELIXIR Switzerland"],
@@ -112,7 +112,7 @@
   },
   {
     "name": "Dominik František Bučík",
-    "image": "https://thumbs2.imgbox.com/0c/c0/lEzzLUMh_t.jpg",
+    "image": "/contributors/dominik_bucic.jpg",
     "lat": 49.1951,
     "lng": 16.6068,
     "roles": [
@@ -126,7 +126,7 @@
   },
   {
     "name": "Gavin Farrell",
-    "image": "https://thumbs2.imgbox.com/4b/50/9doaR6Ji_t.jpg",
+    "image": "/contributors/gavin_farrell.jpg",
     "lat": 51.5074,
     "lng": -0.1278,
     "roles": [
@@ -139,7 +139,7 @@
   },
   {
     "name": "Harald Wagener",
-    "image": "https://thumbs2.imgbox.com/5a/43/LV2WlbJq_t.jpg",
+    "image": "/contributors/harald_wagener.jpg",
     "lat": 52.52,
     "lng": 13.405,
     "roles": ["ELIXIR Germany", "ELIXIR Compute Platform: Lead"],
@@ -149,14 +149,14 @@
   },
   {
     "name": "Ivar Janmaat",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 52.3676,
     "lng": 4.9041,
     "roles": ["ELIXIR Netherlands", "ELIXIR Compute Platform: WP4 Lead"]
   },
   {
     "name": "Javed Habib",
-    "image": "https://thumbs2.imgbox.com/b0/74/gqA1eWDN_t.jpeg",
+    "image": null,
     "lat": 28.6139,
     "lng": 77.209,
     "roles": [
@@ -170,7 +170,7 @@
   },
   {
     "name": "Jemal Tahir",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 60.1699,
     "lng": 24.9384,
     "roles": ["ELIXIR Finland"],
@@ -180,7 +180,7 @@
   },
   {
     "name": "Jonathan Tedds",
-    "image": "https://thumbs2.imgbox.com/62/81/IZKpt0ny_t.jpg",
+    "image": "/contributors/jonathan_tedds.jpg",
     "lat": 51.5074,
     "lng": -0.1278,
     "roles": [
@@ -195,14 +195,14 @@
   },
   {
     "name": "Joris Vankerschaver",
-    "image": "https://thumbs2.imgbox.com/a1/06/2XyPM1Jn_t.jpg",
+    "image": "/contributors/joris_vankerschaver.jpg",
     "lat": 50.8503,
     "lng": 4.3517,
     "roles": ["External Contributor"]
   },
   {
     "name": "Juha Törnroos",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 60.1699,
     "lng": 24.9384,
     "roles": ["ELIXIR Finland", "ELIXIR Compute Platform: Lead"],
@@ -212,14 +212,14 @@
   },
   {
     "name": "Justin Clark-Casey",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 52.3667,
     "lng": 4.9041,
     "roles": ["EMBL-EBI"]
   },
   {
     "name": "Karanjot Singh",
-    "image": "https://thumbs2.imgbox.com/a5/8f/2Q4Te0Tq_t.jpeg",
+    "image": "/contributors/karanjot_singh.jpg",
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '24 Contributor"],
@@ -229,14 +229,14 @@
   },
   {
     "name": "Kersten Breuer",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 52.52,
     "lng": 13.405,
     "roles": ["ELIXIR Germany"]
   },
   {
     "name": "Kevin Sayers",
-    "image": "https://thumbs2.imgbox.com/f0/2e/mJ5xmbPz_t.jpg",
+    "image": "/contributors/kevin_sayers.jpg",
     "lat": 47.3769,
     "lng": 8.5417,
     "roles": ["ELIXIR Switzerland"],
@@ -245,7 +245,7 @@
   },
   {
     "name": "Konstantinos Liosis",
-    "image": "https://thumbs2.imgbox.com/cc/a5/Syy59wVW_t.jpg",
+    "image": "/contributors/konstantelos_liosis.jpg",
     "lat": 40.7128,
     "lng": -74.006,
     "roles": ["OSS Contributor"],
@@ -255,7 +255,7 @@
   },
   {
     "name": "Kostis Zagganas",
-    "image": "https://thumbs2.imgbox.com/4e/7c/s7QWpTC6_t.jpg",
+    "image": "/contributors/kostis_zagganas.jpg",
     "lat": 37.9838,
     "lng": 23.7275,
     "roles": ["ELIXIR Greece"],
@@ -265,7 +265,7 @@
   },
   {
     "name": "Lakshya Garg",
-    "image": "https://thumbs2.imgbox.com/9c/73/nvSgeW5X_t.jpg",
+    "image": "/contributors/lakshya_garg.jpg",
     "lat": 28.6139,
     "lng": 77.209,
     "roles": [
@@ -279,7 +279,7 @@
   },
   {
     "name": "Liam Beckman",
-    "image": "https://thumbs2.imgbox.com/c9/0e/zeQld7uu_t.jpg",
+    "image": null,
     "lat": 38.9072,
     "lng": -77.0369,
     "roles": ["External Contributor"],
@@ -288,14 +288,14 @@
   },
   {
     "name": "Ludek Matyska",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 49.1951,
     "lng": 16.6068,
     "roles": ["ELIXIR Czech Republic", "ELIXIR Compute Platform: Lead"]
   },
   {
     "name": "Lukáš Hejtmánek",
-    "image": "https://thumbs2.imgbox.com/4e/b5/XlHJBigD_t.jpg",
+    "image": "/contributors/lukas_hejtmanek.jpg",
     "lat": 49.1951,
     "lng": 16.6068,
     "roles": ["ELIXIR Czech Republic"],
@@ -305,7 +305,7 @@
   },
   {
     "name": "Manthos Pitoulias",
-    "image": "https://thumbs2.imgbox.com/eb/55/NdqbW4HS_t.jpg",
+    "image": "/contributors/manthos_pitoulias.jpg",
     "lat": 51.5074,
     "lng": -0.1278,
     "roles": [
@@ -319,14 +319,14 @@
   },
   {
     "name": "Marius Dieckmann",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 52.52,
     "lng": 13.405,
     "roles": ["ELIXIR Germany"]
   },
   {
     "name": "Martin Kuba",
-    "image": "https://thumbs2.imgbox.com/e0/37/zITw2Uzp_t.jpg",
+    "image": "/contributors/martin_kuba.jpg",
     "lat": 49.1951,
     "lng": 16.6068,
     "roles": ["ELIXIR Czech Republic", "GA4GH Driver Project Champion"],
@@ -336,7 +336,7 @@
   },
   {
     "name": "Michael R. Crusoe",
-    "image": "https://thumbs2.imgbox.com/32/a9/BIErFjDk_t.jpg",
+    "image": "/contributors/michael_crusoe.jpg",
     "lat": 52.52,
     "lng": 13.405,
     "roles": ["ELIXIR Germany", "ELIXIR Compute Platform: WP5 Lead"],
@@ -346,14 +346,14 @@
   },
   {
     "name": "Mikael Linden",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 60.1699,
     "lng": 24.9384,
     "roles": ["ELIXIR Finland"]
   },
   {
     "name": "Milan Daneček",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 49.1951,
     "lng": 16.6068,
     "roles": ["ELIXIR Czech Republic"],
@@ -362,7 +362,7 @@
   },
   {
     "name": "Nidhi",
-    "image": "https://thumbs2.imgbox.com/61/0e/hetIqfww_t.jpg",
+    "image": null,
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor"],
@@ -372,7 +372,7 @@
   },
   {
     "name": "Nils Hoffmann",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 50.9413,
     "lng": 6.9583,
     "roles": [
@@ -385,7 +385,7 @@
   },
   {
     "name": "Pavel Nikonorov",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 50.8503,
     "lng": 4.3517,
     "roles": ["External Contributor"],
@@ -395,14 +395,14 @@
   },
   {
     "name": "Philip R. Kensche",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 52.52,
     "lng": 13.405,
     "roles": ["ELIXIR Germany"]
   },
   {
     "name": "Pratiksha Sankhe",
-    "image": "https://thumbs2.imgbox.com/6e/58/qtBxnxSw_t.jpeg",
+    "image": "/contributors/pratiksha_sankhe.jpg",
     "lat": 19.076,
     "lng": 72.8777,
     "roles": ["OSS Contributor", "GSoC '24 Contributor"],
@@ -412,7 +412,7 @@
   },
   {
     "name": "Rahul Jagwani",
-    "image": "https://thumbs2.imgbox.com/d9/06/Dipo1joV_t.jpeg",
+    "image": "/contributors/rahul_jagwani.jpg",
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '24 Contributor"],
@@ -422,7 +422,7 @@
   },
   {
     "name": "Salihu Baba-Saliu",
-    "image": "https://thumbs2.imgbox.com/2c/7a/tkRNoHV8_t.jpeg",
+    "image": "/contributors/salihu_baba-saliu.jpg",
     "lat": 9.0765,
     "lng": 7.3986,
     "roles": ["OSS Contributor"],
@@ -432,7 +432,7 @@
   },
   {
     "name": "Sarthak Gupta",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '20 Contributor"],
@@ -442,7 +442,7 @@
   },
   {
     "name": "Shubham Kapoor",
-    "image": "https://thumbs2.imgbox.com/ac/d0/9SCsQkUF_t.jpg",
+    "image": "/contributors/shubham_kapoor.jpg",
     "lat": 60.1699,
     "lng": 24.9384,
     "roles": ["ELIXIR Finland"],
@@ -450,7 +450,7 @@
   },
   {
     "name": "Soham Ratnaparkhi",
-    "image": "https://thumbs2.imgbox.com/36/f4/ScnnFoxk_t.jpeg",
+    "image": null,
     "lat": 18.5204,
     "lng": 73.8567,
     "roles": ["OSS Contributor"],
@@ -460,7 +460,7 @@
   },
   {
     "name": "Stian Soiland-Reyes",
-    "image": "https://thumbs2.imgbox.com/c8/0b/mT1tsCdn_t.jpg",
+    "image": "/contributors/stian_soyland_reyes.jpg",
     "lat": 53.4808,
     "lng": -2.2426,
     "roles": ["ELIXIR United Kingdom", "RO-Crate: Lead"],
@@ -471,7 +471,7 @@
   },
   {
     "name": "Susheel Varma",
-    "image": "https://thumbs2.imgbox.com/54/8d/mWRtkCMt_t.jpg",
+    "image": "/contributors/susheel_varma.jpg",
     "lat": 51.5074,
     "lng": -0.1278,
     "roles": ["ELIXIR Hub"],
@@ -482,7 +482,7 @@
   },
   {
     "name": "Suyash Gupta",
-    "image": "https://thumbs2.imgbox.com/9b/bb/KvrxGjIw_t.jpg",
+    "image": "/contributors/suyash_gupta.jpg",
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '22 Contributor"],
@@ -492,7 +492,7 @@
   },
   {
     "name": "Sven Twardziok",
-    "image": "https://thumbs2.imgbox.com/ec/f0/2AL9Iixq_t.jpg",
+    "image": "/contributors/sven_twardziok.jpg",
     "lat": 52.52,
     "lng": 13.405,
     "roles": ["ELIXIR Germany", "ELIXIR Compute Platform: WP3 Lead"],
@@ -502,7 +502,7 @@
   },
   {
     "name": "Tanya Kumari",
-    "image": "https://thumbs2.imgbox.com/17/86/t2tAjI5w_t.jpg",
+    "image": "/contributors/tanya_kumari.jpg",
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor"],
@@ -513,14 +513,14 @@
   },
   {
     "name": "Tewodros Deneke",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 60.1699,
     "lng": 24.9384,
     "roles": ["ELIXIR Finland"]
   },
   {
     "name": "Thanasis Vergoulis",
-    "image": "https://thumbs2.imgbox.com/a1/14/ukVhJr63_t.png",
+    "image": "/contributors/thanasis_vergoulis.jpg",
     "lat": 38.0,
     "lng": 23.75,
     "roles": ["ELIXIR Greece", "ELIXIR Compute Platform: WP5 Lead"],
@@ -531,7 +531,7 @@
   },
   {
     "name": "Tommi Nyrönen",
-    "image": "https://thumbs2.imgbox.com/a3/a3/arEQPMi5_t.jpg",
+    "image": "/contributors/tommi_nyronen.jpg",
     "lat": 60.1699,
     "lng": 24.9384,
     "roles": ["ELIXIR Finland", "ELIXIR Head of Node"],
@@ -541,7 +541,7 @@
   },
   {
     "name": "Valentin Schneider-Lunitz",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 52.52,
     "lng": 13.405,
     "roles": ["ELIXIR Germany"],
@@ -549,7 +549,7 @@
   },
   {
     "name": "Vani Singh",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '19 Contributor"],
@@ -558,7 +558,7 @@
   },
   {
     "name": "Viktória Spišaková",
-    "image": "https://thumbs2.imgbox.com/62/db/aJiLvR3C_t.jpg",
+    "image": null,
     "lat": 49.1951,
     "lng": 16.6068,
     "roles": ["ELIXIR Czech Republic", "ELIXIR Compute Platform: WP4 Lead"],
@@ -566,7 +566,7 @@
   },
   {
     "name": "Vincent Emonet",
-    "image": "https://thumbs2.imgbox.com/fb/64/UPS7HTjd_t.jpg",
+    "image": "/contributors/vincent_emonet.jpg",
     "lat": 46.2044,
     "lng": 6.1432,
     "roles": ["ELIXIR Switzerland"],
@@ -577,7 +577,7 @@
   },
   {
     "name": "Vipul Chhabra",
-    "image": "https://thumbs2.imgbox.com/98/e4/VXMCaHQN_t.jpg",
+    "image": "/contributors/vipul_chhabra.jpg",
     "lat": 28.6139,
     "lng": 77.209,
     "roles": ["OSS Contributor", "GSoC '21 Contributor"],
@@ -588,7 +588,7 @@
   },
   {
     "name": "Kushagra Nagori",
-    "image": null,
+    "image": "/contributors/kushagra_nagori.jpg",
     "lat": null,
     "lng": null,
     "roles": ["OSS Contributor"]
@@ -599,5 +599,67 @@
     "lat": null,
     "lng": null,
     "roles": ["OSS Contributor"]
+  },
+  {
+    "name": "Mirela Minkova",
+    "image": null,
+    "imageSource": "https://drive.google.com/open?id=1JFAJ5EJ0AKF0OgP-VtJ0qK8E2v12eXgp",
+    "lat": 52.3667,
+    "lng": 4.9041,
+    "roles": ["ELIXIR Netherlands"],
+    "email": "mirela.minkova@surf.nl",
+    "orcid": "https://orcid.org/0009-0004-5031-2309",
+    "linkedin": "https://www.linkedin.com/in/mirela-minkova-a40b42200/",
+    "github": "https://github.com/mirelaminkova"
+  },
+  {
+    "name": "Gopi Kishan",
+    "image": null,
+    "imageSource": "https://drive.google.com/open?id=1biHq_S94khXwR368oOo3r5XzHgCGuAzk",
+    "lat": null,
+    "lng": null,
+    "roles": ["OSS Contributor", "GSoC '26 Contributor"],
+    "email": "gkishan1kyt@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/gkbishnoi07/",
+    "github": "https://github.com/gkbishnoi07"
+  },
+  {
+    "name": "Revaa Rathore",
+    "image": null,
+    "imageSource": "https://drive.google.com/file/d/1e_moPZz42fiWl8Isd6mLF9Ujg2drVhhY/view?usp=sharing",
+    "lat": null,
+    "lng": null,
+    "roles": ["OSS Contributor", "GSoC '26 Contributor"],
+    "email": "rathorerevaa2007@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/revaarathore/",
+    "github": "https://github.com/revaarathore11"
+  },
+  {
+    "name": "Keshav Dayal",
+    "image": null,
+    "imageSource": "https://drive.google.com/open?id=10IWQ8IEqOedCF4x0I6fQ7oZ5GiDy4ApX",
+    "lat": null,
+    "lng": null,
+    "roles": [
+      "ELIXIR Switzerland",
+      "OSS Contributor",
+      "GSoC '24 Contributor",
+      "GSoC '26 Contributor"
+    ],
+    "email": "keshxvdayal@gmail.com",
+    "orcid": "https://orcid.org/0009-0008-2594-0548",
+    "linkedin": "https://www.linkedin.com/in/keshav-dayal/",
+    "github": "https://github.com/keshxvdayal",
+    "website": "https://keshavdayalportfolio.vercel.app/"
+  },
+  {
+    "name": "Chitransh Verma",
+    "image": null,
+    "lat": null,
+    "lng": null,
+    "roles": ["OSS Contributor"],
+    "email": "cvxanonymous007@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/chitransh-verma/",
+    "github": "https://github.com/AnonymousXC"
   }
 ]
