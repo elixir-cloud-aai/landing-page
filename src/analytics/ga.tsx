@@ -1,40 +1,43 @@
 import Script from 'next/script';
 
+// Defines the GA helpers only. Nothing is fetched from Google and no
+// analytics cookie is set until the visitor opts in through the cookie
+// banner, which then calls window.GAConsentGranted().
 export default function GAScript() {
+  const id = process.env.GA_MEASUREMENT_ID;
+  if (!id) return null;
+
   return (
-    <>
-      <Script id="google-analytics-consent">
-        {`
+    <Script id="google-analytics" strategy="afterInteractive">
+      {`
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
         gtag('consent', 'default', {
-          'ad_storage': 'denied',
-          'analytics_storage': 'denied'
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+          analytics_storage: 'denied'
         });
+
+        window.GAConsentGranted = function () {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+          if (window.__gaLoaded) return;
+          window.__gaLoaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=${id}';
+          document.head.appendChild(s);
+          gtag('js', new Date());
+          gtag('config', '${id}', { anonymize_ip: true });
+        };
+
+        window.GAConsentRevoked = function () {
+          gtag('consent', 'update', { analytics_storage: 'denied' });
+        };
+
+        if (window.__pendingGAConsent) window.GAConsentGranted();
       `}
-      </Script>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_MEASUREMENT_ID}`}
-      />
-      <Script id="google-analytics">
-        {`
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-  
-        gtag('config', '${process.env.GA_MEASUREMENT_ID}');
-      `}
-      </Script>
-      <Script id="google-analytics-consent-granted">
-        {`
-        function GAConsentGranted() {
-          gtag('consent', 'update', {
-            'ad_storage': 'granted',
-            'analytics_storage': 'granted'
-          });
-        }
-      `}
-      </Script>
-    </>
+    </Script>
   );
 }

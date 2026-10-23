@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import { cn } from '@/lib/utils';
@@ -16,6 +16,13 @@ const useMorphingText = (texts: ReactNode[]) => {
 
   const text1Ref = useRef<HTMLSpanElement>(null);
   const text2Ref = useRef<HTMLSpanElement>(null);
+  const renderedIndexRef = useRef(-1);
+
+  // Render each text to HTML once instead of on every animation frame.
+  const markup = useMemo(
+    () => texts.map((text) => renderToStaticMarkup(<>{text}</>)),
+    [texts],
+  );
 
   const setStyles = useCallback(
     (fraction: number) => {
@@ -32,14 +39,13 @@ const useMorphingText = (texts: ReactNode[]) => {
       )}px)`;
       current1.style.opacity = `${Math.pow(invertedFraction, 0.4) * 100}%`;
 
-      current1.innerHTML = renderToStaticMarkup(
-        <>{texts[textIndexRef.current % texts.length]}</>,
-      );
-      current2.innerHTML = renderToStaticMarkup(
-        <>{texts[(textIndexRef.current + 1) % texts.length]}</>,
-      );
+      if (renderedIndexRef.current !== textIndexRef.current) {
+        renderedIndexRef.current = textIndexRef.current;
+        current1.innerHTML = markup[textIndexRef.current % markup.length];
+        current2.innerHTML = markup[(textIndexRef.current + 1) % markup.length];
+      }
     },
-    [texts],
+    [markup],
   );
 
   const doMorph = useCallback(() => {
@@ -144,7 +150,7 @@ export const MorphingText: React.FC<MorphingTextProps> = ({
 }) => (
   <div
     className={cn(
-      'relative mx-auto h-16 w-full max-w-3xl text-center font-sans text-[40pt] leading-none font-bold filter-[url(#threshold)_blur(0.6px)] md:h-24 lg:text-[6rem]',
+      'relative mx-auto h-16 w-full max-w-3xl text-center font-sans text-[40pt] leading-none font-bold [filter:url(#threshold)_blur(0.6px)] md:h-24 lg:text-[6rem]',
       className,
     )}
   >

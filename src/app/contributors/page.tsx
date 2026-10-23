@@ -17,7 +17,8 @@ import contributors from '@/data/contributor.json';
 import { FaLinkedin } from 'react-icons/fa6';
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
 import { cn } from 'cn';
-import { Globe3D, GlobeMarker } from '@/components/ui/3d-globe';
+import Globe3D from '@/components/ui/globe-lazy';
+import { contributorMarkers } from '@/lib/contributor-markers';
 import Image from 'next/image';
 
 type Contributor = {
@@ -43,26 +44,6 @@ function initials(name: string) {
 function isGSoC(roles: string[] = []) {
   return roles.some((role) => role.toLowerCase().includes('gsoc'));
 }
-
-const contributorMarkers: GlobeMarker[] = contributors
-  .filter(
-    (
-      contributor,
-    ): contributor is typeof contributor & {
-      lat: number;
-      lng: number;
-      image: string;
-    } =>
-      contributor.lat !== null &&
-      contributor.lng !== null &&
-      !!contributor.image,
-  )
-  .map((contributor) => ({
-    lat: contributor.lat,
-    lng: contributor.lng,
-    src: contributor.image,
-    label: contributor.name,
-  }));
 
 export default function ContributorsPage() {
   const [query, setQuery] = useState('');
@@ -117,7 +98,7 @@ export default function ContributorsPage() {
         duration={3}
         repeatDelay={1}
         className={cn(
-          'mask-[radial-gradient(520px_circle_at_center,white,transparent)]',
+          '[mask-image:radial-gradient(520px_circle_at_center,white,transparent)]',
           'inset-x-0 inset-y-[-30%] h-[200%] skew-y-12',
         )}
       />
@@ -137,7 +118,7 @@ export default function ContributorsPage() {
               {/* Badge */}
               <Badge
                 variant="secondary"
-                className="mb-6 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium shadow-sm backdrop-blur"
+                className="mb-6 rounded-full border border-border bg-card/85 px-4 py-1.5 text-xs font-medium shadow-sm"
               >
                 <Sparkles className="mr-1.5 h-3.5 w-3.5" />
                 Open source community
@@ -159,7 +140,7 @@ export default function ContributorsPage() {
               </p>
 
               {/* Stats */}
-              <div className="mt-10 grid max-w-lg grid-cols-3 overflow-hidden rounded-2xl border border-white/15 bg-card/60 shadow-sm backdrop-blur">
+              <div className="mt-10 grid max-w-lg grid-cols-3 overflow-hidden rounded-2xl border border-border bg-card/60 shadow-sm">
                 <div className="px-4 py-5">
                   <Stat value={people.length} label="Contributors" />
                 </div>
@@ -200,11 +181,8 @@ export default function ContributorsPage() {
                     );
 
                     if (!contributor) {
-                      console.log('Contributor not found:', marker.label);
                       return;
                     }
-
-                    console.log('Clicked contributor:', contributor.name);
 
                     setQuery('');
                     setFilter('all');
@@ -226,9 +204,6 @@ export default function ContributorsPage() {
                     setTimeout(() => {
                       const element = document.getElementById(elementId);
 
-                      console.log('Scrolling to:', elementId);
-                      console.log('Element:', element);
-
                       if (element) {
                         element.scrollIntoView({
                           behavior: 'smooth',
@@ -240,11 +215,6 @@ export default function ContributorsPage() {
                     setTimeout(() => {
                       setHighlightedContributor(null);
                     }, 2500);
-                  }}
-                  onMarkerHover={(marker) => {
-                    if (marker) {
-                      console.log('Hovering:', marker.label);
-                    }
                   }}
                 />
               </div>
@@ -582,7 +552,7 @@ function ContributorCard({
     <Card
       className={cn(
         'group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border p-6',
-        'bg-gradient-to-b from-white/10 via-white/5 to-white/[0.02] backdrop-blur-xl border-white/15 dark:from-card/80 dark:to-card/40',
+        'border-border bg-card shadow-sm',
         'transition-all duration-500 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20',
         highlighted && [
           'border-primary ring-2 ring-primary/60 shadow-[0_0_40px_rgba(59,130,246,0.35)] bg-primary/[0.08]',
@@ -656,7 +626,7 @@ function ContributorCard({
                 <Badge
                   key={role}
                   variant="outline"
-                  className="rounded-lg border-white/10 bg-white/5 px-2.5 py-1 text-xs font-normal text-muted-foreground/90 backdrop-blur-sm transition-colors group-hover:border-primary/20"
+                  className="rounded-lg border-border bg-muted px-2.5 py-1 text-xs font-normal text-muted-foreground/90 transition-colors group-hover:border-primary/20"
                 >
                   {role}
                 </Badge>

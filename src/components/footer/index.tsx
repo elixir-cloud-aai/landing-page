@@ -1,89 +1,156 @@
+'use client';
 import Link from 'next/link';
 import { FC } from 'react';
-import { Mail } from 'lucide-react';
+import { Mail, MessageSquarePlus } from 'lucide-react';
 import { FaGithub, FaSlack } from 'react-icons/fa6';
+import * as CookieConsentApi from 'vanilla-cookieconsent';
+import {
+  CONTACT_EMAIL,
+  DOCS_HUB_URL,
+  FEEDBACK_URL,
+  SLACK_URL,
+  WEBSITE_REPO_URL,
+} from '@/lib/site';
+
+const columns = [
+  {
+    title: 'Explore',
+    links: [
+      { label: 'Products', href: '/products' },
+      { label: 'Services', href: '/services' },
+      { label: 'Projects', href: '/projects' },
+      { label: 'Documentation', href: DOCS_HUB_URL, external: true },
+    ],
+  },
+  {
+    title: 'Community',
+    links: [
+      { label: 'Overview', href: '/overview' },
+      { label: 'Contributors', href: '/contributors' },
+      { label: 'Partners', href: '/partners' },
+      { label: 'Funding', href: '/funding' },
+    ],
+  },
+];
+
+const linkClass = 'transition-colors hover:text-white';
 
 const Footer: FC = () => {
   return (
-    <footer className="bg-gray-900 text-gray-300 font-pop text-sm border-t border-gray-800">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
-        {/* Left: Brand Logos & Copyright */}
-        <div className="flex items-center gap-4 shrink-0">
-          <a
-            href="https://elixir-cloud.dcc.sib.swiss/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-transform hover:scale-105"
-          >
+    <footer className="border-t border-slate-800 bg-slate-950 font-pop text-sm text-slate-400">
+      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:px-8">
+        <div className="space-y-4">
+          <Link href="/" aria-label="ELIXIR On-Cloud home">
             <img
-              src="ELIXIR On-Cloud Logo Pack/On-Cloud_LockUp.png"
-              alt="elixir-cloud-aai-logo"
-              className="h-12 md:h-12 w-auto object-contain"
+              src="/ELIXIR On-Cloud Logo Pack/On-Cloud_MONO.png"
+              alt="ELIXIR On-Cloud"
+              className="h-10 w-auto"
             />
-          </a>
-          <span className="text-xs text-gray-400 hidden lg:inline">
-            © 2026 ELIXIR Cloud AAI • MIT License
-          </span>
+          </Link>
+          <p className="max-w-xs text-xs leading-5">
+            Federated, GA4GH standards-based cloud infrastructure for the life
+            sciences, built by the ELIXIR community.
+          </p>
+          <div className="flex items-center gap-1">
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              aria-label="Email us"
+              className={`${linkClass} p-1.5`}
+            >
+              <Mail className="h-4 w-4" />
+            </a>
+            <a
+              href={SLACK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Join our Slack"
+              className={`${linkClass} p-1.5`}
+            >
+              <FaSlack className="h-4 w-4" />
+            </a>
+            <a
+              href="https://github.com/elixir-cloud-aai/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub organization"
+              className={`${linkClass} p-1.5`}
+            >
+              <FaGithub className="h-4 w-4" />
+            </a>
+          </div>
         </div>
 
-        {/* Center: Navigation Links (Horizontal) */}
-        <div className="hidden md:flex items-center gap-6 text-xs font-medium">
-          <Link href="/overview" className="hover:text-white transition-colors">
-            Overview
-          </Link>
-          <Link
-            href="/contributors"
-            className="hover:text-white transition-colors"
+        {columns.map((column) => (
+          <nav key={column.title} aria-label={column.title}>
+            <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-200">
+              {column.title}
+            </h2>
+            <ul className="space-y-2">
+              {column.links.map((link) => (
+                <li key={link.label}>
+                  {link.external ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={linkClass}
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link href={link.href} className={linkClass}>
+                      {link.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))}
+
+        <div>
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-200">
+            Feedback
+          </h2>
+          <p className="mb-3 text-xs leading-5">
+            Something missing or wrong? We would love to hear from you.
+          </p>
+          <a
+            href={FEEDBACK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-xs font-medium text-slate-200 transition-colors hover:border-slate-500 hover:text-white"
           >
-            Contributors
-          </Link>
-          <Link href="/partners" className="hover:text-white transition-colors">
-            Partners
-          </Link>
-          <Link href="/funding" className="hover:text-white transition-colors">
-            Funding
-          </Link>
+            <MessageSquarePlus className="h-4 w-4" />
+            Give feedback
+          </a>
         </div>
+      </div>
 
-        {/* Right: Social Icons & Website Source ("We got nothing to hide") */}
-        <div className="flex items-center gap-4 text-gray-400">
-          <a
-            href="mailto:cloud-service@elixir-europe.org"
-            title="Email Us"
-            className="hover:text-white transition-colors p-1"
-          >
-            <Mail className="h-4 w-4" />
-          </a>
-          <a
-            href="https://join.slack.com/t/elixir-cloud/shared_invite/zt-1uvebyx1e-NcC0Hof2guT9df~haBdQaw"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Join Slack"
-            className="hover:text-white transition-colors p-1"
-          >
-            <FaSlack className="h-4 w-4" />
-          </a>
-          <a
-            href="https://github.com/elixir-cloud-aai/"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="GitHub Organization"
-            className="hover:text-white transition-colors p-1"
-          >
-            <FaGithub className="h-4 w-4" />
-          </a>
-
-          {/* Website Source Code Link */}
-          <a
-            href="https://github.com/elixir-cloud-aai/elixir-cloud-aai.github.io"
-            target="_blank"
-            rel="noopener noreferrer"
-            title="We got nothing to hide"
-            className="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1.5 border-l border-gray-700 pl-4"
-          >
-            <FaGithub className="h-3.5 w-3.5 text-primary" />
-            <span className="hidden sm:inline">Source Code</span>
-          </a>
+      <div className="border-t border-slate-800">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-5 text-xs sm:flex-row sm:items-center sm:justify-between lg:px-8">
+          <span>© {new Date().getFullYear()} ELIXIR On-Cloud · Apache-2.0</span>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <Link href="/privacy" className={linkClass}>
+              Privacy policy
+            </Link>
+            <button
+              type="button"
+              onClick={() => CookieConsentApi.showPreferences()}
+              className={linkClass}
+            >
+              Cookie settings
+            </button>
+            <a
+              href={WEBSITE_REPO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${linkClass} inline-flex items-center gap-1.5`}
+            >
+              <FaGithub className="h-3.5 w-3.5" />
+              Website source
+            </a>
+          </div>
         </div>
       </div>
     </footer>

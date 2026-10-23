@@ -33,7 +33,7 @@ export default function ProjectsPage() {
         duration={3}
         repeatDelay={1}
         className={cn(
-          'mask-[radial-gradient(520px_circle_at_center,white,transparent)]',
+          '[mask-image:radial-gradient(520px_circle_at_center,white,transparent)]',
           'inset-x-0 inset-y-[-30%] h-[200%] skew-y-12',
         )}
       />
@@ -184,7 +184,7 @@ function FeaturedProject({
   reversed: boolean;
 }) {
   return (
-    <Card className="group overflow-hidden rounded-3xl border-border/60 bg-card/70 shadow-sm backdrop-blur transition-all duration-300 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
+    <Card className="group overflow-hidden rounded-3xl border-border/60 bg-card/70 shadow-sm transition-all duration-300 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5">
       <div
         className={`grid lg:grid-cols-2 ${reversed ? 'lg:[&>*:first-child]:order-2' : ''}`}
       >
@@ -227,7 +227,7 @@ function FeaturedProject({
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
           <div className="absolute left-5 top-5 flex flex-wrap gap-2">
-            <Badge className="rounded-full bg-background/90 text-foreground backdrop-blur hover:bg-background">
+            <Badge className="rounded-full bg-background/90 text-foreground hover:bg-background">
               {project.category}
             </Badge>
             <Badge
@@ -406,7 +406,7 @@ function FeaturedProject({
 
 function ProjectCard({ project }: { project: any }) {
   return (
-    <Card className="group overflow-hidden rounded-3xl border-border/60 bg-card/70 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5">
+    <Card className="group overflow-hidden rounded-3xl border-border/60 bg-card/70 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5">
       <div className="relative aspect-[16/10] overflow-hidden bg-muted">
         <img
           src={project.images?.thumbnail || project.images?.cover || ''}
@@ -415,7 +415,7 @@ function ProjectCard({ project }: { project: any }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
         <div className="absolute left-4 top-4">
-          <Badge className="rounded-full bg-background/90 text-foreground backdrop-blur hover:bg-background">
+          <Badge className="rounded-full bg-background/90 text-foreground hover:bg-background">
             {project.category}
           </Badge>
         </div>

@@ -1,15 +1,33 @@
 'use client';
 import { FC, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import 'vanilla-cookieconsent/dist/cookieconsent.css';
 import * as CookieConsentApi from 'vanilla-cookieconsent';
+import { CONTACT_EMAIL } from '@/lib/site';
+
+// Apply the visitor's analytics choice. Runs on every page load once consent
+// exists (onConsent) and whenever it changes (onChange), not just the first time.
+const syncAnalytics = () => {
+  if (process.env.NODE_ENV !== 'production') return;
+  if (CookieConsentApi.acceptedCategory('analytics')) {
+    if (window.GAConsentGranted) window.GAConsentGranted();
+    // The GA helper may load after us; it checks this flag on startup.
+    else window.__pendingGAConsent = true;
+  } else {
+    window.__pendingGAConsent = false;
+    window.GAConsentRevoked?.();
+  }
+};
 
 const pluginConfig: CookieConsentApi.CookieConsentConfig = {
+  // Bump when the categories or the policy change, to ask everyone again.
+  revision: 1,
   autoClearCookies: true,
-  disablePageInteraction: true,
+  disablePageInteraction: false,
   guiOptions: {
     consentModal: {
-      layout: 'bar',
-      position: 'bottom center',
+      layout: 'box',
+      position: 'bottom left',
       equalWeightButtons: true,
       flipButtons: false,
     },
@@ -19,100 +37,95 @@ const pluginConfig: CookieConsentApi.CookieConsentConfig = {
       flipButtons: false,
     },
   },
-  onFirstConsent: ({ cookie }: { cookie: any }) => {
-    // check for production environment
-    // handle analytics cookies
-    if (
-      process.env.NODE_ENV === 'production' &&
-      cookie.categories.includes('analytics')
-    ) {
-      window.GAConsentGranted();
-    }
+  onConsent: syncAnalytics,
+  onChange: syncAnalytics,
+  categories: {
+    necessary: {
+      enabled: true,
+      readOnly: true,
+    },
+    analytics: {
+      // GDPR: consent must be opt-in, so this is off until the visitor agrees.
+      enabled: false,
+      autoClear: {
+        cookies: [{ name: /^_ga/ }, { name: '_gid' }],
+      },
+    },
   },
   language: {
     default: 'en',
     translations: {
       en: {
         consentModal: {
-          title: 'Cookie consent',
+          title: 'Cookies on this site',
           description:
-            "We use cookies to recognize your repeated visits and preferences, as well as to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.",
-          acceptAllBtn: 'Accept all',
-          acceptNecessaryBtn: 'Reject all',
-          showPreferencesBtn: 'Let me choose',
+            'We use strictly necessary storage to remember your settings, such as theme and cookie choices. With your permission, we also use Google Analytics to understand how the site is used so we can improve it. <a class="cc-link" href="/privacy">Privacy policy</a>',
+          acceptAllBtn: 'Accept analytics',
+          acceptNecessaryBtn: 'Reject analytics',
+          showPreferencesBtn: 'Manage preferences',
         },
         preferencesModal: {
-          title: 'Cookie Settings',
-          savePreferencesBtn: 'Save settings',
-          acceptAllBtn: 'Accept',
-          acceptNecessaryBtn: 'Reject',
+          title: 'Cookie preferences',
+          savePreferencesBtn: 'Save preferences',
+          acceptAllBtn: 'Accept all',
+          acceptNecessaryBtn: 'Reject all',
           closeIconLabel: 'Close',
           sections: [
             {
-              title: 'Cookie usage',
+              title: 'How we use cookies',
               description:
-                'We use cookies to ensure the basic functionalities of the website and to enhance your online experience. You can choose for each category to opt-in/out whenever you want.',
+                'You can change your choice at any time from the "Cookie settings" link in the footer. See our <a class="cc-link" href="/privacy">privacy policy</a> for details.',
             },
             {
-              title: 'Strictly necessary cookies',
+              title: 'Strictly necessary',
               description:
-                'These cookies are essential for the proper functioning of the website. Without these cookies, the website would not work properly',
-              linkedCategory: 'necessory',
+                'Required for the site to work, for example to remember your theme and your cookie choices. These cannot be turned off.',
+              linkedCategory: 'necessary',
             },
             {
-              title: 'Anylatics cookies',
+              title: 'Analytics',
               description:
-                'These cookies are used to collect information about how you use our website. The information collected includes the number of visitors, the source of traffic, and the pages visited anonymously.',
+                'Google Analytics cookies (_ga, _ga_*) that tell us which pages are visited and how visitors arrive, with IP anonymization enabled. Off unless you opt in.',
               linkedCategory: 'analytics',
-              // cookieTable: {
-              //   caption: 'Cookie table',
-              //   headers: {
-              //     name: 'Name',
-              //     domain: 'Domain',
-              //     expiration: 'Expiration',
-              //     desc: 'Description'
-              //   },
-              //   body: [
-              //     {
-              //       name: '_ga',
-              //       domain: typeof window !== "undefined" ? window?.location.hostname : '',
-              //       desc: 'Google analytics',
-              //     },
-              //     {
-              //       name: '_gid',
-              //       domain: typeof window !== "undefined" ? window?.location.hostname : '',
-              //       desc: 'Google analytics',
-              //     }
-              //   ]
-              // }
+              cookieTable: {
+                headers: {
+                  name: 'Name',
+                  provider: 'Provider',
+                  expiration: 'Expires',
+                },
+                body: [
+                  { name: '_ga', provider: 'Google', expiration: '2 years' },
+                  { name: '_ga_*', provider: 'Google', expiration: '2 years' },
+                ],
+              },
             },
             {
-              title: 'More information',
-              description:
-                'For any queries in relation to our policy on cookies and your choices, please <a class="cc-link" href="mailto:cloud-service@elixir-europe.org">contact us</a>.',
+              title: 'Questions',
+              description: `For questions about cookies or your data, <a class="cc-link" href="mailto:${CONTACT_EMAIL}">contact us</a>.`,
             },
           ],
         },
       },
     },
   },
-  categories: {
-    necessory: {
-      enabled: true,
-      readOnly: true,
-    },
-    analytics: {
-      enabled: true,
-    },
-  },
 };
 
 const CookieConsent: FC = () => {
+  const { resolvedTheme } = useTheme();
+
   useEffect(() => {
-    if (!document.getElementById('cc--main')) {
+    if (!document.getElementById('cc-main')) {
       CookieConsentApi.run(pluginConfig);
     }
   }, []);
+
+  // Match the banner to the site theme.
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      'cc--darkmode',
+      resolvedTheme === 'dark',
+    );
+  }, [resolvedTheme]);
 
   return null;
 };

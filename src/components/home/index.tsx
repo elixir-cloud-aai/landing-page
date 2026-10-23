@@ -1,11 +1,12 @@
 'use client';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import Link from 'next/link';
 import { Zoom } from 'react-awesome-reveal';
 import { AnimatedGridPattern } from '../ui/animated-grid-pattern';
 import { cn } from '@/lib/utils';
 import { MorphingText } from '../ui/morphing-text';
-import Globe3D, { GlobeMarker } from '../ui/3d-globe';
+import Globe3D from '../ui/globe-lazy';
+import { contributorMarkers } from '@/lib/contributor-markers';
 
 const texts = [
   <span className="text-elixirred" key="findable">
@@ -28,103 +29,15 @@ const texts = [
   </div>,
 ];
 
-const sampleMarkers: GlobeMarker[] = [
-  {
-    lat: 40.7128,
-    lng: -74.006,
-    src: 'https://assets.aceternity.com/avatars/1.webp',
-    label: 'New York',
-  },
-  {
-    lat: 51.5074,
-    lng: -0.1278,
-    src: 'https://assets.aceternity.com/avatars/2.webp',
-    label: 'London',
-  },
-  {
-    lat: 35.6762,
-    lng: 139.6503,
-    src: 'https://assets.aceternity.com/avatars/3.webp',
-    label: 'Tokyo',
-  },
-  {
-    lat: -33.8688,
-    lng: 151.2093,
-    src: 'https://assets.aceternity.com/avatars/4.webp',
-    label: 'Sydney',
-  },
-  {
-    lat: 48.8566,
-    lng: 2.3522,
-    src: 'https://assets.aceternity.com/avatars/5.webp',
-    label: 'Paris',
-  },
-  {
-    lat: 28.6139,
-    lng: 77.209,
-    src: 'https://assets.aceternity.com/avatars/6.webp',
-    label: 'New Delhi',
-  },
-  {
-    lat: 55.7558,
-    lng: 37.6173,
-    src: 'https://assets.aceternity.com/avatars/7.webp',
-    label: 'Moscow',
-  },
-  {
-    lat: -22.9068,
-    lng: -43.1729,
-    src: 'https://assets.aceternity.com/avatars/8.webp',
-    label: 'Rio de Janeiro',
-  },
-  {
-    lat: 31.2304,
-    lng: 121.4737,
-    src: 'https://assets.aceternity.com/avatars/9.webp',
-    label: 'Shanghai',
-  },
-  {
-    lat: 25.2048,
-    lng: 55.2708,
-    src: 'https://assets.aceternity.com/avatars/10.webp',
-    label: 'Dubai',
-  },
-  {
-    lat: -34.6037,
-    lng: -58.3816,
-    src: 'https://assets.aceternity.com/avatars/11.webp',
-    label: 'Buenos Aires',
-  },
-  {
-    lat: 1.3521,
-    lng: 103.8198,
-    src: 'https://assets.aceternity.com/avatars/12.webp',
-    label: 'Singapore',
-  },
-  {
-    lat: 37.5665,
-    lng: 126.978,
-    src: 'https://assets.aceternity.com/avatars/13.webp',
-    label: 'Seoul',
-  },
-];
+// Defined once so the globe doesn't get a new config object on every render.
+const globeConfig = {
+  atmosphereColor: '#4da6ff',
+  atmosphereIntensity: 20,
+  bumpScale: 5,
+  autoRotateSpeed: 0.3,
+};
 
 const Home: FC = () => {
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
-  const [innerWidth, setinnerWidth] = useState(1000);
-  const backgroundImgUrl = 'url(/Landing_Dark.svg)';
-
-  const handleMouseMove = (e = { clientX: 0, clientY: 0 }) => {
-    setX(e.clientX);
-    setY(e.clientY);
-    setinnerWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    handleMouseMove();
-  }, []);
-
   const renderTextLoop = () => (
     <MorphingText
       className="text-[clamp(2.7rem,8vw,6.5rem)] text-left font-semibold tracking-[-0.08em] md:h-28 lg:text-[7rem]"
@@ -140,20 +53,15 @@ const Home: FC = () => {
         duration={3}
         repeatDelay={1}
         className={cn(
-          'mask-[radial-gradient(520px_circle_at_center,white,transparent)]',
+          '[mask-image:radial-gradient(520px_circle_at_center,white,transparent)]',
           'inset-x-0 inset-y-[-30%] h-[200%] skew-y-12',
         )}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-white/55 via-transparent to-white/90 dark:from-slate-950/65 dark:to-slate-950/95" />
 
-      <main className="relative mx-auto flex min-h-screen flex-col px-6 py-10 md:px-10 lg:px-16">
+      <main className="relative mx-auto flex min-h-screen flex-col px-4 py-6 sm:px-6 md:px-10 md:py-10 lg:px-16">
         <section className="flex flex-1">
-          <div
-            className="grid w-full gap-12 p-8  md:p-12 lg:grid-cols-[1.12fr_0.88fr] lg:p-16 bg-white/10 backdrop-blur-[3px] backdrop-saturate-[129%] border border-white/59 rounded-[11px] dark:border-white/10 dark:bg-slate-950/70 dark:shadow-[0_30px_80px_-40px_rgba(0,0,0,0.75)]"
-            onMouseMove={(e) => {
-              handleMouseMove(e);
-            }}
-          >
+          <div className="grid w-full min-w-0 gap-12 p-5 sm:p-8 md:p-12 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)] lg:p-16 bg-card/85 border border-border rounded-[11px] dark:border-white/10 dark:bg-slate-950/70 dark:shadow-[0_30px_80px_-40px_rgba(0,0,0,0.75)]">
             <Zoom triggerOnce>
               <div className="flex flex-col justify-center">
                 <div className="inline-flex w-fit items-center rounded-full border border-elixirblue/20 bg-elixirblue/8 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-elixirblue shadow-sm dark:border-elixirblue/30 dark:bg-elixirblue/10">
@@ -161,10 +69,10 @@ const Home: FC = () => {
                 </div>
 
                 <div className="mt-8 space-y-6">
-                  <p className="text-xs font-medium uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">
+                  <p className="text-xs font-medium uppercase tracking-[0.2em] text-slate-500 sm:tracking-[0.35em] dark:text-slate-400">
                     FAIR data infrastructure for life sciences
                   </p>
-                  <h1 className="max-w-4xl text-5xl font-semibold leading-[0.95] tracking-[-0.07em] text-slate-900 md:text-7xl lg:text-[5.8rem] dark:text-white">
+                  <h1 className="max-w-4xl break-words text-[2.5rem] font-semibold leading-[0.95] tracking-[-0.05em] sm:text-5xl sm:tracking-[-0.07em] text-slate-900 md:text-7xl lg:text-[5.8rem] dark:text-white">
                     Making Cloud Infrastructure for the Life Sciences
                     <span className="mt-5 block">{renderTextLoop()}</span>
                   </h1>
@@ -199,26 +107,19 @@ const Home: FC = () => {
                     All over the world
                   </h2>
                   <p className="max-w-lg text-balance text-neutral-600 dark:text-neutral-400">
-                    Meet our distributed team of experts working across 6
-                    continents.
+                    Meet the{' '}
+                    <Link
+                      className="font-medium text-primary hover:underline"
+                      href="/contributors"
+                    >
+                      contributors
+                    </Link>{' '}
+                    building ELIXIR On-Cloud across Europe and beyond.
                   </p>
                   <Globe3D
                     className="absolute -bottom-96 -left-0 h-[700px]"
-                    markers={sampleMarkers}
-                    config={{
-                      atmosphereColor: '#4da6ff',
-                      atmosphereIntensity: 20,
-                      bumpScale: 5,
-                      autoRotateSpeed: 0.3,
-                    }}
-                    onMarkerClick={(marker) => {
-                      console.log('Clicked marker:', marker.label);
-                    }}
-                    onMarkerHover={(marker) => {
-                      if (marker) {
-                        console.log('Hovering:', marker.label);
-                      }
-                    }}
+                    markers={contributorMarkers}
+                    config={globeConfig}
                   />
                 </div>
               </div>
@@ -228,7 +129,7 @@ const Home: FC = () => {
 
         <Zoom triggerOnce>
           <section className="pb-8 pt-12 md:pt-16">
-            <div className="grid gap-8 rounded-[2rem] bg-white/10 backdrop-blur-[3px] backdrop-saturate-[129%] border border-white/59 rounded-[11px] dark:border-white/10 dark:bg-slate-950/70 dark:shadow-[0_30px_80px_-40px_rgba(0,0,0,0.75)] md:p-10 lg:grid-cols-[1.25fr_0.75fr] dark:border-white/10 dark:bg-slate-950/60">
+            <div className="grid gap-8 rounded-2xl bg-card/85 border border-border p-6 dark:border-white/10 dark:bg-slate-950/70 dark:shadow-[0_30px_80px_-40px_rgba(0,0,0,0.75)] md:p-10 lg:grid-cols-[1.25fr_0.75fr] dark:border-white/10 dark:bg-slate-950/60">
               <div className="space-y-5">
                 <p className="text-sm font-medium uppercase tracking-[0.32em] text-elixirblue">
                   Project focus

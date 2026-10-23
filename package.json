@@ -12,7 +12,8 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,scss,json,md}\"",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap",
+    "check-links": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

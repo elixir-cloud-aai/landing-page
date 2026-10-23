@@ -1,6 +1,5 @@
 import GAScript from '@/analytics/ga';
 import BaseLayout from '@/components/base-layout';
-import CookieConsent from '@/components/cookie-consent';
 import seo from '@/seo/base-seo';
 import '@/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
@@ -10,7 +9,10 @@ import { cn } from '@/lib/utils';
 export const metadata: Metadata = seo;
 
 export const viewport: Viewport = {
-  themeColor: '#3DA9F6',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
+  ],
 };
 
 export default function RootLayout({
@@ -19,13 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn('font-sans')}>
+    // next-themes sets the theme class on <html> before hydration.
+    <html lang="en" className={cn('font-sans')} suppressHydrationWarning>
       <body>
         {process.env.NODE_ENV === 'production' && <GAScript />}
 
         <BaseLayout>{children}</BaseLayout>
-
-        <CookieConsent />
       </body>
     </html>
   );

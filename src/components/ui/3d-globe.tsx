@@ -1,5 +1,12 @@
 'use client';
-import React, { useRef, useMemo, useState, useCallback, Suspense } from 'react';
+import React, {
+  useRef,
+  useMemo,
+  useState,
+  useCallback,
+  useEffect,
+  Suspense,
+} from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Html, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -142,25 +149,24 @@ function Marker({
 
   const lineHeight = topPosition.distanceTo(surfacePosition);
 
-  // Check if marker is facing the camera
+  // Check if marker is facing the camera. Runs every frame, so reuse vectors
+  // and only touch React state when visibility actually flips.
+  const worldPos = useMemo(() => new THREE.Vector3(), []);
+  const cameraDirection = useMemo(() => new THREE.Vector3(), []);
+  const visibleRef = useRef(true);
   useFrame(() => {
     if (!imageGroupRef.current) return;
 
-    // Get the world position of the image (the positioned element)
-    const worldPos = new THREE.Vector3();
     imageGroupRef.current.getWorldPosition(worldPos);
+    worldPos.normalize();
+    cameraDirection.copy(camera.position).normalize();
 
-    // Direction from globe center (0,0,0) to marker
-    const markerDirection = worldPos.clone().normalize();
-
-    // Direction from globe center to camera
-    const cameraDirection = camera.position.clone().normalize();
-
-    // Dot product: positive means facing camera, negative means behind
-    const dot = markerDirection.dot(cameraDirection);
-
-    // Show marker only if it's facing the camera (stricter threshold)
-    setIsVisible(dot > 0.1);
+    // Positive dot product means the marker faces the camera.
+    const nextVisible = worldPos.dot(cameraDirection) > 0.1;
+    if (nextVisible !== visibleRef.current) {
+      visibleRef.current = nextVisible;
+      setIsVisible(nextVisible);
+    }
   });
 
   const handlePointerEnter = useCallback(() => {
@@ -553,17 +559,40 @@ export function Globe3D({
     },
     [onMarkerClick],
   );
+
+  // Stop the render loop while the globe is off screen or the tab is hidden.
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isOnScreen, setIsOnScreen] = useState(true);
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return;
+    let intersecting = true;
+    const update = () =>
+      setIsOnScreen(intersecting && document.visibilityState === 'visible');
+    const observer = new IntersectionObserver(([entry]) => {
+      intersecting = entry.isIntersecting;
+      update();
+    });
+    observer.observe(element);
+    document.addEventListener('visibilitychange', update);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', update);
+    };
+  }, []);
+
   return (
     <div className={cn('relative w-full', className)}>
       {/* Globe */}
-      <div className="relative h-[500px] w-full">
+      <div ref={containerRef} className="relative h-[500px] w-full">
         <Canvas
+          frameloop={isOnScreen ? 'always' : 'never'}
           gl={{
             antialias: true,
             alpha: true,
             powerPreference: 'high-performance',
           }}
-          dpr={[1, 2]}
+          dpr={[1, 1.5]}
           camera={{
             fov: 45,
             near: 0.1,

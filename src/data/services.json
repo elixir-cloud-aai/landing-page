@@ -23,40 +23,182 @@
       "tags": ["GA4GH", "Service Registry", "Discovery"],
       "logo": null,
       "deploymentUrl": "https://registry.elixir-on.cloud",
-      "docsUrl": null,
+      "docsUrl": "https://elixir-cloud-aai.github.io/services/cloudregistry/",
       "repoUrl": "https://github.com/elixir-cloud-aai/cloud-registry",
+      "trackingUrl": null,
       "owners": [
         {
           "name": "Valentin Schneider-Lunitz",
           "email": null,
-          "image": "/images/contributors/valentin-schneider-lunitz.jpg"
+          "image": null
         }
       ]
     },
     {
       "id": "elixir-on-cloud-demonstrator",
       "name": "ELIXIR On-Cloud Demonstrator",
-      "tagline": "TODO: confirm with the existing TES Dashboard content",
-      "blurb": "TODO: write from the existing TES Dashboard card. Draft suggestion: A live demonstrator of GA4GH TES-based task execution across the ELIXIR On-Cloud network.",
-      "description": null,
-      "audience": [],
-      "features": [],
+      "tagline": "Try federated task execution in the browser",
+      "blurb": "A live demonstrator of GA4GH TES-based task execution across the ELIXIR On-Cloud network, built on the TES Dashboard.",
+      "description": "The Demonstrator is a public deployment of the TES Dashboard. It shows the ELIXIR On-Cloud compute stack end to end: submit tasks and workflows, follow them as they run on the TES network, and inspect the health of the gateway and the federated nodes.",
+      "audience": [
+        "Researchers evaluating ELIXIR On-Cloud",
+        "Node operators and developers who want to see the stack in action"
+      ],
+      "features": [
+        "Submit and track tasks across the federation",
+        "Network map of TES instances",
+        "Service health of the gateway and federated nodes"
+      ],
       "standards": ["GA4GH TES"],
-      "relatedProductId": null,
-      "nodes": ["German Node"],
-      "status": null,
+      "relatedProductId": "tes-dashboard",
+      "nodes": [{ "code": "DE", "name": "ELIXIR Germany", "status": "live" }],
+      "status": "Live",
       "tags": ["GA4GH", "TES", "Demonstrator"],
       "logo": null,
-      "deploymentUrl": null,
+      "deploymentUrl": "https://demo.elixir-on.cloud/",
       "docsUrl": null,
-      "repoUrl": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/tes-dashboard",
+      "trackingUrl": null,
       "owners": [
         {
           "name": "Valentin Schneider-Lunitz",
           "email": null,
-          "image": "/images/contributors/valentin-schneider-lunitz.jpg"
+          "image": null
         }
       ]
+    },
+    {
+      "id": "protes-gateway",
+      "name": "proTES Gateway",
+      "tagline": "One entry point to the ELIXIR On-Cloud TES network",
+      "blurb": "The central proTES deployment that receives GA4GH TES requests, applies middleware and forwards each task to a suitable node of the TES network.",
+      "description": "The proTES Gateway is the ELIXIR On-Cloud deployment of proTES. Clients talk to a single GA4GH TES endpoint; the gateway applies the configured middleware (for example access control and task distribution) and relays each task to one of the independently operated TES nodes in the network.",
+      "audience": [
+        "Workflow engines and clients submitting TES tasks",
+        "Operators of the TES network"
+      ],
+      "features": [
+        "Single GA4GH TES endpoint for the whole network",
+        "Middleware-based task distribution across nodes",
+        "Asynchronous tracking of forwarded tasks"
+      ],
+      "standards": ["GA4GH TES"],
+      "relatedProductId": "protes",
+      "nodes": [],
+      "status": "Live",
+      "tags": ["GA4GH", "TES", "Gateway"],
+      "logo": null,
+      "deploymentUrl": null,
+      "docsUrl": "https://elixir-cloud-aai.github.io/services/protes/",
+      "repoUrl": "https://github.com/elixir-cloud-aai/proTES",
+      "trackingUrl": null,
+      "owners": []
+    },
+    {
+      "id": "tes-network",
+      "name": "TES Network",
+      "tagline": "Federated GA4GH TES compute across ELIXIR Nodes",
+      "blurb": "Independently operated GA4GH TES endpoints at ELIXIR Nodes, reachable together through the proTES Gateway.",
+      "description": "The TES network is the compute layer of ELIXIR On-Cloud. Each participating ELIXIR Node runs its own GA4GH TES endpoint, for example TESK on Kubernetes or Funnel on HPC, and joins the federation behind the proTES Gateway. Nodes can be onboarded by following the administrator guide in the Documentation Hub.",
+      "audience": [
+        "Researchers running containerized tasks close to their data",
+        "ELIXIR Nodes that want to contribute compute"
+      ],
+      "features": [
+        "Standard GA4GH TES API at every node",
+        "Kubernetes (TESK, Poiesis) and HPC (Funnel) backends",
+        "Federated access through the proTES Gateway"
+      ],
+      "standards": ["GA4GH TES"],
+      "relatedProductId": "tesk",
+      "nodes": [
+        { "code": "CZ", "name": "ELIXIR Czech Republic", "status": "live" },
+        { "code": "DE", "name": "ELIXIR Germany", "status": "live" },
+        { "code": "FI", "name": "ELIXIR Finland", "status": "live" },
+        { "code": "GR", "name": "ELIXIR Greece", "status": "live" },
+        { "code": "NL", "name": "ELIXIR Netherlands", "status": "planned" }
+      ],
+      "status": "Live",
+      "tags": ["GA4GH", "TES", "Federation", "Compute"],
+      "logo": null,
+      "deploymentUrl": null,
+      "docsUrl": "https://elixir-cloud-aai.github.io/services/",
+      "repoUrl": null,
+      "trackingUrl": null,
+      "owners": []
+    },
+    {
+      "id": "weskit-bih",
+      "name": "WESkit @ BIH",
+      "tagline": "GA4GH WES for Snakemake and Nextflow workflows",
+      "blurb": "A WESkit deployment at the Berlin Institute of Health at Charité (BIH) that runs Snakemake and Nextflow workflows through the GA4GH WES API.",
+      "description": "WESkit is a GA4GH Workflow Execution Service (WES) implementation for Snakemake and Nextflow. The ELIXIR On-Cloud deployment is operated at the Berlin Institute of Health at Charité (BIH) and gives the network a WES endpoint for whole workflows, complementing task-level execution on the TES network.",
+      "audience": ["Researchers running Snakemake or Nextflow workflows"],
+      "features": [
+        "Implements the GA4GH WES API",
+        "Runs Snakemake and Nextflow workflows",
+        "Operated by an ELIXIR Germany partner"
+      ],
+      "standards": ["GA4GH WES"],
+      "relatedProductId": null,
+      "nodes": [{ "code": "DE", "name": "ELIXIR Germany", "status": "live" }],
+      "status": "Live",
+      "tags": ["GA4GH", "WES", "Snakemake", "Nextflow"],
+      "logo": null,
+      "deploymentUrl": null,
+      "docsUrl": "https://gitlab.com/one-touch-pipeline/weskit/documentation",
+      "repoUrl": "https://gitlab.com/one-touch-pipeline/weskit/api",
+      "trackingUrl": null,
+      "owners": []
+    },
+    {
+      "id": "conquest-service",
+      "name": "Conquest",
+      "tagline": "Nextflow, WDL and Snakemake runs through GA4GH WES",
+      "blurb": "A public Conquest deployment, the second WES backend for running Nextflow, WDL and Snakemake workflows from the TES Dashboard.",
+      "description": "Conquest is implemented but not yet deployed for ELIXIR On-Cloud. The first deployment will run tasks on Conquest's own internal TES/Kubernetes backend; it will later submit tasks to the proTES Gateway so that they run on the TES network.",
+      "audience": ["Researchers running Nextflow, WDL or Snakemake workflows"],
+      "features": [
+        "GA4GH WES API with Nextflow, WDL and Snakemake engines",
+        "Listed in the ELIXIR On-Cloud Registry once deployed"
+      ],
+      "standards": ["GA4GH WES", "GA4GH TES"],
+      "relatedProductId": "conquest",
+      "nodes": [],
+      "status": "Planned",
+      "tags": ["GA4GH", "WES", "Workflows"],
+      "logo": null,
+      "deploymentUrl": null,
+      "docsUrl": null,
+      "repoUrl": "https://github.com/anuragxxd/conquest",
+      "trackingUrl": "https://github.com/elixir-cloud-aai/generic-issues/issues/27",
+      "owners": []
+    },
+    {
+      "id": "pubgrade-service",
+      "name": "Pubgrade",
+      "tagline": "Central build-and-notify service for deployments",
+      "blurb": "The central Pubgrade instance: developers register repositories, Pubgrade builds and publishes images, and subscribed deployments are notified of updates.",
+      "description": "The central Pubgrade (broadcasting) service is not yet deployed. Once running, it will build and publish images for registered repositories and notify subscribed deployments through Pubgrade-Sidecar, optionally linked to the ELIXIR On-Cloud Registry.",
+      "audience": [
+        "Developers publishing service updates",
+        "Node operators who want deployments to update themselves"
+      ],
+      "features": [
+        "Register repositories and publish builds",
+        "Notify subscribed deployments on new builds"
+      ],
+      "standards": [],
+      "relatedProductId": "pubgrade",
+      "nodes": [],
+      "status": "Planned",
+      "tags": ["CI/CD", "Kubernetes", "Publish-Subscribe"],
+      "logo": null,
+      "deploymentUrl": null,
+      "docsUrl": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/Pubgrade",
+      "trackingUrl": "https://github.com/elixir-cloud-aai/Pubgrade/issues/30",
+      "owners": []
     }
   ]
 }

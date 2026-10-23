@@ -85,7 +85,7 @@ export default function FundingPage() {
 
       {/* Hero Header */}
       <section className="relative border-b">
-        <div className="mx-auto mt-24 max-w-7xl rounded-[16px] border border-white/20 bg-white/5 px-6 pb-14 pt-20 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] backdrop-blur-[2px] backdrop-saturate-[109%] lg:px-8 lg:pb-20 ">
+        <div className="mx-auto mt-24 max-w-7xl rounded-[16px] border border-border bg-card/85 px-6 pb-14 pt-20 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] lg:px-8 lg:pb-20">
           <div className="mx-auto max-w-3xl text-center">
             <Badge
               variant="secondary"
@@ -110,7 +110,7 @@ export default function FundingPage() {
           </div>
 
           {/* Stats Bar */}
-          <div className="mx-auto mt-12 grid max-w-3xl grid-cols-3 divide-x rounded-2xl border bg-card/70 p-1 shadow-sm backdrop-blur">
+          <div className="mx-auto mt-12 grid max-w-3xl grid-cols-3 divide-x rounded-2xl border bg-card/70 p-1 shadow-sm">
             <Stat value={grants.length} label="Total Grants" />
             <Stat value={gsocCount} label="GSoC Projects" />
             <Stat value={elixirCount} label="ELIXIR Grants" />
@@ -213,7 +213,7 @@ function FundingCard({ item }: { item: FundingItem }) {
   const isGSoC = item.funder.includes('Google Summer of Code');
 
   return (
-    <Card className="group relative bg-white/6 backdrop-blur-[2px] backdrop-saturate-[109%]  flex h-full flex-col justify-between overflow-hidden rounded-2xl border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5">
+    <Card className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5">
       {/* Background Hover Effect */}
       <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/10 blur-2xl transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
 

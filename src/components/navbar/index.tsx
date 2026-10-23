@@ -1,6 +1,8 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+'use client';
+import { FC, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { ChevronDown, ExternalLink, Moon, Sun, X } from 'lucide-react';
 import {
   Navbar,
   NavBody,
@@ -9,198 +11,203 @@ import {
   MobileNavToggle,
   MobileNavMenu,
 } from '@/components/ui/resizable-navbar';
+import servicesData from '@/data/services.json';
+import { DOCS_HUB_URL } from '@/lib/site';
+import { cn } from '@/lib/utils';
 
 interface NavbarProps {
-  scroll: number;
   setShowBanner: React.Dispatch<React.SetStateAction<boolean>>;
   showBanner: boolean;
   theme: string;
+  mounted: boolean;
   toggleDarkMode: () => void;
 }
 
+const links = [
+  { name: 'Projects', path: '/projects' },
+  { name: 'Products', path: '/products' },
+  { name: 'Services', path: '/services' },
+];
+
+// Every service with a public endpoint, so all live services are reachable
+// from the main navigation.
+const liveServices = servicesData.services.filter(
+  (service) => service.deploymentUrl,
+);
+
+// The colour lockup has dark grey text, so dark mode uses the white version.
+// The two files have different padding, hence separate sizes.
+const Logo: FC<{ lightClassName: string; darkClassName: string }> = ({
+  lightClassName,
+  darkClassName,
+}) => (
+  <>
+    <img
+      alt="ELIXIR On-Cloud"
+      className={cn('block w-auto dark:hidden', lightClassName)}
+      src="/ELIXIR On-Cloud Logo Pack/On-Cloud_LockUp.png"
+    />
+    <img
+      alt="ELIXIR On-Cloud"
+      className={cn('hidden w-auto dark:block', darkClassName)}
+      src="/ELIXIR On-Cloud Logo Pack/On-Cloud_MONO.png"
+    />
+  </>
+);
+
 const NavBar: FC<NavbarProps> = ({
-  scroll,
   toggleDarkMode,
   theme,
+  mounted,
   showBanner,
   setShowBanner,
 }) => {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [location, setLocation] = useState(pathname);
 
-  useEffect(() => {
-    setLocation(pathname);
-  }, [pathname]);
+  const isActive = (path: string) =>
+    pathname === path || pathname?.startsWith(`${path}/`);
 
-  const links = useMemo(
-    () => [
-      {
-        name: 'Projects',
-        path: '/projects',
-      },
-      {
-        name: 'Products',
-        path: '/products',
-      },
-      {
-        name: 'Services',
-        path: '/services',
-      },
-      {
-        name: 'Docs',
-        path: 'https://elixir-on-cloud.github.io/',
-      },
-    ],
-    [],
+  const themeToggle = (
+    <button
+      aria-label={
+        theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+      }
+      className="rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+      onClick={toggleDarkMode}
+      type="button"
+    >
+      {/* Icon is only known after mount; keep the box size stable before. */}
+      {!mounted ? (
+        <span className="block h-5 w-5" />
+      ) : theme === 'dark' ? (
+        <Moon className="h-5 w-5" />
+      ) : (
+        <Sun className="h-5 w-5" />
+      )}
+    </button>
   );
 
-  const renderDarkModeIcon = () => {
-    if (theme === 'light') {
-      return (
-        <svg
-          className="h-6 w-6 text-gray-500"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-          />
-        </svg>
-      );
-    }
-
-    return (
-      <svg
-        className="h-6 w-6 text-gray-200"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-        />
-      </svg>
-    );
-  };
-
   return (
-    <div className="fixed z-50 w-full  font-pop text-gray-700 dark:bg-gray-900 dark:text-gray-200">
+    <header className="sticky top-0 z-50 w-full font-pop">
       {showBanner && (
-        <div className="bg-elixirblue py-2 text-center text-xs text-white md:text-sm">
+        <div className="relative bg-elixirblue px-10 py-2 text-center text-xs text-white md:text-sm">
           This website is currently under construction and may have missing,
-          incomplete and/or outdated content
-          <span
-            className="mt-0 flex cursor-pointer justify-center md:absolute md:right-5 md:-mt-5"
+          incomplete and/or outdated content.
+          <button
+            aria-label="Dismiss banner"
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 hover:bg-white/15"
             onClick={() => {
               setShowBanner(false);
-              localStorage.setItem('banner-status', false.toString());
+              try {
+                localStorage.setItem('banner-status', 'false');
+              } catch {
+                // Storage can be unavailable (private mode); dismiss anyway.
+              }
             }}
+            type="button"
           >
-            <svg
-              className="h-4 w-4 md:h-5 md:w-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6 18L18 6M6 6l12 12"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
+            <X className="h-4 w-4" />
+          </button>
         </div>
       )}
 
-      <Navbar className="top-0">
-        <NavBody
-          className={
-            scroll <= 1
-              ? 'bg-white px-4 py-4 dark:bg-gray-900'
-              : 'bg-white px-4 py-3 dark:bg-gray-900'
-          }
-        >
-          {/* <Link href="/" passHref> */}
-          <a href="/" className="z-20 flex cursor-pointer items-center">
-            <img
-              alt="logo"
-              className="mx-2 inline-block w-36 pb-1"
-              height="auto"
-              src="/ELIXIR On-Cloud Logo Pack/On-Cloud_LockUp.png"
-              width="auto"
-            />
-            {/* <div className="text-lg font-semibold md:text-2xl">
-              ELIXIR On-Cloud
-            </div> */}
-          </a>
-          {/* </Link> */}
+      <Navbar>
+        <NavBody>
+          <Link href="/" className="z-20 flex items-center">
+            <Logo lightClassName="h-11" darkClassName="mx-2 h-8" />
+          </Link>
 
-          <div className="absolute inset-0 hidden items-center justify-center gap-4 lg:flex">
-            {links.map((link) => (
-              <Link href={link.path} key={link.name} passHref>
-                <span
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                    location === link.path
-                      ? 'bg-gray-100 text-elixirblue dark:bg-gray-800'
-                      : 'text-gray-600 hover:text-elixirblue dark:text-gray-300'
-                  }`}
+          <nav
+            aria-label="Main"
+            className="absolute inset-0 hidden items-center justify-center gap-1 lg:flex"
+          >
+            {links.map((link) =>
+              link.path === '/services' ? (
+                <div className="group relative" key={link.name}>
+                  <Link
+                    href={link.path}
+                    className={cn(
+                      'flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors',
+                      isActive(link.path)
+                        ? 'bg-muted text-primary'
+                        : 'text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    {link.name}
+                    <ChevronDown className="h-3.5 w-3.5 transition-transform group-focus-within:rotate-180 group-hover:rotate-180" />
+                  </Link>
+                  {/* Dropdown: opens on hover and on keyboard focus. */}
+                  <div className="invisible absolute left-1/2 top-full z-50 w-80 -translate-x-1/2 pt-2 opacity-0 transition-opacity duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                    <div className="rounded-xl border bg-popover p-2 text-popover-foreground shadow-xl">
+                      <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Live services
+                      </p>
+                      {liveServices.map((service) => (
+                        <a
+                          key={service.id}
+                          href={service.deploymentUrl as string}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-start gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-muted"
+                        >
+                          <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-success" />
+                          <span className="min-w-0">
+                            <span className="flex items-center gap-1 text-sm font-medium">
+                              {service.name}
+                              <ExternalLink className="h-3 w-3 text-muted-foreground" />
+                            </span>
+                            <span className="block truncate text-xs text-muted-foreground">
+                              {service.tagline}
+                            </span>
+                          </span>
+                        </a>
+                      ))}
+                      <Link
+                        href="/services"
+                        className="mt-1 block rounded-lg border-t px-3 py-2 text-sm font-medium text-primary hover:bg-muted"
+                      >
+                        All services and network coverage →
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  href={link.path}
+                  key={link.name}
+                  className={cn(
+                    'rounded-full px-4 py-2 text-sm font-medium transition-colors',
+                    isActive(link.path)
+                      ? 'bg-muted text-primary'
+                      : 'text-muted-foreground hover:text-foreground',
+                  )}
                 >
                   {link.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-
-          <div className="z-20 hidden lg:flex">
-            <button
-              className="rounded-md p-1"
-              onClick={() => toggleDarkMode()}
-              type="button"
+                </Link>
+              ),
+            )}
+            <a
+              href={DOCS_HUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
-              {renderDarkModeIcon()}
-            </button>
-          </div>
+              Docs
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          </nav>
+
+          <div className="z-20 hidden lg:flex">{themeToggle}</div>
         </NavBody>
 
         <MobileNav>
           <MobileNavHeader>
-            <Link href="/" passHref>
-              <div
-                className="flex cursor-pointer items-center"
-                onClick={() => {
-                  setLocation('/');
-                }}
-              >
-                <img
-                  alt="logo"
-                  className="mx-2 inline-block w-6 pb-1"
-                  height="auto"
-                  src="/elixir-cloud-aai.png"
-                  width="auto"
-                />
-                <div className="text-base font-semibold">ELIXIR On-Cloud</div>
-              </div>
+            <Link href="/" className="flex items-center">
+              <Logo lightClassName="h-9" darkClassName="mx-1 h-6" />
             </Link>
-            <div className="flex items-center gap-2">
-              <button
-                className="rounded-md p-1"
-                onClick={() => toggleDarkMode()}
-                type="button"
-              >
-                {renderDarkModeIcon()}
-              </button>
+            <div className="flex items-center gap-1">
+              {themeToggle}
               <MobileNavToggle
                 isOpen={isMobileMenuOpen}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -217,19 +224,45 @@ const NavBar: FC<NavbarProps> = ({
                 key={item.name}
                 href={item.path}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`relative block text-base ${
-                  location === item.path
-                    ? 'text-elixirblue'
-                    : 'text-neutral-600 dark:text-neutral-300'
-                }`}
+                className={cn(
+                  'block text-base font-medium',
+                  isActive(item.path) ? 'text-primary' : 'text-foreground',
+                )}
               >
                 {item.name}
               </Link>
             ))}
+            <div className="w-full border-t pt-3">
+              <p className="pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Live services
+              </p>
+              {liveServices.map((service) => (
+                <a
+                  key={service.id}
+                  href={service.deploymentUrl as string}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 py-1.5 text-sm text-muted-foreground"
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-success" />
+                  {service.name}
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              ))}
+            </div>
+            <a
+              href={DOCS_HUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-base font-medium text-foreground"
+            >
+              Docs
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
           </MobileNavMenu>
         </MobileNav>
       </Navbar>
-    </div>
+    </header>
   );
 };
 

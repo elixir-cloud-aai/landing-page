@@ -9,6 +9,8 @@ declare module '*.svg' {
 declare global {
   interface Window {
     gtag: any;
-    GAConsentGranted: any;
+    GAConsentGranted?: () => void;
+    GAConsentRevoked?: () => void;
+    __pendingGAConsent?: boolean;
   }
 }

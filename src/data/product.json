@@ -46,13 +46,13 @@
       "standards": ["GA4GH TES"],
       "tags": ["GA4GH", "TES", "Kubernetes"],
       "license": "Apache-2.0",
-      "logo": "/images/products/tesk.png",
+      "logo": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/TESK",
       "docsUrl": "https://tesk.readthedocs.io",
       "owner": {
         "name": "Alex Kanitz",
         "email": "alexander.kanitz@unibas.ch",
-        "image": "/images/contributors/alex-kanitz.jpg"
+        "image": "/contributors/alex_kanitz.jpg"
       }
     },
     {
@@ -100,11 +100,11 @@
       "license": "Apache-2.0",
       "logo": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/proTES",
-      "docsUrl": null,
+      "docsUrl": "https://protes.readthedocs.io/",
       "owner": {
         "name": "Alex Kanitz",
         "email": "alexander.kanitz@unibas.ch",
-        "image": "/images/contributors/alex-kanitz.jpg"
+        "image": "/contributors/alex_kanitz.jpg"
       }
     },
     {
@@ -145,7 +145,7 @@
       "owner": {
         "name": "Alex Kanitz",
         "email": "alexander.kanitz@unibas.ch",
-        "image": "/images/contributors/alex-kanitz.jpg"
+        "image": "/contributors/alex_kanitz.jpg"
       }
     },
     {
@@ -187,9 +187,204 @@
         }
       ],
       "owner": {
-        "name": "Anurag",
+        "name": "Anurag Gupta",
         "email": null,
-        "image": "/images/contributors/anurag.jpg"
+        "image": "/contributors/anurag_gupta.jpg"
+      }
+    },
+    {
+      "id": "poiesis",
+      "name": "Poiesis",
+      "tagline": "GA4GH TES v1.1 on Kubernetes",
+      "blurb": "A cloud-native GA4GH Task Execution Service (TES) v1.1.0 implementation for Kubernetes.",
+      "description": "Poiesis is a cloud-native implementation of the GA4GH Task Execution Service (TES) v1.1.0, designed for Kubernetes. Like TESK and Funnel it exposes a standards-compliant TES API for running containerized workloads, with an architecture that emphasizes stateless execution, strong authentication and Kubernetes-native operations.",
+      "audience": [
+        "Admins deploying a TES endpoint on Kubernetes",
+        "Node operators joining the TES network"
+      ],
+      "features": [
+        "Implements GA4GH TES v1.1.0",
+        "Kubernetes-native task execution",
+        "Stateless execution design",
+        "Built-in authentication"
+      ],
+      "deployment": ["Kubernetes"],
+      "relatedRepos": [
+        {
+          "name": "poiesisd",
+          "description": "GA4GH TES on Docker",
+          "url": "https://github.com/JaeAeich/poiesisd"
+        },
+        {
+          "name": "poiesis-mcp",
+          "description": "Model Context Protocol server for TES",
+          "url": "https://github.com/JaeAeich/poiesis-mcp"
+        }
+      ],
+      "standards": ["GA4GH TES"],
+      "tags": ["GA4GH", "TES", "Kubernetes"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/JaeAeich/poiesis",
+      "docsUrl": "https://poiesis.jaeaeich.com/",
+      "owner": {
+        "name": "Javed Habib",
+        "email": null,
+        "image": null
+      }
+    },
+    {
+      "id": "pubgrade",
+      "name": "Pubgrade",
+      "tagline": "Publish-subscribe CI/CD for deployments",
+      "blurb": "A decoupled publish-subscribe CI/CD service that builds images and notifies subscribed deployments, which update themselves through Pubgrade-Sidecar.",
+      "description": "Pubgrade (Publish-Upgrade) is a decoupled, publish-subscribe-based continuous integration and delivery service. Developers register a Git repository; Pubgrade builds and publishes images and notifies subscribed deployments, which decide autonomously what to do with an update. Pubgrade-Sidecar is co-deployed next to a subscribed service and applies those updates in the cluster. Pubgrade can optionally link to the ELIXIR Cloud Service Registry.",
+      "audience": [
+        "Developers publishing service updates",
+        "Node operators who want deployments to update themselves"
+      ],
+      "features": [
+        "Register Git repositories",
+        "Create and publish image builds",
+        "Register subscriptions per branch or tag",
+        "Notify subscribers on new builds",
+        "Pubgrade-Sidecar updates the subscribed Kubernetes deployment"
+      ],
+      "deployment": ["Kubernetes (Helm chart)"],
+      "relatedRepos": [
+        {
+          "name": "Pubgrade-Sidecar",
+          "description": "Co-deployed next to a subscribed service; receives Pubgrade notifications and updates the deployment's image",
+          "url": "https://github.com/elixir-cloud-aai/Pubgrade-Sidecar"
+        }
+      ],
+      "status": "Beta; the API may change without notice",
+      "standards": [],
+      "tags": ["CI/CD", "Kubernetes", "Publish-Subscribe"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/Pubgrade",
+      "docsUrl": null,
+      "owner": {
+        "name": "Akash Saini",
+        "email": null,
+        "image": "/contributors/akash_saini.jpg"
+      }
+    },
+    {
+      "id": "ga4gh-sdk",
+      "name": "GA4GH SDK & CLI",
+      "tagline": "One SDK and CLI for GA4GH API services",
+      "blurb": "A generic Rust SDK and command-line client for GA4GH API services such as TES and WES.",
+      "description": "The GA4GH SDK is a generic software development kit and CLI for GA4GH API services, written in Rust. Its models are generated from the services' OpenAPI specifications, so it can be extended to further GA4GH or custom OpenAPI-backed services. It is tested against Funnel (TES) and the GA4GH Starter Kit WES.",
+      "audience": [
+        "Developers building clients for GA4GH services",
+        "Users scripting TES and WES from the command line"
+      ],
+      "features": [
+        "Generic SDK and CLI for GA4GH APIs",
+        "Models auto-generated from OpenAPI specifications",
+        "Tested against TES (Funnel) and WES (Starter Kit) servers"
+      ],
+      "techStack": ["Rust"],
+      "status": "Pre-release; breaking changes may occur",
+      "standards": ["GA4GH TES", "GA4GH WES"],
+      "tags": ["GA4GH", "SDK", "CLI", "Rust"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/ga4gh/ga4gh-sdk",
+      "docsUrl": null,
+      "owner": null
+    },
+    {
+      "id": "conquest",
+      "name": "Conquest",
+      "tagline": "WES control plane for Nextflow, WDL and Snakemake",
+      "blurb": "A GA4GH Workflow Execution Service that runs Nextflow, WDL and Snakemake pipelines on Kubernetes, with S3 as the data plane.",
+      "description": "Conquest implements a GA4GH WES control plane with an internal TES backend. A single Go binary acts as API server, workflow runner and task file stager. Each run gets a runner job on Kubernetes; the workflow engine submits individual tasks to Conquest's TES API, and each task stages its inputs from and outputs to S3-compatible object storage. PostgreSQL is the system of record.",
+      "audience": [
+        "Researchers running Nextflow, WDL or Snakemake workflows",
+        "Admins deploying a WES endpoint"
+      ],
+      "features": [
+        "GA4GH WES v1.1 API",
+        "Nextflow, WDL (miniwdl) and Snakemake engines, version selectable per run",
+        "Per-task CPU, memory and disk control with platform floors and ceilings",
+        "S3/MinIO object storage as the data plane",
+        "Helm chart for Kubernetes"
+      ],
+      "techStack": ["Go", "PostgreSQL", "Kubernetes", "S3/MinIO"],
+      "deployment": ["Kubernetes (Helm chart in deploy/charts/conquest)"],
+      "standards": ["GA4GH WES", "GA4GH TES"],
+      "tags": ["GA4GH", "WES", "Workflows", "Kubernetes"],
+      "license": null,
+      "logo": null,
+      "repoUrl": "https://github.com/anuragxxd/conquest",
+      "docsUrl": null,
+      "owner": {
+        "name": "Anurag Gupta",
+        "email": null,
+        "image": "/contributors/anurag_gupta.jpg"
+      }
+    },
+    {
+      "id": "tes-dashboard",
+      "name": "TES Dashboard",
+      "tagline": "Monitor and manage federated TES instances",
+      "blurb": "A dashboard for monitoring TES gateways and nodes, submitting tasks and workflows, and administering a federated TES network.",
+      "description": "The TES Dashboard monitors and manages GA4GH TES instances and workflow execution across federated cloud infrastructure. It shows the health of the gateway and each node, a network map of TES instances, and lets users submit and follow tasks and CWL, Nextflow or Snakemake workflows. Admin tools cover node management and the proTES middleware pipeline.",
+      "audience": [
+        "Researchers submitting tasks and workflows",
+        "Operators of a federated TES network"
+      ],
+      "features": [
+        "Real-time service status of the gateway and federated nodes",
+        "Interactive network map of TES instances",
+        "Task and workflow submission and tracking (CWL, Nextflow, Snakemake)",
+        "Node, instance and middleware management for admins"
+      ],
+      "techStack": ["React", "Flask", "Docker Compose"],
+      "deployment": ["Docker Compose"],
+      "standards": ["GA4GH TES"],
+      "tags": ["GA4GH", "TES", "Dashboard", "Monitoring"],
+      "license": null,
+      "logo": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/tes-dashboard",
+      "docsUrl": null,
+      "owner": null
+    },
+    {
+      "id": "ga4gh-io-schema",
+      "name": "GA4GH I/O Schema",
+      "tagline": "A JSON Schema profile for workflow inputs and outputs",
+      "blurb": "An incubating GA4GH JSON Schema profile that gives workflows and tools a machine-readable input/output contract, with a Python validator.",
+      "description": "The GA4GH I/O Schema profile proposes a strict, machine-readable contract for workflow and tool parameters that sits above workflow languages such as CWL, WDL and Nextflow. Generic WES clients can use it to generate input forms and validate complex inputs, such as sample tables, on the client, and AI agents can use it to build valid execution requests. The repository ships the meta-schema and a validation CLI (deliverable D4.3).",
+      "audience": [
+        "Workflow and tool authors",
+        "Developers of WES clients and registries"
+      ],
+      "features": [
+        "Meta-schema based on JSON Schema Draft 2020-12",
+        "UI widget vocabulary for generated forms",
+        "ga4gh-io-schema-validator command-line tool",
+        "Planned as an IO_SCHEMA file type for TRS"
+      ],
+      "quickStart": [
+        "git clone https://github.com/uniqueg/ga4gh-io-schema.git && cd ga4gh-io-schema",
+        "pip install -e \".[dev]\"",
+        "ga4gh-io-schema-validator --schema path/to/your-schema.json --meta-schema schemas/ga4gh-io-profile.schema.json"
+      ],
+      "status": "Incubating proposal",
+      "standards": ["GA4GH WES", "GA4GH TRS"],
+      "tags": ["GA4GH", "JSON Schema", "Workflows", "Standards"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/uniqueg/ga4gh-io-schema",
+      "docsUrl": null,
+      "owner": {
+        "name": "Alex Kanitz",
+        "email": "alexander.kanitz@unibas.ch",
+        "image": "/contributors/alex_kanitz.jpg"
       }
     }
   ]
