@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM node:22-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -6,9 +6,10 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies using npm
-COPY package.json ./
-RUN npm i -f
+# Install exactly what the lockfile pins. Scripts are skipped because the only
+# one is the husky git hook, which needs a git checkout.
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -18,13 +19,12 @@ COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Set the NOTION_SECRET environment variable
-ARG NOTION_SECRET
-RUN test -n "$NOTION_SECRET" || (echo "Environment variable NOTION_SECRET not set in build context" && false)
-ENV NOTION_TOKEN $NOTION_SECRET
+# The site has no build-time secrets. GA_MEASUREMENT_ID is public (it ends up
+# in the page) and is optional.
+ARG GA_MEASUREMENT_ID
+ENV GA_MEASUREMENT_ID=$GA_MEASUREMENT_ID
 
 RUN npm run build
 
@@ -33,8 +33,7 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-# Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs

@@ -1,0 +1,59 @@
+{
+  "nodes": [
+    {
+      "code": "CZ",
+      "name": "ELIXIR Czech Republic",
+      "country": "Czech Republic",
+      "status": "live",
+      "institute": null,
+      "website": "https://www.elixir-czech.cz/",
+      "logo": null,
+      "liaison": null,
+      "contact": null
+    },
+    {
+      "code": "DE",
+      "name": "ELIXIR Germany",
+      "country": "Germany",
+      "status": "live",
+      "institute": null,
+      "website": "https://www.denbi.de/",
+      "logo": null,
+      "liaison": null,
+      "contact": null
+    },
+    {
+      "code": "FI",
+      "name": "ELIXIR Finland",
+      "country": "Finland",
+      "status": "live",
+      "institute": null,
+      "website": "https://www.elixir-finland.org/",
+      "logo": null,
+      "liaison": null,
+      "contact": null
+    },
+    {
+      "code": "GR",
+      "name": "ELIXIR Greece",
+      "country": "Greece",
+      "status": "live",
+      "institute": null,
+      "website": null,
+      "logo": null,
+      "liaison": null,
+      "contact": null
+    },
+    {
+      "code": "NL",
+      "name": "ELIXIR Netherlands",
+      "country": "Netherlands",
+      "status": "planned",
+      "institute": null,
+      "website": "https://www.health-ri.nl/elixir",
+      "logo": null,
+      "liaison": null,
+      "contact": null
+    }
+  ]
+}

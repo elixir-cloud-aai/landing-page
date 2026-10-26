@@ -1,0 +1,50 @@
+# Weekly dead-link check. Not a required PR check, because external sites go
+# down at random and would block merges. Opens (or updates) one issue instead.
+name: Link check
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check links
+        id: check
+        run: |
+          set +e
+          node scripts/check-links.mjs > links.txt
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          cat links.txt
+
+      - name: Report dead links
+        if: steps.check.outputs.status != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="Dead links on the website"
+          {
+            echo "The weekly link check found dead links ([run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}))."
+            echo
+            echo '```'
+            sed -n '/^Checked /,$p' links.txt
+            echo '```'
+          } > body.md
+          existing=$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[0].number')
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file body.md
+          else
+            gh issue create --title "$title" --body-file body.md
+          fi

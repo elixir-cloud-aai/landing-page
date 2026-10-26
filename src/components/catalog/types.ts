@@ -66,3 +66,20 @@ export interface Service {
   trackingUrl: string | null;
   owners: Owner[];
 }
+
+export interface NodeContact {
+  email: string | null;
+  url: string | null;
+}
+
+export interface ElixirNode {
+  code: string;
+  name: string;
+  country: string;
+  status: NodeStatus;
+  institute: string | null;
+  website: string | null;
+  logo: string | null;
+  liaison: Owner | null;
+  contact: NodeContact | null;
+}

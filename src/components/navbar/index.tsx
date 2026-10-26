@@ -27,6 +27,7 @@ const links = [
   { name: 'Projects', path: '/projects' },
   { name: 'Products', path: '/products' },
   { name: 'Services', path: '/services' },
+  { name: 'Nodes', path: '/nodes' },
 ];
 
 // Every service with a public endpoint, so all live services are reachable

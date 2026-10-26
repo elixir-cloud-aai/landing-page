@@ -1,15 +1,30 @@
-version: '3.6'
+# Production deployment for https://elixir-on.cloud/
+#
+# CI pushes a new image to GHCR on every push to main. Watchtower checks GHCR
+# every 5 minutes and restarts the site when the image changes, so the host
+# never needs inbound access from GitHub.
+#
+#   docker compose up -d          # start (or update this file and re-run)
+#   docker compose logs -f site   # follow the site's logs
+#
+# To build locally instead of pulling: docker compose up -d --build
 services:
-  landing-page:
-     image: elixircloud/landing-page:current
-     container_name: landing-page
-     build:
-       context: .
-       dockerfile: Dockerfile
-       args:
-         NOTION_SECRET: $NOTION_TOKEN
-     environment:
-     - NOTION_TOKEN=$NOTION_TOKEN
-     restart: unless-stopped
-     ports:
-      - "80:3000"
+  site:
+    image: ghcr.io/elixir-cloud-aai/landing-page:latest
+    container_name: landing-page
+    build:
+      context: .
+    restart: unless-stopped
+    ports:
+      - '80:3000'
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  watchtower:
+    image: containrrr/watchtower:1.7.1
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Only update containers that opt in via the label above; remove old images.
+    command: --label-enable --cleanup --interval 300

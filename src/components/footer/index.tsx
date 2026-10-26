@@ -18,6 +18,7 @@ const columns = [
     links: [
       { label: 'Products', href: '/products' },
       { label: 'Services', href: '/services' },
+      { label: 'Nodes', href: '/nodes' },
       { label: 'Projects', href: '/projects' },
       { label: 'Documentation', href: DOCS_HUB_URL, external: true },
     ],
@@ -25,10 +26,9 @@ const columns = [
   {
     title: 'Community',
     links: [
-      { label: 'Overview', href: '/overview' },
       { label: 'Contributors', href: '/contributors' },
-      { label: 'Partners', href: '/partners' },
       { label: 'Funding', href: '/funding' },
+      { label: 'News', href: '/news' },
     ],
   },
 ];

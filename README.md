@@ -1,13 +1,13 @@
-# ELIXR Cloud & AAI landing page
+# ELIXIR On-Cloud landing page
 
 [![license][badge-license]][badge-url-license]
 [![website][badge-health]][badge-url-health]
 [![chat][badge-chat]][badge-url-chat]
 [![ci][badge-ci]][badge-url-ci]
-[![cd][badge-cd]][badge-url-cd]
+[![deploy][badge-cd]][badge-url-cd]
 
 This is the repository for the [official website][badge-url-health] of **ELIXIR
-Cloud & AAI**, a transnational effort towards establishing a federated [cloud
+On-Cloud**, a transnational effort towards establishing a federated [cloud
 computing][res-cloud-computing] network enabling the analysis of
 population-scale genomic and phenotypic data across participating nodes.
 
@@ -19,126 +19,60 @@ Health][res-ga4gh].
 
 ## About this repository
 
-This website is built using the [Next.js][res-next] framework for
-[React.js][res-react]. Most of the pages on the website are built by
-[Incremental Static
-Regeneration](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration)
-server-side for fast client-side rendering and better SEO.
+This website is built with [Next.js][res-next] and [React][res-react]. Every
+page is rendered statically at build time; there is no backend and no
+build-time secret.
 
-Dynamic content for the website is fetched from [Notion][res-notion], where it
-can be conveniently edited by authorized users. If you are a member of ELIXIR
-Cloud & AAI and would like to contribute dynamic content, please [contact
-us](#contact).
+Content lives in JSON files under `src/data/`:
+
+| File               | Page                                                              |
+| ------------------ | ----------------------------------------------------------------- |
+| `product.json`     | [Products](https://elixir-on.cloud/products)                      |
+| `services.json`    | [Services](https://elixir-on.cloud/services)                      |
+| `nodes.json`       | [Nodes](https://elixir-on.cloud/nodes) (flags in `public/flags/`) |
+| `project.json`     | [Projects](https://elixir-on.cloud/projects)                      |
+| `contributor.json` | [Contributors](https://elixir-on.cloud/contributors)              |
+| `funding.json`     | [Funding](https://elixir-on.cloud/funding)                        |
+
+To change content, edit the relevant file and open a pull request.
 
 ## Developing
 
-Anyone is welcome to contribute to website development. To set up a development
-environment, follow the steps outlined in this section.
-
-### Development requirements
-
-Ensure you have the following software installed:
-
-- Node (v14.8.0)
-- Node.js (v10.19.0)
-- NPM (6.14.7)
-
-> These are the versions used for development/testing. Other versions may or
-> may not work. Please let us know if you encounter any issues with _newer_
-> versions than the ones listed.
-
-### Setting up the development environment
-
-Fork & clone this repository on your local machine, then install the required
-dependencies with:
+Requirements: Node.js 22 and npm.
 
 ```bash
 npm install
-```
-
-For the API/backend, first create a [Notion][res-notion]. Then, open the
-[ELIXIR On-Cloud Notion page][res-notion-elixir-cloud-aai] and duplicate
-it to your account. Then, create a [Notion Developers account][res-notion-devs]
-with the same email. Finally, [create a new integration][res-notion-integration]
-in your account, note down the "Internal Integration Token" and [link the
-integration][res-notion-link-integration] to the to the duplicated page in your
-account.
-
-Create a file `.env.local` in the repository's root directory with the
-following command (don't forget to replace the values with your own ones):
-
-```bash
-cat << EOF > .env.local
-NOTION_TOKEN=<YOUR_TOKEN>
-EOF
-```
-
-> An example file with the required variables is also available in
-> `.sample.env`. Instead of the command above, you can make a copy of the file
-> in `.env` and replace the values with your own.
-
-Start the local development server with:
-
-```bash
+cp .env.example .env.local   # optional; all values have defaults
 npm run dev
 ```
 
+Useful commands:
+
+- `npm run build`: production build (also generates the sitemap)
+- `npx tsc --noEmit`: type-check
+- `npm run check-links`: report dead outbound links in `src/`
+
 ## Deploying
 
-The website can be conveniently deployed via Docker Compose.
-
-### Deployment requirements
-
-Ensure you have the following software installed:
-
-- Docker (19.03.8, build afacb8b7f0)
-- Docker Compose (1.23.1, build b02f1306)
-- Git (2.25.1)
-
-> These are the versions used for development/testing. Other versions may or
-> may not work. Please let us know if you encounter any issues with _newer_
-> versions than the ones listed.
-
-### Deploying the website
-
-To deploy the app, first clone the repository with _either_ of the following:
+Pushes to `main` trigger the [Deploy workflow](.github/workflows/deploy.yml),
+which publishes the image to `ghcr.io/elixir-cloud-aai/landing-page` (tagged
+`latest` and with the commit SHA). On the host,
+[`docker-compose.yaml`](docker-compose.yaml) runs the site together with
+[Watchtower](https://containrrr.dev/watchtower/), which pulls new images every
+5 minutes and restarts the site:
 
 ```bash
 git clone https://github.com/elixir-cloud-aai/landing-page.git
-git clone git@github.com:elixir-cloud-aai/landing-page.git
-gh repo clone elixir-cloud-aai/landing-page
+cd landing-page
+docker compose up -d
 ```
 
-Then set the Notion token:
+The site listens on port 80 (change it in `docker-compose.yaml`). TLS is
+expected to be terminated by a reverse proxy in front of it.
 
-```bash
-export NOTION_TOKEN=<YOUR-TOKEN>
-```
-
-Finally, build and deploy the app image with the following command:
-
-```bash
-docker-compose up --build -d
-```
-
-The website should now be available at `http://localhost`.
-
-> By default, the website is served at port 80. You can change that in
-> `docker-compose.yaml`.
-
-Of course, these deployment instructions are only a starting point. You may
-want to adapt them to your individual needs.
-
-> **IMPORTANT NOTE:** **Never** publish the built container image! It will be
-> easy to access your Notion token.
-
-### Taking down the website
-
-To stop the server, run:
-
-```bash
-docker-compose down
-```
+To roll back, pin the `site` image to a previous `sha-<commit>` tag and run
+`docker compose up -d`. To build locally instead of pulling, run
+`docker compose up -d --build`.
 
 ## License
 
@@ -153,14 +87,14 @@ for anything else, you can join our [Slack board][badge-url-chat], start a
 thread in our [Q&A forum][contact-qa], or send us an [email][contact-email].
 
 [badge-chat]: https://img.shields.io/static/v1?label=chat&message=Slack&color=ff6994
-[badge-cd]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/cd_status.yml/badge.svg
-[badge-ci]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/build.yml/badge.svg
-[badge-health]: https://img.shields.io/website?url=https%3A%2F%2Felixir-cloud.dcc.sib.swiss%2F
+[badge-cd]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg
+[badge-ci]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg
+[badge-health]: https://img.shields.io/website?url=https%3A%2F%2Felixir-on.cloud%2F
 [badge-license]: https://img.shields.io/badge/license-Apache%202.0-blue.svg
-[badge-url-cd]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/cd_status.yml
+[badge-url-cd]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml
 [badge-url-chat]: https://join.slack.com/t/elixir-cloud/shared_invite/enQtNzA3NTQ5Mzg2NjQ3LTZjZGI1OGQ5ZTRiOTRkY2ExMGUxNmQyODAxMDdjM2EyZDQ1YWM0ZGFjOTJhNzg5NjE0YmJiZTZhZDVhOWE4MWM
-[badge-url-ci]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/build.yml
-[badge-url-health]: https://elixir-cloud.dcc.sib.swiss/
+[badge-url-ci]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml
+[badge-url-health]: https://elixir-on.cloud/
 [badge-url-license]: http://www.apache.org/licenses/LICENSE-2.0
 [contact-email]: mailto:cloud-service@elixir-europe.org
 [contact-issue-tracker]: https://github.com/elixir-cloud-aai/landing-page/issues
@@ -170,9 +104,4 @@ thread in our [Q&A forum][contact-qa], or send us an [email][contact-email].
 [res-elixir-compute]: https://elixir-europe.org/platforms/compute
 [res-ga4gh]: https://ga4gh.org/
 [res-next]: https://nextjs.org/
-[res-notion]: https://www.notion.so/
-[res-notion-devs]: https://developers.notion.com/
-[res-notion-elixir-cloud-aai]: https://www.notion.so/ELIXIR-Cloud-AAI-8f45ae1799b946478ae2a7838ed97dd9
-[res-notion-integration]: https://developers.notion.com/docs#step-1-create-an-integration
-[res-notion-link-integration]: https://developers.notion.com/docs#step-2-share-a-database-with-your-integration
 [res-react]: https://reactjs.org/

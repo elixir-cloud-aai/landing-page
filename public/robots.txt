@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://elixir-cloud.dcc.sib.swiss
+Host: https://elixir-on.cloud
 
 # Sitemaps
-Sitemap: https://elixir-cloud.dcc.sib.swiss/sitemap.xml
+Sitemap: https://elixir-on.cloud/sitemap.xml

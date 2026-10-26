@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { ArrowDown, BookOpen, Globe, Server } from 'lucide-react';
 import servicesData from '@/data/services.json';
 import { FeedbackCallout, PageHero } from '@/components/catalog/page-hero';
@@ -102,7 +103,13 @@ export default function ServicesPage() {
                   Network coverage
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  ELIXIR Nodes running ELIXIR On-Cloud services.
+                  ELIXIR Nodes running ELIXIR On-Cloud services.{' '}
+                  <Link
+                    href="/nodes"
+                    className="font-medium text-primary hover:underline"
+                  >
+                    All Nodes →
+                  </Link>
                 </p>
               </div>
               <div className="flex gap-4 text-xs text-muted-foreground">
@@ -116,39 +123,43 @@ export default function ServicesPage() {
             </div>
             <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
               {nodes.map((node) => (
-                <li
-                  key={node.code}
-                  className={cn(
-                    'rounded-xl border p-4',
-                    node.status === 'live' ? 'bg-background' : 'border-dashed',
-                  )}
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold tracking-tight">
-                      {node.code}
-                    </span>
-                    <span
-                      className={cn(
-                        'h-2.5 w-2.5 rounded-full',
-                        node.status === 'live' ? 'bg-success' : 'bg-warning',
-                      )}
-                      aria-label={node.status}
-                    />
-                  </div>
-                  <p className="mt-1 text-xs font-medium">{node.name}</p>
-                  <p className="mt-2 text-[11px] leading-4 text-muted-foreground">
-                    {node.status === 'live'
-                      ? servicesAt(node.code)
-                          .filter((s) =>
-                            s.nodes.some(
-                              (n) =>
-                                n.code === node.code && n.status === 'live',
-                            ),
-                          )
-                          .map((s) => s.name)
-                          .join(', ')
-                      : 'Joining soon'}
-                  </p>
+                <li key={node.code}>
+                  <Link
+                    href={`/nodes#${node.code.toLowerCase()}`}
+                    className={cn(
+                      'block h-full rounded-xl border p-4 transition-colors hover:border-primary/40',
+                      node.status === 'live'
+                        ? 'bg-background'
+                        : 'border-dashed',
+                    )}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-2xl font-bold tracking-tight">
+                        {node.code}
+                      </span>
+                      <span
+                        className={cn(
+                          'h-2.5 w-2.5 rounded-full',
+                          node.status === 'live' ? 'bg-success' : 'bg-warning',
+                        )}
+                        aria-label={node.status}
+                      />
+                    </div>
+                    <p className="mt-1 text-xs font-medium">{node.name}</p>
+                    <p className="mt-2 text-[11px] leading-4 text-muted-foreground">
+                      {node.status === 'live'
+                        ? servicesAt(node.code)
+                            .filter((s) =>
+                              s.nodes.some(
+                                (n) =>
+                                  n.code === node.code && n.status === 'live',
+                              ),
+                            )
+                            .map((s) => s.name)
+                            .join(', ')
+                        : 'Joining soon'}
+                    </p>
+                  </Link>
                 </li>
               ))}
             </ul>

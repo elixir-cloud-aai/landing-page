@@ -1,0 +1,11 @@
+# Keep secrets, local builds and VCS data out of the Docker build context.
+.git
+.github
+.env
+.env*.local
+node_modules
+.next
+out
+npm-debug.log*
+public/sw.js
+public/workbox-*.js

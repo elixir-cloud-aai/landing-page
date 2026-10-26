@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { MorphingText } from '../ui/morphing-text';
 import Globe3D from '../ui/globe-lazy';
 import { contributorMarkers } from '@/lib/contributor-markers';
+import { DOCS_HUB_URL } from '@/lib/site';
 
 const texts = [
   <span className="text-elixirred" key="findable">
@@ -86,15 +87,15 @@ const Home: FC = () => {
                 <div className="mt-10 flex flex-col gap-3 sm:flex-row">
                   <Link
                     className="inline-flex items-center justify-center rounded-full bg-slate-900 px-6 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
-                    href="/overview"
+                    href="/services"
                   >
-                    Explore overview
+                    Explore services
                   </Link>
                   <Link
                     className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-6 py-3.5 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 dark:border-white/15 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
-                    href="/solutions"
+                    href="/products"
                   >
-                    Browse solutions
+                    Browse products
                   </Link>
                 </div>
               </div>
@@ -144,12 +145,14 @@ const Home: FC = () => {
                   genomic and phenotypic analysis across international
                   boundaries.
                 </p>
-                <Link
+                <a
                   className="inline-flex w-fit items-center rounded-full text-sm font-medium text-elixirblue transition hover:underline"
-                  href="/overview"
+                  href={DOCS_HUB_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  Learn more about the platform
-                </Link>
+                  Learn more in the Documentation Hub
+                </a>
               </div>
 
               <div className="grid gap-3 self-center text-sm text-slate-600 dark:text-slate-300">
