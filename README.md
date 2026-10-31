@@ -84,10 +84,6 @@ changes in the [issue tracker](../../issues), or open a pull request. For
 anything else, write to
 [cloud-service@elixir-europe.org](mailto:cloud-service@elixir-europe.org).
 
-## License
-
-The website is licensed under the [Apache License 2.0](LICENSE).
-
 [badge-build-status]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg
 [badge-deploy]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg
 [badge-license]: https://img.shields.io/badge/license-Apache%202.0-blue.svg
