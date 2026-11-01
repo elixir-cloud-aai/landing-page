@@ -1,6 +1,7 @@
 # Production deployment for https://elixir-on.cloud/
 #
-# CI pushes a new image to GHCR on every push to main. Watchtower checks GHCR
+# The Deploy workflow pushes a new image to GHCR once CI passed for a push to
+# main. Watchtower checks GHCR
 # every 5 minutes and restarts the site when the image changes, so the host
 # never needs inbound access from GitHub.
 #

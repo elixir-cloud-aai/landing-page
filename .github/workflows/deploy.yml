@@ -1,16 +1,23 @@
-# Publishes the production image to GHCR on every push to main. The host
-# running https://elixir-on.cloud/ picks it up automatically through
-# Watchtower (see docker-compose.yaml).
+# Publishes the production image to GHCR once CI passed for a commit of main
+# (the workflow runs when CI for a push to main completed), or when run by
+# hand (`workflow_dispatch`, e.g., to deploy or roll back to a commit). In
+# both cases the job `check` requires a successful run of the CI workflow for
+# a push of the commit to main, so a commit whose CI failed or never ran is
+# not deployed. The host running https://elixir-on.cloud/ picks the image up
+# automatically through Watchtower (see docker-compose.yaml).
 name: Deploy
 
 on:
-  push:
+  # Safe here: runs only commits of main for which the job `check` found a
+  # successful push run of CI; nothing of a pull request is checked out
+  workflow_run: # zizmor: ignore[dangerous-triggers]
+    workflows: [CI]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-  packages: write
 
 concurrency:
   group: deploy
@@ -20,11 +27,71 @@ env:
   IMAGE: ghcr.io/${{ github.repository_owner }}/landing-page
 
 jobs:
-  publish:
-    name: publish image
+  # The commit to deploy and whether to deploy it
+  check:
+    name: Check CI
+    # Skipped (and so is `publish`) when CI for the push failed or was
+    # cancelled; the run of CI shows the failure
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read # read the CI runs of the commit
+    outputs:
+      sha: ${{ steps.check.outputs.sha }}
+      deploy: ${{ steps.check.outputs.deploy }}
     steps:
+      # The checks here don't run the tests: require a successful run of the
+      # CI workflow for a push of the commit to main (runs for pull requests
+      # test merge commits, not the commit itself, and the API query finds no
+      # such run for commits that were never pushed to main). Re-runs that
+      # succeeded count. `workflow_run` events carry the commit that CI ran
+      # for; their `github.sha` is the latest commit of main, which may be
+      # a newer one
+      - name: Check that CI passed for the commit
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          EVENT: ${{ github.event_name }}
+          SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+        run: |
+          runs="$(gh api "repos/${REPOSITORY}/actions/workflows/ci.yml/runs?head_sha=${SHA}&event=push&branch=main&status=success&per_page=1" \
+              --jq .total_count)"
+          if [[ ! "${runs}" =~ ^[0-9]+$ || "${runs}" -lt 1 ]]; then
+              echo "::error::No successful run of the CI workflow (ci.yml) for a push of ${SHA} to main; once CI passed for it, re-run this workflow"
+              exit 1
+          fi
+          echo "sha=${SHA}" >> "${GITHUB_OUTPUT}"
+          # A run of CI that completes after the one of a newer commit must
+          # not replace the newer image (the host runs `latest`); the newer
+          # commit's own run deploys it. Manual runs may deploy older
+          # commits, e.g., to roll back
+          deploy=true
+          if [[ "${EVENT}" == "workflow_run" ]]; then
+              head="$(gh api "repos/${REPOSITORY}/commits/main" --jq .sha)"
+              if [[ "${head}" != "${SHA}" ]]; then
+                  echo "::notice::${SHA} is not the latest commit of main (${head}): not deployed"
+                  deploy=false
+              fi
+          fi
+          echo "deploy=${deploy}" >> "${GITHUB_OUTPUT}"
+
+  publish:
+    name: Publish image
+    needs: check
+    if: needs.check.outputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write # push the image to GHCR
+    steps:
+      # Exactly the commit that CI passed for
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.check.outputs.sha }}
+          persist-credentials: false
 
       - uses: docker/setup-buildx-action@v3
 
