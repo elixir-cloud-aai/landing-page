@@ -5,6 +5,7 @@ import servicesData from '@/data/services.json';
 import { FeedbackCallout, PageHero } from '@/components/catalog/page-hero';
 import { ServiceCatalog } from '@/components/catalog/service-catalog';
 import type { Service, ServiceNode } from '@/components/catalog/types';
+import { DOCS_HUB_URL } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
@@ -71,11 +72,13 @@ export default function ServicesPage() {
               <ArrowDown className="h-4 w-4" />
             </a>
             <a
-              href="/products"
+              href={DOCS_HUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex h-11 items-center gap-2 rounded-full border bg-card px-6 text-sm font-semibold transition-colors hover:bg-muted"
             >
               <BookOpen className="h-4 w-4" />
-              Product documentation
+              Documentation Hub
             </a>
           </>
         }

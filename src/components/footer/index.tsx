@@ -6,6 +6,7 @@ import { FaGithub, FaSlack } from 'react-icons/fa6';
 import * as CookieConsentApi from 'vanilla-cookieconsent';
 import {
   CONTACT_EMAIL,
+  DOCS_HUB_URL,
   FEEDBACK_URL,
   SLACK_URL,
   WEBSITE_REPO_URL,
@@ -19,6 +20,7 @@ const columns = [
       { label: 'Services', href: '/services' },
       { label: 'Nodes', href: '/nodes' },
       { label: 'Projects', href: '/projects' },
+      { label: 'Documentation', href: DOCS_HUB_URL, external: true },
     ],
   },
   {
@@ -86,9 +88,20 @@ const Footer: FC = () => {
             <ul className="space-y-2">
               {column.links.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className={linkClass}>
-                    {link.label}
-                  </Link>
+                  {link.external ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={linkClass}
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link href={link.href} className={linkClass}>
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

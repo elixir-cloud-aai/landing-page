@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { MorphingText } from '../ui/morphing-text';
 import Globe3D from '../ui/globe-lazy';
 import { contributorMarkers } from '@/lib/contributor-markers';
+import { DOCS_HUB_URL } from '@/lib/site';
 
 const texts = [
   <span className="text-elixirred" key="findable">
@@ -145,9 +146,11 @@ const Home: FC = () => {
                 </p>
                 <a
                   className="inline-flex w-fit items-center rounded-full text-sm font-medium text-elixirblue transition hover:underline"
-                  href="/products"
+                  href={DOCS_HUB_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  Learn more about the products and their documentation
+                  Learn more in the Documentation Hub
                 </a>
               </div>
 

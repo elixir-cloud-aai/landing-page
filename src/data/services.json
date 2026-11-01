@@ -122,7 +122,7 @@
       "tags": ["GA4GH", "TES", "Federation", "Compute"],
       "logo": null,
       "deploymentUrl": null,
-      "docsUrl": null,
+      "docsUrl": "https://elixir-cloud-aai.github.io/services/",
       "repoUrl": null,
       "trackingUrl": null,
       "owners": []
