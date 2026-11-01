@@ -12,7 +12,7 @@
     "duration": "Ongoing",
     "team": "ELIXIR Compute",
     "shortDescription": "A Global Alliance for Genomics and Health Driver Project governed by the ELIXIR Compute Platform that is coordinating all ELIXIR On-Cloud efforts.",
-    "description": "ELIXIR On-Cloud is a Global Alliance for Genomics and Health (GA4GH) Driver Project governed by the ELIXIR Compute Platform. It coordinates ELIXIR On-Cloud efforts across multiple participating nodes.",
+    "description": "ELIXIR On-Cloud (formerly known as ELIXIR Cloud & AAI) is a Global Alliance for Genomics and Health (GA4GH) Driver Project governed by the ELIXIR Compute Platform. It coordinates ELIXIR On-Cloud efforts across multiple participating nodes.",
     "role": "Coordinating Project",
     "projectType": "Coordinating Project",
     "logo": "",
