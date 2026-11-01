@@ -1,9 +1,8 @@
 # Publishes the production image to GHCR once CI passed for a commit of main
 # (the workflow runs when CI for a push to main completed), or when run by
-# hand (`workflow_dispatch`, e.g., to deploy or roll back to a commit). In
-# both cases the job `check` requires a successful run of the CI workflow for
-# a push of the commit to main, so a commit whose CI failed or never ran is
-# not deployed. The host running https://elixir-on.cloud/ picks the image up
+# hand (`workflow_dispatch`, e.g., to roll back). The job `check` requires a
+# successful run of the CI workflow for a push of the commit to main, so a
+# commit whose CI failed or never ran is not deployed (see README). The host running https://elixir-on.cloud/ picks the image up
 # automatically through Watchtower (see docker-compose.yaml).
 name: Deploy
 
@@ -14,14 +13,17 @@ on:
     workflows: [CI]
     types: [completed]
     branches: [main]
+  # Manual runs deploy the latest commit of main, or the commit `sha` of main
+  # (e.g., to roll back); only from main, whose workflow file has the check
   workflow_dispatch:
+    inputs:
+      sha:
+        description: "Full SHA of the commit of main to deploy (default: the latest)"
+        required: false
+        type: string
 
 permissions:
   contents: read
-
-concurrency:
-  group: deploy
-  cancel-in-progress: false
 
 env:
   IMAGE: ghcr.io/${{ github.repository_owner }}/landing-page
@@ -30,9 +32,11 @@ jobs:
   # The commit to deploy and whether to deploy it
   check:
     name: Check CI
-    # Skipped (and so is `publish`) when CI for the push failed or was
-    # cancelled; the run of CI shows the failure
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    # Skipped, and so is `publish`, for runs of CI that were not successful
+    # pushes (the run of CI shows the failure)
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+      || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -55,8 +59,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
           EVENT: ${{ github.event_name }}
-          SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+          SHA: ${{ github.event.workflow_run.head_sha || inputs.sha || github.sha }}
         run: |
+          if [[ ! "${SHA}" =~ ^[0-9a-f]{40}$ ]]; then
+              echo "::error::'${SHA}' is not a full commit SHA"
+              exit 1
+          fi
           runs="$(gh api "repos/${REPOSITORY}/actions/workflows/ci.yml/runs?head_sha=${SHA}&event=push&branch=main&status=success&per_page=1" \
               --jq .total_count)"
           if [[ ! "${runs}" =~ ^[0-9]+$ || "${runs}" -lt 1 ]]; then
@@ -82,6 +90,11 @@ jobs:
     name: Publish image
     needs: check
     if: needs.check.outputs.deploy == 'true'
+    # One deploy at a time, never cancelled. On the job, not the workflow, so
+    # that runs that deploy nothing (failed CI) don't replace a pending deploy
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -110,7 +123,7 @@ jobs:
           images: ${{ env.IMAGE }}
           tags: |
             type=raw,value=latest
-            type=sha,format=long
+            type=raw,value=sha-${{ needs.check.outputs.sha }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -118,7 +131,9 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          labels: |
+            ${{ steps.meta.outputs.labels }}
+            org.opencontainers.image.revision=${{ needs.check.outputs.sha }}
           # Public value, not a secret: it is visible in the page source.
           build-args: GA_MEASUREMENT_ID=${{ vars.GA_MEASUREMENT_ID }}
           cache-from: type=gha

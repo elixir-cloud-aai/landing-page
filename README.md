@@ -60,12 +60,19 @@ Useful commands:
 Once CI has passed for a push to `main`, the [Deploy
 workflow](.github/workflows/deploy.yml) publishes the image to the GitHub
 Container Registry (`ghcr.io`, tagged `latest` and with the commit SHA). A
-commit whose CI failed is not deployed. Deploys can also be started by hand
-(workflow dispatch), e.g., to roll back to an older commit; they too require
-a successful CI run for a push of that commit to `main`, and fail with a
-message saying so otherwise (re-run the workflow once CI has passed). If a
-newer commit of `main` exists when CI for an older one completes, the older
-commit is skipped; the newer one is deployed once its CI passed. On the host,
+commit whose CI failed is not deployed.
+
+- Skipped commits: if a newer commit of `main` exists when CI for an older
+  one completes, the older one is skipped, so that `latest` never moves
+  back; the newer one is deployed once its CI passed. If that CI fails, fix
+  forward, or deploy the older commit by hand (below).
+- Manual deploys (Actions, "Deploy", "Run workflow", on `main`): leave `sha`
+  empty to deploy the latest commit of `main`, or give the full SHA of a
+  commit of `main`, e.g., to roll back. They too require a successful CI run
+  for a push of that commit to `main` and otherwise fail, saying so (re-run
+  the workflow once CI has passed).
+
+On the host,
 [`docker-compose.yaml`](docker-compose.yaml) runs the site together with
 [Watchtower](https://containrrr.dev/watchtower/), which pulls new images every
 5 minutes and restarts the site:
