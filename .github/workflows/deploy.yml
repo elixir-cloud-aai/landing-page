@@ -78,7 +78,7 @@ jobs:
           # commits, e.g., to roll back
           deploy=true
           if [[ "${EVENT}" == "workflow_run" ]]; then
-              head="$(gh api "repos/${REPOSITORY}/commits/main" --jq .sha)"
+              head="$(gh api "repos/${REPOSITORY}/branches/main" --jq .commit.sha)"
               if [[ "${head}" != "${SHA}" ]]; then
                   echo "::notice::${SHA} is not the latest commit of main (${head}): not deployed"
                   deploy=false
