@@ -1,22 +1,53 @@
-# Checks every pull request and push to main. Mark the "build" job as a
-# required status check in the branch protection rules for main.
+# Checks every pull request and push to main: the pull request title, the
+# build and the Docker image. The gate `passed` ("CI passed") is the only
+# check that the rules for main need to require. Runs also when a pull
+# request is edited, so that the title check follows the title; all jobs run
+# then, as a run that skipped the build would report "CI passed" for the
+# commit.
 name: CI
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, edited]
   push:
     branches: [main]
 
 permissions:
   contents: read
 
+# Cancel superseded runs. Runs for edits that leave the title unchanged (e.g.
+# of the description, also by bots) share a group of their own, so that they
+# cancel each other but not the run for the pull request's commit
 concurrency:
-  group: ci-${{ github.ref }}
+  group: >-
+    ci-${{
+      github.event.action == 'edited' && !github.event.changes.title &&
+        format('{0}-edited', github.ref) ||
+      github.ref }}
   cancel-in-progress: true
 
 jobs:
+  # Pull request titles become the commit messages on `main` (squash merges):
+  # Conventional Commits, at most 50 characters (shared action of
+  # elixir-cloud-aai/.github, pinned to the commit of a release). Skipped on
+  # pushes and for Dependabot, whose titles can't be configured to pass,
+  # unless someone else edits the title
+  title:
+    name: PR title
+    if: >-
+      github.event_name == 'pull_request' && (
+        github.event.pull_request.user.login != 'dependabot[bot]' ||
+        github.event.changes.title &&
+        github.event.sender.login != 'dependabot[bot]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Check PR title
+        uses: elixir-cloud-aai/.github/actions/pr-title@743e82d290a53768454999e413756a924e383259 # v1.0.0
+
   build:
-    name: build
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -39,7 +70,7 @@ jobs:
         run: npm run build
 
   docker:
-    name: docker
+    name: Docker
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,3 +86,22 @@ jobs:
           push: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # The only required check: passes if every other job passed, fails on any
+  # other result (failure, cancelled, skipped), except that `title` may be
+  # skipped (pushes, Dependabot). Add every new job to `needs`. Uses the
+  # shared gate action of elixir-cloud-aai/.github, pinned to the commit of
+  # a release
+  passed:
+    name: CI passed
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: always()
+    needs: [title, build, docker]
+    permissions: {}
+    steps:
+      - name: Check results of all jobs
+        uses: elixir-cloud-aai/.github/actions/gate@743e82d290a53768454999e413756a924e383259 # v1.0.0
+        with:
+          needs: ${{ toJSON(needs) }}
+          allow-skipped: title

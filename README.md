@@ -84,6 +84,11 @@ changes in the [issue tracker](../../issues), or open a pull request. For
 anything else, write to
 [cloud-service@elixir-europe.org](mailto:cloud-service@elixir-europe.org).
 
+Pull request titles become the commit messages on `main`: they follow
+[Conventional Commits](https://www.conventionalcommits.org/) and have at most
+50 characters (see the [contributing guide of ELIXIR On-Cloud](https://github.com/elixir-cloud-aai/.github/blob/main/CONTRIBUTING.md)).
+CI checks the title (job `PR title`) and rechecks it when you edit it.
+
 [badge-build-status]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg
 [badge-deploy]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg
 [badge-license]: https://img.shields.io/badge/license-Apache%202.0-blue.svg
