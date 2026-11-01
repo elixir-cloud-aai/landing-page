@@ -78,7 +78,7 @@ export default function ServicesPage() {
               className="inline-flex h-11 items-center gap-2 rounded-full border bg-card px-6 text-sm font-semibold transition-colors hover:bg-muted"
             >
               <BookOpen className="h-4 w-4" />
-              Documentation Hub
+              ELIXIR On-Cloud docs
             </a>
           </>
         }

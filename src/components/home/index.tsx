@@ -150,7 +150,7 @@ const Home: FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Learn more in the Documentation Hub
+                  Learn more in the ELIXIR On-Cloud docs
                 </a>
               </div>
 
