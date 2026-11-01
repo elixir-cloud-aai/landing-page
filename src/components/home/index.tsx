@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { MorphingText } from '../ui/morphing-text';
 import Globe3D from '../ui/globe-lazy';
 import { contributorMarkers } from '@/lib/contributor-markers';
-import { DOCS_HUB_URL } from '@/lib/site';
 
 const texts = [
   <span className="text-elixirred" key="findable">
@@ -139,19 +138,16 @@ const Home: FC = () => {
                   A coordinated network for federated cloud research
                 </h2>
                 <p className="max-w-3xl text-base leading-8 text-slate-600 dark:text-slate-300">
-                  The ELIXIR Cloud and Authentication and Authorization
-                  Infrastructure (AAI) project leverages ELIXIR Nodes to deliver
+                  The ELIXIR On-Cloud project leverages ELIXIR Nodes to deliver
                   a GA4GH standards-compliant environment for population-scale
                   genomic and phenotypic analysis across international
                   boundaries.
                 </p>
                 <a
                   className="inline-flex w-fit items-center rounded-full text-sm font-medium text-elixirblue transition hover:underline"
-                  href={DOCS_HUB_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="/products"
                 >
-                  Learn more in the Documentation Hub
+                  Learn more about the products and their documentation
                 </a>
               </div>
 

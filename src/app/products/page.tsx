@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
-import { ArrowDown, BookOpen, Boxes } from 'lucide-react';
+import { ArrowDown, Boxes } from 'lucide-react';
 import productsData from '@/data/product.json';
 import { FeedbackCallout, PageHero } from '@/components/catalog/page-hero';
 import { ProductCatalog } from '@/components/catalog/product-catalog';
 import type { Product } from '@/components/catalog/types';
-import { DOCS_HUB_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Products',
@@ -39,15 +38,6 @@ export default function ProductsPage() {
             >
               Browse products
               <ArrowDown className="h-4 w-4" />
-            </a>
-            <a
-              href={DOCS_HUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-11 items-center gap-2 rounded-full border bg-card px-6 text-sm font-semibold transition-colors hover:bg-muted"
-            >
-              <BookOpen className="h-4 w-4" />
-              Documentation Hub
             </a>
           </>
         }

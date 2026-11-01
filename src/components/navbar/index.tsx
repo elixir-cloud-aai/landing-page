@@ -12,7 +12,6 @@ import {
   MobileNavMenu,
 } from '@/components/ui/resizable-navbar';
 import servicesData from '@/data/services.json';
-import { DOCS_HUB_URL } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 interface NavbarProps {
@@ -188,15 +187,6 @@ const NavBar: FC<NavbarProps> = ({
                 </Link>
               ),
             )}
-            <a
-              href={DOCS_HUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Docs
-              <ExternalLink className="h-3.5 w-3.5" />
-            </a>
           </nav>
 
           <div className="z-20 hidden lg:flex">{themeToggle}</div>
@@ -251,15 +241,6 @@ const NavBar: FC<NavbarProps> = ({
                 </a>
               ))}
             </div>
-            <a
-              href={DOCS_HUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-base font-medium text-foreground"
-            >
-              Docs
-              <ExternalLink className="h-3.5 w-3.5" />
-            </a>
           </MobileNavMenu>
         </MobileNav>
       </Navbar>
