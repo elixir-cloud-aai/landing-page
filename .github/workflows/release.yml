@@ -336,7 +336,7 @@ jobs:
           if [[ "${highest}" == "${TAG}" ]]; then
               latest=true
           else
-              echo "::warning::${highest} is higher than ${TAG}: 'latest' stays as it is, and production doesn't update"
+              echo "::warning::Highest release on main is ${highest:-none}, not ${TAG}: 'latest' stays as it is, and production doesn't update; release a version above it"
           fi
           echo "latest=${latest}" >> "${GITHUB_OUTPUT}"
       # Tags `YYYY.M.MICRO` (and `latest`, which production follows, see

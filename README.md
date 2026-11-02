@@ -107,15 +107,17 @@ old image from 2024, and a host that pulls it would serve that old site.
 
 1. Check that the first release has been published, and that `latest` on
    [Docker Hub][badge-url-docker] was pushed with it.
-2. On the host, check out `main`, pull it, and run
+2. On the host, undo local changes to the file with
+   `git checkout docker-compose.yaml`, and note them first if you need to apply
+   them again (e.g., another port). Check out `main`, pull it, and run
    `docker pull elixircloud/landing-page:latest` and `docker compose up -d`.
    Check the site.
 3. Keep the images on `ghcr.io` until a release from Docker Hub has proven good.
 
-Until the host has moved, roll back by pinning the `site` image to a previous
-tag `ghcr.io/elixir-cloud-aai/landing-page:sha-<commit>`, and running
-`docker compose up -d`. Those images are also the only fallback if the first
-release from Docker Hub turns out bad.
+Until the host has moved, roll back with the steps below, using the image
+`ghcr.io/elixir-cloud-aai/landing-page:sha-<full SHA of the commit>`. Those
+images are also the only fallback if the first release from Docker Hub turns
+out bad.
 
 ### Rolling back
 
@@ -132,8 +134,10 @@ a rollback pins the host to an earlier version, and the fix is a new release:
    `docker compose up -d`. Check the site. While pinned, the host doesn't pick
    up new releases.
 4. Fix the problem and release a new version.
-5. Once that version is out, set the image back to `latest` and run
-   `docker compose up -d`.
+5. Once that version is out, set the image back to
+   `elixircloud/landing-page:latest`, and run
+   `docker pull elixircloud/landing-page:latest` and `docker compose up -d`, so
+   that the host doesn't restart from its old local `latest`.
 
 ## Releasing
 
@@ -141,9 +145,10 @@ Versions are calendar versions, `vYYYY.M.MICRO`, as nothing depends on the
 website's API: the year and month of the release, with the month not
 zero-padded, and `MICRO` counting the releases of that month, from 0. For
 example, the first release of November 2026 is `v2026.11.0` and the next one
-`v2026.11.1`; the first one of December is `v2026.12.0`. Check the [existing
-versions][badge-url-github-tag] for the next `MICRO`. A version that was tagged
-is used up, also if its release failed. Months in the future (UTC) are rejected.
+`v2026.11.1`; the first one of December is `v2026.12.0`. For the next `MICRO`,
+check the tags, not the releases (`git fetch --tags origin`, then
+`git tag -l 'v2026.11.*'`): a version that was tagged is used up, also if its
+release failed. Months in the future (UTC) are rejected.
 There are no pre-releases, as the Vercel previews cover that.
 
 Releases are cut by the maintainers:
@@ -210,8 +215,9 @@ Releases are cut by the maintainers:
    a tag on a commit that isn't on `main` would use up the version.
 
    ```bash
-   git push origin "${sha}:main" &&  # fails unless it is a fast-forward
-       git tag -s "v${version}" "${sha}" -m "v${version}" &&
+   # ${sha:?} stops if it is empty: pushing ":main" would delete the branch
+   git push origin "${sha:?}:main" &&  # fails unless it is a fast-forward
+       git tag -s "v${version:?}" "${sha}" -m "v${version}" &&
        git push origin "v${version}"
    ```
 
@@ -238,10 +244,10 @@ Releases are cut by the maintainers:
 The repository needs, once: an environment `release` with a required reviewer,
 deployments limited to `v*` tags, and access to the secrets `DOCKERHUB_LOGIN`
 and `DOCKERHUB_TOKEN` (allowed to push `elixircloud/landing-page`, a public
-repository on Docker Hub); a ruleset that
-lets only maintainers create `v*` tags and keeps them from being moved or
-deleted; a ruleset for `main` that lets only maintainers update it and protects
-it against non-fast-forward pushes; and immutable releases. Forks can publish
+repository on Docker Hub); a ruleset that lets only maintainers create `v*` tags
+and keeps them from being moved or deleted; a ruleset for `main` that lets only
+maintainers update it and protects it against deletion and non-fast-forward
+pushes; and immutable releases. Forks can publish
 to their own Docker Hub organization by setting the repository variable
 `DOCKERHUB_ORG`. The optional variable `GA_MEASUREMENT_ID` goes into the image
 at build time (see the `Dockerfile`).
