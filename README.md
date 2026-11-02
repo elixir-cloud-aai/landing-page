@@ -67,6 +67,15 @@ services, products and Nodes, and that every referenced image exists.
 
 ## Deployment
 
+Pull requests go to `dev`, the default branch. `main` only moves forward to
+versions that should go live: maintainers fast-forward it to a commit of `dev`
+that passed CI, which deploys that commit:
+
+```bash
+git fetch origin
+git push origin origin/dev:main
+```
+
 Once CI has passed for a push to `main`, the [Deploy
 workflow](.github/workflows/deploy.yml) publishes the image to the GitHub
 Container Registry (`ghcr.io`, tagged `latest` and with the commit SHA). A
@@ -96,9 +105,9 @@ docker compose up -d
 The site listens on port 80 (change it in `docker-compose.yaml`). TLS is
 expected to be terminated by a reverse proxy in front of it.
 
-Vercel builds preview deployments for pull requests only: `vercel.json`
-turns off deployments of `main`, as the production site is served from the
-host above.
+Vercel builds preview deployments for pull requests and `dev`, which has a
+stable preview URL: `vercel.json` turns off deployments of `main`, as the
+production site is served from the host above.
 
 To roll back, pin the `site` image to a previous `sha-<commit>` tag and run
 `docker compose up -d`. To build locally instead of pulling, run
@@ -107,19 +116,19 @@ To roll back, pin the `site` image to a previous `sha-<commit>` tag and run
 ## Contributing
 
 Contributions are welcome! Report problems with the website or suggest
-changes in the [issue tracker](../../issues), or open a pull request. For
-anything else, write to
+changes in the [issue tracker](../../issues), or open a pull request against
+`dev`. For anything else, write to
 [cloud-service@elixir-europe.org](mailto:cloud-service@elixir-europe.org).
 
-Pull request titles become the commit messages on `main`: they follow
+Pull request titles become the commit messages on `dev`: they follow
 [Conventional Commits](https://www.conventionalcommits.org/) and have at most
 50 characters (see the [contributing guide of ELIXIR On-Cloud](https://github.com/elixir-cloud-aai/.github/blob/main/CONTRIBUTING.md)).
 CI checks the title (job `PR title`) and rechecks it when you edit it.
 
-[badge-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg?branch=main>
+[badge-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg?branch=dev>
 [badge-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg?branch=main>
 [badge-license]: <https://img.shields.io/badge/license-Apache%202.0-blue.svg>
-[badge-url-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml?query=branch%3Amain>
+[badge-url-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml?query=branch%3Adev>
 [badge-url-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml?query=branch%3Amain>
 [badge-url-license]: <https://www.apache.org/licenses/LICENSE-2.0>
 [badge-website]: <https://img.shields.io/website?url=https%3A%2F%2Felixir-on.cloud%2F>
