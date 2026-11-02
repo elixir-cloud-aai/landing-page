@@ -38,7 +38,6 @@ const baseSeo: Metadata = {
       url: 'ELIXIR On-Cloud Logo Pack/On-Cloud_logomark_MONO.png',
     },
   ],
-  manifest: '/manifest.json',
 };
 
 export default baseSeo;
