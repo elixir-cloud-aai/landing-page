@@ -65,10 +65,18 @@ function NodeCard({ node }: { node: ElixirNode }) {
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="text-lg font-semibold leading-snug tracking-tight">
-            {node.institute ?? node.name}
-          </h3>
+        <h3 className="text-lg font-semibold leading-snug tracking-tight">
+          {node.institute ?? node.name}
+        </h3>
+        <div className="mt-2 flex items-center justify-between gap-4">
+          <p className="flex items-center gap-2 text-sm text-muted-foreground">
+            <img
+              src={`/flags/${node.code.toLowerCase()}.svg`}
+              alt={`Flag of ${node.country}`}
+              className="h-4 w-6 shrink-0 rounded-[2px] object-cover ring-1 ring-border"
+            />
+            {node.name}
+          </p>
           <span
             className={cn(
               'shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-semibold',
@@ -80,14 +88,6 @@ function NodeCard({ node }: { node: ElixirNode }) {
             {node.status === 'live' ? 'Live' : 'Onboarding'}
           </span>
         </div>
-        <p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-          <img
-            src={`/flags/${node.code.toLowerCase()}.svg`}
-            alt={`Flag of ${node.country}`}
-            className="h-4 w-6 shrink-0 rounded-[2px] object-cover ring-1 ring-border"
-          />
-          {node.name}
-        </p>
 
         <div className="mt-5">
           <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
