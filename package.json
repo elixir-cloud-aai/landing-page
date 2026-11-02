@@ -59,7 +59,7 @@
     "autoprefixer": "^10.6.2",
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.0.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-check-file": "^2.8.0",
     "eslint-plugin-prettier": "^5.5.7",
     "eslint-plugin-react": "^7.31.11",
