@@ -78,7 +78,8 @@ version (e.g. `2026.11.0`) and, if it is the highest release, `latest`. Moving
 On the host, [`docker-compose.yaml`](docker-compose.yaml) runs the site together
 with [Watchtower](https://containrrr.dev/watchtower/), which pulls new images
 every 5 minutes and restarts the site, so a new release goes live within minutes
-of its image being tagged `latest`:
+of its image being tagged `latest` (once the host has moved to Docker Hub, see
+[below](#moving-the-host-to-docker-hub)):
 
 ```bash
 git clone --branch main https://github.com/elixir-cloud-aai/landing-page.git
@@ -94,8 +95,27 @@ reverse proxy in front of it. To build locally instead of pulling, run
 
 Vercel builds preview deployments for pull requests and `dev`, which has a
 stable preview URL: `vercel.json` turns off deployments of `main`, as the
-production site is served from the host above. Previews are also why there are
-no pre-releases.
+production site is served from the host above.
+
+### Moving the host to Docker Hub
+
+Images used to be published to the GitHub Container Registry (`ghcr.io`), and a
+host set up then keeps following `ghcr.io/elixir-cloud-aai/landing-page:latest`,
+to which nothing is published any more. It has to move by hand, once, and only
+after the first release has finished: until then, `latest` on Docker Hub is an
+old image from 2024, and a host that pulls it would serve that old site.
+
+1. Check that the first release has been published, and that `latest` on
+   [Docker Hub][badge-url-docker] was pushed with it.
+2. On the host, check out `main`, pull it, and run
+   `docker pull elixircloud/landing-page:latest` and `docker compose up -d`.
+   Check the site.
+3. Keep the images on `ghcr.io` until a release from Docker Hub has proven good.
+
+Until the host has moved, roll back by pinning the `site` image to a previous
+tag `ghcr.io/elixir-cloud-aai/landing-page:sha-<commit>`, and running
+`docker compose up -d`. Those images are also the only fallback if the first
+release from Docker Hub turns out bad.
 
 ### Rolling back
 
@@ -104,13 +124,16 @@ a rollback pins the host to an earlier version, and the fix is a new release:
 
 1. Find the last good version under [Releases][badge-url-github-tag], e.g.
    `v2026.11.0`. The image tag has no `v`.
-2. On the host, in `docker-compose.yaml`, replace the `latest` of the `site`
-   image with that version, e.g. `elixircloud/landing-page:2026.11.0`, and run
-   `docker compose up -d`. Check the site, and that `docker compose ps` lists
-   the version. While pinned, the host doesn't pick up new releases.
-3. Fix the problem and release a new version.
-4. Once that version is out, undo the pin with
-   `git checkout docker-compose.yaml` and run `docker compose up -d`.
+2. On the host, pull that version, so that a wrong version fails here:
+   `docker pull elixircloud/landing-page:2026.11.0`. (`docker compose up` would
+   ignore the failure and build the image from the checkout instead.)
+3. In `docker-compose.yaml`, replace the `latest` of the `site` image with that
+   version, e.g. `elixircloud/landing-page:2026.11.0`, and run
+   `docker compose up -d`. Check the site. While pinned, the host doesn't pick
+   up new releases.
+4. Fix the problem and release a new version.
+5. Once that version is out, set the image back to `latest` and run
+   `docker compose up -d`.
 
 ## Releasing
 
@@ -120,7 +143,8 @@ zero-padded, and `MICRO` counting the releases of that month, from 0. For
 example, the first release of November 2026 is `v2026.11.0` and the next one
 `v2026.11.1`; the first one of December is `v2026.12.0`. Check the [existing
 versions][badge-url-github-tag] for the next `MICRO`. A version that was tagged
-is used up, also if its release failed.
+is used up, also if its release failed. Months in the future (UTC) are rejected.
+There are no pre-releases, as the Vercel previews cover that.
 
 Releases are cut by the maintainers:
 
@@ -164,12 +188,15 @@ Releases are cut by the maintainers:
    ```bash
    version=YYYY.M.MICRO  # e.g. 2026.11.0
    sha=""
-   git fetch origin && sha="$(git rev-parse --verify "<sha>^{commit}")"  # the full SHA
+   # Replace <sha> with the commit from step 2; this gets the full SHA
+   git fetch origin && sha="$(git rev-parse --verify "<sha>^{commit}")"
    (
        [[ -n "${sha}" ]] || { echo "Fetch failed, or the commit is unknown"; exit 1; }
        git merge-base --is-ancestor "${sha}" origin/dev || { echo "${sha} is not on dev"; exit 1; }
        pattern='^v20[0-9]{2}\.([1-9]|1[0-2])\.(0|[1-9][0-9]*)$'
        [[ "v${version}" =~ ${pattern} ]] || { echo "Not a release version: v${version}"; exit 1; }
+       IFS=. read -r year month _ <<< "${version}"
+       (( year * 100 + month <= $(date -u +%Y%m) )) || { echo "Version is in the future: v${version}"; exit 1; }
        # The file of the commit, not of the working tree
        [[ "$(git show "${sha}:package.json" | jq -r .version)" == "${version}" ]] || { echo "Wrong version in package.json"; exit 1; }
        runs="$(gh api "repos/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/runs?head_sha=${sha}&branch=dev&event=push&status=success&per_page=1" --jq .total_count)"
@@ -179,8 +206,8 @@ Releases are cut by the maintainers:
    ```
 
    Only if all checks passed, move `main` to the commit and tag it with a
-   signed, annotated tag. Each command runs only if the one before it succeeded: a tag
-   on a commit that isn't on `main` would use up the version.
+   signed, annotated tag. Each command runs only if the one before it succeeded:
+   a tag on a commit that isn't on `main` would use up the version.
 
    ```bash
    git push origin "${sha}:main" &&  # fails unless it is a fast-forward
@@ -204,12 +231,14 @@ Releases are cut by the maintainers:
    ending with its issue and pull request numbers; then the generated notes
    under `## Commits` instead of `## What's Changed`, and last their
    `**Full Changelog**` line.
-7. Check the site within a few minutes: Watchtower deploys the new image.
+7. Check the site within a few minutes: Watchtower deploys the new image, if
+   this is the highest release (the workflow warns otherwise). After the first
+   release, [move the host to Docker Hub](#moving-the-host-to-docker-hub).
 
 The repository needs, once: an environment `release` with a required reviewer,
 deployments limited to `v*` tags, and access to the secrets `DOCKERHUB_LOGIN`
-and `DOCKERHUB_TOKEN` (allowed to push `elixircloud/landing-page`; create that
-repository on Docker Hub, public, before the first release); a ruleset that
+and `DOCKERHUB_TOKEN` (allowed to push `elixircloud/landing-page`, a public
+repository on Docker Hub); a ruleset that
 lets only maintainers create `v*` tags and keeps them from being moved or
 deleted; a ruleset for `main` that lets only maintainers update it and protects
 it against non-fast-forward pushes; and immutable releases. Forks can publish

@@ -75,6 +75,13 @@ jobs:
               echo "::error::Tag '${TAG}' is not a release version (vYYYY.M.MICRO, e.g., v2026.11.0)"
               exit 1
           fi
+          # A tag can't be removed, and a version in the future would stay the
+          # highest one, which keeps later releases from becoming `latest`
+          IFS=. read -r year month _ <<< "${TAG#v}"
+          if (( year * 100 + month > $(date -u +%Y%m) )); then
+              echo "::error::Tag '${TAG}' is for a month in the future"
+              exit 1
+          fi
           # Annotated, with a signature that GitHub verified
           if [[ "$(git cat-file -t "refs/tags/${TAG}")" != "tag" ]]; then
               echo "::error::Tag '${TAG}' is not annotated (git tag -s)"
@@ -307,8 +314,10 @@ jobs:
       # Decided last, from freshly fetched tags (the repository is public, so no
       # credentials are needed), so that neither a re-run of an older release
       # nor a concurrent release moves `latest` back: the highest release among
-      # the tags on `main`, so that stray tags are ignored. `sort -V` orders
-      # calendar versions correctly (v2026.9.0 before v2026.11.0)
+      # the tags on `main`, so that stray tags are ignored, leaving out months
+      # in the future, which `prepare` rejects. `sort -V` orders calendar
+      # versions correctly (v2026.9.0 before v2026.11.0). Production follows
+      # `latest`, so a release that doesn't move it says so
       - name: Check whether this is the highest release
         id: latest
         env:
@@ -322,9 +331,12 @@ jobs:
               "+refs/heads/main:refs/remotes/origin/main"
           highest="$(git tag -l 'v*' --merged origin/main \
               | grep -E '^v20[0-9]{2}\.([1-9]|1[0-2])\.(0|[1-9][0-9]*)$' \
+              | awk -F '[v.]' -v now="$(date -u +%Y%m)" '$2 * 100 + $3 <= now' \
               | sort -V | tail -n 1 || true)"
           if [[ "${highest}" == "${TAG}" ]]; then
               latest=true
+          else
+              echo "::warning::${highest} is higher than ${TAG}: 'latest' stays as it is, and production doesn't update"
           fi
           echo "latest=${latest}" >> "${GITHUB_OUTPUT}"
       # Tags `YYYY.M.MICRO` (and `latest`, which production follows, see
@@ -350,12 +362,13 @@ jobs:
       # A draft first, published last, so that immutable releases (a repository
       # setting) can still get their notes; re-runs finish the draft of an
       # earlier attempt and leave a published release as it is. GitHub's
-      # generated notes list the merged pull requests since the previous
-      # published release by version in the history of the release commit, on
-      # an earlier commit (tags without a release, e.g. of a failed run, don't
-      # count; without one, GitHub picks the start, e.g. all changes for the
-      # first release); the maintainers check them and add the curated sections
-      # afterwards (the notes of published releases stay editable)
+      # generated notes list the pull requests merged since the previous
+      # release: the highest version tag in the history of the release commit,
+      # on another commit, that has a published release. Tags without one (e.g.
+      # of a failed run) don't count; without any, GitHub picks the start, e.g.
+      # all changes for the first release. The maintainers check the notes and
+      # add the curated sections afterwards (the notes of published releases
+      # stay editable)
       - name: Create release
         env:
           GH_TOKEN: ${{ github.token }}

@@ -7,8 +7,9 @@
 #   docker compose up -d          # start (or update this file and re-run)
 #   docker compose logs -f site   # follow the site's logs
 #
-# To roll back, replace `latest` with a previous version (see "Deployment" in
-# README.md). To build locally instead of pulling: docker compose up -d --build
+# To move a host from GHCR (only after the first release) or to roll back, see
+# "Deployment" in README.md. To build locally instead of pulling:
+# docker compose up -d --build
 services:
   site:
     image: elixircloud/landing-page:latest
