@@ -148,8 +148,8 @@ example, the first release of November 2026 is `v2026.11.0` and the next one
 `v2026.11.1`; the first one of December is `v2026.12.0`. For the next `MICRO`,
 check the tags, not the releases (`git fetch --tags origin`, then
 `git tag -l 'v2026.11.*'`): a version that was tagged is used up, also if its
-release failed. Months in the future (UTC) are rejected.
-There are no pre-releases, as the Vercel previews cover that.
+release failed. Months in the future (UTC) are rejected. There are no
+pre-releases, as the Vercel previews cover that.
 
 Releases are cut by the maintainers:
 
@@ -247,10 +247,10 @@ and `DOCKERHUB_TOKEN` (allowed to push `elixircloud/landing-page`, a public
 repository on Docker Hub); a ruleset that lets only maintainers create `v*` tags
 and keeps them from being moved or deleted; a ruleset for `main` that lets only
 maintainers update it and protects it against deletion and non-fast-forward
-pushes; and immutable releases. Forks can publish
-to their own Docker Hub organization by setting the repository variable
-`DOCKERHUB_ORG`. The optional variable `GA_MEASUREMENT_ID` goes into the image
-at build time (see the `Dockerfile`).
+pushes; and immutable releases. Forks can publish to their own Docker Hub
+organization by setting the repository variable `DOCKERHUB_ORG`. The optional
+variable `GA_MEASUREMENT_ID` goes into the image at build time (see the
+`Dockerfile`).
 
 Tags, published releases and released images can't be changed: if a release
 fails after its tag was pushed and re-running its failed jobs doesn't help,
