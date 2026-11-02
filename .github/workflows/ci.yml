@@ -1,6 +1,7 @@
-# Checks every pull request and push to main: the pull request title, the
-# build and the Docker image. The gate `passed` ("CI passed") is the only
-# check that the rules for main need to require. Runs also when a pull
+# Checks every pull request and push to dev and main: the pull request title,
+# the build and the Docker image. The gate `passed` ("CI passed") is the only
+# check that the rules for dev need to require. Pushes to main stay covered
+# because the Deploy workflow publishes after CI for them. Runs also when a pull
 # request is edited, so that the title check follows the title; all jobs run
 # then, as a run that skipped the build would report "CI passed" for the
 # commit.
@@ -10,7 +11,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
   push:
-    branches: [main]
+    branches: [dev, main]
 
 permissions:
   contents: read
@@ -27,7 +28,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Pull request titles become the commit messages on `main` (squash merges):
+  # Pull request titles become the commit messages on `dev` (squash merges):
   # Conventional Commits, at most 50 characters (shared action of
   # elixir-cloud-aai/.github, pinned to the commit of a release). Skipped on
   # pushes and for Dependabot, whose titles can't be configured to pass,
@@ -81,7 +82,7 @@ jobs:
       - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
       # Builds the production image without pushing, so a broken Dockerfile
-      # is caught before it reaches main.
+      # is caught before it is merged.
       - name: Build image
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:

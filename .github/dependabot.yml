@@ -1,12 +1,12 @@
 version: 2
-# Every entry targets `main`, the default branch (`target-branch`)
+# Every entry targets `dev`, the default branch (`target-branch`)
 updates:
   # Dependencies in `package.json` and the lock (`package-lock.json`)
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: monthly
-    target-branch: main
+    target-branch: dev
     groups:
       # Major updates stay in PRs of their own, so they can't block the rest
       node-dependencies:
@@ -19,7 +19,7 @@ updates:
     directory: /
     schedule:
       interval: monthly
-    target-branch: main
+    target-branch: dev
     groups:
       github-actions:
         patterns: ["*"]
@@ -28,7 +28,7 @@ updates:
     directory: /
     schedule:
       interval: monthly
-    target-branch: main
+    target-branch: dev
     groups:
       docker:
         patterns: ["*"]
@@ -37,7 +37,7 @@ updates:
     directory: /
     schedule:
       interval: monthly
-    target-branch: main
+    target-branch: dev
     groups:
       docker-compose:
         patterns: ["*"]
