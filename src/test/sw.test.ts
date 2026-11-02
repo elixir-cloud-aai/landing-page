@@ -50,5 +50,30 @@ describe('public/sw.js', () => {
     listeners.activate({ waitUntil: (promise) => (work = promise) });
     await expect(work).resolves.toBeUndefined();
     expect(worker.registration.unregister).toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith('https://example.org/');
+  });
+
+  it('finishes even if the caches cannot be read', async () => {
+    const { listeners, worker, caches } = loadWorker();
+    caches.keys.mockRejectedValue(new Error('denied'));
+    let work: Promise<void> | undefined;
+    listeners.activate({ waitUntil: (promise) => (work = promise) });
+    await expect(work).resolves.toBeUndefined();
+    expect(worker.registration.unregister).toHaveBeenCalled();
+  });
+
+  it('waits for the caches to be cleared before unregistering', async () => {
+    const { listeners, worker, caches } = loadWorker();
+    let finishDeleting: (deleted: boolean) => void = () => undefined;
+    caches.delete.mockReturnValue(
+      new Promise((resolve) => (finishDeleting = resolve)),
+    );
+    let work: Promise<void> | undefined;
+    listeners.activate({ waitUntil: (promise) => (work = promise) });
+    await vi.waitFor(() => expect(caches.delete).toHaveBeenCalled());
+    expect(worker.registration.unregister).not.toHaveBeenCalled();
+    finishDeleting(true);
+    await work;
+    expect(worker.registration.unregister).toHaveBeenCalled();
   });
 });

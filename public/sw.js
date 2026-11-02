@@ -8,8 +8,9 @@ self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     (async () => {
-      const names = await caches.keys();
-      await Promise.all(names.map((name) => caches.delete(name)));
+      // A failure here must not keep the worker from removing itself.
+      const names = await caches.keys().catch(() => []);
+      await Promise.allSettled(names.map((name) => caches.delete(name)));
       await self.registration.unregister();
       const pages = await self.clients.matchAll({ type: 'window' });
       await Promise.allSettled(pages.map((page) => page.navigate(page.url)));
