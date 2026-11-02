@@ -25,8 +25,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files (commit .env.example instead)
-.env
-.env*.local
+.env*
+!.env.example
 
 # vercel
 .vercel
@@ -38,3 +38,6 @@ yarn-error.log*
 /public/sw.js.map
 /public/workbox-*.js.map
 /public/worker-*.js.map
+
+# TypeScript incremental build info
+*.tsbuildinfo
