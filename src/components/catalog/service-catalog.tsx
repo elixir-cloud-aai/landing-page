@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import {
   EmptyState,
   FilterBar,
+  isGitlabUrl,
   matchesQuery,
   Monogram,
   OwnerChip,
@@ -76,7 +77,7 @@ const linkButton =
   'inline-flex h-9 items-center gap-1.5 rounded-lg border bg-background px-3 text-sm font-medium transition-colors hover:bg-muted';
 
 function ServiceCard({ service }: { service: Service }) {
-  const repoIsGitlab = service.repoUrl?.includes('gitlab.com');
+  const repoIsGitlab = isGitlabUrl(service.repoUrl);
 
   return (
     <article

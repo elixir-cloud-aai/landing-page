@@ -192,6 +192,18 @@ export function EmptyState({ onReset }: { onReset: () => void }) {
   );
 }
 
+// Whether a URL points to GitLab. Compares the host, as the name could appear
+// anywhere in other URLs.
+export function isGitlabUrl(url: string | null | undefined): boolean {
+  if (!url) return false;
+  try {
+    const { hostname } = new URL(url);
+    return hostname === 'gitlab.com' || hostname.endsWith('.gitlab.com');
+  } catch {
+    return false;
+  }
+}
+
 export function matchesQuery(
   query: string,
   fields: (string | null | undefined)[],
