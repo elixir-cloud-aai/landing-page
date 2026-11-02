@@ -31,18 +31,17 @@ describe.each([
 describe('Services page', () => {
   it('links every Node in the coverage panel to its card', () => {
     render(<ServicesPage />);
+    const panel = within(
+      screen.getByRole('region', { name: 'Network coverage' }),
+    );
+    const hrefs = panel
+      .getAllByRole('link')
+      .map((link) => link.getAttribute('href'));
     const codes = new Set(
       servicesData.services.flatMap((s) => s.nodes.map((n) => n.code)),
     );
     codes.forEach((code) => {
-      expect(
-        screen
-          .getAllByRole('link')
-          .some(
-            (link) =>
-              link.getAttribute('href') === `/nodes#${code.toLowerCase()}`,
-          ),
-      ).toBe(true);
+      expect(hrefs, code).toContain(`/nodes#${code.toLowerCase()}`);
     });
   });
 });

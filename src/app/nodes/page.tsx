@@ -18,6 +18,16 @@ export const metadata: Metadata = {
 const nodes = nodesData.nodes as ElixirNode[];
 const services = servicesData.services as Service[];
 
+// Short link text, e.g. "csc.fi". Falls back to the raw value, so a malformed
+// URL in nodes.json can't break the page.
+const hostLabel = (url: string) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+};
+
 const servicesAt = (code: string) =>
   services.filter((service) =>
     service.nodes.some((node) => node.code === code),
@@ -133,7 +143,7 @@ function NodeCard({ node }: { node: ElixirNode }) {
             rel="noopener noreferrer"
             className="inline-flex h-9 items-center gap-1.5 rounded-lg border bg-background px-3 text-sm font-medium transition-colors hover:bg-muted"
           >
-            {new URL(node.website).hostname.replace(/^www\./, '')}
+            {hostLabel(node.website)}
             <ExternalLink className="h-3 w-3 opacity-70" />
           </a>
         )}

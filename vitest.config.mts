@@ -8,8 +8,8 @@ export default defineConfig({
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
   // Next.js leaves JSX to its own compiler (tsconfig "jsx": "preserve"), so
-  // tell esbuild to compile it here.
-  esbuild: { jsx: 'automatic' },
+  // tell Vite's compiler (Oxc) to compile it here.
+  oxc: { jsx: { runtime: 'automatic' } },
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],

@@ -26,7 +26,11 @@ const duplicates = (values: string[]) =>
   values.filter((value, index) => values.indexOf(value) !== index);
 
 const expectHttpsOrNull = (url: string | null | undefined) => {
-  if (url != null) expect(url).toMatch(/^https:\/\//);
+  if (url == null) return;
+  // Throws for malformed values, e.g. "https://" without a host.
+  const parsed = new URL(url);
+  expect(parsed.protocol, url).toBe('https:');
+  expect(parsed.hostname, url).toMatch(/^[^.]+(\.[^.]+)+$/);
 };
 
 const expectImageExists = (owner: Owner | null) => {

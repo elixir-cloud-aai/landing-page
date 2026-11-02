@@ -96,11 +96,17 @@ export default function ServicesPage() {
       />
 
       {nodes.length > 0 && (
-        <section className="mx-auto max-w-7xl px-6 pt-14 lg:px-8">
+        <section
+          aria-labelledby="network-coverage"
+          className="mx-auto max-w-7xl px-6 pt-14 lg:px-8"
+        >
           <div className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h2 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
+                <h2
+                  id="network-coverage"
+                  className="flex items-center gap-2 text-xl font-semibold tracking-tight"
+                >
                   <Server className="h-5 w-5 text-primary" />
                   Network coverage
                 </h2>
