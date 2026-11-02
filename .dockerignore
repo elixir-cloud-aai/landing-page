@@ -1,8 +1,21 @@
 # Keep secrets, local builds and VCS data out of the Docker build context.
 .git
 .github
-.env
-.env*.local
+**/.env*
+!**/.env.example
+**/*.env
+**/*.pem
+**/*.key
+**/id_rsa*
+**/id_ed25519*
+**/id_ecdsa*
+**/*.p12
+**/*.pfx
+**/credentials*.json
+**/.netrc
+**/.npmrc
+**/.git-credentials
+.vercel
 node_modules
 .next
 out
