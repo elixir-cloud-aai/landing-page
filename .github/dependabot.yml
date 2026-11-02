@@ -1,0 +1,32 @@
+version: 2
+# Every entry targets `main`, the default branch (`target-branch`)
+updates:
+  # Dependencies in `package.json` and the lock (`package-lock.json`)
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    target-branch: main
+    groups:
+      node-dependencies:
+        patterns: ["*"]
+  # Actions in the workflows, including the pins of the shared actions of
+  # `elixir-cloud-aai/.github` (to the commits of its releases,
+  # `@<commit> # vX.Y.Z`)
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    target-branch: main
+    groups:
+      github-actions:
+        patterns: ["*"]
+  # Images in the `Dockerfile`
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: monthly
+    target-branch: main
+    groups:
+      docker:
+        patterns: ["*"]
