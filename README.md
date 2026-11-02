@@ -1,9 +1,11 @@
+<!-- markdownlint-disable MD033 MD041 -- logo first; <picture> for dark mode -->
 <a href="https://elixir-on.cloud/">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/logo_elixir_on_cloud_night.png">
     <img src="docs/images/logo_elixir_on_cloud.png" alt="ELIXIR On-Cloud">
   </picture>
 </a>
+<!-- markdownlint-enable MD033 MD041 -->
 
 # ELIXIR On-Cloud website
 
@@ -57,9 +59,22 @@ Useful commands:
 
 ## Deployment
 
-Pushes to `main` trigger the [Deploy workflow](.github/workflows/deploy.yml),
-which publishes the image to the GitHub Container Registry (`ghcr.io`, tagged
-`latest` and with the commit SHA). On the host,
+Once CI has passed for a push to `main`, the [Deploy
+workflow](.github/workflows/deploy.yml) publishes the image to the GitHub
+Container Registry (`ghcr.io`, tagged `latest` and with the commit SHA). A
+commit whose CI failed is not deployed.
+
+- Skipped commits: if a newer commit of `main` exists when CI for an older
+  one completes, the older one is skipped, so that `latest` never moves
+  back; the newer one is deployed once its CI passed. If that CI fails, fix
+  forward, or deploy the older commit by hand (below).
+- Manual deploys (Actions, "Deploy", "Run workflow", on `main`): leave `sha`
+  empty to deploy the latest commit of `main`, or give the full SHA of a
+  commit of `main`, e.g., to roll back. They too require a successful CI run
+  for a push of that commit to `main` and otherwise fail, saying so (re-run
+  the workflow once CI has passed).
+
+On the host,
 [`docker-compose.yaml`](docker-compose.yaml) runs the site together with
 [Watchtower](https://containrrr.dev/watchtower/), which pulls new images every
 5 minutes and restarts the site:
@@ -89,13 +104,13 @@ Pull request titles become the commit messages on `main`: they follow
 50 characters (see the [contributing guide of ELIXIR On-Cloud](https://github.com/elixir-cloud-aai/.github/blob/main/CONTRIBUTING.md)).
 CI checks the title (job `PR title`) and rechecks it when you edit it.
 
-[badge-build-status]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg
-[badge-deploy]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg
-[badge-license]: https://img.shields.io/badge/license-Apache%202.0-blue.svg
-[badge-url-build-status]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml
-[badge-url-deploy]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml
-[badge-url-license]: https://www.apache.org/licenses/LICENSE-2.0
-[badge-website]: https://img.shields.io/website?url=https%3A%2F%2Felixir-on.cloud%2F
-[contributors]: https://elixir-on.cloud/contributors
-[ga4gh-driver-projects]: https://www.ga4gh.org/our-community/driver-projects/
-[website]: https://elixir-on.cloud/
+[badge-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg?branch=main>
+[badge-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg?branch=main>
+[badge-license]: <https://img.shields.io/badge/license-Apache%202.0-blue.svg>
+[badge-url-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml?query=branch%3Amain>
+[badge-url-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml?query=branch%3Amain>
+[badge-url-license]: <https://www.apache.org/licenses/LICENSE-2.0>
+[badge-website]: <https://img.shields.io/website?url=https%3A%2F%2Felixir-on.cloud%2F>
+[contributors]: <https://elixir-on.cloud/contributors>
+[ga4gh-driver-projects]: <https://www.ga4gh.org/our-community/driver-projects/>
+[website]: <https://elixir-on.cloud/>

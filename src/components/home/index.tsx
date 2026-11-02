@@ -139,8 +139,7 @@ const Home: FC = () => {
                   A coordinated network for federated cloud research
                 </h2>
                 <p className="max-w-3xl text-base leading-8 text-slate-600 dark:text-slate-300">
-                  The ELIXIR Cloud and Authentication and Authorization
-                  Infrastructure (AAI) project leverages ELIXIR Nodes to deliver
+                  The ELIXIR On-Cloud project leverages ELIXIR Nodes to deliver
                   a GA4GH standards-compliant environment for population-scale
                   genomic and phenotypic analysis across international
                   boundaries.
@@ -151,7 +150,7 @@ const Home: FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Learn more in the Documentation Hub
+                  Learn more in the ELIXIR On-Cloud docs
                 </a>
               </div>
 

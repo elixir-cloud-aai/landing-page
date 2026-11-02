@@ -110,9 +110,9 @@
     {
       "id": "cloud-registry",
       "name": "Cloud Registry",
-      "tagline": "GA4GH Service Registry for the ELIXIR Cloud",
+      "tagline": "GA4GH Service Registry for ELIXIR On-Cloud",
       "blurb": "An implementation of the GA4GH Service Registry API for registering and discovering GA4GH-compliant services in a federated cloud network.",
-      "description": "Cloud Registry implements the GA4GH Service Registry API for the ELIXIR Cloud. Service entries comply with the ExternalService schema defined by the GA4GH Service Registry specification. Once deployed, the API is served under /ga4gh/registry/v1/ with an interactive Swagger UI at /ga4gh/registry/v1/ui, and it can be probed with simple HTTP calls, for example GET /services.",
+      "description": "Cloud Registry implements the GA4GH Service Registry API for ELIXIR On-Cloud. Service entries comply with the ExternalService schema defined by the GA4GH Service Registry specification. Once deployed, the API is served under /ga4gh/registry/v1/ with an interactive Swagger UI at /ga4gh/registry/v1/ui, and it can be probed with simple HTTP calls, for example GET /services.",
       "audience": [
         "Admins deploying a service registry",
         "Developers building on GA4GH service discovery"
@@ -153,7 +153,7 @@
       "name": "Cloud Components",
       "tagline": "The component library for federated cloud services",
       "blurb": "Modular, customizable and extensible web components for building interfaces that interact with cloud infrastructure.",
-      "description": "ELIXIR Cloud Components (ECC) is a library of web components for interacting with cloud infrastructure. Because they are standard web components, they are framework-agnostic and can be dropped into React, Vue, vanilla HTML or any other front-end stack. Components can be restyled to match your brand and extended with your own.",
+      "description": "Cloud Components (ECC) is a library of web components for interacting with cloud infrastructure. Because they are standard web components, they are framework-agnostic and can be dropped into React, Vue, vanilla HTML or any other front-end stack. Components can be restyled to match your brand and extended with your own.",
       "audience": ["Front-end developers building cloud service UIs"],
       "features": [
         "Built as web components, so they work in React, Vue, vanilla HTML and other frameworks",
@@ -238,7 +238,7 @@
       "name": "Pubgrade",
       "tagline": "Publish-subscribe CI/CD for deployments",
       "blurb": "A decoupled publish-subscribe CI/CD service that builds images and notifies subscribed deployments, which update themselves through Pubgrade-Sidecar.",
-      "description": "Pubgrade (Publish-Upgrade) is a decoupled, publish-subscribe-based continuous integration and delivery service. Developers register a Git repository; Pubgrade builds and publishes images and notifies subscribed deployments, which decide autonomously what to do with an update. Pubgrade-Sidecar is co-deployed next to a subscribed service and applies those updates in the cluster. Pubgrade can optionally link to the ELIXIR Cloud Service Registry.",
+      "description": "Pubgrade (Publish-Upgrade) is a decoupled, publish-subscribe-based continuous integration and delivery service. Developers register a Git repository; Pubgrade builds and publishes images and notifies subscribed deployments, which decide autonomously what to do with an update. Pubgrade-Sidecar is co-deployed next to a subscribed service and applies those updates in the cluster. Pubgrade can optionally link to the Cloud Registry.",
       "audience": [
         "Developers publishing service updates",
         "Node operators who want deployments to update themselves"
