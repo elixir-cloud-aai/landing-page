@@ -12,7 +12,8 @@
 [![License][badge-license]][badge-url-license]
 [![Website][badge-website]][website]
 [![Build_status][badge-build-status]][badge-url-build-status]
-[![Deploy][badge-deploy]][badge-url-deploy]
+[![GitHub_tag][badge-github-tag]][badge-url-github-tag]
+[![Docker_image][badge-docker]][badge-url-docker]
 
 The source of the website of [ELIXIR On-Cloud][website]: standards-based
 products and architecture patterns for federated analytics in biomedical
@@ -68,50 +69,163 @@ services, products and Nodes, and that every referenced image exists.
 ## Deployment
 
 Pull requests go to `dev`, the default branch. `main` only moves forward to
-versions that should go live: maintainers fast-forward it to a commit of `dev`
-that passed CI, which deploys that commit:
+commits of `dev` that are released, and release tags are on `main` (see
+[Releasing](#releasing)). A release publishes the image
+[`elixircloud/landing-page`][badge-url-docker] on Docker Hub, tagged with its
+version (e.g. `2026.11.0`) and, if it is the highest release, `latest`. Moving
+`main` or merging into `dev` publishes nothing.
+
+On the host, [`docker-compose.yaml`](docker-compose.yaml) runs the site together
+with [Watchtower](https://containrrr.dev/watchtower/), which pulls new images
+every 5 minutes and restarts the site, so a new release goes live within minutes
+of its image being tagged `latest`:
 
 ```bash
-git fetch origin
-git push origin <commit of dev that passed CI>:main
-```
-
-Once CI has passed for a push to `main`, the [Deploy
-workflow](.github/workflows/deploy.yml) publishes the image to the GitHub
-Container Registry (`ghcr.io`, tagged `latest` and with the commit SHA). A
-commit whose CI failed is not deployed.
-
-- Skipped commits: if a newer commit of `main` exists when CI for an older
-  one completes, the older one is skipped, so that `latest` never moves
-  back; the newer one is deployed once its CI passed. If that CI fails, fix
-  forward, or deploy the older commit by hand (below).
-- Manual deploys (Actions, "Deploy", "Run workflow", on `main`): leave `sha`
-  empty to deploy the latest commit of `main`, or give the full SHA of a
-  commit of `main`, e.g., to roll back. They too require a successful CI run
-  for a push of that commit to `main` and otherwise fail, saying so (re-run
-  the workflow once CI has passed).
-
-On the host,
-[`docker-compose.yaml`](docker-compose.yaml) runs the site together with
-[Watchtower](https://containrrr.dev/watchtower/), which pulls new images every
-5 minutes and restarts the site:
-
-```bash
-git clone https://github.com/elixir-cloud-aai/landing-page.git
+git clone --branch main https://github.com/elixir-cloud-aai/landing-page.git
 cd landing-page
 docker compose up -d
 ```
 
-The site listens on port 80 (change it in `docker-compose.yaml`). TLS is
-expected to be terminated by a reverse proxy in front of it.
+Watchtower updates the image only: when `docker-compose.yaml` changes, run
+`git pull` and `docker compose up -d` on the host. The site listens on port 80
+(change it in `docker-compose.yaml`). TLS is expected to be terminated by a
+reverse proxy in front of it. To build locally instead of pulling, run
+`docker compose up -d --build`.
 
 Vercel builds preview deployments for pull requests and `dev`, which has a
 stable preview URL: `vercel.json` turns off deployments of `main`, as the
-production site is served from the host above.
+production site is served from the host above. Previews are also why there are
+no pre-releases.
 
-To roll back, pin the `site` image to a previous `sha-<commit>` tag and run
-`docker compose up -d`. To build locally instead of pulling, run
-`docker compose up -d --build`.
+### Rolling back
+
+Releases can't be changed or moved, and `latest` never moves back by itself, so
+a rollback pins the host to an earlier version, and the fix is a new release:
+
+1. Find the last good version under [Releases][badge-url-github-tag], e.g.
+   `v2026.11.0`. The image tag has no `v`.
+2. On the host, in `docker-compose.yaml`, replace the `latest` of the `site`
+   image with that version, e.g. `elixircloud/landing-page:2026.11.0`, and run
+   `docker compose up -d`. Check the site, and that `docker compose ps` lists
+   the version. While pinned, the host doesn't pick up new releases.
+3. Fix the problem and release a new version.
+4. Once that version is out, undo the pin with
+   `git checkout docker-compose.yaml` and run `docker compose up -d`.
+
+## Releasing
+
+Versions are calendar versions, `vYYYY.M.MICRO`, as nothing depends on the
+website's API: the year and month of the release, with the month not
+zero-padded, and `MICRO` counting the releases of that month, from 0. For
+example, the first release of November 2026 is `v2026.11.0` and the next one
+`v2026.11.1`; the first one of December is `v2026.12.0`. Check the [existing
+versions][badge-url-github-tag] for the next `MICRO`. A version that was tagged
+is used up, also if its release failed.
+
+Releases are cut by the maintainers:
+
+1. Open a release-prep pull request into `dev` that sets the version in
+   `package.json` and `package-lock.json`, without the `v`, and merge it. The
+   version in `package.json` must match the tag, so each release needs this
+   change:
+
+   ```bash
+   npm version 2026.11.0 --no-git-tag-version
+   ```
+
+2. Wait until CI has passed for the push to `dev` of the commit that the merge
+   created on `dev` (`<sha>`, not the head of the pull request): the release
+   workflow requires a successful CI run for a push of the tagged commit (runs
+   for pull requests test merge commits, not the commit itself).
+3. CI doesn't scan the image yet
+   ([#166](https://github.com/elixir-cloud-aai/landing-page/issues/166)), but
+   the release workflow does, and a fixable critical or high vulnerability fails
+   the release after the tag. So check out the commit, build its image and scan
+   it with the same flags first:
+
+   ```bash
+   docker build -t landing-page:release-check .
+   trivy image --ignorefile .trivyignore.yaml --severity CRITICAL,HIGH \
+       --ignore-unfixed --exit-code 1 landing-page:release-check
+   ```
+
+   Fix what it finds (e.g., by bumping the Node.js image of the `Dockerfile` or
+   a dependency) or, with a reason and an expiry date, accept it in
+   `.trivyignore.yaml`. Either takes another pull request: release the commit
+   that its merge created, once CI has passed for it.
+4. Run the release workflow's checks that need no tag, as it runs them (keep
+   these commands in sync with the job `prepare` of
+   [`release.yml`](.github/workflows/release.yml)), in Bash. Run them before
+   tagging: the release workflow checks the tagged commit, so a check that fails
+   after the tag is pushed (other than a CI run that hasn't finished yet) fails
+   again on re-runs, and the release then needs a new version. The commands
+   expect `origin` to be `elixir-cloud-aai/landing-page`.
+
+   ```bash
+   version=YYYY.M.MICRO  # e.g. 2026.11.0
+   sha=""
+   git fetch origin && sha="$(git rev-parse --verify "<sha>^{commit}")"  # the full SHA
+   (
+       [[ -n "${sha}" ]] || { echo "Fetch failed, or the commit is unknown"; exit 1; }
+       git merge-base --is-ancestor "${sha}" origin/dev || { echo "${sha} is not on dev"; exit 1; }
+       pattern='^v20[0-9]{2}\.([1-9]|1[0-2])\.(0|[1-9][0-9]*)$'
+       [[ "v${version}" =~ ${pattern} ]] || { echo "Not a release version: v${version}"; exit 1; }
+       # The file of the commit, not of the working tree
+       [[ "$(git show "${sha}:package.json" | jq -r .version)" == "${version}" ]] || { echo "Wrong version in package.json"; exit 1; }
+       runs="$(gh api "repos/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/runs?head_sha=${sha}&branch=dev&event=push&status=success&per_page=1" --jq .total_count)"
+       (( runs >= 1 )) || { echo "No successful CI run for the push of ${sha} to dev"; exit 1; }
+       git merge-base --is-ancestor origin/main "${sha}" || { echo "main can't be fast-forwarded to ${sha}"; exit 1; }
+   ) && echo "All checks passed"
+   ```
+
+   Only if all checks passed, move `main` to the commit and tag it with a
+   signed, annotated tag. Each command runs only if the one before it succeeded: a tag
+   on a commit that isn't on `main` would use up the version.
+
+   ```bash
+   git push origin "${sha}:main" &&  # fails unless it is a fast-forward
+       git tag -s "v${version}" "${sha}" -m "v${version}" &&
+       git push origin "v${version}"
+   ```
+
+5. Approve the jobs of the [release
+   workflow](.github/workflows/release.yml) in the `release` environment, after
+   checking that the run is for the tag you pushed. It checks that GitHub
+   verified the tag's signature, that its commit is on `main`, the version and
+   the CI run; pushes, scans, signs and tags the image, and publishes the GitHub
+   release with the generated notes. If a job fails, use "Re-run failed jobs",
+   not "Re-run all jobs": once the image is tagged, a new attempt of all jobs
+   stops at the existing tag and can't finish the release. If `prepare` fails
+   because CI hasn't finished for the commit, re-run the workflow once it
+   passed.
+6. Edit the release notes into the org's format: an intro paragraph; the
+   sections `## Breaking changes`, `## Features`, `## Security`, `## Fixes`,
+   `## Documentation` and `## Maintenance`, without the empty ones, each bullet
+   ending with its issue and pull request numbers; then the generated notes
+   under `## Commits` instead of `## What's Changed`, and last their
+   `**Full Changelog**` line.
+7. Check the site within a few minutes: Watchtower deploys the new image.
+
+The repository needs, once: an environment `release` with a required reviewer,
+deployments limited to `v*` tags, and access to the secrets `DOCKERHUB_LOGIN`
+and `DOCKERHUB_TOKEN` (allowed to push `elixircloud/landing-page`; create that
+repository on Docker Hub, public, before the first release); a ruleset that
+lets only maintainers create `v*` tags and keeps them from being moved or
+deleted; a ruleset for `main` that lets only maintainers update it and protects
+it against non-fast-forward pushes; and immutable releases. Forks can publish
+to their own Docker Hub organization by setting the repository variable
+`DOCKERHUB_ORG`. The optional variable `GA_MEASUREMENT_ID` goes into the image
+at build time (see the `Dockerfile`).
+
+Tags, published releases and released images can't be changed: if a release
+fails after its tag was pushed and re-running its failed jobs doesn't help,
+release the next version, with its own release-prep pull request.
+
+The workflow `Scan` ([`scan.yml`](.github/workflows/scan.yml)) scans the image
+of the latest release every Monday, and can be run by hand. It uploads the
+fixable findings to code scanning and a full report as a workflow artifact, and
+fails on fixable critical and high vulnerabilities: release a new version with
+the fix.
 
 ## Contributing
 
@@ -126,10 +240,12 @@ Pull request titles become the commit messages on `dev`: they follow
 CI checks the title (job `PR title`) and rechecks it when you edit it.
 
 [badge-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg?branch=dev>
-[badge-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg?branch=main>
+[badge-docker]: <https://img.shields.io/docker/v/elixircloud/landing-page?sort=semver&label=image&color=C39BD3>
+[badge-github-tag]: <https://img.shields.io/github/v/tag/elixir-cloud-aai/landing-page?color=C39BD3>
 [badge-license]: <https://img.shields.io/badge/license-Apache%202.0-blue.svg>
 [badge-url-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml?query=branch%3Adev>
-[badge-url-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml?query=branch%3Amain>
+[badge-url-docker]: <https://hub.docker.com/r/elixircloud/landing-page/tags>
+[badge-url-github-tag]: <https://github.com/elixir-cloud-aai/landing-page/releases>
 [badge-url-license]: <https://www.apache.org/licenses/LICENSE-2.0>
 [badge-website]: <https://img.shields.io/website?url=https%3A%2F%2Felixir-on.cloud%2F>
 [contributors]: <https://elixir-on.cloud/contributors>
