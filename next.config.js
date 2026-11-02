@@ -2,6 +2,8 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Don't generate AGENTS.md in the repository on `next dev`
+  agentRules: false,
   output: 'standalone',
   outputFileTracingRoot: __dirname,
   reactStrictMode: true,

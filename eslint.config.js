@@ -5,6 +5,7 @@ const react = require('eslint-plugin-react');
 const reactHooks = require('eslint-plugin-react-hooks');
 
 module.exports = [
+  { ignores: ['.next/', 'out/', 'public/'] },
   {
     plugins: {
       'check-file': checkFile,
