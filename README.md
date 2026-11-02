@@ -109,8 +109,9 @@ Vercel builds preview deployments for pull requests and `dev`, which has a
 stable preview URL: `vercel.json` turns off deployments of `main`, as the
 production site is served from the host above.
 
-The site used to be a PWA. `public/sw.js` only removes the old service worker
-from the browsers of past visitors, so keep it until those are gone.
+The site used to be a PWA. `public/sw.js` is written by hand and only removes
+the old service worker from the browsers of past visitors. Keep it until at
+least November 2027.
 
 To roll back, pin the `site` image to a previous `sha-<commit>` tag and run
 `docker compose up -d`. To build locally instead of pulling, run

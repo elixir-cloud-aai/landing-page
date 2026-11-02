@@ -1,12 +1,13 @@
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 
 type Listener = (event: { waitUntil: (work: Promise<void>) => void }) => void;
 
 // Runs public/sw.js against a stand-in for the service worker's globals.
-const loadWorker = () => {
+const loadWorker = (navigate = vi.fn()) => {
   const listeners: Record<string, Listener> = {};
-  const client = { url: 'https://example.org/', navigate: vi.fn() };
+  const client = { url: 'https://example.org/', navigate };
   const worker = {
     addEventListener: (type: string, listener: Listener) => {
       listeners[type] = listener;
@@ -19,7 +20,7 @@ const loadWorker = () => {
     keys: vi.fn().mockResolvedValue(['start-url', 'next-static']),
     delete: vi.fn().mockResolvedValue(true),
   };
-  const source = readFileSync('public/sw.js', 'utf8');
+  const source = readFileSync(resolve(__dirname, '../../public/sw.js'), 'utf8');
   new Function('self', 'caches', source)(worker, caches);
   return { listeners, client, worker, caches };
 };
@@ -40,5 +41,14 @@ describe('public/sw.js', () => {
     expect(caches.delete).toHaveBeenCalledWith('next-static');
     expect(worker.registration.unregister).toHaveBeenCalled();
     expect(client.navigate).toHaveBeenCalledWith(client.url);
+  });
+
+  it('finishes even if a page cannot be reloaded', async () => {
+    const navigate = vi.fn().mockRejectedValue(new TypeError('not controlled'));
+    const { listeners, worker } = loadWorker(navigate);
+    let work: Promise<void> | undefined;
+    listeners.activate({ waitUntil: (promise) => (work = promise) });
+    await expect(work).resolves.toBeUndefined();
+    expect(worker.registration.unregister).toHaveBeenCalled();
   });
 });
