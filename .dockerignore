@@ -1,8 +1,8 @@
 # Keep secrets, local builds and VCS data out of the Docker build context.
 .git
 .github
-.env
-.env*.local
+.env*
+!.env.example
 node_modules
 .next
 out
