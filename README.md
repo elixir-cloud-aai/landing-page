@@ -29,14 +29,14 @@ there is no backend and no build-time secret.
 
 Content lives in JSON files under [`src/data/`](src/data/):
 
-| File               | Page                                         |
-| ------------------ | -------------------------------------------- |
-| `product.json`     | [Products](https://elixir-on.cloud/products) |
-| `services.json`    | [Services](https://elixir-on.cloud/services) |
-| `nodes.json`       | Nodes (flags in `public/flags/`)             |
-| `project.json`     | [Projects](https://elixir-on.cloud/projects) |
-| `contributor.json` | [Contributors][contributors]                 |
-| `funding.json`     | [Funding](https://elixir-on.cloud/funding)   |
+| File               | Page                                                       |
+| ------------------ | ---------------------------------------------------------- |
+| `product.json`     | [Products](https://elixir-on.cloud/products)               |
+| `services.json`    | [Services](https://elixir-on.cloud/services)               |
+| `nodes.json`       | Nodes (flags in `public/flags/`, logos in `public/nodes/`) |
+| `project.json`     | [Projects](https://elixir-on.cloud/projects)               |
+| `contributor.json` | [Contributors][contributors]                               |
+| `funding.json`     | [Funding](https://elixir-on.cloud/funding)                 |
 
 To change content, edit the relevant file and open a pull request.
 
@@ -55,7 +55,15 @@ Useful commands:
 
 - `npm run build`: production build (also generates the sitemap)
 - `npx tsc --noEmit`: type-check
+- `npm test`: run the tests ([Vitest](https://vitest.dev/) with Testing
+  Library); `npm run test:watch` reruns them on changes
+- `npm run test:coverage`: run the tests and write coverage to
+  `coverage/lcov.info` (for Codecov)
 - `npm run check-links`: report dead outbound links in `src/`
+
+Tests live next to the code they test (`*.test.ts(x)`). The data tests in
+`src/data/data.test.ts` check the JSON files: unique ids, references between
+services, products and Nodes, and that every referenced image exists.
 
 ## Deployment
 
@@ -87,6 +95,10 @@ docker compose up -d
 
 The site listens on port 80 (change it in `docker-compose.yaml`). TLS is
 expected to be terminated by a reverse proxy in front of it.
+
+Vercel builds preview deployments for pull requests only: `vercel.json`
+turns off deployments of `main`, as the production site is served from the
+host above.
 
 To roll back, pin the `site` image to a previous `sha-<commit>` tag and run
 `docker compose up -d`. To build locally instead of pulling, run

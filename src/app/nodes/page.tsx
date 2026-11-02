@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowDown, ExternalLink, Mail, MapPin, Network } from 'lucide-react';
+import { ArrowDown, ExternalLink, Mail, Network } from 'lucide-react';
 import nodesData from '@/data/nodes.json';
 import servicesData from '@/data/services.json';
 import { FeedbackCallout, PageHero } from '@/components/catalog/page-hero';
@@ -18,6 +18,16 @@ export const metadata: Metadata = {
 const nodes = nodesData.nodes as ElixirNode[];
 const services = servicesData.services as Service[];
 
+// Short link text, e.g. "csc.fi". Falls back to the raw value, so a malformed
+// URL in nodes.json can't break the page.
+const hostLabel = (url: string) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+};
+
 const servicesAt = (code: string) =>
   services.filter((service) =>
     service.nodes.some((node) => node.code === code),
@@ -33,29 +43,40 @@ function NodeCard({ node }: { node: ElixirNode }) {
       id={node.code.toLowerCase()}
       className={cn(
         'flex min-w-0 scroll-mt-28 flex-col rounded-2xl border bg-card text-card-foreground shadow-sm transition-[border-color,box-shadow] duration-200 [overflow-wrap:anywhere] hover:shadow-lg target:ring-2 target:ring-primary/30',
-        node.status === 'planned'
+        node.status === 'onboarding'
           ? 'border-dashed hover:border-warning/50'
           : 'hover:border-primary/40',
       )}
     >
+      {/* Logos are made for white backgrounds, so they sit on a white panel
+          in both themes. */}
+      <div className="flex h-24 items-center justify-center rounded-t-2xl border-b bg-white px-6">
+        {node.logo ? (
+          <img
+            src={node.logo}
+            alt={`${node.institute ?? node.name} logo`}
+            className="max-h-12 w-auto max-w-[220px] object-contain"
+          />
+        ) : (
+          <span className="text-center text-base font-semibold text-slate-800">
+            {node.institute ?? node.name}
+          </span>
+        )}
+      </div>
+
       <div className="flex flex-1 flex-col p-6">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-center gap-3">
+        <h3 className="text-lg font-semibold leading-snug tracking-tight">
+          {node.institute ?? node.name}
+        </h3>
+        <div className="mt-2 flex items-center justify-between gap-4">
+          <p className="flex items-center gap-2 text-sm text-muted-foreground">
             <img
               src={`/flags/${node.code.toLowerCase()}.svg`}
               alt={`Flag of ${node.country}`}
-              className="h-8 w-12 shrink-0 rounded-[3px] object-cover shadow-sm ring-1 ring-border"
+              className="h-4 w-6 shrink-0 rounded-[2px] object-cover ring-1 ring-border"
             />
-            <div className="min-w-0">
-              <h3 className="text-lg font-semibold tracking-tight">
-                {node.name}
-              </h3>
-              <p className="flex items-center gap-1 text-xs text-muted-foreground">
-                <MapPin className="h-3 w-3" />
-                {node.country}
-              </p>
-            </div>
-          </div>
+            {node.name}
+          </p>
           <span
             className={cn(
               'shrink-0 rounded-full px-2.5 py-0.5 text-[11px] font-semibold',
@@ -64,24 +85,9 @@ function NodeCard({ node }: { node: ElixirNode }) {
                 : 'bg-warning/15 text-amber-700 dark:text-amber-300',
             )}
           >
-            {node.status === 'live' ? 'Live' : 'Planned'}
+            {node.status === 'live' ? 'Live' : 'Onboarding'}
           </span>
         </div>
-
-        {(node.institute || node.logo) && (
-          <div className="mt-5 flex items-center gap-3 rounded-xl border bg-background p-3">
-            {node.logo && (
-              <img
-                src={node.logo}
-                alt=""
-                className="h-10 w-auto max-w-[120px] object-contain"
-              />
-            )}
-            {node.institute && (
-              <p className="text-sm font-medium">{node.institute}</p>
-            )}
-          </div>
-        )}
 
         <div className="mt-5">
           <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -90,9 +96,9 @@ function NodeCard({ node }: { node: ElixirNode }) {
           {hosted.length ? (
             <ul className="flex flex-wrap gap-1.5">
               {hosted.map((service) => {
-                // A service can list this Node as planned (e.g. a joining TES node).
-                const planned = service.nodes.some(
-                  (n) => n.code === node.code && n.status === 'planned',
+                // A service can list this Node as still onboarding (e.g. a joining TES node).
+                const onboarding = service.nodes.some(
+                  (n) => n.code === node.code && n.status === 'onboarding',
                 );
                 return (
                   <li key={service.id}>
@@ -100,14 +106,14 @@ function NodeCard({ node }: { node: ElixirNode }) {
                       href={`/services#${service.id}`}
                       className={cn(
                         'inline-flex gap-1 rounded-md border px-2 py-0.5 text-xs font-medium transition-colors hover:border-primary/40',
-                        planned
+                        onboarding
                           ? 'border-dashed text-muted-foreground'
                           : 'bg-secondary text-secondary-foreground',
                       )}
                     >
                       {service.name}
-                      {planned && (
-                        <span className="font-normal">· planned</span>
+                      {onboarding && (
+                        <span className="font-normal">· onboarding</span>
                       )}
                     </Link>
                   </li>
@@ -115,7 +121,7 @@ function NodeCard({ node }: { node: ElixirNode }) {
               })}
             </ul>
           ) : (
-            <p className="text-sm text-muted-foreground">Joining soon</p>
+            <p className="text-sm text-muted-foreground">None yet</p>
           )}
         </div>
 
@@ -124,7 +130,7 @@ function NodeCard({ node }: { node: ElixirNode }) {
             <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Node liaison
             </p>
-            <OwnerChip owner={node.liaison} />
+            <OwnerChip owner={node.liaison} role={null} />
           </div>
         )}
       </div>
@@ -137,7 +143,7 @@ function NodeCard({ node }: { node: ElixirNode }) {
             rel="noopener noreferrer"
             className="inline-flex h-9 items-center gap-1.5 rounded-lg border bg-background px-3 text-sm font-medium transition-colors hover:bg-muted"
           >
-            Website
+            {hostLabel(node.website)}
             <ExternalLink className="h-3 w-3 opacity-70" />
           </a>
         )}
@@ -205,7 +211,7 @@ export default function NodesPage() {
         }
         stats={[
           { value: live.length, label: 'Live Nodes' },
-          { value: nodes.length - live.length, label: 'Planned' },
+          { value: nodes.length - live.length, label: 'Onboarding' },
           {
             value: new Set(nodes.map((n) => n.country)).size,
             label: 'Countries',

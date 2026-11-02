@@ -22,7 +22,7 @@ const IGNORE = [
 ];
 
 // Sites that block automated requests; listed as "skip" for a manual check.
-const UNVERIFIABLE = [/linkedin\.com/, /join\.slack\.com/];
+const UNVERIFIABLE = [/linkedin\.com/, /join\.slack\.com/, /athenarc\.gr/];
 
 async function* walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {

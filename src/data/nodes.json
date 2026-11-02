@@ -5,10 +5,14 @@
       "name": "ELIXIR Czech Republic",
       "country": "Czech Republic",
       "status": "live",
-      "institute": null,
-      "website": "https://www.elixir-czech.cz/",
-      "logo": null,
-      "liaison": null,
+      "institute": "CERIT-SC",
+      "website": "https://www.cerit-sc.cz/",
+      "logo": "/nodes/cerit-sc.svg",
+      "liaison": {
+        "name": "Lukáš Hejtmánek",
+        "email": null,
+        "image": "/contributors/lukas_hejtmanek.jpg"
+      },
       "contact": null
     },
     {
@@ -16,10 +20,14 @@
       "name": "ELIXIR Germany",
       "country": "Germany",
       "status": "live",
-      "institute": null,
-      "website": "https://www.denbi.de/",
-      "logo": null,
-      "liaison": null,
+      "institute": "Berlin Institute of Health at Charité (BIH)",
+      "website": "https://www.bihealth.org/en/",
+      "logo": "/nodes/bih.svg",
+      "liaison": {
+        "name": "Valentin Schneider-Lunitz",
+        "email": null,
+        "image": null
+      },
       "contact": null
     },
     {
@@ -27,10 +35,14 @@
       "name": "ELIXIR Finland",
       "country": "Finland",
       "status": "live",
-      "institute": null,
-      "website": "https://www.elixir-finland.org/",
-      "logo": null,
-      "liaison": null,
+      "institute": "CSC – IT Center for Science",
+      "website": "https://csc.fi/en/",
+      "logo": "/nodes/csc.svg",
+      "liaison": {
+        "name": "Álvaro González Álvarez",
+        "email": null,
+        "image": "/contributors/alvaro_gonzalez.jpg"
+      },
       "contact": null
     },
     {
@@ -38,21 +50,29 @@
       "name": "ELIXIR Greece",
       "country": "Greece",
       "status": "live",
-      "institute": null,
-      "website": null,
+      "institute": "Athena Research Center",
+      "website": "https://www.athenarc.gr/en/home",
       "logo": null,
-      "liaison": null,
+      "liaison": {
+        "name": "Eleni Adamidi",
+        "email": null,
+        "image": null
+      },
       "contact": null
     },
     {
       "code": "NL",
       "name": "ELIXIR Netherlands",
       "country": "Netherlands",
-      "status": "planned",
-      "institute": null,
-      "website": "https://www.health-ri.nl/elixir",
-      "logo": null,
-      "liaison": null,
+      "status": "onboarding",
+      "institute": "SURF",
+      "website": "https://www.surf.nl/",
+      "logo": "/nodes/surf.svg",
+      "liaison": {
+        "name": "Mirela Minkova",
+        "email": null,
+        "image": null
+      },
       "contact": null
     }
   ]

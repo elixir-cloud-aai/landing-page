@@ -58,21 +58,20 @@
     {
       "id": "protes",
       "name": "proTES",
-      "tagline": "Middleware gateway for GA4GH TES",
-      "blurb": "A GA4GH TES gateway that injects configurable middleware into task requests before forwarding them to independent TES nodes.",
-      "description": "proTES is a scalable GA4GH TES API gateway that provides centralized features to a federated network of independently operated TES instances. When a TES request arrives, proTES applies the configured middlewares and then forwards it to a suitable TES instance. It can act as a compatibility layer, a load balancer, a public entry point to an enclave of compute nodes, or a way to collect telemetry. A plugin system makes it easy to write middlewares for access control, request/response processing or validation, and for choosing endpoints based on data-use restrictions and client preferences.",
+      "tagline": "Plugin-based gateway for GA4GH TES",
+      "blurb": "A GA4GH TES gateway that runs each task through a pipeline of plugins, which check it, route it and record its provenance, before forwarding it to independent TES nodes.",
+      "description": "proTES is a scalable GA4GH TES API gateway that provides centralized features to a federated network of independently operated TES instances. It processes each incoming task with FOCA's plugin engine: plugins check or change the task, choose the TES instances to send it to and their order, and record its provenance, which users can read through the API. It can act as a compatibility layer, a load balancer, a public entry point to an enclave of compute nodes, or a way to collect telemetry.",
       "audience": [
         "Operators of federated compute networks",
-        "Developers writing TES middleware"
+        "Developers writing gateway plugins"
       ],
       "features": [
-        "Flexible middleware injection through a plugin system",
-        "Federates containerized workloads across on-premise, hybrid and multi-cloud TES nodes",
-        "Built-in load balancing plugin (pro_tes.middleware.task_distribution.random) that distributes tasks randomly across TES endpoints",
-        "Built-in 'bring compute to the data' plugin (pro_tes.middleware.task_distribution.distance) that minimizes how far input data travels",
-        "OAuth2 bearer-token authorization out of the box",
-        "Declarative YAML configuration, based on the FOCA microservice archetype",
-        "Asynchronous tracking of forwarded tasks via RabbitMQ and scalable Celery workers",
+        "Plugin pipeline built on FOCA: plugins check or change tasks and choose the TES instances to use, in order",
+        "Ships the routing plugins of foca-plugins: tes.routing.distance sends tasks to the TES instance closest to their input data, with generic.routing.random as the fallback",
+        "Records the provenance of each task, readable through the API",
+        "Requires access tokens; each task belongs to the user who created it",
+        "Discovers TES instances in a service registry, such as the ELIXIR On-Cloud Registry",
+        "Calls TES instances with credentials of its own and forwards each task exactly once",
         "Helm chart for production and Docker Compose for development"
       ],
       "techStack": [
@@ -90,13 +89,13 @@
         "Docker Compose (development/testing)"
       ],
       "quickStart": [
-        "git clone https://github.com/elixir-europe/proTES.git && cd proTES",
+        "git clone https://github.com/elixir-cloud-aai/proTES.git && cd proTES",
         "docker-compose up -d --build",
         "Open the Swagger UI at http://localhost:8080/ga4gh/tes/v1/ui"
       ],
       "status": "Beta; the API may change without notice",
       "standards": ["GA4GH TES"],
-      "tags": ["GA4GH", "TES", "Gateway", "Middleware"],
+      "tags": ["GA4GH", "TES", "Gateway", "Plugins"],
       "license": "Apache-2.0",
       "logo": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/proTES",
@@ -105,7 +104,14 @@
         "name": "Alex Kanitz",
         "email": "alexander.kanitz@unibas.ch",
         "image": "/contributors/alex_kanitz.jpg"
-      }
+      },
+      "relatedRepos": [
+        {
+          "name": "foca-plugins",
+          "description": "Plugins for FOCA gateways, including the TES routing plugins that proTES ships",
+          "url": "https://github.com/elixir-cloud-aai/foca-plugins"
+        }
+      ]
     },
     {
       "id": "cloud-registry",
@@ -119,11 +125,12 @@
       ],
       "features": [
         "Implements the GA4GH Service Registry API",
-        "Service entries follow the GA4GH ExternalService schema",
-        "Interactive Swagger UI for exploring the API",
-        "Docker Compose deployment for development and testing",
-        "Helm chart for cloud-native deployments",
-        "Developer API documentation hosted on ReadTheDocs"
+        "Owner-based access control: services belong to the users who register them",
+        "Admin mode: admins act as admins only when they switch it on, and can verify services and change their identifiers",
+        "Trusts several token issuers, with user identifiers namespaced by issuer",
+        "Curated service types, with the modes open, controlled and moderated",
+        "Publishes the deployment's rules for registrations in its service info",
+        "Helm chart for cloud-native deployments and Docker Compose for development"
       ],
       "requirements": ["git", "docker", "docker-compose"],
       "deployment": [
@@ -142,6 +149,51 @@
       "logo": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/cloud-registry",
       "docsUrl": "https://cloud-registry.readthedocs.io/en/latest/",
+      "owner": {
+        "name": "Alex Kanitz",
+        "email": "alexander.kanitz@unibas.ch",
+        "image": "/contributors/alex_kanitz.jpg"
+      }
+    },
+    {
+      "id": "foca",
+      "name": "FOCA",
+      "tagline": "API-first Python microservice archetype",
+      "blurb": "An opinionated, API-first framework for building Python microservices from an OpenAPI specification. The ELIXIR On-Cloud services, including proTES and Cloud Registry, are built on it.",
+      "description": "FOCA turns an OpenAPI specification and a YAML configuration into a running Flask microservice, with authentication, access control, database access, error handling and background tasks built in. Gateway apps such as proTES use its plugin engine to process requests in operator-defined pipelines. A Helm library chart (foca-common) gives FOCA apps a common deployment.",
+      "audience": [
+        "Developers building GA4GH or other OpenAPI-based services",
+        "Operators of FOCA-based services such as proTES and Cloud Registry"
+      ],
+      "features": [
+        "Builds a Flask microservice from an OpenAPI specification and YAML configuration",
+        "Auth model with access tokens, service (client-credentials) tokens, resource ownership and opt-in roles such as an admin mode",
+        "Access control with Casbin policies",
+        "Plugin engine for gateway apps: pinned plugins, per-request pipelines, failover routing, provenance and a plugin test kit",
+        "HTTP client for untrusted URLs, guarded against SSRF",
+        "Helm library chart for FOCA apps (foca-common)"
+      ],
+      "relatedRepos": [
+        {
+          "name": "foca-plugins",
+          "description": "Plugins for gateway services built with FOCA",
+          "url": "https://github.com/elixir-cloud-aai/foca-plugins"
+        }
+      ],
+      "techStack": [
+        "Python",
+        "Flask",
+        "Connexion",
+        "MongoDB",
+        "Casbin",
+        "Helm"
+      ],
+      "standards": [],
+      "tags": ["Python", "Microservices", "OpenAPI", "Framework"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/foca",
+      "docsUrl": "https://foca.readthedocs.io/",
       "owner": {
         "name": "Alex Kanitz",
         "email": "alexander.kanitz@unibas.ch",

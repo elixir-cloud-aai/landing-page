@@ -71,15 +71,15 @@
       "id": "protes-gateway",
       "name": "proTES Gateway",
       "tagline": "One entry point to the ELIXIR On-Cloud TES network",
-      "blurb": "The central proTES deployment that receives GA4GH TES requests, applies middleware and forwards each task to a suitable node of the TES network.",
-      "description": "The proTES Gateway is the ELIXIR On-Cloud deployment of proTES. Clients talk to a single GA4GH TES endpoint; the gateway applies the configured middleware (for example access control and task distribution) and relays each task to one of the independently operated TES nodes in the network.",
+      "blurb": "The central proTES deployment that receives GA4GH TES requests, runs it through its plugins and forwards each task to a suitable node of the TES network.",
+      "description": "The proTES Gateway is the ELIXIR On-Cloud deployment of proTES. Clients talk to a single GA4GH TES endpoint; the gateway runs each task through its plugins (for example for routing) and relays it to one of the independently operated TES nodes in the network.",
       "audience": [
         "Workflow engines and clients submitting TES tasks",
         "Operators of the TES network"
       ],
       "features": [
         "Single GA4GH TES endpoint for the whole network",
-        "Middleware-based task distribution across nodes",
+        "Plugin-based routing of tasks across nodes",
         "Asynchronous tracking of forwarded tasks"
       ],
       "standards": ["GA4GH TES"],
@@ -116,7 +116,7 @@
         { "code": "DE", "name": "ELIXIR Germany", "status": "live" },
         { "code": "FI", "name": "ELIXIR Finland", "status": "live" },
         { "code": "GR", "name": "ELIXIR Greece", "status": "live" },
-        { "code": "NL", "name": "ELIXIR Netherlands", "status": "planned" }
+        { "code": "NL", "name": "ELIXIR Netherlands", "status": "onboarding" }
       ],
       "status": "Live",
       "tags": ["GA4GH", "TES", "Federation", "Compute"],
@@ -165,7 +165,7 @@
       "standards": ["GA4GH WES", "GA4GH TES"],
       "relatedProductId": "conquest",
       "nodes": [],
-      "status": "Planned",
+      "status": "Onboarding",
       "tags": ["GA4GH", "WES", "Workflows"],
       "logo": null,
       "deploymentUrl": null,
@@ -191,7 +191,7 @@
       "standards": [],
       "relatedProductId": "pubgrade",
       "nodes": [],
-      "status": "Planned",
+      "status": "Onboarding",
       "tags": ["CI/CD", "Kubernetes", "Publish-Subscribe"],
       "logo": null,
       "deploymentUrl": null,
