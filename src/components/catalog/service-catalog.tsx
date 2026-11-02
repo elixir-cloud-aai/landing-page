@@ -36,11 +36,11 @@ export function StatusBadge({ status }: { status: Service['status'] }) {
       </span>
     );
   }
-  if (status === 'Planned') {
+  if (status === 'Onboarding') {
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full bg-warning/15 px-2.5 py-0.5 text-[11px] font-semibold text-amber-700 dark:text-amber-300">
         <Clock className="h-3 w-3" />
-        Planned
+        Onboarding
       </span>
     );
   }
@@ -65,8 +65,8 @@ export function NodeChip({ node }: { node: ServiceNode }) {
         )}
       />
       {node.code}
-      {node.status === 'planned' && (
-        <span className="font-normal">planned</span>
+      {node.status === 'onboarding' && (
+        <span className="font-normal">onboarding</span>
       )}
     </span>
   );
@@ -83,7 +83,7 @@ function ServiceCard({ service }: { service: Service }) {
       id={service.id}
       className={cn(
         'flex min-w-0 scroll-mt-28 flex-col [overflow-wrap:anywhere] rounded-2xl border bg-card text-card-foreground shadow-sm transition-[border-color,box-shadow] duration-200 hover:shadow-lg target:ring-2 target:ring-primary/30',
-        service.status === 'Planned'
+        service.status === 'Onboarding'
           ? 'border-dashed hover:border-warning/50'
           : 'hover:border-primary/40',
       )}
@@ -234,9 +234,9 @@ export function ServiceCatalog({ services }: { services: Service[] }) {
         count: services.filter((s) => s.status === 'Live').length,
       },
       {
-        value: 'Planned',
-        label: 'Planned',
-        count: services.filter((s) => s.status === 'Planned').length,
+        value: 'Onboarding',
+        label: 'Onboarding',
+        count: services.filter((s) => s.status === 'Onboarding').length,
       },
     ],
     [services],

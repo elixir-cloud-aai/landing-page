@@ -16,7 +16,9 @@ export const metadata: Metadata = {
 
 const services = servicesData.services as Service[];
 const liveCount = services.filter((s) => s.status === 'Live').length;
-const plannedCount = services.filter((s) => s.status === 'Planned').length;
+const onboardingCount = services.filter(
+  (s) => s.status === 'Onboarding',
+).length;
 
 // One entry per ELIXIR Node across all services; a node is live if any
 // service runs there.
@@ -27,7 +29,7 @@ const nodes = Array.from(
       const existing = map.get(node.code);
       if (
         !existing ||
-        (existing.status === 'planned' && node.status === 'live')
+        (existing.status === 'onboarding' && node.status === 'live')
       ) {
         map.set(node.code, node);
       }
@@ -84,7 +86,7 @@ export default function ServicesPage() {
         }
         stats={[
           { value: liveCount, label: 'Live services' },
-          { value: plannedCount, label: 'Planned' },
+          { value: onboardingCount, label: 'Onboarding' },
           {
             value: nodes.filter((node) => node.status === 'live').length,
             label: 'ELIXIR Nodes live',
@@ -117,7 +119,8 @@ export default function ServicesPage() {
                   <span className="h-2 w-2 rounded-full bg-success" /> Live
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-warning" /> Planned
+                  <span className="h-2 w-2 rounded-full bg-warning" />{' '}
+                  Onboarding
                 </span>
               </div>
             </div>
@@ -157,7 +160,7 @@ export default function ServicesPage() {
                             )
                             .map((s) => s.name)
                             .join(', ')
-                        : 'Joining soon'}
+                        : 'Onboarding'}
                     </p>
                   </Link>
                 </li>

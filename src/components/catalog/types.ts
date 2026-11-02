@@ -36,7 +36,7 @@ export interface Product {
   owner: Owner | null;
 }
 
-export type NodeStatus = 'live' | 'planned';
+export type NodeStatus = 'live' | 'onboarding';
 
 export interface ServiceNode {
   code: string;
@@ -44,7 +44,7 @@ export interface ServiceNode {
   status: NodeStatus;
 }
 
-export type ServiceStatus = 'Live' | 'Planned';
+export type ServiceStatus = 'Live' | 'Onboarding';
 
 export interface Service {
   id: string;

@@ -49,7 +49,15 @@ export function Monogram({
   );
 }
 
-export function OwnerChip({ owner }: { owner: Owner }) {
+// `role` is shown when there is no email; pass null where the surrounding
+// heading already names the role.
+export function OwnerChip({
+  owner,
+  role = 'Maintainer',
+}: {
+  owner: Owner;
+  role?: string | null;
+}) {
   return (
     <div className="flex min-w-0 items-center gap-2.5">
       {owner.image ? (
@@ -75,7 +83,7 @@ export function OwnerChip({ owner }: { owner: Owner }) {
             {owner.email}
           </a>
         ) : (
-          <p className="text-muted-foreground">Maintainer</p>
+          role && <p className="text-muted-foreground">{role}</p>
         )}
       </div>
     </div>
