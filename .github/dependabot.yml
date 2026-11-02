@@ -8,8 +8,10 @@ updates:
       interval: monthly
     target-branch: main
     groups:
+      # Major updates stay in PRs of their own, so they can't block the rest
       node-dependencies:
         patterns: ["*"]
+        update-types: [minor, patch]
   # Actions in the workflows, including the pins of the shared actions of
   # `elixir-cloud-aai/.github` (to the commits of its releases,
   # `@<commit> # vX.Y.Z`)
@@ -29,4 +31,13 @@ updates:
     target-branch: main
     groups:
       docker:
+        patterns: ["*"]
+  # Images in `docker-compose.yaml`
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: monthly
+    target-branch: main
+    groups:
+      docker-compose:
         patterns: ["*"]
