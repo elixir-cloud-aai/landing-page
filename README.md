@@ -73,7 +73,7 @@ that passed CI, which deploys that commit:
 
 ```bash
 git fetch origin
-git push origin origin/dev:main
+git push origin <commit of dev that passed CI>:main
 ```
 
 Once CI has passed for a push to `main`, the [Deploy
