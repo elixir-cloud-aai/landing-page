@@ -1,0 +1,17 @@
+# Codecov settings (https://docs.codecov.com/docs/codecov-yaml). The other repos
+# of the organisation require 100%. This repo works towards 70% of the covered
+# code (`coverage.include` in `vitest.config.mts`), up from about 38%: its
+# pages, data and catalogs can be tested, while its purely visual components
+# (3D globe, animations) gain little from tests in jsdom. Until it gets there,
+# the statuses are informational: they report against the target, but don't
+# fail. Once the target is reached, remove `informational`
+coverage:
+  status:
+    project:
+      default:
+        target: 70%
+        informational: true
+    patch:
+      default:
+        target: 70%
+        informational: true
