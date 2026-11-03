@@ -75,11 +75,20 @@ services, products and Nodes, and that every referenced image exists.
 - `Test`: runs the tests with coverage and reports it to
   [Codecov][badge-url-coverage]. [`codecov.yml`](codecov.yml) states the target
   of this repo (70%, working up from about 38%); the status only reports for
-  now, it doesn't fail.
+  now, it doesn't fail. The upload uses the organization's secret
+  `CODECOV_TOKEN`. Its errors fail the job only on pushes to this repository,
+  as forks and Dependabot get no access to the token.
 - `Build`: checks the formatting and types of `src/`, then builds the site.
 - `Audit`: fails on high and critical advisories in the production dependencies.
   To run it locally: `npm audit --omit=dev --audit-level=high`. Development
-  tools are not audited, as they don't reach the site.
+  tools are not audited, as they don't reach the site. The job checks npm's
+  advisory database as it is when the job runs, so a newly published advisory
+  fails every new run, without a change to the code, and also holds back
+  deployments of commits without a green run. Fix it by updating the package
+  (`npm update <package>` within its version range, otherwise
+  `npm install <package>@<fixed version>`, or the dependency that pulls it in).
+  There is no list of accepted advisories: if no fix exists yet, a maintainer
+  decides, in a pull request, whether to change the job for the time being.
 - `Build image`: builds the production image from the `Dockerfile`.
 - `Scan build`: scans that image with [Trivy](https://trivy.dev/), uploads the
   findings that have a fix to code scanning, and fails on critical and high ones
