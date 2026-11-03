@@ -1,16 +1,18 @@
 # Production deployment for https://elixir-on.cloud/
 #
-# The Deploy workflow pushes a new image to GHCR once CI passed for a push to
-# main. Watchtower checks GHCR every 5 minutes and restarts the site when the
-# image changes, so the host never needs inbound access from GitHub.
+# The Release workflow tags the image of the highest release `latest` on Docker
+# Hub. Watchtower checks Docker Hub every 5 minutes and restarts the site when
+# the image changes, so the host never needs inbound access from GitHub.
 #
 #   docker compose up -d          # start (or update this file and re-run)
 #   docker compose logs -f site   # follow the site's logs
 #
-# To build locally instead of pulling: docker compose up -d --build
+# To move a host from GHCR (only after the first release) or to roll back, see
+# "Deployment" in README.md. To build locally instead of pulling:
+# docker compose up -d --build
 services:
   site:
-    image: ghcr.io/elixir-cloud-aai/landing-page:latest
+    image: elixircloud/landing-page:latest
     container_name: landing-page
     build:
       context: .
