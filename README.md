@@ -11,6 +11,7 @@
 
 [![License][badge-license]][badge-url-license]
 [![Website][badge-website]][website]
+[![Coverage][badge-coverage]][badge-url-coverage]
 [![Build_status][badge-build-status]][badge-url-build-status]
 [![Deploy][badge-deploy]][badge-url-deploy]
 
@@ -64,6 +65,39 @@ Useful commands:
 Tests live next to the code they test (`*.test.ts(x)`). The data tests in
 `src/data/data.test.ts` check the JSON files: unique ids, references between
 services, products and Nodes, and that every referenced image exists.
+
+### Checks
+
+[CI](.github/workflows/ci.yml) runs these jobs on every pull request and push:
+
+- `PR title`: the title follows Conventional Commits and has at most 50
+  characters (see [Contributing](#contributing)).
+- `Test`: runs the tests with coverage and reports it to
+  [Codecov][badge-url-coverage]. [`codecov.yml`](codecov.yml) states the target
+  of this repo (70%, working up from about 38%); the status only reports for
+  now, it doesn't fail. The upload uses the organization's secret
+  `CODECOV_TOKEN`. Its errors fail the job only on pushes to this repository,
+  as forks and Dependabot get no access to the token.
+- `Build`: checks the formatting and types of `src/`, then builds the site.
+- `Audit`: fails on high and critical advisories in the production dependencies.
+  To run it locally: `npm audit --omit=dev --audit-level=high`. Development
+  tools are not audited, as they don't reach the site. The job checks npm's
+  advisory database as it is when the job runs, so a newly published advisory
+  fails every new run, without a change to the code, and also holds back
+  deployments of commits without a green run. Fix it by updating the package
+  (`npm update <package>` within its version range, otherwise
+  `npm install <package>@<fixed version>`, or the dependency that pulls it in).
+  There is no list of accepted advisories: if no fix exists yet, a maintainer
+  decides, in a pull request, whether to change the job for the time being.
+- `Build image`: builds the production image from the `Dockerfile`.
+- `Scan build`: scans that image with [Trivy](https://trivy.dev/), uploads the
+  findings that have a fix to code scanning, and fails on critical and high ones
+  that have a fix. Accepted findings go into
+  [`.trivyignore.yaml`](.trivyignore.yaml), with a reason and an expiry date.
+- `CI passed`: the only check that the rules for `dev` require. It passes if all
+  other jobs passed; only `PR title` may be skipped.
+
+ESLint isn't checked yet ([#179](../../issues/179)).
 
 ## Deployment
 
@@ -130,9 +164,11 @@ Pull request titles become the commit messages on `dev`: they follow
 CI checks the title (job `PR title`) and rechecks it when you edit it.
 
 [badge-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg?branch=dev>
+[badge-coverage]: <https://codecov.io/gh/elixir-cloud-aai/landing-page/branch/dev/graph/badge.svg?branch=dev>
 [badge-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg?branch=main>
 [badge-license]: <https://img.shields.io/badge/license-Apache%202.0-blue.svg>
 [badge-url-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml?query=branch%3Adev>
+[badge-url-coverage]: <https://codecov.io/gh/elixir-cloud-aai/landing-page?branch=dev>
 [badge-url-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml?query=branch%3Amain>
 [badge-url-license]: <https://www.apache.org/licenses/LICENSE-2.0>
 [badge-website]: <https://img.shields.io/website?url=https%3A%2F%2Felixir-on.cloud%2F>
