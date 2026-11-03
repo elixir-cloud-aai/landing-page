@@ -2,9 +2,8 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // Don't generate AGENTS.md in the repository on `next dev`
+  agentRules: false,
   output: 'standalone',
   outputFileTracingRoot: __dirname,
   reactStrictMode: true,
@@ -18,12 +17,4 @@ const nextConfig = {
   },
 };
 
-// Configuration object tells the next-pwa plugin 
-const withPWA = require("next-pwa")({
-  dest: "public",
-  disable: process.env.NODE_ENV === "development",
-  register: true,
-  skipWaiting: true,
-});
-
-module.exports = withPWA(nextConfig);
+module.exports = nextConfig;

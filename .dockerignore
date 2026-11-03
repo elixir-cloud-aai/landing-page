@@ -20,5 +20,3 @@ node_modules
 .next
 out
 npm-debug.log*
-public/sw.js
-public/workbox-*.js

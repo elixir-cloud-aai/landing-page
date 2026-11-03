@@ -5,7 +5,7 @@ import productsData from '@/data/product.json';
 import servicesData from '@/data/services.json';
 import { ProductCatalog } from './product-catalog';
 import { ServiceCatalog } from './service-catalog';
-import { FilterBar, matchesQuery, Monogram } from './shared';
+import { FilterBar, isGitlabUrl, matchesQuery, Monogram } from './shared';
 import type { Product, Service } from './types';
 
 const products = productsData.products as Product[];
@@ -165,5 +165,27 @@ describe('ServiceCatalog', () => {
         ).toHaveAttribute('href', `/products#${service.relatedProductId}`);
       }
     });
+  });
+});
+
+describe('isGitlabUrl', () => {
+  it('accepts GitLab and its subdomains', () => {
+    expect(
+      isGitlabUrl('https://gitlab.com/one-touch-pipeline/weskit/api'),
+    ).toBe(true);
+    expect(isGitlabUrl('https://www.gitlab.com/group/project')).toBe(true);
+  });
+
+  it('rejects other hosts that merely contain the name', () => {
+    expect(isGitlabUrl('https://example.org/gitlab.com/project')).toBe(false);
+    expect(isGitlabUrl('https://gitlab.com.example.org/project')).toBe(false);
+    expect(isGitlabUrl('https://notgitlab.com/project')).toBe(false);
+    expect(isGitlabUrl('https://github.com/gitlab.com')).toBe(false);
+  });
+
+  it('treats a missing or malformed URL as not GitLab', () => {
+    expect(isGitlabUrl(undefined)).toBe(false);
+    expect(isGitlabUrl(null)).toBe(false);
+    expect(isGitlabUrl('gitlab.com/project')).toBe(false);
   });
 });
