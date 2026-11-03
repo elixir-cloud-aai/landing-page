@@ -69,7 +69,7 @@ services, products and Nodes, and that every referenced image exists.
 
 ### Checks
 
-[CI](.github/workflows/ci.yml) runs these jobs on every pull request and push:
+[CI](.github/workflows/ci.yml) runs these jobs on every pull request and push to `dev`:
 
 - `PR title`: the title follows Conventional Commits and has at most 50
   characters (see [Contributing](#contributing)).
@@ -150,7 +150,8 @@ old image from 2024, and a host that pulls it would serve that old site.
    them again (e.g., another port). Check out `main`, pull it, and run
    `docker pull elixircloud/landing-page:latest` and `docker compose up -d`.
    Check the site.
-3. Keep the images on `ghcr.io` until a release from Docker Hub has proven good.
+3. Keep the images on `ghcr.io` until a release from Docker Hub has proven good,
+   then remove them by hand.
 
 Until the host has moved, roll back with the steps below, using the image
 `ghcr.io/elixir-cloud-aai/landing-page:sha-<full SHA of the commit>`. Those
@@ -203,24 +204,16 @@ Releases are cut by the maintainers:
 2. Wait until CI has passed for the push to `dev` of the commit that the merge
    created on `dev` (`<sha>`, not the head of the pull request): the release
    workflow requires a successful CI run for a push of the tagged commit (runs
-   for pull requests test merge commits, not the commit itself).
-3. CI doesn't scan the image yet
-   ([#166](https://github.com/elixir-cloud-aai/landing-page/issues/166)), but
-   the release workflow does, and a fixable critical or high vulnerability fails
-   the release after the tag. So check out the commit, build its image and scan
-   it with the same flags first:
-
-   ```bash
-   docker build -t landing-page:release-check .
-   trivy image --ignorefile .trivyignore.yaml --severity CRITICAL,HIGH \
-       --ignore-unfixed --exit-code 1 landing-page:release-check
-   ```
-
-   Fix what it finds (e.g., by bumping the Node.js image of the `Dockerfile` or
-   a dependency) or, with a reason and an expiry date, accept it in
+   for pull requests test merge commits, not the commit itself). CI also scans
+   the image with the flags of the release scan (job `Scan build`), so that a
+   fixable critical or high vulnerability fails CI before the tag rather than
+   the release. Fix it (e.g., by bumping the Node.js image of the `Dockerfile`
+   or a dependency) or, with a reason and an expiry date, accept it in
    `.trivyignore.yaml`. Either takes another pull request: release the commit
-   that its merge created, once CI has passed for it.
-4. Run the release workflow's checks that need no tag, as it runs them (keep
+   that its merge created, once CI has passed for it. Vulnerabilities published
+   between the CI run and the release can still fail the release scan: tag soon
+   after CI has passed.
+3. Run the release workflow's checks that need no tag, as it runs them (keep
    these commands in sync with the job `prepare` of
    [`release.yml`](.github/workflows/release.yml)), in Bash. Run them before
    tagging: the release workflow checks the tagged commit, so a check that fails
@@ -259,7 +252,7 @@ Releases are cut by the maintainers:
        git push origin "v${version}"
    ```
 
-5. Approve the jobs of the [release
+4. Approve the jobs of the [release
    workflow](.github/workflows/release.yml) in the `release` environment, after
    checking that the run is for the tag you pushed. It checks that GitHub
    verified the tag's signature, that its commit is on `main`, the version and
@@ -269,13 +262,13 @@ Releases are cut by the maintainers:
    stops at the existing tag and can't finish the release. If `prepare` fails
    because CI hasn't finished for the commit, re-run the workflow once it
    passed.
-6. Edit the release notes into the org's format: an intro paragraph; the
+5. Edit the release notes into the org's format: an intro paragraph; the
    sections `## Breaking changes`, `## Features`, `## Security`, `## Fixes`,
    `## Documentation` and `## Maintenance`, without the empty ones, each bullet
    ending with its issue and pull request numbers; then the generated notes
    under `## Commits` instead of `## What's Changed`, and last their
    `**Full Changelog**` line.
-7. Check the site within a few minutes: Watchtower deploys the new image, if
+6. Check the site within a few minutes: Watchtower deploys the new image, if
    this is the highest release (the workflow warns otherwise). After the first
    release, [move the host to Docker Hub](#moving-the-host-to-docker-hub).
 

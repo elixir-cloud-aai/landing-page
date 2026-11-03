@@ -1,12 +1,12 @@
-# Checks every pull request and push to dev: the pull request title, the build
-# and the Docker image. The gate `passed` ("CI passed") is the only check that
-# the rules for dev need to require. The Release workflow requires a successful
-# run for the push of the release commit to dev; main needs no runs, as it only
-# moves forward to commits of dev that are released. Runs also when a pull
-# request is edited, so that the title check follows the title; all jobs run
-# then, as a run that skipped the build would report "CI passed" for the
-# commit. CI also runs the tests (with coverage, reported to Codecov), audits
-# the production dependencies and scans the image for known vulnerabilities.
+# Checks every pull request and push to dev: the pull request title, the tests
+# (with coverage, reported to Codecov), the build, an audit of the production
+# dependencies, and the Docker image and its scan for known vulnerabilities. The
+# gate `passed` ("CI passed") is the only check that the rules for dev need to
+# require. The Release workflow requires a successful run for the push of the
+# release commit to dev; main needs no runs, as it only moves forward to commits
+# of dev that are released. Runs also when a pull request is edited, so that the
+# title check follows the title; all jobs run then, as a run that skipped the
+# build would report "CI passed" for the commit.
 name: CI
 
 on:
