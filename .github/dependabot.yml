@@ -4,6 +4,7 @@ updates:
   # Dependencies in `package.json` and the lock (`package-lock.json`)
   - package-ecosystem: npm
     directory: /
+    labels: ["type: dependencies"]
     schedule:
       interval: monthly
     target-branch: dev
@@ -17,6 +18,7 @@ updates:
   # `@<commit> # vX.Y.Z`)
   - package-ecosystem: github-actions
     directory: /
+    labels: ["type: dependencies"]
     schedule:
       interval: monthly
     target-branch: dev
@@ -26,6 +28,7 @@ updates:
   # Images in the `Dockerfile`
   - package-ecosystem: docker
     directory: /
+    labels: ["type: dependencies"]
     schedule:
       interval: monthly
     target-branch: dev
@@ -35,6 +38,7 @@ updates:
   # Images in `docker-compose.yaml`
   - package-ecosystem: docker-compose
     directory: /
+    labels: ["type: dependencies"]
     schedule:
       interval: monthly
     target-branch: dev
