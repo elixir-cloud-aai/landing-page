@@ -16,7 +16,9 @@ import type { Product } from './types';
 const ALL = 'all';
 
 function DetailList({ title, items }: { title: string; items?: string[] }) {
-  if (!items?.length) return null;
+  if (!items?.length) {
+    return null;
+  }
   return (
     <div>
       <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -41,8 +43,8 @@ function ProductCard({ product }: { product: Product }) {
 
   return (
     <article
-      id={product.id}
       className="group flex min-w-0 scroll-mt-28 flex-col [overflow-wrap:anywhere] rounded-2xl border bg-card text-card-foreground shadow-sm transition-[border-color,box-shadow] duration-200 hover:border-primary/40 hover:shadow-lg target:border-primary target:ring-2 target:ring-primary/30"
+      id={product.id}
     >
       <div className="flex flex-1 flex-col p-6">
         <div className="flex items-start gap-4">
@@ -71,7 +73,7 @@ function ProductCard({ product }: { product: Product }) {
         {!!product.features?.length && (
           <ul className="mt-5 space-y-2">
             {product.features.slice(0, 3).map((feature) => (
-              <li key={feature} className="flex items-start gap-2.5 text-sm">
+              <li className="flex items-start gap-2.5 text-sm" key={feature}>
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
                 <span className="min-w-0 leading-5 text-foreground/80">
                   {feature}
@@ -104,12 +106,12 @@ function ProductCard({ product }: { product: Product }) {
                   {product.description}
                 </p>
               )}
-              <DetailList title="Who it's for" items={product.audience} />
-              <DetailList title="All features" items={product.features} />
-              <DetailList title="How it works" items={product.howItWorks} />
-              <DetailList title="Requirements" items={product.requirements} />
-              <DetailList title="Deployment" items={product.deployment} />
-              <DetailList title="Tech stack" items={product.techStack} />
+              <DetailList items={product.audience} title="Who it's for" />
+              <DetailList items={product.features} title="All features" />
+              <DetailList items={product.howItWorks} title="How it works" />
+              <DetailList items={product.requirements} title="Requirements" />
+              <DetailList items={product.deployment} title="Deployment" />
+              <DetailList items={product.techStack} title="Tech stack" />
               {!!product.quickStart?.length && (
                 <div>
                   <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
@@ -135,10 +137,10 @@ function ProductCard({ product }: { product: Product }) {
                     {product.relatedRepos.map((repo) => (
                       <li key={repo.url}>
                         <a
-                          href={repo.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           className="font-medium text-primary hover:underline"
+                          href={repo.url}
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
                           {repo.name}
                         </a>
@@ -155,11 +157,11 @@ function ProductCard({ product }: { product: Product }) {
                 <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
                   {product.extraLinks.map((link) => (
                     <a
-                      key={link.url}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="font-medium text-primary hover:underline"
+                      href={link.url}
+                      key={link.url}
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
                       {link.label}
                     </a>
@@ -182,11 +184,11 @@ function ProductCard({ product }: { product: Product }) {
         <div className="flex gap-2">
           {product.repoUrl && (
             <a
-              href={product.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               aria-label={`${product.name} source code`}
               className="inline-flex h-9 items-center gap-1.5 rounded-lg border bg-background px-3 text-sm font-medium transition-colors hover:bg-muted"
+              href={product.repoUrl}
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <FaGithub className="h-4 w-4" />
               Code
@@ -194,11 +196,11 @@ function ProductCard({ product }: { product: Product }) {
           )}
           {product.docsUrl && (
             <a
-              href={product.docsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               aria-label={`${product.name} documentation`}
               className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+              href={product.docsUrl}
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <BookOpen className="h-4 w-4" />
               Docs
@@ -246,14 +248,14 @@ export function ProductCatalog({ products }: { products: Product[] }) {
   return (
     <>
       <FilterBar
-        query={query}
-        onQueryChange={setQuery}
-        placeholder="Search products, e.g. TES, Kubernetes"
-        options={options}
-        selected={standard}
-        onSelect={setStandard}
-        resultCount={filtered.length}
         noun="products"
+        onQueryChange={setQuery}
+        onSelect={setStandard}
+        options={options}
+        placeholder="Search products, e.g. TES, Kubernetes"
+        query={query}
+        resultCount={filtered.length}
+        selected={standard}
       />
       {filtered.length ? (
         <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">

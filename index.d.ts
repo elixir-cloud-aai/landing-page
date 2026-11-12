@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- ambient shims for untyped SVG imports and gtag */
 export {};
 
 declare module '*.svg' {

@@ -32,9 +32,12 @@ function supportsWebGL() {
 export default function LazyGlobe3D(props: ComponentProps<typeof Globe3D>) {
   const [webgl, setWebgl] = useState<boolean | null>(null);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- WebGL is detected on the client only, after hydration
   useEffect(() => setWebgl(supportsWebGL()), []);
 
-  if (webgl === null) return placeholder;
+  if (webgl === null) {
+    return placeholder;
+  }
   if (!webgl) {
     return (
       <div className="flex h-[500px] w-full items-center justify-center">

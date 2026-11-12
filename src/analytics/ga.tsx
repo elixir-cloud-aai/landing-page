@@ -5,7 +5,9 @@ import Script from 'next/script';
 // banner, which then calls window.GAConsentGranted().
 export default function GAScript() {
   const id = process.env.GA_MEASUREMENT_ID;
-  if (!id) return null;
+  if (!id) {
+    return null;
+  }
 
   return (
     <Script id="google-analytics" strategy="afterInteractive">

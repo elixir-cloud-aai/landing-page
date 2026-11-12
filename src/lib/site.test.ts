@@ -8,7 +8,9 @@ import contributors from '@/data/contributor.json';
 const sourceFiles = (dir: string): string[] =>
   readdirSync(dir).flatMap((entry) => {
     const path = join(dir, entry);
-    if (statSync(path).isDirectory()) return sourceFiles(path);
+    if (statSync(path).isDirectory()) {
+      return sourceFiles(path);
+    }
     return /\.(tsx?|json)$/.test(entry) && !entry.includes('.test.')
       ? [path]
       : [];

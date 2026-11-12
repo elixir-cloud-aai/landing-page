@@ -51,13 +51,13 @@ export function StatusBadge({ status }: { status: Service['status'] }) {
 export function NodeChip({ node }: { node: ServiceNode }) {
   return (
     <span
-      title={`${node.name} (${node.status})`}
       className={cn(
         'inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-[11px] font-medium',
         node.status === 'live'
           ? 'bg-card text-foreground'
           : 'border-dashed bg-transparent text-muted-foreground',
       )}
+      title={`${node.name} (${node.status})`}
     >
       <span
         className={cn(
@@ -81,13 +81,13 @@ function ServiceCard({ service }: { service: Service }) {
 
   return (
     <article
-      id={service.id}
       className={cn(
         'flex min-w-0 scroll-mt-28 flex-col [overflow-wrap:anywhere] rounded-2xl border bg-card text-card-foreground shadow-sm transition-[border-color,box-shadow] duration-200 hover:shadow-lg target:ring-2 target:ring-primary/30',
         service.status === 'Onboarding'
           ? 'border-dashed hover:border-warning/50'
           : 'hover:border-primary/40',
       )}
+      id={service.id}
     >
       <div className="flex flex-1 flex-col p-6">
         <div className="flex items-start gap-4">
@@ -112,7 +112,7 @@ function ServiceCard({ service }: { service: Service }) {
         {!!service.features.length && (
           <ul className="mt-5 space-y-2">
             {service.features.slice(0, 3).map((feature) => (
-              <li key={feature} className="flex items-start gap-2.5 text-sm">
+              <li className="flex items-start gap-2.5 text-sm" key={feature}>
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />
                 <span className="min-w-0 leading-5 text-foreground/80">
                   {feature}
@@ -143,8 +143,8 @@ function ServiceCard({ service }: { service: Service }) {
 
         {service.relatedProductId && (
           <Link
-            href={`/products#${service.relatedProductId}`}
             className="mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+            href={`/products#${service.relatedProductId}`}
           >
             <Package className="h-4 w-4" />
             About the software
@@ -163,10 +163,10 @@ function ServiceCard({ service }: { service: Service }) {
       <div className="flex flex-wrap items-center gap-2 border-t px-6 py-4">
         {service.deploymentUrl ? (
           <a
-            href={service.deploymentUrl}
-            target="_blank"
-            rel="noopener noreferrer"
             className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            href={service.deploymentUrl}
+            rel="noopener noreferrer"
+            target="_blank"
           >
             <Globe className="h-4 w-4" />
             Open service
@@ -174,10 +174,10 @@ function ServiceCard({ service }: { service: Service }) {
           </a>
         ) : service.trackingUrl ? (
           <a
-            href={service.trackingUrl}
-            target="_blank"
-            rel="noopener noreferrer"
             className={linkButton}
+            href={service.trackingUrl}
+            rel="noopener noreferrer"
+            target="_blank"
           >
             <Clock className="h-4 w-4" />
             Track deployment
@@ -190,11 +190,11 @@ function ServiceCard({ service }: { service: Service }) {
         <div className="ml-auto flex gap-2">
           {service.docsUrl && (
             <a
-              href={service.docsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               aria-label={`${service.name} documentation`}
               className={linkButton}
+              href={service.docsUrl}
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <BookOpen className="h-4 w-4" />
               Docs
@@ -202,11 +202,11 @@ function ServiceCard({ service }: { service: Service }) {
           )}
           {service.repoUrl && (
             <a
-              href={service.repoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
               aria-label={`${service.name} source code`}
               className={linkButton}
+              href={service.repoUrl}
+              rel="noopener noreferrer"
+              target="_blank"
             >
               {repoIsGitlab ? (
                 <FaGitlab className="h-4 w-4" />
@@ -262,14 +262,14 @@ export function ServiceCatalog({ services }: { services: Service[] }) {
   return (
     <>
       <FilterBar
-        query={query}
-        onQueryChange={setQuery}
-        placeholder="Search services, e.g. WES, Germany"
-        options={options}
-        selected={status}
-        onSelect={setStatus}
-        resultCount={filtered.length}
         noun="services"
+        onQueryChange={setQuery}
+        onSelect={setStatus}
+        options={options}
+        placeholder="Search services, e.g. WES, Germany"
+        query={query}
+        resultCount={filtered.length}
+        selected={status}
       />
       {filtered.length ? (
         <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
