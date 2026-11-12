@@ -5,7 +5,7 @@ import { Reveal } from 'react-awesome-reveal';
 // `zoomIn`): 1 s, `ease`, scaling up from 30% while fading in over the first
 // half. Version 5 dropped the effect components, so `Reveal` gets the same
 // keyframes. The entrance plays once.
-export const zoomInKeyframes: Keyframe[] = [
+const zoomInKeyframes: Keyframe[] = [
   {
     offset: 0,
     easing: 'ease',
@@ -16,7 +16,7 @@ export const zoomInKeyframes: Keyframe[] = [
   { offset: 1, opacity: 1, transform: 'none' },
 ];
 
-export const ZOOM_IN_DURATION = 1000;
+const ZOOM_IN_DURATION = 1000;
 
 const ZoomIn = ({ children }: { children: ReactNode }) => (
   <Reveal duration={ZOOM_IN_DURATION} keyframes={zoomInKeyframes}>

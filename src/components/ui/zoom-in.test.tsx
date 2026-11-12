@@ -1,35 +1,46 @@
 import { render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
-import ZoomIn, { ZOOM_IN_DURATION, zoomInKeyframes } from './zoom-in';
+import type { ReactNode } from 'react';
+import { describe, expect, it, vi } from 'vitest';
+import ZoomIn from './zoom-in';
+
+const reveal = vi.hoisted(() => vi.fn());
+
+// Records the props that ZoomIn passes and renders the children in one div,
+// as Reveal does
+vi.mock('react-awesome-reveal', () => ({
+  Reveal: ({ children, ...props }: { children: ReactNode }) => {
+    reveal(props);
+    return <div data-testid="reveal">{children}</div>;
+  },
+}));
 
 describe('ZoomIn', () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  it('renders its children in one wrapper element', () => {
+  it('renders its children inside Reveal', () => {
     render(
       <ZoomIn>
         <p>first</p>
         <p>second</p>
       </ZoomIn>,
     );
-    const first = screen.getByText('first');
-    expect(first.parentElement).toBe(screen.getByText('second').parentElement);
-    expect(first.parentElement?.tagName).toBe('DIV');
+    const wrapper = screen.getByTestId('reveal');
+    expect(screen.getByText('first').parentElement).toBe(wrapper);
+    expect(screen.getByText('second').parentElement).toBe(wrapper);
   });
 
-  it('starts small and transparent and ends at the resting style', () => {
-    expect(ZOOM_IN_DURATION).toBe(1000);
-    expect(zoomInKeyframes[0]).toMatchObject({
-      offset: 0,
-      opacity: 0,
-      transform: 'scale3d(0.3, 0.3, 0.3)',
-    });
-    expect(zoomInKeyframes.at(-1)).toMatchObject({
-      offset: 1,
-      opacity: 1,
-      transform: 'none',
+  it('passes the zoom entrance of version 4 to Reveal', () => {
+    render(<ZoomIn>content</ZoomIn>);
+    expect(reveal).toHaveBeenLastCalledWith({
+      duration: 1000,
+      keyframes: [
+        {
+          offset: 0,
+          easing: 'ease',
+          opacity: 0,
+          transform: 'scale3d(0.3, 0.3, 0.3)',
+        },
+        { offset: 0.5, easing: 'ease', opacity: 1 },
+        { offset: 1, opacity: 1, transform: 'none' },
+      ],
     });
   });
 });
