@@ -1,5 +1,7 @@
 # Weekly dead-link check. Not a required PR check, because external sites go
-# down at random and would block merges. Opens (or updates) one issue instead.
+# down at random and would block merges. Opens (or updates) one issue instead,
+# only for dead links (404/410, DNS or TLS errors); links that still fail with
+# server or network errors after a retry are listed there as unverified.
 name: Link check
 
 on:
