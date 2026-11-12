@@ -6,7 +6,9 @@ import {
   check,
   classify,
   collect,
+  DEAD_EXIT_CODE,
   isTestFile,
+  summarize,
 } from '../../scripts/check-links.mjs';
 
 const networkError = (code: string) =>
@@ -124,11 +126,42 @@ describe('check', () => {
     expect(sleep).not.toHaveBeenCalled();
   });
 
-  it('reports DNS errors as dead without retry', async () => {
+  it('confirms DNS errors with one retry before calling them dead', async () => {
     const fetch = vi.fn(() => Promise.reject(networkError('ENOTFOUND')));
     expect(await check('https://a.example', { fetch, sleep })).toEqual({
       verdict: 'dead',
       status: 'ENOTFOUND',
+    });
+    expect(sleep).toHaveBeenCalledTimes(1);
+  });
+
+  it('accepts a link whose DNS error clears on the retry', async () => {
+    const fetch = vi
+      .fn()
+      .mockReturnValueOnce(Promise.reject(networkError('ENOTFOUND')))
+      .mockReturnValueOnce(Promise.reject(networkError('ENOTFOUND')))
+      .mockReturnValueOnce(response(200));
+    expect((await check('https://a.example', { fetch, sleep })).verdict).toBe(
+      'ok',
+    );
+  });
+
+  it('reports TLS errors as dead without retry', async () => {
+    const fetch = vi.fn(() => Promise.reject(networkError('CERT_HAS_EXPIRED')));
+    expect((await check('https://a.example', { fetch, sleep })).verdict).toBe(
+      'dead',
+    );
+    expect(sleep).not.toHaveBeenCalled();
+  });
+
+  it('tries GET when HEAD fails with a network error', async () => {
+    const fetch = vi
+      .fn()
+      .mockReturnValueOnce(Promise.reject(networkError('ECONNRESET')))
+      .mockReturnValueOnce(response(200));
+    expect(await check('https://a.example', { fetch, sleep })).toEqual({
+      verdict: 'ok',
+      status: '200',
     });
     expect(sleep).not.toHaveBeenCalled();
   });
@@ -165,11 +198,59 @@ describe('check', () => {
     expect(sleep).toHaveBeenCalledTimes(1);
   });
 
-  it('reports a timeout without a cause by its name', async () => {
+  it('reports a repeated timeout as unverified, by its name', async () => {
     const timeout = Object.assign(new Error('t'), { name: 'TimeoutError' });
     const fetch = vi.fn(() => Promise.reject(timeout));
-    expect((await check('https://a.example', { fetch, sleep })).status).toBe(
-      'TimeoutError',
+    expect(await check('https://a.example', { fetch, sleep })).toEqual({
+      verdict: 'unverified',
+      status: 'TimeoutError',
+    });
+    expect(sleep).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('summarize', () => {
+  const urls = new Map([
+    ['https://a.example', new Set(['src/a.json'])],
+    ['https://b.example', new Set(['src/b.tsx', 'src/c.tsx'])],
+    ['https://c.example', new Set(['src/a.json'])],
+  ]);
+
+  it('passes when nothing is dead, listing unverified links', () => {
+    const { text, exitCode } = summarize(
+      [
+        { url: 'https://a.example', verdict: 'ok', status: '200' },
+        { url: 'https://b.example', verdict: 'unverified', status: '503' },
+      ],
+      urls,
+    );
+    expect(exitCode).toBe(0);
+    expect(text).toContain('Checked 3 links, 0 dead, 1 unverified.');
+    expect(text).toContain('Unverified (not confirmed dead):');
+    expect(text).toContain(
+      '503  https://b.example\n      in src/b.tsx, src/c.tsx',
+    );
+    expect(text).not.toContain('Dead:');
+  });
+
+  it('fails with its own exit code when a link is dead', () => {
+    const { text, exitCode } = summarize(
+      [
+        { url: 'https://a.example', verdict: 'dead', status: '404' },
+        { url: 'https://b.example', verdict: 'unverified', status: '403' },
+        { url: 'https://c.example', verdict: 'skip', status: 'skip' },
+      ],
+      urls,
+    );
+    expect(exitCode).toBe(DEAD_EXIT_CODE);
+    expect(DEAD_EXIT_CODE).toBe(2);
+    expect(text).toMatch(/Dead:\n {2}404 {2}https:\/\/a\.example/);
+    expect(text.indexOf('Dead:')).toBeLessThan(text.indexOf('Unverified'));
+  });
+
+  it('prints only the count when every link is fine', () => {
+    expect(summarize([], new Map()).text).toBe(
+      'Checked 0 links, 0 dead, 0 unverified.',
     );
   });
 });

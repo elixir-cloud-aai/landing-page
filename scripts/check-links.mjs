@@ -2,9 +2,10 @@
 // Checks every outbound http(s) link in src/ (data files and components,
 // not tests). Usage: npm run check-links
 //
-// Verdicts: "ok"; "dead" (404/410, DNS or TLS errors); "unverified" (other
-// 4xx, or 5xx and network errors that persist after one retry); "skip"
-// (sites that block automated requests). Exits non-zero only on dead links.
+// Verdicts: "ok"; "dead" (404/410, TLS errors, or DNS errors that persist
+// after one retry); "unverified" (other 4xx, or 5xx and network errors that
+// persist after one retry); "skip" (sites that block automated requests).
+// Exits with 2 on dead links, 0 otherwise (1 if the check itself breaks).
 import { readdir, readFile } from 'node:fs/promises';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -146,30 +147,67 @@ export async function check(
     });
     return response.status;
   };
+  /** @param {unknown} error */
+  const code = (error) => {
+    const err = /** @type {{cause?: {code?: string}, name: string}} */ (error);
+    return err.cause?.code || err.name;
+  };
   /** @returns {Promise<number | string>} */
   const attempt = async () => {
     try {
       const status = await request('HEAD');
-      // Many servers reject HEAD; retry with GET before judging.
-      return status >= 400 ? await request('GET') : status;
+      if (status < 400) {
+        return status;
+      }
+    } catch {
+      // Some servers drop HEAD requests; GET decides.
+    }
+    // Many servers reject HEAD; retry with GET before judging.
+    try {
+      return await request('GET');
     } catch (error) {
-      const err = /** @type {{cause?: {code?: string}, name: string}} */ (
-        error
-      );
-      return err.cause?.code || err.name;
+      return code(error);
     }
   };
   let status = await attempt();
-  let verdict = classify(status);
-  if (verdict === 'transient') {
+  // A DNS failure can also be a short outage of the resolver: confirm it.
+  if (classify(status) === 'transient' || DNS_ERRORS.has(String(status))) {
     await sleep();
     status = await attempt();
-    verdict = classify(status);
   }
+  const verdict = classify(status);
   return {
     verdict: verdict === 'transient' ? 'unverified' : verdict,
     status: String(status),
   };
+}
+
+/** Exit code for dead links; other non-zero codes mean the check broke. */
+export const DEAD_EXIT_CODE = 2;
+
+/**
+ * Builds the summary of a run.
+ * @param {{url: string, verdict: string, status: string}[]} results
+ * @param {Map<string, Set<string>>} urls URL to the files using it
+ * @returns {{text: string, exitCode: number}}
+ */
+export function summarize(results, urls) {
+  const dead = results.filter((result) => result.verdict === 'dead');
+  const unverified = results.filter((r) => r.verdict === 'unverified');
+  /** @param {{url: string, status: string}[]} list */
+  const lines = (list) =>
+    list.map(
+      ({ url, status }) =>
+        `  ${status}  ${url}\n      in ${[...(urls.get(url) ?? [])].join(', ')}`,
+    );
+  const text = [
+    `Checked ${urls.size} links, ${dead.length} dead, ${unverified.length} unverified.`,
+    ...(dead.length ? ['', 'Dead:', ...lines(dead)] : []),
+    ...(unverified.length
+      ? ['', 'Unverified (not confirmed dead):', ...lines(unverified)]
+      : []),
+  ].join('\n');
+  return { text, exitCode: dead.length ? DEAD_EXIT_CODE : 0 };
 }
 
 async function main() {
@@ -192,28 +230,9 @@ async function main() {
     }),
   );
 
-  const dead = results.filter((result) => result.verdict === 'dead');
-  const unverified = results.filter((r) => r.verdict === 'unverified');
-  /** @param {{url: string, status: string}[]} list */
-  const print = (list) => {
-    for (const { url, status } of list) {
-      console.log(
-        `  ${status}  ${url}\n      in ${[...urls.get(url)].join(', ')}`,
-      );
-    }
-  };
-  console.log(
-    `\nChecked ${urls.size} links, ${dead.length} dead, ${unverified.length} unverified.`,
-  );
-  if (dead.length) {
-    console.log('\nDead:');
-    print(dead);
-  }
-  if (unverified.length) {
-    console.log('\nUnverified (server errors, timeouts or refusals):');
-    print(unverified);
-  }
-  process.exit(dead.length ? 1 : 0);
+  const { text, exitCode } = summarize(results, urls);
+  console.log(`\n${text}`);
+  process.exit(exitCode);
 }
 
 if (

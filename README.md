@@ -61,11 +61,13 @@ Useful commands:
 - `npm run test:coverage`: run the tests and write coverage to
   `coverage/lcov.info` (for Codecov)
 - `npm run check-links`: check the outbound links in `src/` (test files
-  excluded). A link is dead on 404/410 or a DNS or TLS error; server errors
-  (5xx) and other network errors are retried once after 10 seconds and, if
-  they persist, reported as unverified, like other 4xx responses. The command
-  fails only on dead links. The [Link check](.github/workflows/links.yml)
-  workflow runs it every Monday and opens or updates an issue for dead links.
+  excluded). A link is dead on 404/410, a TLS error, or a DNS error that
+  persists after one retry; server errors (5xx) and other network errors are
+  retried once after a short delay and, if they persist, reported as
+  unverified, like other 4xx responses. The command exits with 2 on dead
+  links, with 0 otherwise. The [Link check](.github/workflows/links.yml)
+  workflow runs it every Monday, shows the summary (with unverified links) in
+  the run's job summary, and opens or updates an issue for dead links.
 
 Tests live next to the code they test (`*.test.ts(x)`). The data tests in
 `src/data/data.test.ts` check the JSON files: unique ids, references between
@@ -168,15 +170,15 @@ Pull request titles become the commit messages on `dev`: they follow
 50 characters (see the [contributing guide of ELIXIR On-Cloud](https://github.com/elixir-cloud-aai/.github/blob/main/CONTRIBUTING.md)).
 CI checks the title (job `PR title`) and rechecks it when you edit it.
 
-[badge-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg?branch=dev>
-[badge-coverage]: <https://codecov.io/gh/elixir-cloud-aai/landing-page/branch/dev/graph/badge.svg?branch=dev>
-[badge-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg?branch=main>
-[badge-license]: <https://img.shields.io/badge/license-Apache%202.0-blue.svg>
-[badge-url-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml?query=branch%3Adev>
-[badge-url-coverage]: <https://codecov.io/gh/elixir-cloud-aai/landing-page?branch=dev>
-[badge-url-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml?query=branch%3Amain>
-[badge-url-license]: <https://www.apache.org/licenses/LICENSE-2.0>
-[badge-website]: <https://img.shields.io/website?url=https%3A%2F%2Felixir-on.cloud%2F>
-[contributors]: <https://elixir-on.cloud/contributors>
-[ga4gh-driver-projects]: <https://www.ga4gh.org/our-community/driver-projects/>
-[website]: <https://elixir-on.cloud/>
+[badge-build-status]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg?branch=dev
+[badge-coverage]: https://codecov.io/gh/elixir-cloud-aai/landing-page/branch/dev/graph/badge.svg?branch=dev
+[badge-deploy]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg?branch=main
+[badge-license]: https://img.shields.io/badge/license-Apache%202.0-blue.svg
+[badge-url-build-status]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml?query=branch%3Adev
+[badge-url-coverage]: https://codecov.io/gh/elixir-cloud-aai/landing-page?branch=dev
+[badge-url-deploy]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml?query=branch%3Amain
+[badge-url-license]: https://www.apache.org/licenses/LICENSE-2.0
+[badge-website]: https://img.shields.io/website?url=https%3A%2F%2Felixir-on.cloud%2F
+[contributors]: https://elixir-on.cloud/contributors
+[ga4gh-driver-projects]: https://www.ga4gh.org/our-community/driver-projects/
+[website]: https://elixir-on.cloud/
