@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, FC, useEffect, useRef, useState } from 'react';
+import { FC, useContext, useEffect, useRef, useState } from 'react';
 import ContentLoader from 'react-content-loader';
 import ZoomIn from '@/components/ui/zoom-in';
 import themeContext from '@/context/default-theme';
@@ -23,7 +23,9 @@ const News: FC = () => {
   const theme = context?.theme === 'light' ? 'light' : 'dark';
 
   useEffect(() => {
-    if (!timelineRef.current) return;
+    if (!timelineRef.current) {
+      return;
+    }
 
     setLoaded(false);
 
@@ -70,10 +72,10 @@ const News: FC = () => {
           <ContentLoader
             backgroundColor="#f3f3f3"
             foregroundColor="#ecebeb"
+            height={70}
             speed={2}
             viewBox="0 0 476 70"
             width="100%"
-            height={70}
           >
             <rect height="6" rx="3" ry="3" width="88" x="48" y="10" />
             <rect height="5" rx="3" ry="3" width="410" x="48" y="30" />
@@ -92,12 +94,12 @@ const News: FC = () => {
       <div className="mx-5 mt-32 rounded-xl dark:bg-gray-900 md:mx-96">
         {!loaded && renderLoading()}
 
-        <div ref={timelineRef} className={loaded ? 'block' : 'hidden'}>
+        <div className={loaded ? 'block' : 'hidden'} ref={timelineRef}>
           <a
             className="twitter-timeline"
-            data-theme={theme}
             data-chrome="noheader nofooter transparent"
             data-height="600"
+            data-theme={theme}
             href="https://twitter.com/egc_news"
           >
             Tweets by @egc_news

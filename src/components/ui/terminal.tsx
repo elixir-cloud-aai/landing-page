@@ -101,7 +101,9 @@ function useAudio(enabled: boolean) {
 
   useEffect(() => {
     readyRef.current = false;
-    if (!enabled) return;
+    if (!enabled) {
+      return;
+    }
 
     const controller = new AbortController();
     let context: AudioContext | null = null;
@@ -114,7 +116,9 @@ function useAudio(enabled: boolean) {
 
     // Keep automatic demos silent until the user clicks, taps, or presses a key.
     async function initAudio() {
-      if (started) return;
+      if (started) {
+        return;
+      }
       started = true;
       removeListeners();
 
@@ -126,11 +130,17 @@ function useAudio(enabled: boolean) {
         const response = await fetch('/sounds/sound.ogg', {
           signal: controller.signal,
         });
-        if (!response.ok || controller.signal.aborted) return;
+        if (!response.ok || controller.signal.aborted) {
+          return;
+        }
         const bytes = await response.arrayBuffer();
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted) {
+          return;
+        }
         const buffer = await context.decodeAudioData(bytes);
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted) {
+          return;
+        }
         bufferRef.current = buffer;
         readyRef.current = true;
       } catch {
@@ -147,14 +157,19 @@ function useAudio(enabled: boolean) {
       readyRef.current = false;
       bufferRef.current = null;
       ctxRef.current = null;
-      if (context) void context.close().catch(() => {});
+      if (context) {
+        void context.close().catch(() => {});
+      }
     };
   }, [enabled]);
 
   const playSound = (sound: [number, number] | undefined) => {
-    if (!readyRef.current || !ctxRef.current || !bufferRef.current || !sound)
+    if (!readyRef.current || !ctxRef.current || !bufferRef.current || !sound) {
       return;
-    if (ctxRef.current.state === 'suspended') ctxRef.current.resume();
+    }
+    if (ctxRef.current.state === 'suspended') {
+      ctxRef.current.resume();
+    }
     const src = ctxRef.current.createBufferSource();
     src.buffer = bufferRef.current;
     src.connect(ctxRef.current.destination);
@@ -175,7 +190,9 @@ function useInView(ref: React.RefObject<HTMLElement | null>, once = true) {
 
   useEffect(() => {
     const el = ref.current;
-    if (!el || (once && triggered.current)) return;
+    if (!el || (once && triggered.current)) {
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -295,7 +312,7 @@ function SyntaxHighlightedText({ text }: { text: string }) {
   return (
     <>
       {tokens.map((token, i) => (
-        <span key={i} className={tokenColors[token.type]}>
+        <span className={tokenColors[token.type]} key={i}>
           {token.value}
         </span>
       ))}
@@ -352,13 +369,17 @@ export function Terminal({
   const isLastCommand = commandIdx === commands.length - 1;
 
   useEffect(() => {
-    if (!inView || phase !== 'idle') return;
+    if (!inView || phase !== 'idle') {
+      return;
+    }
     const t = setTimeout(() => setPhase('typing'), initialDelay);
     return () => clearTimeout(t);
   }, [inView, phase, initialDelay]);
 
   useEffect(() => {
-    if (phase !== 'typing') return;
+    if (phase !== 'typing') {
+      return;
+    }
 
     if (charIdx < currentCommand.length) {
       const char = currentCommand[charIdx];
@@ -372,19 +393,21 @@ export function Terminal({
         typingSpeed + Math.random() * 30,
       );
       return () => clearTimeout(t);
-    } else {
-      down('Enter');
-      const t = setTimeout(() => {
-        up('Enter');
-        setPhase('executing');
-      }, 80);
-      return () => clearTimeout(t);
     }
+    down('Enter');
+    const t = setTimeout(() => {
+      up('Enter');
+      setPhase('executing');
+    }, 80);
+    return () => clearTimeout(t);
   }, [phase, charIdx, currentCommand, typingSpeed, down, up]);
 
   useEffect(() => {
-    if (phase !== 'executing') return;
+    if (phase !== 'executing') {
+      return;
+    }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- steps the animation's state machine
     setLines((prev) => [...prev, { type: 'command', content: currentCommand }]);
     setCurrentText('');
 
@@ -399,7 +422,9 @@ export function Terminal({
   }, [phase, currentCommand, currentOutputs.length, isLastCommand]);
 
   useEffect(() => {
-    if (phase !== 'outputting') return;
+    if (phase !== 'outputting') {
+      return;
+    }
 
     if (outputIdx >= 0 && outputIdx < currentOutputs.length) {
       const t = setTimeout(() => {
@@ -423,7 +448,9 @@ export function Terminal({
   }, [phase, outputIdx, currentOutputs, isLastCommand]);
 
   useEffect(() => {
-    if (phase !== 'pausing') return;
+    if (phase !== 'pausing') {
+      return;
+    }
     const t = setTimeout(() => {
       setCharIdx(0);
       setOutputIdx(-1);
@@ -455,11 +482,11 @@ export function Terminal({
 
   return (
     <div
-      ref={containerRef}
       className={cn(
         'mx-auto w-full max-w-xl px-4 font-mono text-xs',
         className,
       )}
+      ref={containerRef}
     >
       <div className="overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900 shadow-2xl">
         {/* Title Bar */}
@@ -479,11 +506,11 @@ export function Terminal({
 
         {/* Terminal Content */}
         <div
-          ref={contentRef}
           className="no-visible-scrollbar h-80 overflow-y-auto p-4 font-mono"
+          ref={contentRef}
         >
           {lines.map((line, i) => (
-            <div key={i} className="leading-relaxed whitespace-pre-wrap">
+            <div className="leading-relaxed whitespace-pre-wrap" key={i}>
               {line.type === 'command' ? (
                 <span>
                   {prompt}

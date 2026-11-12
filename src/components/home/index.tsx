@@ -49,14 +49,14 @@ const Home: FC = () => {
   return (
     <div className="relative isolate overflow-hidden bg-[radial-gradient(circle_at_top,rgba(61,169,246,0.09),transparent_35%),linear-gradient(180deg,#f8fbff_0%,#ffffff_34%,#f7fafc_100%)] font-pop dark:bg-[radial-gradient(circle_at_top,rgba(61,169,246,0.16),transparent_36%),linear-gradient(180deg,#020617_0%,#0f172a_44%,#111827_100%)] dark:text-white">
       <AnimatedGridPattern
-        numSquares={30}
-        maxOpacity={0.5}
-        duration={3}
-        repeatDelay={1}
         className={cn(
           '[mask-image:radial-gradient(520px_circle_at_center,white,transparent)]',
           'inset-x-0 inset-y-[-30%] h-[200%] skew-y-12',
         )}
+        duration={3}
+        maxOpacity={0.5}
+        numSquares={30}
+        repeatDelay={1}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-white/55 via-transparent to-white/90 dark:from-slate-950/65 dark:to-slate-950/95" />
 
@@ -119,8 +119,8 @@ const Home: FC = () => {
                   </p>
                   <Globe3D
                     className="absolute -bottom-96 -left-0 h-[700px]"
-                    markers={contributorMarkers}
                     config={globeConfig}
+                    markers={contributorMarkers}
                   />
                 </div>
               </div>
@@ -147,8 +147,8 @@ const Home: FC = () => {
                 <a
                   className="inline-flex w-fit items-center rounded-full text-sm font-medium text-elixirblue transition hover:underline"
                   href={DOCS_HUB_URL}
-                  target="_blank"
                   rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Learn more in the ELIXIR On-Cloud docs
                 </a>

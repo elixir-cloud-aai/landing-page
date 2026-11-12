@@ -2,10 +2,10 @@
 import { cn } from '@/lib/utils';
 import { IconMenu2, IconX } from '@tabler/icons-react';
 import {
-  motion,
   AnimatePresence,
-  useScroll,
+  motion,
   useMotionValueEvent,
+  useScroll,
 } from 'motion/react';
 
 import React, { useRef, useState } from 'react';
@@ -66,8 +66,8 @@ export const Navbar = ({ children, className }: NavbarProps) => {
 
   return (
     <motion.div
-      ref={ref}
       className={cn('relative inset-x-0 z-40 w-full', className)}
+      ref={ref}
     >
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
@@ -92,19 +92,19 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         width: visible ? '40%' : '100%',
         y: visible ? 20 : 0,
       }}
-      transition={{
-        type: 'spring',
-        stiffness: 200,
-        damping: 50,
-      }}
-      style={{
-        minWidth: '1000px',
-      }}
       className={cn(
         'relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full border border-transparent px-4 py-3 lg:flex',
         visible ? 'border-border bg-card/90' : 'bg-background',
         className,
       )}
+      style={{
+        minWidth: '1000px',
+      }}
+      transition={{
+        type: 'spring',
+        stiffness: 200,
+        damping: 50,
+      }}
     >
       {children}
     </motion.div>
@@ -116,24 +116,24 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 
   return (
     <motion.div
-      onMouseLeave={() => setHovered(null)}
       className={cn(
         'absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2',
         className,
       )}
+      onMouseLeave={() => setHovered(null)}
     >
       {items.map((item, idx) => (
         <a
-          onMouseEnter={() => setHovered(idx)}
-          onClick={onItemClick}
           className="relative px-4 py-2 text-neutral-600 dark:text-neutral-300"
-          key={`link-${idx}`}
           href={item.link}
+          key={`link-${idx}`}
+          onClick={onItemClick}
+          onMouseEnter={() => setHovered(idx)}
         >
           {hovered === idx && (
             <motion.div
-              layoutId="hovered"
               className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800"
+              layoutId="hovered"
             />
           )}
           <span className="relative z-20">{item.name}</span>
@@ -157,16 +157,16 @@ export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
         borderRadius: visible ? '4px' : '2rem',
         y: visible ? 20 : 0,
       }}
-      transition={{
-        type: 'spring',
-        stiffness: 200,
-        damping: 50,
-      }}
       className={cn(
         'relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between px-0 py-2 lg:hidden',
         visible ? 'bg-card/90' : 'bg-background',
         className,
       )}
+      transition={{
+        type: 'spring',
+        stiffness: 200,
+        damping: 50,
+      }}
     >
       {children}
     </motion.div>
@@ -193,19 +193,18 @@ export const MobileNavMenu = ({
   children,
   className,
   isOpen,
-  onClose,
 }: MobileNavMenuProps) => {
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
           className={cn(
             'absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-xl border bg-popover px-5 py-6 text-popover-foreground shadow-xl',
             className,
           )}
+          exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
         >
           {children}
         </motion.div>
@@ -237,14 +236,14 @@ export const MobileNavToggle = ({
 export const NavbarLogo = () => {
   return (
     <a
-      href="#"
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
+      href="#"
     >
       <img
-        src="https://assets.aceternity.com/logo-dark.png"
         alt="logo"
-        width={30}
         height={30}
+        src="https://assets.aceternity.com/logo-dark.png"
+        width={30}
       />
       <span className="font-medium text-black dark:text-white">Startup</span>
     </a>

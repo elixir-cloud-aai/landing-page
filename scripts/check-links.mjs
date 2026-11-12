@@ -27,8 +27,11 @@ const UNVERIFIABLE = [/linkedin\.com/, /join\.slack\.com/, /athenarc\.gr/];
 async function* walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const path = join(dir, entry.name);
-    if (entry.isDirectory()) yield* walk(path);
-    else if (EXTENSIONS.test(entry.name)) yield path;
+    if (entry.isDirectory()) {
+      yield* walk(path);
+    } else if (EXTENSIONS.test(entry.name)) {
+      yield path;
+    }
   }
 }
 
@@ -38,8 +41,12 @@ async function collect() {
     const text = await readFile(file, 'utf8');
     for (const match of text.matchAll(URL_PATTERN)) {
       const url = match[0].replace(/[.,;:]+$/, '');
-      if (IGNORE.some((pattern) => pattern.test(url))) continue;
-      if (!urls.has(url)) urls.set(url, new Set());
+      if (IGNORE.some((pattern) => pattern.test(url))) {
+        continue;
+      }
+      if (!urls.has(url)) {
+        urls.set(url, new Set());
+      }
       urls.get(url).add(file.replace(ROOT, 'src/'));
     }
   }
@@ -62,7 +69,9 @@ async function check(url) {
   try {
     let status = await attempt('HEAD');
     // Many servers reject HEAD; retry with GET before calling it dead.
-    if (status >= 400) status = await attempt('GET');
+    if (status >= 400) {
+      status = await attempt('GET');
+    }
     // 429 means rate limited, not dead.
     return { ok: status < 400 || status === 429, status: String(status) };
   } catch (error) {
@@ -82,7 +91,9 @@ await Promise.all(
       const label =
         result.status === 'skip' ? 'skip' : result.ok ? 'ok  ' : 'DEAD';
       console.log(`${label} ${result.status.padEnd(14)} ${url}`);
-      if (!result.ok) failures.push({ url, ...result });
+      if (!result.ok) {
+        failures.push({ url, ...result });
+      }
     }
   }),
 );

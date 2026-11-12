@@ -1,13 +1,13 @@
 'use client';
 
 import {
+  type ComponentPropsWithoutRef,
   memo,
   useCallback,
   useEffect,
   useId,
   useRef,
   useState,
-  type ComponentPropsWithoutRef,
 } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 
@@ -58,8 +58,12 @@ const AnimatedSquare = memo(function AnimatedSquare({
   const [opacity] = useState(() => 0.5 + (maxOpacity - 0.5) * Math.random());
   return (
     <motion.rect
-      initial={{ opacity: 0 }}
       animate={{ opacity }}
+      fill={squareColors[(id + iteration) % squareColors.length]}
+      height={height - 1}
+      initial={{ opacity: 0 }}
+      onAnimationComplete={() => onComplete(id)}
+      strokeWidth="0"
       transition={{
         duration,
         repeat: 1,
@@ -67,13 +71,9 @@ const AnimatedSquare = memo(function AnimatedSquare({
         repeatType: 'reverse',
         repeatDelay,
       }}
-      onAnimationComplete={() => onComplete(id)}
       width={width - 1}
-      height={height - 1}
       x={pos[0] * width + 1}
       y={pos[1] * height + 1}
-      fill={squareColors[(id + iteration) % squareColors.length]}
-      strokeWidth="0"
     />
   );
 });
@@ -111,7 +111,9 @@ export function AnimatedGridPattern({
     (squareId: number) => {
       setSquares((currentSquares) => {
         const current = currentSquares[squareId];
-        if (!current) return currentSquares;
+        if (!current) {
+          return currentSquares;
+        }
         const nextSquares = currentSquares.slice();
         nextSquares[squareId] = {
           ...current,
@@ -126,6 +128,7 @@ export function AnimatedGridPattern({
 
   useEffect(() => {
     if (hasSize) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- squares depend on the measured size
       setSquares(
         Array.from({ length: numSquares }, (_, i) => ({
           id: i,
@@ -138,7 +141,9 @@ export function AnimatedGridPattern({
 
   useEffect(() => {
     const element = containerRef.current;
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     const resizeObserver = new ResizeObserver(([entry]) => {
       dimensionsRef.current = {
@@ -171,20 +176,20 @@ export function AnimatedGridPattern({
 
   return (
     <svg
-      ref={containerRef}
       aria-hidden="true"
       className={cn(
         'pointer-events-none absolute inset-0 h-full w-full stroke-gray-400/35 dark:stroke-white/10',
         className,
       )}
+      ref={containerRef}
       {...props}
     >
       <defs>
         <pattern
-          id={id}
-          width={width}
           height={height}
+          id={id}
           patternUnits="userSpaceOnUse"
+          width={width}
           x={x}
           y={y}
         >
@@ -195,20 +200,20 @@ export function AnimatedGridPattern({
           />
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill={`url(#${id})`} />
+      <rect fill={`url(#${id})`} height="100%" width="100%" />
       {animate && (
-        <svg x={x} y={y} className="overflow-visible">
+        <svg className="overflow-visible" x={x} y={y}>
           {squares.map((square, index) => (
             <AnimatedSquare
-              key={`${square.id}-${square.iteration}`}
-              square={square}
-              index={index}
-              width={width}
-              height={height}
-              maxOpacity={maxOpacity}
               duration={duration}
-              repeatDelay={repeatDelay}
+              height={height}
+              index={index}
+              key={`${square.id}-${square.iteration}`}
+              maxOpacity={maxOpacity}
               onComplete={updateSquarePosition}
+              repeatDelay={repeatDelay}
+              square={square}
+              width={width}
             />
           ))}
         </svg>

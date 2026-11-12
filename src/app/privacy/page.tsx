@@ -90,18 +90,18 @@ export default function PrivacyPage() {
             <p>
               This website is run by the ELIXIR On-Cloud community, part of the{' '}
               <a
-                href="https://elixir-europe.org/"
                 className="text-primary hover:underline"
-                target="_blank"
+                href="https://elixir-europe.org/"
                 rel="noopener noreferrer"
+                target="_blank"
               >
                 ELIXIR
               </a>{' '}
               research infrastructure. For any privacy question or request,
               email{' '}
               <a
-                href={`mailto:${CONTACT_EMAIL}`}
                 className="text-primary hover:underline"
+                href={`mailto:${CONTACT_EMAIL}`}
               >
                 {CONTACT_EMAIL}
               </a>
@@ -199,7 +199,7 @@ export default function PrivacyPage() {
           </Section>
 
           <p className="border-t pt-6 text-sm">
-            <Link href="/" className="text-primary hover:underline">
+            <Link className="text-primary hover:underline" href="/">
               ← Back to the home page
             </Link>
           </p>
