@@ -1,7 +1,7 @@
 # Checks every pull request and push to dev and main: the pull request title,
 # the lint, the build and the Docker image. The gate `passed` ("CI passed") is
-# the only check that the rules for dev need to require. Pushes to main stay covered
-# because the Deploy workflow publishes after CI for them. Runs also when a pull
+# the only check that the rules for dev need to require. Pushes to main stay
+# covered because the Deploy workflow publishes after CI for them. Runs also when a pull
 # request is edited, so that the title check follows the title; all jobs run
 # then, as a run that skipped the build would report "CI passed" for the
 # commit. CI also runs the tests (with coverage, reported to Codecov), audits

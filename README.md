@@ -76,7 +76,8 @@ services, products and Nodes, and that every referenced image exists.
 
 - `PR title`: the title follows Conventional Commits and has at most 50
   characters (see [Contributing](#contributing)).
-- `Lint`: runs `npm run lint`.
+- `Lint`: lints all JavaScript and TypeScript sources with ESLint
+  (`npm run lint`); errors and warnings fail it.
 - `Test`: runs the tests with coverage and reports it to
   [Codecov][badge-url-coverage]. [`codecov.yml`](codecov.yml) states the target
   of this repo (70%, working up from about 38%); the status only reports for

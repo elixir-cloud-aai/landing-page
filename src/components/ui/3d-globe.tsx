@@ -124,7 +124,14 @@ interface MarkerProps {
   onHover?: (marker: GlobeMarker | null) => void;
 }
 
-function Marker({ marker, radius, onClick, onHover }: MarkerProps) {
+function Marker({
+  marker,
+  radius,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- in the props interface; callers pass it
+  defaultSize,
+  onClick,
+  onHover,
+}: MarkerProps) {
   const [hovered, setHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const groupRef = useRef<THREE.Group>(null);
