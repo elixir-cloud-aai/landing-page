@@ -1,5 +1,8 @@
 # Weekly dead-link check. Not a required PR check, because external sites go
-# down at random and would block merges. Opens (or updates) one issue instead.
+# down at random and would block merges. Opens (or updates) one issue instead,
+# only for dead links (404/410, DNS or TLS errors). Links that still fail with
+# server or network errors after a retry are unverified: they appear in the
+# job summary of every run, and in the issue when there are dead links too.
 name: Link check
 
 on:
@@ -27,11 +30,20 @@ jobs:
         run: |
           set +e
           node scripts/check-links.mjs > links.txt
-          echo "status=$?" >> "$GITHUB_OUTPUT"
+          status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
           cat links.txt
+          {
+            echo '```'
+            sed -n '/^Checked /,$p' links.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          # 2 means dead links (reported below); anything else non-zero means
+          # the check itself broke
+          if [ "$status" != 0 ] && [ "$status" != 2 ]; then exit "$status"; fi
 
       - name: Report dead links
-        if: steps.check.outputs.status != '0'
+        if: steps.check.outputs.status == '2'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
