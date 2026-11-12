@@ -1,7 +1,7 @@
 # Checks every pull request and push to dev and main: the pull request title,
-# the build and the Docker image. The gate `passed` ("CI passed") is the only
-# check that the rules for dev need to require. Pushes to main stay covered
-# because the Deploy workflow publishes after CI for them. Runs also when a pull
+# the lint, the build and the Docker image. The gate `passed` ("CI passed") is
+# the only check that the rules for dev need to require. Pushes to main stay
+# covered because the Deploy workflow publishes after CI for them. Runs also when a pull
 # request is edited, so that the title check follows the title; all jobs run
 # then, as a run that skipped the build would report "CI passed" for the
 # commit. CI also runs the tests (with coverage, reported to Codecov), audits
@@ -57,6 +57,31 @@ jobs:
     steps:
       - name: Check PR title
         uses: elixir-cloud-aai/.github/actions/pr-title@743e82d290a53768454999e413756a924e383259 # v1.0.0
+
+  # Lints all JavaScript and TypeScript sources with ESLint (Next.js's
+  # recommended flat config with typescript-eslint, plus the project's rules
+  # in `eslint.config.js`); fails on errors and warnings
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Lint
+        run: npm run lint
 
   test:
     name: Test
@@ -229,7 +254,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     if: always()
-    needs: [title, test, build, audit, image, scan]
+    needs: [title, lint, test, build, audit, image, scan]
     permissions: {}
     steps:
       - name: Check results of all jobs

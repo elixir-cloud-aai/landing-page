@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronDown, ExternalLink, Moon, Sun, X } from 'lucide-react';
 import {
-  Navbar,
-  NavBody,
   MobileNav,
   MobileNavHeader,
-  MobileNavToggle,
   MobileNavMenu,
+  MobileNavToggle,
+  Navbar,
+  NavBody,
 } from '@/components/ui/resizable-navbar';
 import servicesData from '@/data/services.json';
 import { DOCS_HUB_URL } from '@/lib/site';
@@ -115,8 +115,8 @@ const NavBar: FC<NavbarProps> = ({
 
       <Navbar>
         <NavBody>
-          <Link href="/" className="z-20 flex items-center">
-            <Logo lightClassName="h-11" darkClassName="mx-2 h-8" />
+          <Link className="z-20 flex items-center" href="/">
+            <Logo darkClassName="mx-2 h-8" lightClassName="h-11" />
           </Link>
 
           <nav
@@ -127,13 +127,13 @@ const NavBar: FC<NavbarProps> = ({
               link.path === '/services' ? (
                 <div className="group relative" key={link.name}>
                   <Link
-                    href={link.path}
                     className={cn(
                       'flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors',
                       isActive(link.path)
                         ? 'bg-muted text-primary'
                         : 'text-muted-foreground hover:text-foreground',
                     )}
+                    href={link.path}
                   >
                     {link.name}
                     <ChevronDown className="h-3.5 w-3.5 transition-transform group-focus-within:rotate-180 group-hover:rotate-180" />
@@ -146,11 +146,11 @@ const NavBar: FC<NavbarProps> = ({
                       </p>
                       {liveServices.map((service) => (
                         <a
-                          key={service.id}
-                          href={service.deploymentUrl as string}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           className="flex items-start gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-muted"
+                          href={service.deploymentUrl as string}
+                          key={service.id}
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
                           <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-success" />
                           <span className="min-w-0">
@@ -165,8 +165,8 @@ const NavBar: FC<NavbarProps> = ({
                         </a>
                       ))}
                       <Link
-                        href="/services"
                         className="mt-1 block rounded-lg border-t px-3 py-2 text-sm font-medium text-primary hover:bg-muted"
+                        href="/services"
                       >
                         All services and network coverage →
                       </Link>
@@ -175,24 +175,24 @@ const NavBar: FC<NavbarProps> = ({
                 </div>
               ) : (
                 <Link
-                  href={link.path}
-                  key={link.name}
                   className={cn(
                     'rounded-full px-4 py-2 text-sm font-medium transition-colors',
                     isActive(link.path)
                       ? 'bg-muted text-primary'
                       : 'text-muted-foreground hover:text-foreground',
                   )}
+                  href={link.path}
+                  key={link.name}
                 >
                   {link.name}
                 </Link>
               ),
             )}
             <a
-              href={DOCS_HUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
               className="flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              href={DOCS_HUB_URL}
+              rel="noopener noreferrer"
+              target="_blank"
             >
               Docs
               <ExternalLink className="h-3.5 w-3.5" />
@@ -204,8 +204,8 @@ const NavBar: FC<NavbarProps> = ({
 
         <MobileNav>
           <MobileNavHeader>
-            <Link href="/" className="flex items-center">
-              <Logo lightClassName="h-9" darkClassName="mx-1 h-6" />
+            <Link className="flex items-center" href="/">
+              <Logo darkClassName="mx-1 h-6" lightClassName="h-9" />
             </Link>
             <div className="flex items-center gap-1">
               {themeToggle}
@@ -222,13 +222,13 @@ const NavBar: FC<NavbarProps> = ({
           >
             {links.map((item) => (
               <Link
-                key={item.name}
-                href={item.path}
-                onClick={() => setIsMobileMenuOpen(false)}
                 className={cn(
                   'block text-base font-medium',
                   isActive(item.path) ? 'text-primary' : 'text-foreground',
                 )}
+                href={item.path}
+                key={item.name}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.name}
               </Link>
@@ -239,11 +239,11 @@ const NavBar: FC<NavbarProps> = ({
               </p>
               {liveServices.map((service) => (
                 <a
-                  key={service.id}
-                  href={service.deploymentUrl as string}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="flex items-center gap-2 py-1.5 text-sm text-muted-foreground"
+                  href={service.deploymentUrl as string}
+                  key={service.id}
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
                   <span className="h-1.5 w-1.5 rounded-full bg-success" />
                   {service.name}
@@ -252,10 +252,10 @@ const NavBar: FC<NavbarProps> = ({
               ))}
             </div>
             <a
-              href={DOCS_HUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
               className="flex items-center gap-1 text-base font-medium text-foreground"
+              href={DOCS_HUB_URL}
+              rel="noopener noreferrer"
+              target="_blank"
             >
               Docs
               <ExternalLink className="h-3.5 w-3.5" />

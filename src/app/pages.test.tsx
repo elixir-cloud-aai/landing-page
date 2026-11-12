@@ -50,10 +50,10 @@ describe('NavBar', () => {
   const renderNavBar = () =>
     render(
       <NavBar
+        mounted
         setShowBanner={() => {}}
         showBanner={false}
         theme="light"
-        mounted
         toggleDarkMode={() => {}}
       />,
     );
