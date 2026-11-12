@@ -12,7 +12,9 @@ module.exports = [
     ignores: [
       '.next/',
       'out/',
-      'public/',
+      // Generated or third-party files; the handwritten service worker is linted
+      'public/*',
+      '!public/sw.js',
       'coverage/',
       'node_modules/',
       '.npm-cache/',
@@ -126,6 +128,11 @@ module.exports = [
   {
     files: ['scripts/**'],
     rules: { 'no-console': 'off' },
+  },
+  // The service worker runs with the service worker's globals
+  {
+    files: ['public/sw.js'],
+    languageOptions: { globals: { ...globals.serviceworker } },
   },
   // The configuration files are CommonJS
   {
