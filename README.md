@@ -56,6 +56,10 @@ Useful commands:
 
 - `npm run build`: production build (also generates the sitemap)
 - `npx tsc --noEmit`: type-check
+- `npm run lint`: lint the JavaScript and TypeScript sources with
+  [ESLint](https://eslint.org/) (Next.js's recommended config with
+  typescript-eslint, see [`eslint.config.js`](eslint.config.js)); fails on
+  warnings too. `npm run lint-fix` fixes what can be fixed automatically
 - `npm test`: run the tests ([Vitest](https://vitest.dev/) with Testing
   Library); `npm run test:watch` reruns them on changes
 - `npm run test:coverage`: run the tests and write coverage to
@@ -72,6 +76,7 @@ services, products and Nodes, and that every referenced image exists.
 
 - `PR title`: the title follows Conventional Commits and has at most 50
   characters (see [Contributing](#contributing)).
+- `Lint`: runs `npm run lint`.
 - `Test`: runs the tests with coverage and reports it to
   [Codecov][badge-url-coverage]. [`codecov.yml`](codecov.yml) states the target
   of this repo (70%, working up from about 38%); the status only reports for
@@ -96,8 +101,6 @@ services, products and Nodes, and that every referenced image exists.
   [`.trivyignore.yaml`](.trivyignore.yaml), with a reason and an expiry date.
 - `CI passed`: the only check that the rules for `dev` require. It passes if all
   other jobs passed; only `PR title` may be skipped.
-
-ESLint isn't checked yet ([#179](../../issues/179)).
 
 ## Deployment
 

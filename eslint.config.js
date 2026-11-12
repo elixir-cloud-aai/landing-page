@@ -1,16 +1,30 @@
 const prettier = require('eslint-plugin-prettier');
 const checkFile = require('eslint-plugin-check-file');
 const globals = require('globals');
-const react = require('eslint-plugin-react');
-const reactHooks = require('eslint-plugin-react-hooks');
+const nextCoreWebVitals = require('eslint-config-next/core-web-vitals');
+const nextTypescript = require('eslint-config-next/typescript');
+const prettierConfig = require('eslint-config-prettier');
 
+// Next.js's recommended flat config (with typescript-eslint, which parses
+// the `.ts`/`.tsx` sources), then the project's own rules
 module.exports = [
-  { ignores: ['.next/', 'out/', 'public/'] },
+  {
+    ignores: [
+      '.next/',
+      'out/',
+      'public/',
+      'coverage/',
+      'node_modules/',
+      '.npm-cache/',
+      'next-env.d.ts',
+    ],
+  },
+  ...nextCoreWebVitals,
+  ...nextTypescript,
+  prettierConfig,
   {
     plugins: {
       'check-file': checkFile,
-      react: react,
-      'react-hooks': reactHooks,
       prettier: prettier,
     },
     rules: {
@@ -85,8 +99,6 @@ module.exports = [
         reactStrictMode: true,
       },
     },
-    ignores: ['node_modules/', 'build/', 'dist/'],
-    files: ['src/**/*'],
     languageOptions: {
       parserOptions: {
         ecmaFeatures: {
@@ -102,5 +114,22 @@ module.exports = [
         ...globals.es2021,
       },
     },
+  },
+  {
+    rules: {
+      // Switching to next/image changes how images load and are sized; a
+      // change of its own, not part of enabling the linter
+      '@next/next/no-img-element': 'off',
+    },
+  },
+  // The scripts are command-line tools that report on the console
+  {
+    files: ['scripts/**'],
+    rules: { 'no-console': 'off' },
+  },
+  // The configuration files are CommonJS
+  {
+    files: ['**/*.js'],
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
   },
 ];
