@@ -2,7 +2,7 @@
 
 import { useContext, FC, useEffect, useRef, useState } from 'react';
 import ContentLoader from 'react-content-loader';
-import { Zoom } from 'react-awesome-reveal';
+import ZoomIn from '@/components/ui/zoom-in';
 import themeContext from '@/context/default-theme';
 
 declare global {
@@ -88,7 +88,7 @@ const News: FC = () => {
   );
 
   return (
-    <Zoom>
+    <ZoomIn>
       <div className="mx-5 mt-32 rounded-xl dark:bg-gray-900 md:mx-96">
         {!loaded && renderLoading()}
 
@@ -104,7 +104,7 @@ const News: FC = () => {
           </a>
         </div>
       </div>
-    </Zoom>
+    </ZoomIn>
   );
 };
 
