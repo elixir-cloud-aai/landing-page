@@ -45,8 +45,9 @@ Every page sets its own title and description for search engines and link
 previews: in the `metadata` export of its `page.tsx`, or of the route's
 `layout.tsx` for pages that are client components (`'use client'`). Titles
 appear as `<title> | ELIXIR On-Cloud` (the template in
-[`src/seo/base-seo.ts`](src/seo/base-seo.ts)); `src/app/metadata.test.ts`
-checks that each route has its own.
+[`src/seo/base-seo.ts`](src/seo/base-seo.ts)), except on the home page,
+which sets its full title. `src/app/metadata.test.ts` checks that every
+route has a title and description of its own; add new routes to its list.
 
 ## Development
 

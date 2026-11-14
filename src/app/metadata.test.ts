@@ -25,6 +25,11 @@ const routes: [string, Metadata][] = [
   ['/services', services.metadata],
 ];
 
+// Every route of the app, from its page.tsx files
+const pageRoutes = Object.keys(import.meta.glob('./**/page.tsx')).map(
+  (file) => file.replace(/^\.\/?/, '/').replace(/\/?page\.tsx$/, '') || '/',
+);
+
 const titleOf = (metadata: Metadata) =>
   typeof metadata.title === 'object' &&
   metadata.title !== null &&
@@ -38,6 +43,16 @@ describe('Site metadata', () => {
       default: 'ELIXIR On-Cloud',
       template: '%s | ELIXIR On-Cloud',
     });
+  });
+
+  it('lists every route', () => {
+    expect(routes.map(([route]) => route).sort()).toEqual(pageRoutes.sort());
+  });
+
+  it('leaves the title, description and URL of link previews to the pages', () => {
+    expect(baseSeo.openGraph).not.toHaveProperty('title');
+    expect(baseSeo.openGraph).not.toHaveProperty('description');
+    expect(baseSeo.openGraph).not.toHaveProperty('url');
   });
 
   it.each(routes)('gives %s a title and a description', (_, metadata) => {
