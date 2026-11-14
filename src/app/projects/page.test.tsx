@@ -41,9 +41,10 @@ describe('Projects page cards', () => {
 
   it('shows no image for a project without one', () => {
     render(<ProjectsPage />);
-    expect(
-      screen.getByRole('heading', { name: 'Without image' }),
-    ).toBeInTheDocument();
-    expect(screen.queryByAltText('Without image')).not.toBeInTheDocument();
+    const card = screen
+      .getByRole('heading', { name: 'Without image' })
+      .closest('[data-slot="card"]');
+    expect(card).toBeInTheDocument();
+    expect(card!.querySelector('img')).toBeNull();
   });
 });
