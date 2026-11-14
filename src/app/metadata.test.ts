@@ -57,10 +57,23 @@ describe('Site metadata', () => {
 
   it.each(routes)('gives %s a title and a description', (_, metadata) => {
     expect(titleOf(metadata)).toEqual(expect.any(String));
-    expect(titleOf(metadata)).not.toBe('');
+    expect(String(titleOf(metadata)).trim()).not.toBe('');
     expect(metadata.description).toEqual(expect.any(String));
+    expect(String(metadata.description).trim()).not.toBe('');
     expect(metadata.description).not.toBe(baseSeo.description);
   });
+
+  // Link previews take the title and description from the page metadata,
+  // unless a route overrides them
+  it.each(routes)(
+    'lets the link previews of %s follow its title',
+    (_, metadata) => {
+      expect(metadata.openGraph?.title).toBeUndefined();
+      expect(metadata.openGraph?.description).toBeUndefined();
+      expect(metadata.twitter?.title).toBeUndefined();
+      expect(metadata.twitter?.description).toBeUndefined();
+    },
+  );
 
   it('gives every route its own title and description', () => {
     const titles = routes.map(([, metadata]) => titleOf(metadata));
