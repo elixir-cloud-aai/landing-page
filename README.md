@@ -61,7 +61,8 @@ Useful commands:
   typescript-eslint, see [`eslint.config.js`](eslint.config.js)); fails on
   warnings too. `npm run lint-fix` fixes what can be fixed automatically.
   Images use `Image` from `next/image`, which sizes and optimizes them; the
-  lint rejects plain `<img>` tags
+  lint rejects plain `<img>` tags. Images from other hosts need an entry in
+  `images.remotePatterns` in [`next.config.js`](next.config.js)
 - `npm test`: run the tests ([Vitest](https://vitest.dev/) with Testing
   Library); `npm run test:watch` reruns them on changes
 - `npm run test:coverage`: run the tests and write coverage to

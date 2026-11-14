@@ -50,6 +50,8 @@ const Logo: FC<{ lightClassName: string; darkClassName: string }> = ({
       alt="ELIXIR On-Cloud"
       className={cn('block w-auto dark:hidden', lightClassName)}
       height={44}
+      // At the top of every page, so not lazy like the other images
+      loading="eager"
       src="/ELIXIR On-Cloud Logo Pack/On-Cloud_LockUp.png"
       width={156}
     />

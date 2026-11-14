@@ -54,6 +54,8 @@ export default function WorldMap({
         draggable={false}
         height={495}
         src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
+        // The map is an inline SVG (data URI), which the optimizer can't
+        // process
         unoptimized
         width={1056}
       />

@@ -20,6 +20,8 @@ import { cn } from '@/lib/utils';
 export interface GlobeMarker {
   lat: number;
   lng: number;
+  /** Image path under public/; other hosts need an entry in
+   * images.remotePatterns of next.config.js (next/image) */
   src: string;
   label?: string;
   size?: number;
