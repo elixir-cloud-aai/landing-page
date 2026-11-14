@@ -1,0 +1,62 @@
+import type { Metadata } from 'next';
+import { describe, expect, it } from 'vitest';
+import baseSeo from '@/seo/base-seo';
+import * as contributors from './contributors/layout';
+import * as funding from './funding/layout';
+import * as home from './page';
+import * as news from './news/page';
+import * as nodes from './nodes/page';
+import * as privacy from './privacy/page';
+import * as products from './products/page';
+import * as projects from './projects/page';
+import * as services from './services/page';
+
+// The metadata of every route, from its page or, for client-side pages, from
+// the route's layout.
+const routes: [string, Metadata][] = [
+  ['/', home.metadata],
+  ['/contributors', contributors.metadata],
+  ['/funding', funding.metadata],
+  ['/news', news.metadata],
+  ['/nodes', nodes.metadata],
+  ['/privacy', privacy.metadata],
+  ['/products', products.metadata],
+  ['/projects', projects.metadata],
+  ['/services', services.metadata],
+];
+
+const titleOf = (metadata: Metadata) =>
+  typeof metadata.title === 'object' &&
+  metadata.title !== null &&
+  'absolute' in metadata.title
+    ? metadata.title.absolute
+    : metadata.title;
+
+describe('Site metadata', () => {
+  it('appends the site name to page titles', () => {
+    expect(baseSeo.title).toEqual({
+      default: 'ELIXIR On-Cloud',
+      template: '%s | ELIXIR On-Cloud',
+    });
+  });
+
+  it.each(routes)('gives %s a title and a description', (_, metadata) => {
+    expect(titleOf(metadata)).toEqual(expect.any(String));
+    expect(titleOf(metadata)).not.toBe('');
+    expect(metadata.description).toEqual(expect.any(String));
+    expect(metadata.description).not.toBe(baseSeo.description);
+  });
+
+  it('gives every route its own title and description', () => {
+    const titles = routes.map(([, metadata]) => titleOf(metadata));
+    const descriptions = routes.map(([, metadata]) => metadata.description);
+    expect(new Set(titles).size).toBe(routes.length);
+    expect(new Set(descriptions).size).toBe(routes.length);
+  });
+
+  it('shows the site name in the title of the home page', () => {
+    expect(home.metadata.title).toEqual({
+      absolute: expect.stringContaining('ELIXIR On-Cloud'),
+    });
+  });
+});

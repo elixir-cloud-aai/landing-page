@@ -2,7 +2,12 @@ import { Metadata } from 'next';
 
 const baseSeo: Metadata = {
   metadataBase: new URL('https://elixir-on.cloud'),
-  title: 'ELIXIR On-Cloud',
+  // Pages set their own title, e.g. "Nodes", shown as "Nodes | ELIXIR
+  // On-Cloud"; pages without one show the site name alone
+  title: {
+    default: 'ELIXIR On-Cloud',
+    template: '%s | ELIXIR On-Cloud',
+  },
   description:
     'ELIXIR On-Cloud develops services towards establishing a federated cloud computing network that enables the analysis of population-scale genomic and phenotypic data across participating, international nodes.',
   openGraph: {
