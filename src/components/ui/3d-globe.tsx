@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import Image from 'next/image';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Html, OrbitControls, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -248,11 +249,15 @@ function Marker({
                 height: '8px',
               }}
             >
-              <img
+              {/* The marker is scaled up with the globe, hence the larger
+                  image */}
+              <Image
                 alt={marker.label || 'Marker'}
                 className="h-full w-full object-cover"
                 draggable={false}
+                height={64}
                 src={marker.src}
+                width={64}
               />
             </div>
 

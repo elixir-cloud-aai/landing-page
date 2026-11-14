@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
 import { Mail, MessageSquarePlus } from 'lucide-react';
@@ -41,10 +42,12 @@ const Footer: FC = () => {
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:px-8">
         <div className="space-y-4">
           <Link aria-label="ELIXIR On-Cloud home" href="/">
-            <img
+            <Image
               alt="ELIXIR On-Cloud"
               className="h-10 w-auto"
+              height={40}
               src="/ELIXIR On-Cloud Logo Pack/On-Cloud_MONO.png"
+              width={235}
             />
           </Link>
           <p className="max-w-xs text-xs leading-5">

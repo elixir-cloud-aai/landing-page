@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowDown, ExternalLink, Mail, Network } from 'lucide-react';
 import nodesData from '@/data/nodes.json';
@@ -52,11 +53,15 @@ function NodeCard({ node }: { node: ElixirNode }) {
           in both themes. */}
       <div className="flex h-24 items-center justify-center rounded-t-2xl border-b bg-white px-6">
         {node.logo ? (
-          <img
-            alt={`${node.institute ?? node.name} logo`}
-            className="max-h-12 w-auto max-w-[220px] object-contain"
-            src={node.logo}
-          />
+          <div className="relative h-12 w-full max-w-[220px]">
+            <Image
+              alt={`${node.institute ?? node.name} logo`}
+              className="object-contain"
+              fill
+              sizes="220px"
+              src={node.logo}
+            />
+          </div>
         ) : (
           <span className="text-center text-base font-semibold text-slate-800">
             {node.institute ?? node.name}
@@ -70,10 +75,12 @@ function NodeCard({ node }: { node: ElixirNode }) {
         </h3>
         <div className="mt-2 flex items-center justify-between gap-4">
           <p className="flex items-center gap-2 text-sm text-muted-foreground">
-            <img
+            <Image
               alt={`Flag of ${node.country}`}
               className="h-4 w-6 shrink-0 rounded-[2px] object-cover ring-1 ring-border"
+              height={16}
               src={`/flags/${node.code.toLowerCase()}.svg`}
+              width={24}
             />
             {node.name}
           </p>

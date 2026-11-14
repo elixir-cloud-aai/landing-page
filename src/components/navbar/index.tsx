@@ -1,5 +1,6 @@
 'use client';
 import { FC, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronDown, ExternalLink, Moon, Sun, X } from 'lucide-react';
@@ -37,21 +38,27 @@ const liveServices = servicesData.services.filter(
 );
 
 // The colour lockup has dark grey text, so dark mode uses the white version.
-// The two files have different padding, hence separate sizes.
+// The two files have different padding, hence separate sizes. The width and
+// height props give each file's aspect ratio at its largest size; the classes
+// set the shown height.
 const Logo: FC<{ lightClassName: string; darkClassName: string }> = ({
   lightClassName,
   darkClassName,
 }) => (
   <>
-    <img
+    <Image
       alt="ELIXIR On-Cloud"
       className={cn('block w-auto dark:hidden', lightClassName)}
+      height={44}
       src="/ELIXIR On-Cloud Logo Pack/On-Cloud_LockUp.png"
+      width={156}
     />
-    <img
+    <Image
       alt="ELIXIR On-Cloud"
       className={cn('hidden w-auto dark:block', darkClassName)}
+      height={32}
       src="/ELIXIR On-Cloud Logo Pack/On-Cloud_MONO.png"
+      width={188}
     />
   </>
 );
