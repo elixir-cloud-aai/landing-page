@@ -8,10 +8,15 @@
 // persist after one retry); "skip" (sites that block automated requests).
 // Exits with 2 on dead links, 0 otherwise (1 if the check itself breaks).
 //
-// Runs on a GitHub-hosted runner with a write token for issues. Requests go
-// only to public addresses: each URL and each redirect target is resolved
-// and checked before it is requested (loopback, private, link-local,
-// carrier-grade NAT, cloud metadata and other reserved ranges are refused).
+// Runs weekly on a GitHub-hosted runner. Each URL and each redirect target
+// is resolved and checked before it is requested: loopback, private,
+// link-local, carrier-grade NAT, cloud metadata and other reserved ranges
+// are refused. This is a pre-check, not a guarantee: `fetch` resolves the
+// name again, so a host whose DNS answer changes in between isn't caught.
+// The check only reports status codes, never response bodies, and its step
+// holds no token. Results need public DNS: resolvers that answer with
+// private or synthetic addresses (some proxies, split-horizon DNS) make
+// links look dead.
 import { lookup as dnsLookup } from 'node:dns/promises';
 import { BlockList, isIP } from 'node:net';
 import { readdir, readFile } from 'node:fs/promises';
@@ -67,6 +72,7 @@ for (const [network, prefix] of [
   ['192.0.0.0', 24], // IETF protocol assignments
   ['192.0.2.0', 24], // documentation
   ['192.168.0.0', 16], // private
+  ['168.63.129.16', 32], // Azure platform services (WireServer)
   ['198.18.0.0', 15], // benchmarking
   ['198.51.100.0', 24], // documentation
   ['203.0.113.0', 24], // documentation
@@ -75,11 +81,13 @@ for (const [network, prefix] of [
   NON_PUBLIC_RANGES.addSubnet(network, prefix, 'ipv4');
 }
 for (const [network, prefix] of [
-  ['::', 128], // unspecified
-  ['::1', 128], // loopback
+  ['::', 96], // unspecified, loopback, IPv4-compatible
+  ['::ffff:0:0:0', 96], // IPv4-translated
+  ['64:ff9b::', 96], // IPv4/IPv6 translation (NAT64)
   ['64:ff9b:1::', 48], // local-use IPv4/IPv6 translation
   ['100::', 64], // discard
   ['2001:db8::', 32], // documentation
+  ['2002::', 16], // 6to4
   ['fc00::', 7], // unique local, incl. cloud metadata (fd00:ec2::254)
   ['fe80::', 10], // link-local
   ['ff00::', 8], // multicast
@@ -167,8 +175,8 @@ const resolveAll = async (hostname) =>
   );
 
 /**
- * Makes a string safe to print inside a Markdown code block: removes
- * control characters (line breaks included) and backticks.
+ * Makes a string safe to print inside a Markdown code block: replaces
+ * control characters (line breaks included) and backticks with `?`.
  * @param {string} text
  * @returns {string}
  */
@@ -275,12 +283,12 @@ export async function check(
           'user-agent': 'Mozilla/5.0 (link-checker; elixir-on.cloud)',
         },
       });
+      // Only the status and headers count
+      await response.body?.cancel().catch(() => {});
       const location = response.headers?.get('location');
       if (response.status < 300 || response.status >= 400 || !location) {
-        await response.body?.cancel().catch(() => {});
         return response.status;
       }
-      await response.body?.cancel().catch(() => {});
       if (!URL.canParse(location, target)) {
         throw new LinkError(INVALID_URL);
       }
@@ -309,7 +317,11 @@ export async function check(
       if (status < 400) {
         return status;
       }
-    } catch {
+    } catch (error) {
+      // A malformed or non-public destination is the same for GET
+      if (LINK_ERRORS.has(code(error))) {
+        return code(error);
+      }
       // Some servers drop HEAD requests; GET decides.
     }
     // Many servers reject HEAD; retry with GET before judging.

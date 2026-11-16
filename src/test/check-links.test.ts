@@ -100,22 +100,38 @@ describe('classify', () => {
 });
 
 describe('isNonPublic', () => {
+  // One address per range, plus the edges of some
   it.each([
     '0.0.0.0',
     '10.1.2.3',
     '100.64.0.1',
+    '100.127.255.255',
     '127.0.0.1',
+    '168.63.129.16',
     '169.254.169.254',
     '172.16.0.1',
     '172.31.255.255',
+    '192.0.0.8',
+    '192.0.2.1',
     '192.168.1.1',
     '198.18.0.1',
+    '198.19.255.255',
+    '198.51.100.1',
+    '203.0.113.1',
     '224.0.0.1',
+    '240.0.0.1',
     '255.255.255.255',
     '::',
     '::1',
+    '::7f00:1',
     '::ffff:127.0.0.1',
     '::ffff:a9fe:a9fe',
+    '::ffff:0:a9fe:a9fe',
+    '64:ff9b::a9fe:a9fe',
+    '64:ff9b:1::1',
+    '100::1',
+    '2001:db8::1',
+    '2002:7f00:1::',
     'fc00::1',
     'fd00:ec2::254',
     'fe80::1',
@@ -123,14 +139,23 @@ describe('isNonPublic', () => {
     'not-an-address',
   ])('refuses %s', (address) => expect(isNonPublic(address)).toBe(true));
 
-  it.each(['93.184.215.14', '172.32.0.1', '8.8.8.8', '2606:4700::1111'])(
-    'accepts %s',
-    (address) => expect(isNonPublic(address)).toBe(false),
-  );
+  it.each([
+    '8.8.8.8',
+    '93.184.215.14',
+    '100.63.255.255',
+    '100.128.0.1',
+    '168.63.129.17',
+    '172.15.255.255',
+    '172.32.0.1',
+    '198.17.255.255',
+    '223.255.255.255',
+    '::ffff:8.8.8.8',
+    '2606:4700::1111',
+  ])('accepts %s', (address) => expect(isNonPublic(address)).toBe(false));
 });
 
 describe('plain', () => {
-  it('removes line breaks, control characters and backticks', () => {
+  it('replaces line breaks, control characters and backticks', () => {
     expect(plain('src/a\n```\n# b\u0007.tsx')).toBe('src/a?????# b?.tsx');
   });
 
@@ -139,17 +164,22 @@ describe('plain', () => {
   });
 });
 
+// Shared by the tests of `check`
+const sleep = vi.fn(() => Promise.resolve());
+// Resolves every host to a public address (documentation ranges count as
+// non-public)
+const lookup = vi.fn(() => Promise.resolve(['93.184.215.14']));
+const response = (status: number, location?: string) =>
+  Promise.resolve({
+    status,
+    headers: new Headers(location ? { location } : {}),
+  });
+const methods = (fetch: ReturnType<typeof vi.fn>) =>
+  fetch.mock.calls.map(([, init]) => init.method);
+const targets = (fetch: ReturnType<typeof vi.fn>) =>
+  fetch.mock.calls.map(([url]) => url);
+
 describe('check', () => {
-  const sleep = vi.fn(() => Promise.resolve());
-  // A public address (documentation ranges count as non-public)
-  const lookup = vi.fn(() => Promise.resolve(['93.184.215.14']));
-  const response = (status: number, location?: string) =>
-    Promise.resolve({
-      status,
-      headers: new Headers(location ? { location } : {}),
-    });
-  const methods = (fetch: ReturnType<typeof vi.fn>) =>
-    fetch.mock.calls.map(([, init]) => init.method);
   beforeEach(() => {
     sleep.mockClear();
     lookup.mockClear();
@@ -273,26 +303,17 @@ describe('check', () => {
 });
 
 describe('check: destinations and redirects', () => {
-  const sleep = vi.fn(() => Promise.resolve());
-  const publicLookup = vi.fn(() => Promise.resolve(['93.184.215.14']));
-  const response = (status: number, location?: string) =>
-    Promise.resolve({
-      status,
-      headers: new Headers(location ? { location } : {}),
-    });
-  const targets = (fetch: ReturnType<typeof vi.fn>) =>
-    fetch.mock.calls.map(([url]) => url);
-
   beforeEach(() => {
     sleep.mockClear();
-    publicLookup.mockClear();
+    lookup.mockClear();
   });
 
   it('reports a malformed URL as dead without a request', async () => {
     const fetch = vi.fn();
-    expect(
-      await check('https://[', { fetch, lookup: publicLookup, sleep }),
-    ).toEqual({ verdict: 'dead', status: 'ERR_INVALID_URL' });
+    expect(await check('https://[', { fetch, lookup, sleep })).toEqual({
+      verdict: 'dead',
+      status: 'ERR_INVALID_URL',
+    });
     expect(fetch).not.toHaveBeenCalled();
     expect(sleep).not.toHaveBeenCalled();
   });
@@ -307,27 +328,31 @@ describe('check: destinations and redirects', () => {
     'http://2130706433/',
   ])('refuses %s without a request', async (url) => {
     const fetch = vi.fn();
-    expect(await check(url, { fetch, lookup: publicLookup, sleep })).toEqual({
+    expect(await check(url, { fetch, lookup, sleep })).toEqual({
       verdict: 'dead',
       status: 'NON_PUBLIC_ADDRESS',
     });
     expect(fetch).not.toHaveBeenCalled();
-    expect(publicLookup).not.toHaveBeenCalled();
+    expect(lookup).not.toHaveBeenCalled();
     expect(sleep).not.toHaveBeenCalled();
   });
 
-  it.each([[['10.0.0.1']], [['93.184.215.14', '192.168.0.1']], [[]]])(
-    'refuses a host that resolves to %j',
-    async (addresses) => {
-      const fetch = vi.fn();
-      const lookup = vi.fn(() => Promise.resolve(addresses));
-      expect(
-        await check('https://intranet.example', { fetch, lookup, sleep }),
-      ).toEqual({ verdict: 'dead', status: 'NON_PUBLIC_ADDRESS' });
-      expect(lookup).toHaveBeenCalledWith('intranet.example');
-      expect(fetch).not.toHaveBeenCalled();
+  it.each([
+    { name: 'a private address', addresses: ['10.0.0.1'] },
+    {
+      name: 'a private and a public address',
+      addresses: ['93.184.215.14', '192.168.0.1'],
     },
-  );
+    { name: 'no address', addresses: [] },
+  ])('refuses a host that resolves to $name', async ({ addresses }) => {
+    const fetch = vi.fn();
+    const lookup = vi.fn(() => Promise.resolve(addresses));
+    expect(
+      await check('https://intranet.example', { fetch, lookup, sleep }),
+    ).toEqual({ verdict: 'dead', status: 'NON_PUBLIC_ADDRESS' });
+    expect(lookup).toHaveBeenCalledWith('intranet.example');
+    expect(fetch).not.toHaveBeenCalled();
+  });
 
   it('confirms a DNS error of the lookup with one retry', async () => {
     const fetch = vi.fn();
@@ -351,7 +376,7 @@ describe('check: destinations and redirects', () => {
     expect(
       await check('https://a.example/a', {
         fetch,
-        lookup: publicLookup,
+        lookup,
         sleep,
       }),
     ).toEqual({ verdict: 'ok', status: '200' });
@@ -363,7 +388,7 @@ describe('check: destinations and redirects', () => {
     expect(
       fetch.mock.calls.every(([, init]) => init.redirect === 'manual'),
     ).toBe(true);
-    expect(publicLookup.mock.calls).toEqual([
+    expect(lookup.mock.calls).toEqual([
       ['a.example'],
       ['a.example'],
       ['c.example'],
@@ -374,14 +399,13 @@ describe('check: destinations and redirects', () => {
     const fetch = vi.fn(() =>
       response(302, 'http://169.254.169.254/latest/meta-data/'),
     );
-    expect(
-      await check('https://a.example', { fetch, lookup: publicLookup, sleep }),
-    ).toEqual({ verdict: 'dead', status: 'NON_PUBLIC_ADDRESS' });
-    // HEAD and GET each stop at the redirect
-    expect(targets(fetch)).toEqual([
-      'https://a.example/',
-      'https://a.example/',
-    ]);
+    expect(await check('https://a.example', { fetch, lookup, sleep })).toEqual({
+      verdict: 'dead',
+      status: 'NON_PUBLIC_ADDRESS',
+    });
+    // HEAD stops at the redirect; GET would end the same way
+    expect(targets(fetch)).toEqual(['https://a.example/']);
+    expect(methods(fetch)).toEqual(['HEAD']);
     expect(sleep).not.toHaveBeenCalled();
   });
 
@@ -399,34 +423,74 @@ describe('check: destinations and redirects', () => {
 
   it('reports a malformed redirect target as dead', async () => {
     const fetch = vi.fn(() => response(301, 'http://['));
-    expect(
-      await check('https://a.example', { fetch, lookup: publicLookup, sleep }),
-    ).toEqual({ verdict: 'dead', status: 'ERR_INVALID_URL' });
+    expect(await check('https://a.example', { fetch, lookup, sleep })).toEqual({
+      verdict: 'dead',
+      status: 'ERR_INVALID_URL',
+    });
   });
 
   it('leaves a redirect to another scheme unverified', async () => {
     const fetch = vi.fn(() => response(302, 'mailto:info@a.example'));
-    expect(
-      await check('https://a.example', { fetch, lookup: publicLookup, sleep }),
-    ).toEqual({ verdict: 'unverified', status: 'REDIRECT_NOT_HTTP' });
+    expect(await check('https://a.example', { fetch, lookup, sleep })).toEqual({
+      verdict: 'unverified',
+      status: 'REDIRECT_NOT_HTTP',
+    });
     expect(sleep).not.toHaveBeenCalled();
   });
 
   it('stops after too many redirects', async () => {
     const fetch = vi.fn(() => response(301, '/loop'));
-    expect(
-      await check('https://a.example', { fetch, lookup: publicLookup, sleep }),
-    ).toEqual({ verdict: 'unverified', status: 'TOO_MANY_REDIRECTS' });
+    expect(await check('https://a.example', { fetch, lookup, sleep })).toEqual({
+      verdict: 'unverified',
+      status: 'TOO_MANY_REDIRECTS',
+    });
     // 11 requests (the URL and 10 redirects) for HEAD and for GET
     expect(fetch).toHaveBeenCalledTimes(22);
     expect(sleep).not.toHaveBeenCalled();
   });
 
+  it('lets GET decide when HEAD ends in a redirect loop', async () => {
+    const fetch = vi.fn((...[, init]: [string, RequestInit]) =>
+      init.method === 'HEAD' ? response(301, '/loop') : response(200),
+    );
+    expect(await check('https://a.example', { fetch, lookup, sleep })).toEqual({
+      verdict: 'ok',
+      status: '200',
+    });
+    expect(methods(fetch).at(-1)).toBe('GET');
+  });
+
+  it('discards the body of every response', async () => {
+    const cancel = vi.fn(() => Promise.reject(new Error('already closed')));
+    const fetch = vi
+      .fn()
+      .mockReturnValueOnce(
+        Promise.resolve({
+          status: 301,
+          headers: new Headers({ location: '/b' }),
+          body: { cancel },
+        }),
+      )
+      .mockReturnValueOnce(
+        Promise.resolve({
+          status: 200,
+          headers: new Headers(),
+          body: { cancel },
+        }),
+      );
+    expect(await check('https://a.example', { fetch, lookup, sleep })).toEqual({
+      verdict: 'ok',
+      status: '200',
+    });
+    expect(cancel).toHaveBeenCalledTimes(2);
+  });
+
   it('accepts a 3xx without a location as it is', async () => {
     const fetch = vi.fn(() => response(304));
-    expect(
-      await check('https://a.example', { fetch, lookup: publicLookup, sleep }),
-    ).toEqual({ verdict: 'ok', status: '304' });
+    expect(await check('https://a.example', { fetch, lookup, sleep })).toEqual({
+      verdict: 'ok',
+      status: '304',
+    });
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 });
