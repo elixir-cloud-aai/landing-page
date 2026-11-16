@@ -643,13 +643,15 @@ export function Globe3D({
 
             <div className="flex items-start gap-5">
               {/* Profile image *
-              <img
+              <Image
                 src={
                   selectedMarker.profile.image ||
                   selectedMarker.src
                 }
                 alt={selectedMarker.profile.name}
                 className="h-20 w-20 shrink-0 rounded-full object-cover ring-1 ring-white/10"
+                height={80}
+                width={80}
               />
 
               {/* Main info *
