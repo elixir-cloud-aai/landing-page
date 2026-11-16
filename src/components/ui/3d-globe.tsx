@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import Image from 'next/image';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Html, OrbitControls, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -19,6 +20,8 @@ import { cn } from '@/lib/utils';
 export interface GlobeMarker {
   lat: number;
   lng: number;
+  /** Image path under public/; other hosts need an entry in
+   * images.remotePatterns of next.config.js (next/image) */
   src: string;
   label?: string;
   size?: number;
@@ -248,11 +251,15 @@ function Marker({
                 height: '8px',
               }}
             >
-              <img
+              {/* The marker is scaled up with the globe, hence the larger
+                  image */}
+              <Image
                 alt={marker.label || 'Marker'}
                 className="h-full w-full object-cover"
                 draggable={false}
+                height={64}
                 src={marker.src}
+                width={64}
               />
             </div>
 
@@ -636,13 +643,15 @@ export function Globe3D({
 
             <div className="flex items-start gap-5">
               {/* Profile image *
-              <img
+              <Image
                 src={
                   selectedMarker.profile.image ||
                   selectedMarker.src
                 }
                 alt={selectedMarker.profile.name}
                 className="h-20 w-20 shrink-0 rounded-full object-cover ring-1 ring-white/10"
+                height={80}
+                width={80}
               />
 
               {/* Main info *
