@@ -2,10 +2,18 @@
 // Checks every outbound http(s) link in src/ (data files and components,
 // not tests). Usage: npm run check-links
 //
-// Verdicts: "ok"; "dead" (404/410, TLS errors, or DNS errors that persist
-// after one retry); "unverified" (other 4xx, or 5xx and network errors that
+// Verdicts: "ok"; "dead" (404/410, TLS errors, DNS errors that persist
+// after one retry, malformed URLs, and links or redirects to non-public
+// addresses); "unverified" (other 4xx, or 5xx and network errors that
 // persist after one retry); "skip" (sites that block automated requests).
 // Exits with 2 on dead links, 0 otherwise (1 if the check itself breaks).
+//
+// Runs on a GitHub-hosted runner with a write token for issues. Requests go
+// only to public addresses: each URL and each redirect target is resolved
+// and checked before it is requested (loopback, private, link-local,
+// carrier-grade NAT, cloud metadata and other reserved ranges are refused).
+import { lookup as dnsLookup } from 'node:dns/promises';
+import { BlockList, isIP } from 'node:net';
 import { readdir, readFile } from 'node:fs/promises';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -15,6 +23,7 @@ const URL_PATTERN = /https?:\/\/[^\s"'`<>)\]}\\]+/g;
 const TIMEOUT_MS = 20000;
 const RETRY_DELAY_MS = 10000;
 const CONCURRENCY = 8;
+const MAX_REDIRECTS = 10;
 
 // Not real destinations: examples, API bases, placeholders and templates.
 const IGNORE = [
@@ -31,11 +40,52 @@ const IGNORE = [
 const UNVERIFIABLE = [/linkedin\.com/, /join\.slack\.com/, /athenarc\.gr/];
 
 // Test files hold fixture URLs that are not meant to resolve.
-const TEST_FILE = /\.(test|spec)\.[jt]sx?$/;
+const TEST_FILE = /\.(test|spec)\.(json|[jt]sx?)$/;
 const TEST_DIR = /(^|\/)src\/test\//;
 
 // Errors that mean the link itself is broken, not that the network hiccuped.
 const DNS_ERRORS = new Set(['ENOTFOUND']);
+// Errors of the link itself, found without a request: no retry.
+const INVALID_URL = 'ERR_INVALID_URL';
+const NON_PUBLIC = 'NON_PUBLIC_ADDRESS';
+const LINK_ERRORS = new Set([INVALID_URL, NON_PUBLIC]);
+// Redirects the check doesn't follow: not judged.
+const UNFOLLOWED = new Set(['TOO_MANY_REDIRECTS', 'REDIRECT_NOT_HTTP']);
+
+// Addresses that are not on the public internet (IANA special-purpose
+// registries), including the cloud metadata address 169.254.169.254.
+// BlockList checks IPv4-mapped IPv6 addresses (::ffff:a.b.c.d) against the
+// IPv4 ranges.
+const NON_PUBLIC_RANGES = new BlockList();
+for (const [network, prefix] of [
+  ['0.0.0.0', 8], // "this" network
+  ['10.0.0.0', 8], // private
+  ['100.64.0.0', 10], // carrier-grade NAT
+  ['127.0.0.0', 8], // loopback
+  ['169.254.0.0', 16], // link-local, cloud metadata
+  ['172.16.0.0', 12], // private
+  ['192.0.0.0', 24], // IETF protocol assignments
+  ['192.0.2.0', 24], // documentation
+  ['192.168.0.0', 16], // private
+  ['198.18.0.0', 15], // benchmarking
+  ['198.51.100.0', 24], // documentation
+  ['203.0.113.0', 24], // documentation
+  ['224.0.0.0', 3], // multicast, reserved, broadcast
+]) {
+  NON_PUBLIC_RANGES.addSubnet(network, prefix, 'ipv4');
+}
+for (const [network, prefix] of [
+  ['::', 128], // unspecified
+  ['::1', 128], // loopback
+  ['64:ff9b:1::', 48], // local-use IPv4/IPv6 translation
+  ['100::', 64], // discard
+  ['2001:db8::', 32], // documentation
+  ['fc00::', 7], // unique local, incl. cloud metadata (fd00:ec2::254)
+  ['fe80::', 10], // link-local
+  ['ff00::', 8], // multicast
+]) {
+  NON_PUBLIC_RANGES.addSubnet(network, prefix, 'ipv6');
+}
 const TLS_ERROR =
   /^(CERT_|ERR_TLS_|ERR_SSL_|UNABLE_TO_|DEPTH_ZERO_SELF_SIGNED_CERT$|SELF_SIGNED_CERT_IN_CHAIN$|HOSTNAME_MISMATCH$)/;
 
@@ -94,6 +144,39 @@ export async function collect(
 }
 
 /**
+ * Tells whether an IP address is outside the public internet.
+ * @param {string} address IPv4 or IPv6 address
+ * @returns {boolean}
+ */
+export function isNonPublic(address) {
+  const family = isIP(address);
+  if (family === 0) {
+    return true;
+  }
+  return NON_PUBLIC_RANGES.check(address, family === 4 ? 'ipv4' : 'ipv6');
+}
+
+/**
+ * Resolves a host name to all its addresses.
+ * @param {string} hostname
+ * @returns {Promise<string[]>}
+ */
+const resolveAll = async (hostname) =>
+  (await dnsLookup(hostname, { all: true, verbatim: true })).map(
+    (entry) => entry.address,
+  );
+
+/**
+ * Makes a string safe to print inside a Markdown code block: removes
+ * control characters (line breaks included) and backticks.
+ * @param {string} text
+ * @returns {string}
+ */
+export function plain(text) {
+  return text.replace(/[\u0000-\u001f\u007f-\u009f`]/g, '?');
+}
+
+/**
  * Classifies an HTTP status or a network error code.
  * @param {number | string} status
  * @returns {'ok' | 'dead' | 'unverified' | 'transient'} "transient" means
@@ -109,8 +192,15 @@ export function classify(status) {
     }
     return status >= 500 ? 'transient' : 'unverified';
   }
-  if (DNS_ERRORS.has(status) || TLS_ERROR.test(status)) {
+  if (
+    DNS_ERRORS.has(status) ||
+    TLS_ERROR.test(status) ||
+    LINK_ERRORS.has(status)
+  ) {
     return 'dead';
+  }
+  if (UNFOLLOWED.has(status)) {
+    return 'unverified';
   }
   return 'transient';
 }
@@ -121,36 +211,96 @@ export function classify(status) {
  */
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+/** An error with a code, as `code()` in `check()` reads it. */
+class LinkError extends Error {
+  /** @param {string} code */
+  constructor(code) {
+    super(code);
+    this.code = code;
+  }
+}
+
+/**
+ * @typedef {{
+ *   status: number,
+ *   headers?: {get(name: string): string | null},
+ *   body?: {cancel(): Promise<void>} | null,
+ * }} FetchResponse
+ */
+
 /**
  * Checks one URL, retrying once after a delay on 5xx and network errors.
+ * Follows redirects itself, so that every target is checked to be public.
  * @param {string} url
  * @param {{
- *   fetch?: (url: string, init: RequestInit) => Promise<{status: number}>,
+ *   fetch?: (url: string, init: RequestInit) => Promise<FetchResponse>,
+ *   lookup?: (hostname: string) => Promise<string[]>,
  *   sleep?: () => Promise<void>,
  * }} [deps] injectable for tests
  * @returns {Promise<{verdict: 'ok' | 'dead' | 'unverified' | 'skip', status: string}>}
  */
 export async function check(
   url,
-  { fetch = globalThis.fetch, sleep = () => wait(RETRY_DELAY_MS) } = {},
+  {
+    fetch = globalThis.fetch,
+    lookup = resolveAll,
+    sleep = () => wait(RETRY_DELAY_MS),
+  } = {},
 ) {
   if (UNVERIFIABLE.some((pattern) => pattern.test(url))) {
     return { verdict: 'skip', status: 'skip' };
   }
+  if (!URL.canParse(url)) {
+    return { verdict: 'dead', status: INVALID_URL };
+  }
+  /** @param {URL} target */
+  const assertPublic = async (target) => {
+    // Brackets of IPv6 literals are not part of the address.
+    const host = target.hostname.replace(/^\[|\]$/g, '');
+    const addresses = isIP(host) ? [host] : await lookup(host);
+    if (!addresses.length || addresses.some(isNonPublic)) {
+      throw new LinkError(NON_PUBLIC);
+    }
+  };
   /** @param {string} method */
   const request = async (method) => {
-    const response = await fetch(url, {
-      method,
-      redirect: 'follow',
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-      headers: { 'user-agent': 'Mozilla/5.0 (link-checker; elixir-on.cloud)' },
-    });
-    return response.status;
+    let target = new URL(url);
+    for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+      await assertPublic(target);
+      const response = await fetch(target.href, {
+        method,
+        redirect: 'manual',
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+        headers: {
+          'user-agent': 'Mozilla/5.0 (link-checker; elixir-on.cloud)',
+        },
+      });
+      const location = response.headers?.get('location');
+      if (response.status < 300 || response.status >= 400 || !location) {
+        await response.body?.cancel().catch(() => {});
+        return response.status;
+      }
+      await response.body?.cancel().catch(() => {});
+      if (!URL.canParse(location, target)) {
+        throw new LinkError(INVALID_URL);
+      }
+      target = new URL(location, target);
+      if (target.protocol !== 'http:' && target.protocol !== 'https:') {
+        throw new LinkError('REDIRECT_NOT_HTTP');
+      }
+    }
+    throw new LinkError('TOO_MANY_REDIRECTS');
   };
   /** @param {unknown} error */
   const code = (error) => {
-    const err = /** @type {{cause?: {code?: string}, name: string}} */ (error);
-    return err.cause?.code || err.name;
+    const err =
+      /** @type {{cause?: {code?: string}, code?: unknown, name: string}} */ (
+        error
+      );
+    // DOMExceptions (e.g. TimeoutError) have numeric codes: use the name.
+    return (
+      err.cause?.code || (typeof err.code === 'string' ? err.code : err.name)
+    );
   };
   /** @returns {Promise<number | string>} */
   const attempt = async () => {
@@ -198,7 +348,7 @@ export function summarize(results, urls) {
   const lines = (list) =>
     list.map(
       ({ url, status }) =>
-        `  ${status}  ${url}\n      in ${[...(urls.get(url) ?? [])].join(', ')}`,
+        `  ${plain(status)}  ${plain(url)}\n      in ${[...(urls.get(url) ?? [])].map(plain).join(', ')}`,
     );
   const text = [
     `Checked ${urls.size} links, ${dead.length} dead, ${unverified.length} unverified.`,

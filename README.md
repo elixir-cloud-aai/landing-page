@@ -64,14 +64,20 @@ Useful commands:
   Library); `npm run test:watch` reruns them on changes
 - `npm run test:coverage`: run the tests and write coverage to
   `coverage/lcov.info` (for Codecov)
-- `npm run check-links`: check the outbound links in `src/` (test files
-  excluded). A link is dead on 404/410, a TLS error, or a DNS error that
-  persists after one retry; server errors (5xx) and other network errors are
-  retried once after a short delay and, if they persist, reported as
-  unverified, like other 4xx responses. The command exits with 2 on dead
-  links, with 0 otherwise. The [Link check](.github/workflows/links.yml)
-  workflow runs it every Monday, shows the summary (with unverified links) in
-  the run's job summary, and opens or updates an issue for dead links.
+- `npm run check-links`: check the outbound links in `src/` (test files and
+  `*.test.json`/`*.spec.json` fixtures excluded). A link is dead on 404/410, a
+  TLS error, a DNS error that persists after one retry, a malformed URL, or an
+  address outside the public internet (loopback, private, link-local, cloud
+  metadata and other reserved ranges). The check follows redirects itself (at
+  most 10) and checks every target the same way before requesting it, so it
+  never sends requests to non-public addresses. Server errors (5xx) and other
+  network errors are retried once after a short delay and, if they persist,
+  reported as unverified, like other 4xx responses and redirects to other
+  schemes. The command exits with 2 on dead links, with 0 otherwise. The
+  [Link check](.github/workflows/links.yml) workflow runs it every Monday (one
+  run at a time), shows the summary (with unverified links) in the run's job
+  summary, or a failure note if the check broke, and opens or updates an issue
+  for dead links.
 
 Tests live next to the code they test (`*.test.ts(x)`). The data tests in
 `src/data/data.test.ts` check the JSON files: unique ids, references between
