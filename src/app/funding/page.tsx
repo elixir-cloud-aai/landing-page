@@ -2,20 +2,19 @@
 
 import { useMemo, useState } from 'react';
 import {
-  Search,
-  X,
   Award,
-  Calendar,
-  Users,
   Building2,
-  Sparkles,
+  Calendar,
   HeartHandshake,
-  ExternalLink,
+  Search,
+  Sparkles,
+  Users,
+  X,
 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
 import { cn } from '@/lib/utils';
@@ -73,14 +72,14 @@ export default function FundingPage() {
     <main className="relative min-h-screen overflow-hidden bg-background">
       {/* Dynamic Background Pattern */}
       <AnimatedGridPattern
-        numSquares={30}
-        maxOpacity={0.4}
-        duration={3}
-        repeatDelay={1}
         className={cn(
           '[mask-image:radial-gradient(520px_circle_at_center,white,transparent)]',
           'inset-x-0 inset-y-[-30%] h-[200%] skew-y-12',
         )}
+        duration={3}
+        maxOpacity={0.4}
+        numSquares={30}
+        repeatDelay={1}
       />
 
       {/* Hero Header */}
@@ -88,8 +87,8 @@ export default function FundingPage() {
         <div className="mx-auto mt-24 max-w-7xl rounded-[16px] border border-border bg-card/85 px-6 pb-14 pt-20 shadow-[0_8px_32px_0_rgba(0,0,0,0.2)] lg:px-8 lg:pb-20">
           <div className="mx-auto max-w-3xl text-center">
             <Badge
-              variant="secondary"
               className="mb-5 rounded-full border px-4 py-1.5 text-xs font-medium shadow-sm"
+              variant="secondary"
             >
               <HeartHandshake className="mr-1.5 h-3.5 w-3.5 text-primary" />
               Sponsors & Grants
@@ -111,9 +110,9 @@ export default function FundingPage() {
 
           {/* Stats Bar */}
           <div className="mx-auto mt-12 grid max-w-3xl grid-cols-3 divide-x rounded-2xl border bg-card/70 p-1 shadow-sm">
-            <Stat value={grants.length} label="Total Grants" />
-            <Stat value={gsocCount} label="GSoC Projects" />
-            <Stat value={elixirCount} label="ELIXIR Grants" />
+            <Stat label="Total Grants" value={grants.length} />
+            <Stat label="GSoC Projects" value={gsocCount} />
+            <Stat label="ELIXIR Grants" value={elixirCount} />
           </div>
         </div>
       </section>
@@ -136,16 +135,16 @@ export default function FundingPage() {
             <div className="relative flex-1 sm:w-72 sm:flex-initial">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                value={query}
+                className="h-10 rounded-xl pl-9 pr-9"
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search project, recipient, or funder..."
-                className="h-10 rounded-xl pl-9 pr-9"
+                value={query}
               />
               {query && (
                 <button
-                  onClick={() => setQuery('')}
                   aria-label="Clear search"
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition hover:text-foreground"
+                  onClick={() => setQuery('')}
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -156,13 +155,13 @@ export default function FundingPage() {
             <div className="flex flex-wrap gap-1 rounded-xl border bg-muted/40 p-1">
               {categories.map((cat) => (
                 <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
                   className={`rounded-lg px-3 py-1.5 text-xs font-medium capitalize transition-all ${
                     selectedCategory === cat
                       ? 'bg-background text-foreground shadow-sm'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
                 >
                   {cat === 'all' ? 'All Grants' : cat}
                 </button>
@@ -175,7 +174,7 @@ export default function FundingPage() {
         {filteredGrants.length > 0 ? (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filteredGrants.map((item) => (
-              <FundingCard key={item.id} item={item} />
+              <FundingCard item={item} key={item.id} />
             ))}
           </div>
         ) : (
@@ -191,12 +190,12 @@ export default function FundingPage() {
               Try adjusting your search query or selecting a different category.
             </p>
             <Button
-              variant="outline"
               className="mt-5 rounded-xl"
               onClick={() => {
                 setQuery('');
                 setSelectedCategory('all');
               }}
+              variant="outline"
             >
               Reset filters
             </Button>
@@ -236,12 +235,12 @@ function FundingCard({ item }: { item: FundingItem }) {
           </div>
 
           <Badge
-            variant="secondary"
             className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-medium ${
               isGSoC
                 ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
                 : 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
             }`}
+            variant="secondary"
           >
             {isGSoC ? 'GSoC' : 'Grant'}
           </Badge>

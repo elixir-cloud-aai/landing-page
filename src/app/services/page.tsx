@@ -53,37 +53,29 @@ export default function ServicesPage() {
   return (
     <div className="bg-background">
       <PageHero
-        eyebrow="Running infrastructure"
-        icon={<Globe className="h-3.5 w-3.5" />}
-        title={
-          <>
-            ELIXIR On-Cloud{' '}
-            <span className="bg-gradient-to-r from-elixirblue via-teal-500 to-elixirgreen bg-clip-text text-transparent">
-              services
-            </span>
-          </>
-        }
-        description="Deployments operated by ELIXIR Nodes and partners: registries, gateways and a federated GA4GH compute network you can use today."
         actions={
           <>
             <a
-              href="#catalog"
               className="inline-flex h-11 items-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+              href="#catalog"
             >
               Browse services
               <ArrowDown className="h-4 w-4" />
             </a>
             <a
-              href={DOCS_HUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
               className="inline-flex h-11 items-center gap-2 rounded-full border bg-card px-6 text-sm font-semibold transition-colors hover:bg-muted"
+              href={DOCS_HUB_URL}
+              rel="noopener noreferrer"
+              target="_blank"
             >
               <BookOpen className="h-4 w-4" />
               ELIXIR On-Cloud docs
             </a>
           </>
         }
+        description="Deployments operated by ELIXIR Nodes and partners: registries, gateways and a federated GA4GH compute network you can use today."
+        eyebrow="Running infrastructure"
+        icon={<Globe className="h-3.5 w-3.5" />}
         stats={[
           { value: liveCount, label: 'Live services' },
           { value: onboardingCount, label: 'Onboarding' },
@@ -93,6 +85,14 @@ export default function ServicesPage() {
           },
           { value: 'GA4GH', label: 'Standard APIs' },
         ]}
+        title={
+          <>
+            ELIXIR On-Cloud{' '}
+            <span className="bg-gradient-to-r from-elixirblue via-teal-500 to-elixirgreen bg-clip-text text-transparent">
+              services
+            </span>
+          </>
+        }
       />
 
       {nodes.length > 0 && (
@@ -104,8 +104,8 @@ export default function ServicesPage() {
             <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h2
-                  id="network-coverage"
                   className="flex items-center gap-2 text-xl font-semibold tracking-tight"
+                  id="network-coverage"
                 >
                   <Server className="h-5 w-5 text-primary" />
                   Network coverage
@@ -113,8 +113,8 @@ export default function ServicesPage() {
                 <p className="mt-1 text-sm text-muted-foreground">
                   ELIXIR Nodes running ELIXIR On-Cloud services.{' '}
                   <Link
-                    href="/nodes"
                     className="font-medium text-primary hover:underline"
+                    href="/nodes"
                   >
                     All Nodes →
                   </Link>
@@ -134,24 +134,24 @@ export default function ServicesPage() {
               {nodes.map((node) => (
                 <li key={node.code}>
                   <Link
-                    href={`/nodes#${node.code.toLowerCase()}`}
                     className={cn(
                       'block h-full rounded-xl border p-4 transition-colors hover:border-primary/40',
                       node.status === 'live'
                         ? 'bg-background'
                         : 'border-dashed',
                     )}
+                    href={`/nodes#${node.code.toLowerCase()}`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-2xl font-bold tracking-tight">
                         {node.code}
                       </span>
                       <span
+                        aria-label={node.status}
                         className={cn(
                           'h-2.5 w-2.5 rounded-full',
                           node.status === 'live' ? 'bg-success' : 'bg-warning',
                         )}
-                        aria-label={node.status}
                       />
                     </div>
                     <p className="mt-1 text-xs font-medium">{node.name}</p>
@@ -177,8 +177,8 @@ export default function ServicesPage() {
       )}
 
       <section
-        id="catalog"
         className="mx-auto max-w-7xl scroll-mt-24 px-6 py-14 lg:px-8"
+        id="catalog"
       >
         <ServiceCatalog services={services} />
       </section>

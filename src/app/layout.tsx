@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     // next-themes sets the theme class on <html> before hydration.
-    <html lang="en" className={cn('font-sans')} suppressHydrationWarning>
+    <html className={cn('font-sans')} lang="en" suppressHydrationWarning>
       <body>
         {process.env.NODE_ENV === 'production' && <GAScript />}
 

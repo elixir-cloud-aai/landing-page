@@ -26,7 +26,9 @@ const duplicates = (values: string[]) =>
   values.filter((value, index) => values.indexOf(value) !== index);
 
 const expectHttpsOrNull = (url: string | null | undefined) => {
-  if (url == null) return;
+  if (url == null) {
+    return;
+  }
   // Throws for malformed values, e.g. "https://" without a host.
   const parsed = new URL(url);
   expect(parsed.protocol, url).toBe('https:');
@@ -34,7 +36,9 @@ const expectHttpsOrNull = (url: string | null | undefined) => {
 };
 
 const expectImageExists = (owner: Owner | null) => {
-  if (owner?.image) expect(publicFile(owner.image), owner.image).toBe(true);
+  if (owner?.image) {
+    expect(publicFile(owner.image), owner.image).toBe(true);
+  }
 };
 
 describe('product.json', () => {
@@ -74,7 +78,9 @@ describe('services.json', () => {
       expectHttpsOrNull(service.repoUrl);
       expectHttpsOrNull(service.trackingUrl);
       // A public endpoint means the service is live.
-      if (service.deploymentUrl) expect(service.status).toBe('Live');
+      if (service.deploymentUrl) {
+        expect(service.status).toBe('Live');
+      }
       if (service.relatedProductId) {
         expect(productIds).toContain(service.relatedProductId);
       }
@@ -98,7 +104,9 @@ describe('nodes.json', () => {
       expect(node.name).toBeTruthy();
       expect(['live', 'onboarding']).toContain(node.status);
       expect(publicFile(`flags/${node.code.toLowerCase()}.svg`)).toBe(true);
-      if (node.logo) expect(publicFile(node.logo), node.logo).toBe(true);
+      if (node.logo) {
+        expect(publicFile(node.logo), node.logo).toBe(true);
+      }
       expectHttpsOrNull(node.website);
       expectHttpsOrNull(node.contact?.url);
       expectImageExists(node.liaison);

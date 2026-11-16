@@ -12,8 +12,9 @@ const monogramColors = [
 
 function hash(value: string) {
   let h = 0;
-  for (let i = 0; i < value.length; i += 1)
+  for (let i = 0; i < value.length; i += 1) {
     h = (h * 31 + value.charCodeAt(i)) | 0;
+  }
   return Math.abs(h);
 }
 
@@ -62,11 +63,11 @@ export function OwnerChip({
     <div className="flex min-w-0 items-center gap-2.5">
       {owner.image ? (
         <Image
-          src={owner.image}
           alt=""
-          width={32}
-          height={32}
           className="h-8 w-8 shrink-0 rounded-full object-cover"
+          height={32}
+          src={owner.image}
+          width={32}
         />
       ) : (
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-[11px] font-semibold text-muted-foreground">
@@ -77,8 +78,8 @@ export function OwnerChip({
         <p className="truncate font-medium text-foreground">{owner.name}</p>
         {owner.email ? (
           <a
-            href={`mailto:${owner.email}`}
             className="truncate text-muted-foreground hover:text-primary"
+            href={`mailto:${owner.email}`}
           >
             {owner.email}
           </a>
@@ -126,40 +127,40 @@ export function FilterBar({
           <span className="sr-only">Search {noun}</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
-            type="search"
-            value={query}
+            className="h-10 w-full rounded-lg border border-input bg-card pl-9 pr-9 text-sm shadow-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
             onChange={(event) => onQueryChange(event.target.value)}
             placeholder={placeholder}
-            className="h-10 w-full rounded-lg border border-input bg-card pl-9 pr-9 text-sm shadow-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+            type="search"
+            value={query}
           />
           {query && (
             <button
-              type="button"
               aria-label="Clear search"
-              onClick={() => onQueryChange('')}
               className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
+              onClick={() => onQueryChange('')}
+              type="button"
             >
               <X className="h-3.5 w-3.5" />
             </button>
           )}
         </label>
-        <p className="text-sm text-muted-foreground" aria-live="polite">
+        <p aria-live="polite" className="text-sm text-muted-foreground">
           {resultCount} {resultCount === 1 ? noun.replace(/s$/, '') : noun}
         </p>
       </div>
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Filter">
+      <div aria-label="Filter" className="flex flex-wrap gap-2" role="group">
         {options.map((option) => (
           <button
-            key={option.value}
-            type="button"
             aria-pressed={selected === option.value}
-            onClick={() => onSelect(option.value)}
             className={cn(
               'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
               selected === option.value
                 ? 'border-primary bg-primary text-primary-foreground'
                 : 'bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground',
             )}
+            key={option.value}
+            onClick={() => onSelect(option.value)}
+            type="button"
           >
             {option.label}
             <span
@@ -182,9 +183,9 @@ export function EmptyState({ onReset }: { onReset: () => void }) {
     <div className="rounded-2xl border border-dashed bg-card px-6 py-16 text-center">
       <p className="font-medium">Nothing matches your search.</p>
       <button
-        type="button"
-        onClick={onReset}
         className="mt-3 text-sm font-medium text-primary hover:underline"
+        onClick={onReset}
+        type="button"
       >
         Clear filters
       </button>
@@ -195,7 +196,9 @@ export function EmptyState({ onReset }: { onReset: () => void }) {
 // Whether a URL points to GitLab. Compares the host, as the name could appear
 // anywhere in other URLs.
 export function isGitlabUrl(url: string | null | undefined): boolean {
-  if (!url) return false;
+  if (!url) {
+    return false;
+  }
   try {
     const { hostname } = new URL(url);
     return hostname === 'gitlab.com' || hostname.endsWith('.gitlab.com');
@@ -209,6 +212,8 @@ export function matchesQuery(
   fields: (string | null | undefined)[],
 ) {
   const q = query.trim().toLowerCase();
-  if (!q) return true;
+  if (!q) {
+    return true;
+  }
   return fields.some((field) => field?.toLowerCase().includes(q));
 }

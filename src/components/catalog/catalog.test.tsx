@@ -44,17 +44,17 @@ describe('FilterBar', () => {
     const onSelect = vi.fn();
     render(
       <FilterBar
-        query="tes"
+        noun="products"
         onQueryChange={onQueryChange}
-        placeholder="Search"
+        onSelect={onSelect}
         options={[
           { value: 'all', label: 'All', count: 3 },
           { value: 'GA4GH TES', label: 'GA4GH TES', count: 2 },
         ]}
-        selected="all"
-        onSelect={onSelect}
+        placeholder="Search"
+        query="tes"
         resultCount={1}
-        noun="products"
+        selected="all"
       />,
     );
 

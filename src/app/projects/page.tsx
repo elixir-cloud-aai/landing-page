@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- project data has no type yet; typing it is a refactor */
 import projects from '@/data/project.json';
 
 import {
@@ -8,7 +9,6 @@ import {
   Mail,
   Sparkles,
   Users,
-  Zap,
 } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
@@ -28,14 +28,14 @@ export default function ProjectsPage() {
   return (
     <main className="min-h-screen overflow-hidden bg-background">
       <AnimatedGridPattern
-        numSquares={30}
-        maxOpacity={0.5}
-        duration={3}
-        repeatDelay={1}
         className={cn(
           '[mask-image:radial-gradient(520px_circle_at_center,white,transparent)]',
           'inset-x-0 inset-y-[-30%] h-[200%] skew-y-12',
         )}
+        duration={3}
+        maxOpacity={0.5}
+        numSquares={30}
+        repeatDelay={1}
       />
 
       {/* Hero */}
@@ -44,8 +44,8 @@ export default function ProjectsPage() {
           <div className="grid items-center gap-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 dark:text-white">
             <div className="flex flex-col items-start">
               <Badge
-                variant="secondary"
                 className="mb-7 rounded-full px-4 py-1.5"
+                variant="secondary"
               >
                 <Sparkles className="mr-2 h-3.5 w-3.5" />
                 Selected work
@@ -108,6 +108,7 @@ export default function ProjectsPage() {
                   'curl localhost:8000/api/health',
                   'curl localhost:8000/api/network_metrics',
                 ]}
+                delayBetweenCommands={1200}
                 outputs={{
                   0: [
                     "Cloning into 'tes-dashboard'...",
@@ -125,7 +126,6 @@ export default function ProjectsPage() {
                   ],
                 }}
                 typingSpeed={45}
-                delayBetweenCommands={1200}
               />
             </div>
           </div>
@@ -136,9 +136,9 @@ export default function ProjectsPage() {
       {featuredProjects.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8 dark:text-white">
           <SectionHeading
+            description="A selection of high-impact platforms and coordinating projects."
             eyebrow="Featured work"
             title="Projects worth exploring"
-            description="A selection of high-impact platforms and coordinating projects."
           />
 
           <div className="mt-10 space-y-8">
@@ -157,9 +157,9 @@ export default function ProjectsPage() {
       {otherProjects.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 pb-28 lg:px-8 dark:text-white">
           <SectionHeading
+            description="More experiments and tools."
             eyebrow="More work"
             title="Other projects"
-            description="More experiments and tools."
           />
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {otherProjects.map((project) => (
@@ -197,21 +197,21 @@ function FeaturedProject({
           (project.images.cover.startsWith('/') ||
             /^https?:\/\/.+/i.test(project.images.cover)) ? (
             <Image
-              src={project.images.cover}
               alt={project.name}
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              src={project.images.cover}
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-muted">
               {project.logo ? (
                 <Image
-                  src={project.logo}
                   alt={`${project.name} logo`}
-                  width={240}
-                  height={120}
                   className="h-auto max-h-28 w-auto object-contain"
+                  height={120}
+                  src={project.logo}
+                  width={240}
                 />
               ) : (
                 <div className="text-center">
@@ -231,8 +231,8 @@ function FeaturedProject({
               {project.category}
             </Badge>
             <Badge
-              variant="secondary"
               className="rounded-full bg-black/50 text-white backdrop-blur"
+              variant="secondary"
             >
               {project.status}
             </Badge>
@@ -242,8 +242,8 @@ function FeaturedProject({
             <div className="flex flex-wrap gap-2">
               {project.tags?.slice(0, 4).map((tag: string) => (
                 <span
-                  key={tag}
                   className="rounded-full bg-white/10 px-3 py-1 text-xs text-white backdrop-blur-md"
+                  key={tag}
                 >
                   {tag}
                 </span>
@@ -302,13 +302,13 @@ function FeaturedProject({
               <div className="space-y-2">
                 {project.liaisons.map((liaison: any) => (
                   <div
-                    key={liaison.email}
                     className="flex items-center justify-between text-sm"
+                    key={liaison.email}
                   >
                     <span className="font-medium">{liaison.fullName}</span>
                     <a
-                      href={`mailto:${liaison.email}`}
                       className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+                      href={`mailto:${liaison.email}`}
                     >
                       <Mail className="h-3 w-3" />
                       {liaison.email}
@@ -330,9 +330,9 @@ function FeaturedProject({
               <div className="flex flex-wrap gap-2">
                 {project.technologies.map((technology: string) => (
                   <Badge
+                    className="rounded-lg px-3 py-1.5 font-normal"
                     key={technology}
                     variant="outline"
-                    className="rounded-lg px-3 py-1.5 font-normal"
                   >
                     {technology}
                   </Badge>
@@ -345,7 +345,7 @@ function FeaturedProject({
           {project.metrics?.length > 0 && (
             <div className="mt-7 grid grid-cols-3 gap-3">
               {project.metrics.map((metric: any) => (
-                <div key={metric.label} className="rounded-xl bg-muted/50 p-3">
+                <div className="rounded-xl bg-muted/50 p-3" key={metric.label}>
                   <p className="text-lg font-bold">{metric.value}</p>
                   <p className="mt-0.5 text-[11px] leading-4 text-muted-foreground">
                     {metric.label}
@@ -357,11 +357,11 @@ function FeaturedProject({
 
           {/* Actions */}
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button className="rounded-xl" asChild>
+            <Button asChild className="rounded-xl">
               <a
                 href={project.url || project.links?.live}
-                target="_blank"
                 rel="noopener noreferrer"
+                target="_blank"
               >
                 {project.cta?.primary || 'View Project'}
                 <ArrowUpRight className="ml-2 h-4 w-4" />
@@ -369,11 +369,11 @@ function FeaturedProject({
             </Button>
 
             {project.links?.github && (
-              <Button variant="outline" className="rounded-xl" asChild>
+              <Button asChild className="rounded-xl" variant="outline">
                 <a
                   href={project.links.github}
-                  target="_blank"
                   rel="noopener noreferrer"
+                  target="_blank"
                 >
                   <FaGithub className="mr-2 h-4 w-4" />
                   GitHub
@@ -382,11 +382,11 @@ function FeaturedProject({
             )}
 
             {project.links?.live && (
-              <Button variant="ghost" className="rounded-xl" asChild>
+              <Button asChild className="rounded-xl" variant="ghost">
                 <a
                   href={project.links.live}
-                  target="_blank"
                   rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Live demo
                   <ExternalLink className="ml-2 h-4 w-4" />
@@ -409,9 +409,9 @@ function ProjectCard({ project }: { project: any }) {
     <Card className="group overflow-hidden rounded-3xl border-border/60 bg-card/70 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5">
       <div className="relative aspect-[16/10] overflow-hidden bg-muted">
         <img
-          src={project.images?.thumbnail || project.images?.cover || ''}
           alt={project.name}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          src={project.images?.thumbnail || project.images?.cover || ''}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
         <div className="absolute left-4 top-4">
@@ -421,8 +421,8 @@ function ProjectCard({ project }: { project: any }) {
         </div>
         <div className="absolute bottom-4 right-4">
           <Badge
-            variant="secondary"
             className="rounded-full bg-black/60 text-white backdrop-blur"
+            variant="secondary"
           >
             {project.status}
           </Badge>
@@ -453,17 +453,17 @@ function ProjectCard({ project }: { project: any }) {
           <div className="mt-5 flex flex-wrap gap-2">
             {project.technologies.slice(0, 4).map((technology: string) => (
               <Badge
+                className="rounded-lg px-2.5 py-1 text-xs font-normal"
                 key={technology}
                 variant="secondary"
-                className="rounded-lg px-2.5 py-1 text-xs font-normal"
               >
                 {technology}
               </Badge>
             ))}
             {project.technologies.length > 4 && (
               <Badge
-                variant="outline"
                 className="rounded-lg px-2.5 py-1 text-xs font-normal"
+                variant="outline"
               >
                 +{project.technologies.length - 4}
               </Badge>
@@ -479,11 +479,11 @@ function ProjectCard({ project }: { project: any }) {
             {project.year || 'N/A'}
           </div>
 
-          <Button variant="ghost" size="sm" className="rounded-lg px-3" asChild>
+          <Button asChild className="rounded-lg px-3" size="sm" variant="ghost">
             <a
               href={project.url || project.links?.live}
-              target="_blank"
               rel="noopener noreferrer"
+              target="_blank"
             >
               Explore
               <ArrowUpRight className="ml-1.5 h-3.5 w-3.5" />

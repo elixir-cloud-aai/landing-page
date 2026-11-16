@@ -1,7 +1,7 @@
 'use client';
 import { FC } from 'react';
 import Link from 'next/link';
-import { Zoom } from 'react-awesome-reveal';
+import ZoomIn from '../ui/zoom-in';
 import { AnimatedGridPattern } from '../ui/animated-grid-pattern';
 import { cn } from '@/lib/utils';
 import { MorphingText } from '../ui/morphing-text';
@@ -49,21 +49,21 @@ const Home: FC = () => {
   return (
     <div className="relative isolate overflow-hidden bg-[radial-gradient(circle_at_top,rgba(61,169,246,0.09),transparent_35%),linear-gradient(180deg,#f8fbff_0%,#ffffff_34%,#f7fafc_100%)] font-pop dark:bg-[radial-gradient(circle_at_top,rgba(61,169,246,0.16),transparent_36%),linear-gradient(180deg,#020617_0%,#0f172a_44%,#111827_100%)] dark:text-white">
       <AnimatedGridPattern
-        numSquares={30}
-        maxOpacity={0.5}
-        duration={3}
-        repeatDelay={1}
         className={cn(
           '[mask-image:radial-gradient(520px_circle_at_center,white,transparent)]',
           'inset-x-0 inset-y-[-30%] h-[200%] skew-y-12',
         )}
+        duration={3}
+        maxOpacity={0.5}
+        numSquares={30}
+        repeatDelay={1}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-white/55 via-transparent to-white/90 dark:from-slate-950/65 dark:to-slate-950/95" />
 
       <main className="relative mx-auto flex min-h-screen flex-col px-4 py-6 sm:px-6 md:px-10 md:py-10 lg:px-16">
         <section className="flex flex-1">
           <div className="grid w-full min-w-0 gap-12 p-5 sm:p-8 md:p-12 lg:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)] lg:p-16 bg-card/85 border border-border rounded-[11px] dark:border-white/10 dark:bg-slate-950/70 dark:shadow-[0_30px_80px_-40px_rgba(0,0,0,0.75)]">
-            <Zoom triggerOnce>
+            <ZoomIn>
               <div className="flex flex-col justify-center">
                 <div className="inline-flex w-fit items-center rounded-full border border-elixirblue/20 bg-elixirblue/8 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.3em] text-elixirblue shadow-sm dark:border-elixirblue/30 dark:bg-elixirblue/10">
                   ELIXIR On-Cloud
@@ -99,9 +99,9 @@ const Home: FC = () => {
                   </Link>
                 </div>
               </div>
-            </Zoom>
+            </ZoomIn>
 
-            <Zoom triggerOnce>
+            <ZoomIn>
               <div className="flex items-center justify-center">
                 <div className="relative my-16 h-[700px] w-full max-w-lg overflow-hidden rounded-xl bg-white p-10 shadow-sm ring-1 shadow-black/10 ring-black/10 sm:my-24 sm:h-[300px] md:my-32 md:h-[400px] dark:bg-[#111827]">
                   <h2 className="mb-4 text-2xl font-semibold text-neutral-900 dark:text-white">
@@ -119,16 +119,16 @@ const Home: FC = () => {
                   </p>
                   <Globe3D
                     className="absolute -bottom-96 -left-0 h-[700px]"
-                    markers={contributorMarkers}
                     config={globeConfig}
+                    markers={contributorMarkers}
                   />
                 </div>
               </div>
-            </Zoom>
+            </ZoomIn>
           </div>
         </section>
 
-        <Zoom triggerOnce>
+        <ZoomIn>
           <section className="pb-8 pt-12 md:pt-16">
             <div className="grid gap-8 rounded-2xl bg-card/85 border border-border p-6 dark:border-white/10 dark:bg-slate-950/70 dark:shadow-[0_30px_80px_-40px_rgba(0,0,0,0.75)] md:p-10 lg:grid-cols-[1.25fr_0.75fr] dark:border-white/10 dark:bg-slate-950/60">
               <div className="space-y-5">
@@ -147,8 +147,8 @@ const Home: FC = () => {
                 <a
                   className="inline-flex w-fit items-center rounded-full text-sm font-medium text-elixirblue transition hover:underline"
                   href={DOCS_HUB_URL}
-                  target="_blank"
                   rel="noopener noreferrer"
+                  target="_blank"
                 >
                   Learn more in the ELIXIR On-Cloud docs
                 </a>
@@ -168,7 +168,7 @@ const Home: FC = () => {
               </div>
             </div>
           </section>
-        </Zoom>
+        </ZoomIn>
       </main>
     </div>
   );
