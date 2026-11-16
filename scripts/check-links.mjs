@@ -319,8 +319,9 @@ export async function check(
       }
     } catch (error) {
       // A malformed or non-public destination is the same for GET
-      if (LINK_ERRORS.has(code(error))) {
-        return code(error);
+      const headError = code(error);
+      if (LINK_ERRORS.has(headError)) {
+        return headError;
       }
       // Some servers drop HEAD requests; GET decides.
     }

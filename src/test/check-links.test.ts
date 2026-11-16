@@ -427,6 +427,7 @@ describe('check: destinations and redirects', () => {
       verdict: 'dead',
       status: 'ERR_INVALID_URL',
     });
+    expect(methods(fetch)).toEqual(['HEAD']);
   });
 
   it('leaves a redirect to another scheme unverified', async () => {

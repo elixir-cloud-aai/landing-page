@@ -69,7 +69,8 @@ Useful commands:
   block automated requests, such as LinkedIn, are listed as "skip" for a manual
   check). A link is dead on 404/410, a TLS error, a DNS error that persists
   after one retry, a malformed URL, or an address outside the public internet
-  (loopback, private, link-local, cloud metadata and other reserved ranges).
+  (loopback, private, link-local, cloud metadata, IPv6 translation and 6to4,
+  and other reserved ranges).
   The check follows redirects itself and checks every target the same way
   before requesting it. This is a pre-check: the request resolves the name
   again, so a host whose DNS answer changes in between isn't caught. Results
