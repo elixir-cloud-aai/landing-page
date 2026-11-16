@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- project data has no type yet; typing it is a refactor */
+import type { Metadata } from 'next';
 import projects from '@/data/project.json';
 
 import {
@@ -20,6 +21,12 @@ import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
 import { cn } from 'cn';
 import { Terminal } from '@/components/ui/terminal';
 import Image from 'next/image';
+
+export const metadata: Metadata = {
+  title: 'Projects',
+  description:
+    'Projects that ELIXIR On-Cloud runs and takes part in, with their goals, teams, status and links.',
+};
 
 export default function ProjectsPage() {
   const featuredProjects = projects.filter((project) => project.featured);
