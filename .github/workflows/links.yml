@@ -14,12 +14,20 @@ permissions:
   contents: read
   issues: write
 
+# One run at a time, so that two runs can't both find no open issue and
+# create one each; a run that starts meanwhile waits
+concurrency:
+  group: link-check
+  cancel-in-progress: false
+
 jobs:
   links:
     name: Link check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -33,11 +41,17 @@ jobs:
           status=$?
           echo "status=$status" >> "$GITHUB_OUTPUT"
           cat links.txt
-          {
-            echo '```'
-            sed -n '/^Checked /,$p' links.txt
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
+          # The summary starts with "Checked "; without it, the check broke
+          # before it finished (the error is in the job log)
+          if grep -q '^Checked ' links.txt; then
+            {
+              echo '```'
+              sed -n '/^Checked /,$p' links.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "The link check failed (exit code $status) before it finished; see the log of the step \"Check links\"." >> "$GITHUB_STEP_SUMMARY"
+          fi
           # 2 means dead links (reported below); anything else non-zero means
           # the check itself broke
           if [ "$status" != 0 ] && [ "$status" != 2 ]; then exit "$status"; fi
