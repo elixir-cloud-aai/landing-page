@@ -235,23 +235,6 @@ export const MobileNavToggle = ({
   );
 };
 
-export const NavbarLogo = () => {
-  return (
-    <a
-      className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
-      href="#"
-    >
-      <img
-        alt="logo"
-        height={30}
-        src="https://assets.aceternity.com/logo-dark.png"
-        width={30}
-      />
-      <span className="font-medium text-black dark:text-white">Startup</span>
-    </a>
-  );
-};
-
 export const NavbarButton = ({
   href,
   as: Tag = 'a',
