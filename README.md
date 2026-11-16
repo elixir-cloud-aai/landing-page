@@ -41,6 +41,14 @@ Content lives in JSON files under [`src/data/`](src/data/):
 
 To change content, edit the relevant file and open a pull request.
 
+Every page sets its own title and description for search engines and link
+previews: in the `metadata` export of its `page.tsx`, or of the route's
+`layout.tsx` for pages that are client components (`'use client'`). Titles
+appear as `<title> | ELIXIR On-Cloud` (the template in
+[`src/seo/base-seo.ts`](src/seo/base-seo.ts)), except on the home page,
+which sets its full title. `src/app/metadata.test.ts` checks that every
+route has a title and description of its own; add new routes to its list.
+
 ## Development
 
 With [Node.js](https://nodejs.org/) 22 and npm installed, install the
