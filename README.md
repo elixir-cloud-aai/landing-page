@@ -166,6 +166,32 @@ To roll back, pin the `site` image to a previous `sha-<commit>` tag and run
 `docker compose up -d`. To build locally instead of pulling, run
 `docker compose up -d --build`.
 
+### Caching
+
+The site sets its own `Cache-Control` headers, in the `headers` of
+[`next.config.js`](next.config.js), so they are the same in the Docker image
+and on Vercel:
+
+| Paths                                                    | `Cache-Control`                                        |
+| -------------------------------------------------------- | ------------------------------------------------------ |
+| `/_next/static/` (JavaScript, CSS, fonts; hashed names)  | `public, max-age=31536000, immutable` (set by Next.js) |
+| `/_next/image` (optimized images)                        | the source image's max-age, at least 4 hours (Next.js) |
+| Pages                                                    | `public, max-age=0, must-revalidate`                   |
+| Other files of `public/` (images, logos, flags, favicon) | `public, max-age=86400, stale-while-revalidate=604800` |
+| `robots.txt`, `sitemap.xml`, `sitemap-<n>.xml`           | `public, max-age=3600`                                 |
+| `sw.js`                                                  | `no-cache, no-store, must-revalidate`                  |
+
+Caches revalidate pages on every request (a cheap `304 Not Modified` if a
+page hasn't changed), so a deploy shows at once, and no cache serves a page
+that points at `/_next/static/` files of an older image. Files of `public/`
+have no hash in their names, so a changed image can take up to a day to
+show; to replace one at once, give it a new file name. Errors such as 404
+are not cached. A reverse proxy in front of the site should pass these
+headers on and needs no cache rules of its own.
+[`src/test/cache-policy.test.ts`](src/test/cache-policy.test.ts) checks
+which rule applies to which path, and fails for files in `public/` that no
+rule for files covers.
+
 ## Contributing
 
 Contributions are welcome! Report problems with the website or suggest
