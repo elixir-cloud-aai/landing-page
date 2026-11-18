@@ -175,11 +175,11 @@ and on Vercel:
 | Paths                                                    | `Cache-Control`                                        |
 | -------------------------------------------------------- | ------------------------------------------------------ |
 | `/_next/static/` (JavaScript, CSS, fonts; hashed names)  | `public, max-age=31536000, immutable` (set by Next.js) |
-| `/_next/image` (optimized images)                        | the source image's max-age, at least 4 hours (Next.js) |
+| `/_next/image` (optimized images)                        | source's max-age, at least 4 hours (Next.js default)   |
 | Pages                                                    | `public, max-age=0, must-revalidate`                   |
 | Other files of `public/` (images, logos, flags, favicon) | `public, max-age=86400, stale-while-revalidate=604800` |
 | `robots.txt`, `sitemap.xml`, `sitemap-<n>.xml`           | `public, max-age=3600`                                 |
-| `sw.js`                                                  | `no-cache, no-store, must-revalidate`                  |
+| `sw.js` (removes the old PWA's worker, see above)        | `no-cache, no-store, must-revalidate`                  |
 
 Caches revalidate pages on every request (a cheap `304 Not Modified` if a
 page hasn't changed), so a deploy shows at once, and no cache serves a page
@@ -189,8 +189,8 @@ show; to replace one at once, give it a new file name. Errors such as 404
 are not cached. A reverse proxy in front of the site should pass these
 headers on and needs no cache rules of its own.
 [`src/test/cache-policy.test.ts`](src/test/cache-policy.test.ts) checks
-which rule applies to which path, and fails for files in `public/` that no
-rule for files covers.
+which rule applies to which path, and that every file in `public/` gets the
+policy meant for it.
 
 ## Contributing
 

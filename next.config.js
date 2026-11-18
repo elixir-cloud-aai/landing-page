@@ -3,12 +3,13 @@
 // Cache policy (see "Caching" in the README). Next.js itself gives the hashed
 // files under /_next/static/ `public, max-age=31536000, immutable`, which
 // can't be overridden, and optimized images (/_next/image) the larger of
-// `images.minimumCacheTTL` (4 hours) and the max-age of the source image.
+// `images.minimumCacheTTL` (Next.js default: 4 hours) and the max-age of the source image.
 // The rules below cover everything else; where several match a path, the
 // last one wins. `src/test/cache-policy.test.ts` checks them.
 /** @type {Awaited<ReturnType<NonNullable<import('next').NextConfig['headers']>>>} */
 const cacheHeaders = [
-  // Pages: caches must revalidate them on every request (cheap, by ETag).
+  // Pages (and any other path without a file extension, such as future route
+  // handlers): caches must revalidate them on every request (cheap, by ETag).
   // Next.js would send `s-maxage=31536000` for prerendered pages, which would
   // let a shared cache (e.g., a reverse proxy) serve a page for a year after
   // a deploy, pointing at /_next/static/ files that the new image no longer

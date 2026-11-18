@@ -1,5 +1,7 @@
 import { readdirSync } from 'node:fs';
 import { relative, resolve, sep } from 'node:path';
+// Not a public API, but the function that `next build` uses to compile the
+// `source` of each rule, so the tests match paths exactly as Next.js does.
 import { buildCustomRoute } from 'next/dist/lib/build-custom-route';
 import { describe, expect, it } from 'vitest';
 import nextConfig from '../../next.config.js';
@@ -17,7 +19,8 @@ const listFiles = (dir: string): string[] =>
   );
 
 // The `Cache-Control` header that the rules of `next.config.js` give a path,
-// matched the way Next.js matches them: the last matching rule wins.
+// matched the way Next.js matches them: where several rules set it, the last
+// matching one wins (as documented for `headers` in next.config.js).
 const cacheControlFor = async (path: string): Promise<string | undefined> => {
   const routes = ((await nextConfig.headers?.()) ?? []) as HeaderRoute[];
   let value: string | undefined;
@@ -75,7 +78,16 @@ describe('cache policy in next.config.js', () => {
     expect(await cacheControlFor(path)).toBeUndefined();
   });
 
-  it('gives every file in public/ a policy for files', async () => {
+  // Special files get their own rule, all others the rule for files.
+  const specialFiles: Record<string, string> = {
+    '/robots.txt': CRAWLER,
+    '/sw.js': WORKER,
+  };
+  const expectedFor = (path: string): string =>
+    specialFiles[path] ??
+    (/^\/sitemap(-\d+)?\.xml$/.test(path) ? CRAWLER : ASSET);
+
+  it('gives every file in public/ the policy meant for it', async () => {
     const files = listFiles(publicDir).map(
       (file) =>
         '/' +
@@ -84,11 +96,9 @@ describe('cache policy in next.config.js', () => {
           .map((part) => encodeURIComponent(part))
           .join('/'),
     );
-    expect(files.length).toBeGreaterThan(0);
+    expect(files).toContain('/sw.js');
     for (const path of files) {
-      expect([ASSET, CRAWLER, WORKER], path).toContain(
-        await cacheControlFor(path),
-      );
+      expect(await cacheControlFor(path), path).toBe(expectedFor(path));
     }
   });
 });
