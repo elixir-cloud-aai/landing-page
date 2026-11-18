@@ -185,8 +185,9 @@ Caches revalidate pages on every request (a cheap `304 Not Modified` if a
 page hasn't changed), so a deploy shows at once, and no cache serves a page
 that points at `/_next/static/` files of an older image. Files of `public/`
 have no hash in their names, so a changed image can take up to a day to
-show; to replace one at once, give it a new file name. Errors such as 404
-are not cached. A reverse proxy in front of the site should pass these
+show, and a cache may serve the old one once more on a visit within the
+following week (`stale-while-revalidate`); to replace one at once, give it a
+new file name. 404s for unknown paths are not cached. A reverse proxy in front of the site should pass these
 headers on and needs no cache rules of its own.
 [`src/test/cache-policy.test.ts`](src/test/cache-policy.test.ts) checks
 which rule applies to which path, and that every file in `public/` gets the
