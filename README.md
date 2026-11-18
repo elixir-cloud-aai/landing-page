@@ -98,7 +98,9 @@ services, products and Nodes, and that every referenced image exists.
 - `Build`: checks the formatting and types of `src/`, then builds the site.
 - `Audit`: fails on high and critical advisories in the production dependencies.
   To run it locally: `npm audit --omit=dev --audit-level=high`. Development
-  tools are not audited, as they don't reach the site. The job checks npm's
+  tools are not audited, as they don't reach the site; this includes tools that
+  only run during the build, such as `next-sitemap`, so they belong in
+  `devDependencies` (a test checks this). The job checks npm's
   advisory database as it is when the job runs, so a newly published advisory
   fails every new run, without a change to the code, and also holds back
   deployments of commits without a green run. Fix it by updating the package
