@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- project data has no type yet; typing it is a refactor */
+import type { Metadata } from 'next';
 import projects from '@/data/project.json';
 
 import {
@@ -20,6 +21,12 @@ import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
 import { cn } from 'cn';
 import { Terminal } from '@/components/ui/terminal';
 import Image from 'next/image';
+
+export const metadata: Metadata = {
+  title: 'Projects',
+  description:
+    'Projects that ELIXIR On-Cloud runs and takes part in, with their goals, teams, status and links.',
+};
 
 export default function ProjectsPage() {
   const featuredProjects = projects.filter((project) => project.featured);
@@ -408,11 +415,15 @@ function ProjectCard({ project }: { project: any }) {
   return (
     <Card className="group overflow-hidden rounded-3xl border-border/60 bg-card/70 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5">
       <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-        <img
-          alt={project.name}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          src={project.images?.thumbnail || project.images?.cover || ''}
-        />
+        {(project.images?.thumbnail || project.images?.cover) && (
+          <Image
+            alt={project.name}
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            src={project.images.thumbnail || project.images.cover}
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
         <div className="absolute left-4 top-4">
           <Badge className="rounded-full bg-background/90 text-foreground hover:bg-background">

@@ -117,13 +117,6 @@ module.exports = [
       },
     },
   },
-  {
-    rules: {
-      // Switching to next/image changes how images load and are sized; a
-      // change of its own, not part of enabling the linter
-      '@next/next/no-img-element': 'off',
-    },
-  },
   // The scripts are command-line tools that report on the console
   {
     files: ['scripts/**'],
