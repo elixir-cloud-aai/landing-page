@@ -10,6 +10,8 @@ export const FEEDBACK_URL =
   'https://github.com/elixir-cloud-aai/landing-page/issues/new/choose';
 export const DISCUSSIONS_URL =
   'https://github.com/elixir-cloud-aai/elixir-cloud-aai/discussions';
+export const GA4GH_DRIVER_PROJECT_URL =
+  'https://www.ga4gh.org/driver_project/elixir-cloud-and-aai-for-human-data/';
 export const CONTACT_EMAIL = 'cloud-service@elixir-europe.org';
 export const SLACK_URL =
   'https://join.slack.com/t/elixir-cloud/shared_invite/zt-1uvebyx1e-NcC0Hof2guT9df~haBdQaw';
