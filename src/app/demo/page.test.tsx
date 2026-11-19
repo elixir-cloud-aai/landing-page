@@ -75,6 +75,17 @@ describe('Demo page: Nodes', () => {
     });
   });
 
+  // /nodes redirects here, and the browser keeps the #fragment: old links
+  // such as /nodes#cz still land on their card
+  it('keeps the anchors of the old Nodes page', () => {
+    const { container } = render(<DemoPage />);
+    nodes.forEach((node) => {
+      const card = container.querySelector(`#${node.code.toLowerCase()}`);
+      expect(card, node.code).not.toBeNull();
+      expect(region('Nodes').getAllByRole('article')).toContain(card);
+    });
+  });
+
   it('never says "Planned"', () => {
     const { container } = render(<DemoPage />);
     expect(container).not.toHaveTextContent(/planned/i);
