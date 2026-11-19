@@ -2,14 +2,13 @@ import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import Footer from '@/components/footer';
 import NavBar from '@/components/navbar';
-import servicesData from '@/data/services.json';
 import { DOCS_HUB_URL } from '@/lib/site';
 import FundingPage from './funding/page';
 import PrivacyPage from './privacy/page';
 import ProductsPage from './products/page';
 import ProjectsPage from './projects/page';
 
-vi.mock('next/navigation', () => ({ usePathname: () => '/services' }));
+vi.mock('next/navigation', () => ({ usePathname: () => '/demo' }));
 
 // Smoke tests: every page renders without crashing and shows its heading.
 describe.each([
@@ -38,53 +37,43 @@ describe('NavBar', () => {
       />,
     );
 
-  // Issue #130: live services and the docs are reachable from one navigation.
-  it('links the docs and every live service', () => {
+  const navLabels = () =>
+    within(screen.getByRole('navigation', { name: 'Main' }))
+      .getAllByRole('link')
+      .map((link) => link.textContent?.trim());
+
+  it('shows only Demo, Products and Docs, in that order', () => {
+    renderNavBar();
+    expect(navLabels()).toEqual(['Demo', 'Products', 'Docs']);
+  });
+
+  it('links the docs and marks the current page', () => {
     renderNavBar();
     const nav = within(screen.getByRole('navigation', { name: 'Main' }));
     expect(nav.getByRole('link', { name: /Docs/ })).toHaveAttribute(
       'href',
       DOCS_HUB_URL,
     );
-    servicesData.services
-      .filter((service) => service.deploymentUrl)
-      .forEach((service) => {
-        expect(
-          nav
-            .getAllByRole('link')
-            .some(
-              (link) => link.getAttribute('href') === service.deploymentUrl,
-            ),
-          service.name,
-        ).toBe(true);
-      });
-  });
-
-  it('marks the current page and orders Nodes before Docs', () => {
-    renderNavBar();
-    const nav = within(screen.getByRole('navigation', { name: 'Main' }));
-    const labels = nav
-      .getAllByRole('link')
-      .map((link) => link.textContent?.trim())
-      .filter((label) =>
-        ['Projects', 'Products', 'Services', 'Nodes', 'Docs'].includes(
-          label ?? '',
-        ),
-      );
-    expect(labels).toEqual([
-      'Projects',
-      'Products',
-      'Services',
-      'Nodes',
-      'Docs',
-    ]);
-    expect(nav.getByRole('link', { name: 'Services' })).toHaveClass(
-      'text-primary',
+    expect(nav.getByRole('link', { name: 'Demo' })).toHaveAttribute(
+      'href',
+      '/demo',
     );
+    expect(nav.getByRole('link', { name: 'Demo' })).toHaveClass('text-primary');
   });
 });
 
 describe('Footer', () => {
+  const column = (name: string) =>
+    within(screen.getByRole('navigation', { name }))
+      .getAllByRole('link')
+      .map((link) => link.textContent?.trim());
+
+  it('aligns Explore with the header and leaves out News', () => {
+    render(<Footer />);
+    expect(column('Explore')).toEqual(['Demo', 'Products', 'Documentation']);
+    expect(column('Community')).toEqual(['Contributors', 'Funding']);
+  });
+
   it('links the privacy policy and offers cookie settings', () => {
     render(<Footer />);
     expect(
