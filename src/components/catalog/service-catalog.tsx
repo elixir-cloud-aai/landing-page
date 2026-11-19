@@ -1,6 +1,5 @@
 'use client';
 
-import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   BookOpen,
@@ -12,18 +11,8 @@ import {
 } from 'lucide-react';
 import { FaGithub, FaGitlab } from 'react-icons/fa6';
 import { cn } from '@/lib/utils';
-import {
-  EmptyState,
-  FilterBar,
-  isGitlabUrl,
-  matchesQuery,
-  Monogram,
-  OwnerChip,
-  StandardChip,
-} from './shared';
+import { isGitlabUrl, Monogram, OwnerChip, StandardChip } from './shared';
 import type { Service, ServiceNode } from './types';
-
-const ALL = 'all';
 
 export function StatusBadge({ status }: { status: Service['status'] }) {
   if (status === 'Live') {
@@ -219,72 +208,5 @@ export function ServiceCard({ service }: { service: Service }) {
         </div>
       </div>
     </article>
-  );
-}
-
-export function ServiceCatalog({ services }: { services: Service[] }) {
-  const [query, setQuery] = useState('');
-  const [status, setStatus] = useState(ALL);
-
-  const options = useMemo(
-    () => [
-      { value: ALL, label: 'All', count: services.length },
-      {
-        value: 'Live',
-        label: 'Live',
-        count: services.filter((s) => s.status === 'Live').length,
-      },
-      {
-        value: 'Onboarding',
-        label: 'Onboarding',
-        count: services.filter((s) => s.status === 'Onboarding').length,
-      },
-    ],
-    [services],
-  );
-
-  const filtered = useMemo(
-    () =>
-      services.filter(
-        (service) =>
-          (status === ALL || service.status === status) &&
-          matchesQuery(query, [
-            service.name,
-            service.tagline,
-            service.blurb,
-            ...service.tags,
-            ...service.nodes.map((node) => node.name),
-          ]),
-      ),
-    [services, query, status],
-  );
-
-  return (
-    <>
-      <FilterBar
-        noun="services"
-        onQueryChange={setQuery}
-        onSelect={setStatus}
-        options={options}
-        placeholder="Search services, e.g. WES, Germany"
-        query={query}
-        resultCount={filtered.length}
-        selected={status}
-      />
-      {filtered.length ? (
-        <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((service) => (
-            <ServiceCard key={service.id} service={service} />
-          ))}
-        </div>
-      ) : (
-        <EmptyState
-          onReset={() => {
-            setQuery('');
-            setStatus(ALL);
-          }}
-        />
-      )}
-    </>
   );
 }

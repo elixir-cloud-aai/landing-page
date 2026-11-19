@@ -9,7 +9,6 @@ import * as news from './news/page';
 import * as privacy from './privacy/page';
 import * as products from './products/page';
 import * as projects from './projects/page';
-import * as services from './services/page';
 
 // The metadata of every route, from its page or, for client-side pages, from
 // the route's layout.
@@ -22,7 +21,6 @@ const routes: [string, Metadata][] = [
   ['/privacy', privacy.metadata],
   ['/products', products.metadata],
   ['/projects', projects.metadata],
-  ['/services', services.metadata],
 ];
 
 // Every route of the app, from its page.tsx files

@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import productsData from '@/data/product.json';
 import servicesData from '@/data/services.json';
 import { ProductCatalog } from './product-catalog';
-import { ServiceCatalog } from './service-catalog';
+import { ServiceCard } from './service-catalog';
 import { FilterBar, isGitlabUrl, matchesQuery, Monogram } from './shared';
 import type { Product, Service } from './types';
 
@@ -128,28 +128,12 @@ describe('ProductCatalog', () => {
   });
 });
 
-describe('ServiceCatalog', () => {
-  it('filters by status', async () => {
-    const user = userEvent.setup();
-    render(<ServiceCatalog services={services} />);
-
-    await user.click(screen.getByRole('button', { name: /^Onboarding/ }));
-    expect(cardTitles()).toEqual(
-      services.filter((s) => s.status === 'Onboarding').map((s) => s.name),
-    );
-
-    await user.click(screen.getByRole('button', { name: /^Live/ }));
-    expect(cardTitles()).toEqual(
-      services.filter((s) => s.status === 'Live').map((s) => s.name),
-    );
-  });
-
-  it('links live endpoints and tracks deployments that are onboarding', () => {
-    render(<ServiceCatalog services={services} />);
-    services.forEach((service) => {
-      const card = screen
-        .getAllByRole('article')
-        .find((c) => c.id === service.id)!;
+describe('ServiceCard', () => {
+  it.each(services.map((service) => [service.name, service] as const))(
+    'links %s to its endpoint or deployment tracking',
+    (_, service) => {
+      render(<ServiceCard service={service} />);
+      const card = screen.getByRole('article');
       if (service.deploymentUrl) {
         expect(
           within(card).getByRole('link', { name: /Open service/ }),
@@ -164,8 +148,8 @@ describe('ServiceCatalog', () => {
           within(card).getByRole('link', { name: /About the software/ }),
         ).toHaveAttribute('href', `/products#${service.relatedProductId}`);
       }
-    });
-  });
+    },
+  );
 });
 
 describe('isGitlabUrl', () => {

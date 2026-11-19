@@ -8,14 +8,12 @@ import FundingPage from './funding/page';
 import PrivacyPage from './privacy/page';
 import ProductsPage from './products/page';
 import ProjectsPage from './projects/page';
-import ServicesPage from './services/page';
 
 vi.mock('next/navigation', () => ({ usePathname: () => '/services' }));
 
 // Smoke tests: every page renders without crashing and shows its heading.
 describe.each([
   ['Products', ProductsPage, /Software for/],
-  ['Services', ServicesPage, /ELIXIR On-Cloud services/],
   ['Projects', ProjectsPage, /Explore the/],
   ['Funding', FundingPage, /Gratitude to our/],
   ['Privacy', PrivacyPage, /Privacy policy/],
@@ -25,24 +23,6 @@ describe.each([
     expect(
       screen.getByRole('heading', { level: 1, name: heading }),
     ).toBeInTheDocument();
-  });
-});
-
-describe('Services page', () => {
-  it('links every Node in the coverage panel to its card', () => {
-    render(<ServicesPage />);
-    const panel = within(
-      screen.getByRole('region', { name: 'Network coverage' }),
-    );
-    const hrefs = panel
-      .getAllByRole('link')
-      .map((link) => link.getAttribute('href'));
-    const codes = new Set(
-      servicesData.services.flatMap((s) => s.nodes.map((n) => n.code)),
-    );
-    codes.forEach((code) => {
-      expect(hrefs, code).toContain(`/nodes#${code.toLowerCase()}`);
-    });
   });
 });
 
