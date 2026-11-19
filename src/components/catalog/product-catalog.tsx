@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { BookOpen, Check, ChevronDown, ExternalLink } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa6';
-import { filterId, matchesAny } from '@/lib/filters';
+import { checkFilterIds, filterId, matchesAny } from '@/lib/filters';
 import { useUrlFilters } from '@/lib/use-url-filters';
 import {
   EmptyState,
@@ -221,9 +221,11 @@ export function ProductCatalog({ products }: { products: Product[] }) {
     products.forEach((product) =>
       product.standards.forEach((s) => counts.set(s, (counts.get(s) ?? 0) + 1)),
     );
-    return Array.from(counts.entries())
-      .sort((a, b) => b[1] - a[1])
-      .map(([label, count]) => ({ value: filterId(label), label, count }));
+    return checkFilterIds(
+      Array.from(counts.entries())
+        .sort((a, b) => b[1] - a[1])
+        .map(([label, count]) => ({ value: filterId(label), label, count })),
+    );
   }, [products]);
   const ids = useMemo(() => options.map((option) => option.value), [options]);
   const { selected, toggle, clear } = useUrlFilters(ids);

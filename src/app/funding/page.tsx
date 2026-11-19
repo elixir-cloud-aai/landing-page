@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
-import { filterId, matchesAny } from '@/lib/filters';
+import { checkFilterIds, filterId, matchesAny } from '@/lib/filters';
 import { useUrlFilters } from '@/lib/use-url-filters';
 import { cn } from '@/lib/utils';
 
@@ -38,13 +38,15 @@ type FundingItem = {
 const grants = fundingData as FundingItem[];
 
 // One filter per category, in the order the categories first appear
-const categoryOptions = Array.from(
-  new Set(grants.map((grant) => grant.category)),
-).map((category) => ({
-  value: filterId(category),
-  label: category,
-  count: grants.filter((grant) => grant.category === category).length,
-}));
+const categoryOptions = checkFilterIds(
+  Array.from(new Set(grants.map((grant) => grant.category))).map(
+    (category) => ({
+      value: filterId(category),
+      label: category,
+      count: grants.filter((grant) => grant.category === category).length,
+    }),
+  ),
+);
 const categoryIds = categoryOptions.map((option) => option.value);
 
 export default function FundingPage() {

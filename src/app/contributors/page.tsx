@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { matchesAny } from '@/lib/filters';
+import { checkFilterIds, matchesAny } from '@/lib/filters';
 import { useUrlFilters } from '@/lib/use-url-filters';
 
 import contributors from '@/data/contributor.json';
@@ -58,10 +58,10 @@ function filterIds(person: Contributor) {
 const gsocCount = people.filter((person) => isGSoC(person.roles)).length;
 const ossCount = people.filter((person) => isOSS(person.roles)).length;
 
-const filterOptions = [
+const filterOptions = checkFilterIds([
   { value: 'oss', label: 'OSS', count: ossCount },
   { value: 'gsoc', label: 'GSoC', count: gsocCount },
-];
+]);
 const filterOptionIds = filterOptions.map((option) => option.value);
 
 export default function ContributorsPage() {

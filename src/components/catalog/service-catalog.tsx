@@ -11,7 +11,7 @@ import {
   Package,
 } from 'lucide-react';
 import { FaGithub, FaGitlab } from 'react-icons/fa6';
-import { filterId, matchesAny } from '@/lib/filters';
+import { checkFilterIds, filterId, matchesAny } from '@/lib/filters';
 import { useUrlFilters } from '@/lib/use-url-filters';
 import { cn } from '@/lib/utils';
 import {
@@ -229,11 +229,13 @@ export function ServiceCatalog({ services }: { services: Service[] }) {
 
   const options = useMemo(
     () =>
-      STATUSES.map((status) => ({
-        value: filterId(status),
-        label: status,
-        count: services.filter((s) => s.status === status).length,
-      })),
+      checkFilterIds(
+        STATUSES.map((status) => ({
+          value: filterId(status),
+          label: status,
+          count: services.filter((s) => s.status === status).length,
+        })),
+      ),
     [services],
   );
   const ids = useMemo(() => options.map((option) => option.value), [options]);

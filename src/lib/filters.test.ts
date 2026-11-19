@@ -1,5 +1,52 @@
 import { describe, expect, it } from 'vitest';
-import { filterId, matchesAny, parseFilters, withFilters } from './filters';
+import funding from '@/data/funding.json';
+import productsData from '@/data/product.json';
+import servicesData from '@/data/services.json';
+import {
+  checkFilterIds,
+  filterId,
+  matchesAny,
+  parseFilters,
+  withFilters,
+} from './filters';
+
+describe('checkFilterIds', () => {
+  const option = (label: string) => ({ value: filterId(label), label });
+
+  it('passes options with unique ids through', () => {
+    const options = [option('GA4GH TES'), option('GA4GH WES')];
+    expect(checkFilterIds(options)).toBe(options);
+  });
+
+  it('rejects labels that turn into the same id', () => {
+    expect(() =>
+      checkFilterIds([option('GA4GH TES'), option('GA4GH-TES')]),
+    ).toThrow('The filters "GA4GH TES" and "GA4GH-TES" share the id');
+  });
+
+  it('rejects labels without letters or digits', () => {
+    expect(() => checkFilterIds([option('—')])).toThrow('empty id');
+  });
+
+  // The listings build their filters from these labels
+  it.each([
+    [
+      'product standards',
+      productsData.products.flatMap((product) => product.standards),
+    ],
+    ['funding categories', funding.map((grant) => grant.category)],
+    [
+      'service statuses',
+      servicesData.services.flatMap((service) =>
+        service.status ? [service.status] : [],
+      ),
+    ],
+  ])('gives the %s unique ids', (_, labels) => {
+    expect(() =>
+      checkFilterIds(Array.from(new Set(labels)).map(option)),
+    ).not.toThrow();
+  });
+});
 
 describe('filterId', () => {
   it('turns labels into URL-safe ids', () => {
