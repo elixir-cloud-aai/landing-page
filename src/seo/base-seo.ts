@@ -27,9 +27,12 @@ const baseSeo: Metadata = {
     siteId: '@ELIXIRcloud_aai',
   },
   icons: [
+    // The same mark as the Cloud Registry UI (elixir-cloud-aai/cloud-registry-ui,
+    // public/elixir-on-cloud-mark.svg)
     {
       rel: 'icon',
-      url: 'ELIXIR On-Cloud Logo Pack/On-Cloud_logomark_MONO.png',
+      url: '/elixir-on-cloud-mark.svg',
+      type: 'image/svg+xml',
     },
     {
       rel: 'apple-touch-icon',
