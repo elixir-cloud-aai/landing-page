@@ -76,7 +76,7 @@ export function NodeChip({ node }: { node: ServiceNode }) {
 const linkButton =
   'inline-flex h-9 items-center gap-1.5 rounded-lg border bg-background px-3 text-sm font-medium transition-colors hover:bg-muted';
 
-function ServiceCard({ service }: { service: Service }) {
+export function ServiceCard({ service }: { service: Service }) {
   const repoIsGitlab = isGitlabUrl(service.repoUrl);
 
   return (
