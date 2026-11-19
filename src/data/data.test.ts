@@ -10,6 +10,8 @@ import type {
 import contributors from './contributor.json';
 import nodesData from './nodes.json';
 import productsData from './product.json';
+import { GA4GH_DRIVER_PROJECT_URL } from '@/lib/site';
+import projects from './project.json';
 import servicesData from './services.json';
 
 // Most changes to the site are edits to these files. These tests catch broken
@@ -120,5 +122,15 @@ describe('contributor.json', () => {
       .map((c) => c.image)
       .filter((image): image is string => !!image && !publicFile(image));
     expect(missing).toEqual([]);
+  });
+});
+
+describe('project.json', () => {
+  // The home page links the same GA4GH Driver Project page
+  it('links the GA4GH Driver Project the home page links', () => {
+    const project = projects.find((p) => p.slug === 'elixir-cloud-aai')!;
+    expect([project.url, project.links.live, project.links.website]).toEqual(
+      Array(3).fill(GA4GH_DRIVER_PROJECT_URL),
+    );
   });
 });
