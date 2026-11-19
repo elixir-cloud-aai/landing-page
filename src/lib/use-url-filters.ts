@@ -1,9 +1,25 @@
-import { useCallback, useMemo, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useMemo, useSyncExternalStore } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { FILTER_PARAM, parseFilters, withFilters } from './filters';
 
 // Sent after the filters in the URL change, so that every listing using the
 // hook re-reads them (history.replaceState fires no event of its own).
 const CHANGE_EVENT = 'filterchange';
+
+/**
+ * Tells the listings when Next.js changes the URL, e.g. a <Link> to
+ * `/products?filter=…` while on /products: such navigations fire no browser
+ * event. Rendered once in the layout, inside <Suspense>, as
+ * useSearchParams() opts its tree out of prerendering; it renders nothing,
+ * so the pages stay prerendered.
+ */
+export function FilterUrlSync() {
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    window.dispatchEvent(new Event(CHANGE_EVENT));
+  }, [searchParams]);
+  return null;
+}
 
 function subscribe(onChange: () => void) {
   window.addEventListener('popstate', onChange);
