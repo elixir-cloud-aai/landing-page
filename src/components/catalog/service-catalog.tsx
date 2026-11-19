@@ -11,6 +11,8 @@ import {
   Package,
 } from 'lucide-react';
 import { FaGithub, FaGitlab } from 'react-icons/fa6';
+import { filterId, matchesAny } from '@/lib/filters';
+import { useUrlFilters } from '@/lib/use-url-filters';
 import { cn } from '@/lib/utils';
 import {
   EmptyState,
@@ -21,9 +23,9 @@ import {
   OwnerChip,
   StandardChip,
 } from './shared';
-import type { Service, ServiceNode } from './types';
+import type { Service, ServiceNode, ServiceStatus } from './types';
 
-const ALL = 'all';
+const STATUSES: ServiceStatus[] = ['Live', 'Onboarding'];
 
 export function StatusBadge({ status }: { status: Service['status'] }) {
   if (status === 'Live') {
@@ -224,30 +226,27 @@ function ServiceCard({ service }: { service: Service }) {
 
 export function ServiceCatalog({ services }: { services: Service[] }) {
   const [query, setQuery] = useState('');
-  const [status, setStatus] = useState(ALL);
 
   const options = useMemo(
-    () => [
-      { value: ALL, label: 'All', count: services.length },
-      {
-        value: 'Live',
-        label: 'Live',
-        count: services.filter((s) => s.status === 'Live').length,
-      },
-      {
-        value: 'Onboarding',
-        label: 'Onboarding',
-        count: services.filter((s) => s.status === 'Onboarding').length,
-      },
-    ],
+    () =>
+      STATUSES.map((status) => ({
+        value: filterId(status),
+        label: status,
+        count: services.filter((s) => s.status === status).length,
+      })),
     [services],
   );
+  const ids = useMemo(() => options.map((option) => option.value), [options]);
+  const { selected, toggle, clear } = useUrlFilters(ids);
 
   const filtered = useMemo(
     () =>
       services.filter(
         (service) =>
-          (status === ALL || service.status === status) &&
+          matchesAny(
+            selected,
+            service.status ? [filterId(service.status)] : [],
+          ) &&
           matchesQuery(query, [
             service.name,
             service.tagline,
@@ -256,20 +255,21 @@ export function ServiceCatalog({ services }: { services: Service[] }) {
             ...service.nodes.map((node) => node.name),
           ]),
       ),
-    [services, query, status],
+    [services, query, selected],
   );
 
   return (
     <>
       <FilterBar
         noun="services"
+        onClear={clear}
         onQueryChange={setQuery}
-        onSelect={setStatus}
+        onToggle={toggle}
         options={options}
         placeholder="Search services, e.g. WES, Germany"
         query={query}
         resultCount={filtered.length}
-        selected={status}
+        selected={selected}
       />
       {filtered.length ? (
         <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -281,7 +281,7 @@ export function ServiceCatalog({ services }: { services: Service[] }) {
         <EmptyState
           onReset={() => {
             setQuery('');
-            setStatus(ALL);
+            clear();
           }}
         />
       )}

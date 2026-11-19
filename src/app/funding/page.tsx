@@ -12,11 +12,14 @@ import {
   X,
 } from 'lucide-react';
 
+import { FilterChips } from '@/components/catalog/shared';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
+import { filterId, matchesAny } from '@/lib/filters';
+import { useUrlFilters } from '@/lib/use-url-filters';
 import { cn } from '@/lib/utils';
 
 import fundingData from '@/data/funding.json';
@@ -34,15 +37,19 @@ type FundingItem = {
 
 const grants = fundingData as FundingItem[];
 
+// One filter per category, in the order the categories first appear
+const categoryOptions = Array.from(
+  new Set(grants.map((grant) => grant.category)),
+).map((category) => ({
+  value: filterId(category),
+  label: category,
+  count: grants.filter((grant) => grant.category === category).length,
+}));
+const categoryIds = categoryOptions.map((option) => option.value);
+
 export default function FundingPage() {
   const [query, setQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-
-  // Dynamic list of categories
-  const categories = useMemo(() => {
-    const set = new Set(grants.map((g) => g.category));
-    return ['all', ...Array.from(set)];
-  }, []);
+  const { selected, toggle, clear } = useUrlFilters(categoryIds);
 
   // Filter logic
   const filteredGrants = useMemo(() => {
@@ -55,12 +62,9 @@ export default function FundingPage() {
         item.funder.toLowerCase().includes(q) ||
         item.recipients.some((r) => r.toLowerCase().includes(q));
 
-      const matchesCategory =
-        selectedCategory === 'all' || item.category === selectedCategory;
-
-      return matchesSearch && matchesCategory;
+      return matchesSearch && matchesAny(selected, [filterId(item.category)]);
     });
-  }, [query, selectedCategory]);
+  }, [query, selected]);
 
   // Stat metrics
   const gsocCount = grants.filter((g) =>
@@ -151,22 +155,13 @@ export default function FundingPage() {
               )}
             </div>
 
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap gap-1 rounded-xl border bg-muted/40 p-1">
-              {categories.map((cat) => (
-                <button
-                  className={`rounded-lg px-3 py-1.5 text-xs font-medium capitalize transition-all ${
-                    selectedCategory === cat
-                      ? 'bg-background text-foreground shadow-sm'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                >
-                  {cat === 'all' ? 'All Grants' : cat}
-                </button>
-              ))}
-            </div>
+            {/* Category filters */}
+            <FilterChips
+              onClear={clear}
+              onToggle={toggle}
+              options={categoryOptions}
+              selected={selected}
+            />
           </div>
         </div>
 
@@ -193,7 +188,7 @@ export default function FundingPage() {
               className="mt-5 rounded-xl"
               onClick={() => {
                 setQuery('');
-                setSelectedCategory('all');
+                clear();
               }}
               variant="outline"
             >

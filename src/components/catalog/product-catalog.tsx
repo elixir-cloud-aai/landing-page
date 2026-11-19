@@ -3,6 +3,8 @@
 import { useMemo, useState } from 'react';
 import { BookOpen, Check, ChevronDown, ExternalLink } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa6';
+import { filterId, matchesAny } from '@/lib/filters';
+import { useUrlFilters } from '@/lib/use-url-filters';
 import {
   EmptyState,
   FilterBar,
@@ -12,8 +14,6 @@ import {
   StandardChip,
 } from './shared';
 import type { Product } from './types';
-
-const ALL = 'all';
 
 function DetailList({ title, items }: { title: string; items?: string[] }) {
   if (!items?.length) {
@@ -215,26 +215,24 @@ function ProductCard({ product }: { product: Product }) {
 
 export function ProductCatalog({ products }: { products: Product[] }) {
   const [query, setQuery] = useState('');
-  const [standard, setStandard] = useState(ALL);
 
   const options = useMemo(() => {
     const counts = new Map<string, number>();
     products.forEach((product) =>
       product.standards.forEach((s) => counts.set(s, (counts.get(s) ?? 0) + 1)),
     );
-    return [
-      { value: ALL, label: 'All', count: products.length },
-      ...Array.from(counts.entries())
-        .sort((a, b) => b[1] - a[1])
-        .map(([value, count]) => ({ value, label: value, count })),
-    ];
+    return Array.from(counts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([label, count]) => ({ value: filterId(label), label, count }));
   }, [products]);
+  const ids = useMemo(() => options.map((option) => option.value), [options]);
+  const { selected, toggle, clear } = useUrlFilters(ids);
 
   const filtered = useMemo(
     () =>
       products.filter(
         (product) =>
-          (standard === ALL || product.standards.includes(standard)) &&
+          matchesAny(selected, product.standards.map(filterId)) &&
           matchesQuery(query, [
             product.name,
             product.tagline,
@@ -242,20 +240,21 @@ export function ProductCatalog({ products }: { products: Product[] }) {
             ...product.tags,
           ]),
       ),
-    [products, query, standard],
+    [products, query, selected],
   );
 
   return (
     <>
       <FilterBar
         noun="products"
+        onClear={clear}
         onQueryChange={setQuery}
-        onSelect={setStandard}
+        onToggle={toggle}
         options={options}
         placeholder="Search products, e.g. TES, Kubernetes"
         query={query}
         resultCount={filtered.length}
-        selected={standard}
+        selected={selected}
       />
       {filtered.length ? (
         <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -267,7 +266,7 @@ export function ProductCatalog({ products }: { products: Product[] }) {
         <EmptyState
           onReset={() => {
             setQuery('');
-            setStandard(ALL);
+            clear();
           }}
         />
       )}
