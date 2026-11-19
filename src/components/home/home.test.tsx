@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { GA4GH_DRIVER_PROJECT_URL } from '@/lib/site';
 import Home from '.';
@@ -24,10 +24,12 @@ describe('Home page', () => {
 
   it('links "contributors" above the globe to the Contributors page', () => {
     render(<Home />);
-    expect(screen.getByRole('link', { name: 'contributors' })).toHaveAttribute(
-      'href',
-      '/contributors',
-    );
+    const card = screen
+      .getByRole('heading', { name: 'All over the world' })
+      .closest('div')!;
+    expect(
+      within(card).getByRole('link', { name: 'contributors' }),
+    ).toHaveAttribute('href', '/contributors');
   });
 
   it('describes the project focus without a separate title', () => {
