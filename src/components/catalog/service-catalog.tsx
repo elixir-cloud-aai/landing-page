@@ -1,6 +1,5 @@
 'use client';
 
-import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import {
   BookOpen,
@@ -11,21 +10,9 @@ import {
   Package,
 } from 'lucide-react';
 import { FaGithub, FaGitlab } from 'react-icons/fa6';
-import { checkFilterIds, filterId, matchesAny } from '@/lib/filters';
-import { useUrlFilters } from '@/lib/use-url-filters';
 import { cn } from '@/lib/utils';
-import {
-  EmptyState,
-  FilterBar,
-  isGitlabUrl,
-  matchesQuery,
-  Monogram,
-  OwnerChip,
-  StandardChip,
-} from './shared';
-import type { Service, ServiceNode, ServiceStatus } from './types';
-
-const STATUSES: ServiceStatus[] = ['Live', 'Onboarding'];
+import { isGitlabUrl, Monogram, OwnerChip, StandardChip } from './shared';
+import type { Service, ServiceNode } from './types';
 
 export function StatusBadge({ status }: { status: Service['status'] }) {
   if (status === 'Live') {
@@ -78,7 +65,7 @@ export function NodeChip({ node }: { node: ServiceNode }) {
 const linkButton =
   'inline-flex h-9 items-center gap-1.5 rounded-lg border bg-background px-3 text-sm font-medium transition-colors hover:bg-muted';
 
-function ServiceCard({ service }: { service: Service }) {
+export function ServiceCard({ service }: { service: Service }) {
   const repoIsGitlab = isGitlabUrl(service.repoUrl);
 
   return (
@@ -221,72 +208,5 @@ function ServiceCard({ service }: { service: Service }) {
         </div>
       </div>
     </article>
-  );
-}
-
-export function ServiceCatalog({ services }: { services: Service[] }) {
-  const [query, setQuery] = useState('');
-
-  const options = useMemo(
-    () =>
-      checkFilterIds(
-        STATUSES.map((status) => ({
-          value: filterId(status),
-          label: status,
-          count: services.filter((s) => s.status === status).length,
-        })),
-      ),
-    [services],
-  );
-  const ids = useMemo(() => options.map((option) => option.value), [options]);
-  const { selected, toggle, clear } = useUrlFilters(ids);
-
-  const filtered = useMemo(
-    () =>
-      services.filter(
-        (service) =>
-          matchesAny(
-            selected,
-            service.status ? [filterId(service.status)] : [],
-          ) &&
-          matchesQuery(query, [
-            service.name,
-            service.tagline,
-            service.blurb,
-            ...service.tags,
-            ...service.nodes.map((node) => node.name),
-          ]),
-      ),
-    [services, query, selected],
-  );
-
-  return (
-    <>
-      <FilterBar
-        noun="services"
-        onClear={clear}
-        onQueryChange={setQuery}
-        onToggle={toggle}
-        options={options}
-        placeholder="Search services, e.g. WES, Germany"
-        query={query}
-        resultCount={filtered.length}
-        selected={selected}
-      />
-      {filtered.length ? (
-        <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filtered.map((service) => (
-            <ServiceCard key={service.id} service={service} />
-          ))}
-        </div>
-      ) : (
-        <EmptyState
-          onReset={() => {
-            setQuery('');
-            clear();
-          }}
-        />
-      )}
-    </>
   );
 }
