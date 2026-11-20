@@ -1,23 +1,30 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { ArrowDown, ExternalLink, Mail, Network } from 'lucide-react';
 import nodesData from '@/data/nodes.json';
 import servicesData from '@/data/services.json';
 import { FeedbackCallout, PageHero } from '@/components/catalog/page-hero';
+import { ServiceCard } from '@/components/catalog/service-catalog';
 import { OwnerChip } from '@/components/catalog/shared';
 import type { ElixirNode, Service } from '@/components/catalog/types';
 import { CONTACT_EMAIL, DOCS_OPERATORS_URL } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: 'Nodes',
+  title: 'Demo',
   description:
-    'ELIXIR Nodes that run ELIXIR On-Cloud services, with their institutes and contacts.',
+    'The ELIXIR On-Cloud reference federation: its live services and the ELIXIR Nodes that run them.',
 };
 
 const nodes = nodesData.nodes as ElixirNode[];
 const services = servicesData.services as Service[];
+
+// The services the landing page shows; the Cloud Registry lists all others.
+// The Krini portal joins once it is live.
+const CORE_SERVICE_IDS = ['elixir-on-cloud-registry'];
+const coreServices = CORE_SERVICE_IDS.map((id) =>
+  services.find((service) => service.id === id)!,
+);
 
 // Short link text, e.g. "csc.fi". Falls back to the raw value, so a malformed
 // URL in nodes.json can't break the page.
@@ -109,20 +116,19 @@ function NodeCard({ node }: { node: ElixirNode }) {
                 );
                 return (
                   <li key={service.id}>
-                    <Link
+                    <span
                       className={cn(
-                        'inline-flex gap-1 rounded-md border px-2 py-0.5 text-xs font-medium transition-colors hover:border-primary/40',
+                        'inline-flex gap-1 rounded-md border px-2 py-0.5 text-xs font-medium',
                         onboarding
                           ? 'border-dashed text-muted-foreground'
                           : 'bg-secondary text-secondary-foreground',
                       )}
-                      href={`/services#${service.id}`}
                     >
                       {service.name}
                       {onboarding && (
                         <span className="font-normal">· onboarding</span>
                       )}
-                    </Link>
+                    </span>
                   </li>
                 );
               })}
@@ -178,7 +184,7 @@ function NodeCard({ node }: { node: ElixirNode }) {
   );
 }
 
-export default function NodesPage() {
+export default function DemoPage() {
   const live = nodes.filter((node) => node.status === 'live');
 
   return (
@@ -204,36 +210,57 @@ export default function NodesPage() {
             </a>
           </>
         }
-        description="ELIXIR Nodes contribute compute and operate ELIXIR On-Cloud services. Each one is run by a national institute with its own contact point."
-        eyebrow="ELIXIR Nodes"
+        description="The reference federation demonstrates the ELIXIR On-Cloud products: live services, run by ELIXIR Nodes, each with its own contact point."
+        eyebrow="Demo"
         icon={<Network className="h-3.5 w-3.5" />}
         stats={[
+          { value: coreServices.length, label: 'Live services' },
           { value: live.length, label: 'Live Nodes' },
           { value: nodes.length - live.length, label: 'Onboarding' },
           {
             value: new Set(nodes.map((n) => n.country)).size,
             label: 'Countries',
           },
-          {
-            value: services.filter((s) => s.nodes.length > 0).length,
-            label: 'Services on Nodes',
-          },
         ]}
         title={
           <>
             The{' '}
             <span className="bg-gradient-to-r from-elixirgreen via-teal-500 to-elixirblue bg-clip-text text-transparent">
-              Nodes
-            </span>{' '}
-            behind the network
+              reference federation
+            </span>
           </>
         }
       />
 
       <section
+        aria-labelledby="services-heading"
+        className="mx-auto max-w-7xl scroll-mt-24 px-6 pt-14 lg:px-8"
+        id="services"
+      >
+        <h2
+          className="mb-6 text-2xl font-semibold tracking-tight"
+          id="services-heading"
+        >
+          Live services
+        </h2>
+        <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {coreServices.map((service) => (
+            <ServiceCard key={service.id} service={service} />
+          ))}
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="nodes-heading"
         className="mx-auto max-w-7xl scroll-mt-24 px-6 py-14 lg:px-8"
         id="nodes"
       >
+        <h2
+          className="mb-6 text-2xl font-semibold tracking-tight"
+          id="nodes-heading"
+        >
+          Nodes
+        </h2>
         <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
           {nodes.map((node) => (
             <NodeCard key={node.code} node={node} />

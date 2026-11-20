@@ -30,14 +30,14 @@ there is no backend and no build-time secret.
 
 Content lives in JSON files under [`src/data/`](src/data/):
 
-| File               | Page                                                       |
-| ------------------ | ---------------------------------------------------------- |
-| `product.json`     | [Products](https://elixir-on.cloud/products)               |
-| `services.json`    | [Services](https://elixir-on.cloud/services)               |
-| `nodes.json`       | Nodes (flags in `public/flags/`, logos in `public/nodes/`) |
-| `project.json`     | [Projects](https://elixir-on.cloud/projects)               |
-| `contributor.json` | [Contributors][contributors]                               |
-| `funding.json`     | [Funding](https://elixir-on.cloud/funding)                 |
+| File               | Page                                                                                             |
+| ------------------ | ------------------------------------------------------------------------------------------------ |
+| `product.json`     | [Products](https://elixir-on.cloud/products)                                                     |
+| `services.json`    | [Demo](https://elixir-on.cloud/demo): live services                                              |
+| `nodes.json`       | [Demo](https://elixir-on.cloud/demo): Nodes (flags in `public/flags/`, logos in `public/nodes/`) |
+| `project.json`     | [Projects](https://elixir-on.cloud/projects) (parked: online, not in the menu or the sitemap)    |
+| `contributor.json` | [Contributors][contributors]                                                                     |
+| `funding.json`     | [Funding](https://elixir-on.cloud/funding)                                                       |
 
 To change content, edit the relevant file and open a pull request.
 
@@ -203,15 +203,15 @@ Pull request titles become the commit messages on `dev`: they follow
 50 characters (see the [contributing guide of ELIXIR On-Cloud](https://github.com/elixir-cloud-aai/.github/blob/main/CONTRIBUTING.md)).
 CI checks the title (job `PR title`) and rechecks it when you edit it.
 
-[badge-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg?branch=dev>
-[badge-coverage]: <https://codecov.io/gh/elixir-cloud-aai/landing-page/branch/dev/graph/badge.svg?branch=dev>
-[badge-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg?branch=main>
-[badge-license]: <https://img.shields.io/badge/license-Apache%202.0-blue.svg>
-[badge-url-build-status]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml?query=branch%3Adev>
-[badge-url-coverage]: <https://codecov.io/gh/elixir-cloud-aai/landing-page?branch=dev>
-[badge-url-deploy]: <https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml?query=branch%3Amain>
-[badge-url-license]: <https://www.apache.org/licenses/LICENSE-2.0>
-[badge-website]: <https://img.shields.io/website?url=https%3A%2F%2Felixir-on.cloud%2F>
-[contributors]: <https://elixir-on.cloud/contributors>
-[ga4gh-driver-projects]: <https://www.ga4gh.org/our-community/driver-projects/>
-[website]: <https://elixir-on.cloud/>
+[badge-build-status]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/badge.svg?branch=dev
+[badge-coverage]: https://codecov.io/gh/elixir-cloud-aai/landing-page/branch/dev/graph/badge.svg?branch=dev
+[badge-deploy]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml/badge.svg?branch=main
+[badge-license]: https://img.shields.io/badge/license-Apache%202.0-blue.svg
+[badge-url-build-status]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/ci.yml?query=branch%3Adev
+[badge-url-coverage]: https://codecov.io/gh/elixir-cloud-aai/landing-page?branch=dev
+[badge-url-deploy]: https://github.com/elixir-cloud-aai/landing-page/actions/workflows/deploy.yml?query=branch%3Amain
+[badge-url-license]: https://www.apache.org/licenses/LICENSE-2.0
+[badge-website]: https://img.shields.io/website?url=https%3A%2F%2Felixir-on.cloud%2F
+[contributors]: https://elixir-on.cloud/contributors
+[ga4gh-driver-projects]: https://www.ga4gh.org/our-community/driver-projects/
+[website]: https://elixir-on.cloud/

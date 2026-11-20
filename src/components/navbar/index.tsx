@@ -3,7 +3,7 @@ import { FC, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ChevronDown, ExternalLink, Moon, Sun, X } from 'lucide-react';
+import { ExternalLink, Moon, Sun, X } from 'lucide-react';
 import {
   MobileNav,
   MobileNavHeader,
@@ -12,7 +12,6 @@ import {
   Navbar,
   NavBody,
 } from '@/components/ui/resizable-navbar';
-import servicesData from '@/data/services.json';
 import { DOCS_HUB_URL } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
@@ -24,18 +23,12 @@ interface NavbarProps {
   toggleDarkMode: () => void;
 }
 
+// Followed by "Docs" (external). The Projects page is parked: it stays
+// online but out of the navigation until there is more to show.
 const links = [
-  { name: 'Projects', path: '/projects' },
+  { name: 'Demo', path: '/demo' },
   { name: 'Products', path: '/products' },
-  { name: 'Services', path: '/services' },
-  { name: 'Nodes', path: '/nodes' },
 ];
-
-// Every service with a public endpoint, so all live services are reachable
-// from the main navigation.
-const liveServices = servicesData.services.filter(
-  (service) => service.deploymentUrl,
-);
 
 // The colour lockup has dark grey text, so dark mode uses the white version.
 // The two files have different padding, hence separate sizes. The width and
@@ -132,71 +125,20 @@ const NavBar: FC<NavbarProps> = ({
             aria-label="Main"
             className="absolute inset-0 hidden items-center justify-center gap-1 lg:flex"
           >
-            {links.map((link) =>
-              link.path === '/services' ? (
-                <div className="group relative" key={link.name}>
-                  <Link
-                    className={cn(
-                      'flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-colors',
-                      isActive(link.path)
-                        ? 'bg-muted text-primary'
-                        : 'text-muted-foreground hover:text-foreground',
-                    )}
-                    href={link.path}
-                  >
-                    {link.name}
-                    <ChevronDown className="h-3.5 w-3.5 transition-transform group-focus-within:rotate-180 group-hover:rotate-180" />
-                  </Link>
-                  {/* Dropdown: opens on hover and on keyboard focus. */}
-                  <div className="invisible absolute left-1/2 top-full z-50 w-80 -translate-x-1/2 pt-2 opacity-0 transition-opacity duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-                    <div className="rounded-xl border bg-popover p-2 text-popover-foreground shadow-xl">
-                      <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                        Live services
-                      </p>
-                      {liveServices.map((service) => (
-                        <a
-                          className="flex items-start gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-muted"
-                          href={service.deploymentUrl as string}
-                          key={service.id}
-                          rel="noopener noreferrer"
-                          target="_blank"
-                        >
-                          <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-success" />
-                          <span className="min-w-0">
-                            <span className="flex items-center gap-1 text-sm font-medium">
-                              {service.name}
-                              <ExternalLink className="h-3 w-3 text-muted-foreground" />
-                            </span>
-                            <span className="block truncate text-xs text-muted-foreground">
-                              {service.tagline}
-                            </span>
-                          </span>
-                        </a>
-                      ))}
-                      <Link
-                        className="mt-1 block rounded-lg border-t px-3 py-2 text-sm font-medium text-primary hover:bg-muted"
-                        href="/services"
-                      >
-                        All services and network coverage →
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  className={cn(
-                    'rounded-full px-4 py-2 text-sm font-medium transition-colors',
-                    isActive(link.path)
-                      ? 'bg-muted text-primary'
-                      : 'text-muted-foreground hover:text-foreground',
-                  )}
-                  href={link.path}
-                  key={link.name}
-                >
-                  {link.name}
-                </Link>
-              ),
-            )}
+            {links.map((link) => (
+              <Link
+                className={cn(
+                  'rounded-full px-4 py-2 text-sm font-medium transition-colors',
+                  isActive(link.path)
+                    ? 'bg-muted text-primary'
+                    : 'text-muted-foreground hover:text-foreground',
+                )}
+                href={link.path}
+                key={link.name}
+              >
+                {link.name}
+              </Link>
+            ))}
             <a
               className="flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               href={DOCS_HUB_URL}
@@ -242,24 +184,6 @@ const NavBar: FC<NavbarProps> = ({
                 {item.name}
               </Link>
             ))}
-            <div className="w-full border-t pt-3">
-              <p className="pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                Live services
-              </p>
-              {liveServices.map((service) => (
-                <a
-                  className="flex items-center gap-2 py-1.5 text-sm text-muted-foreground"
-                  href={service.deploymentUrl as string}
-                  key={service.id}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-success" />
-                  {service.name}
-                  <ExternalLink className="h-3 w-3" />
-                </a>
-              ))}
-            </div>
             <a
               className="flex items-center gap-1 text-base font-medium text-foreground"
               href={DOCS_HUB_URL}
