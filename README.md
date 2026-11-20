@@ -114,7 +114,9 @@ services, products and Nodes, and that every referenced image exists.
 - `PR title`: the title follows Conventional Commits and has at most 50
   characters (see [Contributing](#contributing)).
 - `Lint`: lints all JavaScript and TypeScript sources with ESLint
-  (`npm run lint`); errors and warnings fail it.
+  (`npm run lint`); errors and warnings fail it. It also checks the curated
+  release notes in `docs/releases/` (see [Releasing](#releasing)), and that
+  those of the version in `package.json` exist once it is a release version.
 - `Test`: runs the tests with coverage and reports it to
   [Codecov][badge-url-coverage]. [`codecov.yml`](codecov.yml) states the target
   of this repo (70%, working up from about 38%); the status only reports for
@@ -232,14 +234,28 @@ pre-releases, as the Vercel previews cover that.
 
 Releases are cut by the maintainers:
 
-1. Open a release-prep pull request into `dev` that sets the version in
-   `package.json` and `package-lock.json`, without the `v`, and merge it. The
-   version in `package.json` must match the tag, so each release needs this
-   change:
+1. Open a release-prep pull request into `dev`: add the curated release notes
+   as `docs/releases/<version>.md` (without the `v`, e.g.
+   `docs/releases/2026.11.0.md`), and set the version in `package.json` and
+   `package-lock.json`, also without the `v`. Merge it. The version in
+   `package.json` must match the tag, so each release needs this change:
 
    ```bash
    npm version 2026.11.0 --no-git-tag-version
    ```
+
+   The release workflow publishes the notes as the start of the GitHub
+   release, so they follow the organization's format, which CI (job `Lint`)
+   and the release workflow's first job check: an intro paragraph saying what
+   the release brings, then the sections `## Breaking changes`, `## Features`,
+   `## Security`, `## Fixes`, `## Documentation` and `## Maintenance` (in this
+   order, empty ones left out), holding bullets only, each ending with its
+   issue and pull request numbers, e.g., `(#12, #34)`. Links must be absolute
+   (e.g., `https://elixir-on.cloud/demo`), as they must also work on GitHub;
+   no `## Commits` section and no `**Full Changelog**` line, which the
+   workflow adds. The shared action
+   [`publish-release`](https://github.com/elixir-cloud-aai/.github/tree/main/actions/publish-release)
+   describes the format and its checks.
 
 2. Wait until CI has passed for the push to `dev` of the commit that the merge
    created on `dev` (`<sha>`, not the head of the pull request): the release
@@ -273,8 +289,16 @@ Releases are cut by the maintainers:
        [[ "v${version}" =~ ${pattern} ]] || { echo "Not a release version: v${version}"; exit 1; }
        IFS=. read -r year month _ <<< "${version}"
        (( year * 100 + month <= $(date -u +%Y%m) )) || { echo "Version is in the future: v${version}"; exit 1; }
-       # The file of the commit, not of the working tree
+       # The files of the commit, not of the working tree
        [[ "$(git show "${sha}:package.json" | jq -r .version)" == "${version}" ]] || { echo "Wrong version in package.json"; exit 1; }
+       # The notes of the commit, with the checker of the action that
+       # `release.yml` pins (as the job `Lint` of `ci.yml` does)
+       notes="$(mktemp -d)" && git show "${sha}:docs/releases/${version}.md" > "${notes}/notes.md" &&
+           curl -fsSL "https://raw.githubusercontent.com/elixir-cloud-aai/.github/31f22fccc1f3c597ed7c1d1f75b2f85522155348/actions/publish-release/publish.py" -o "${notes}/publish.py" &&
+           python3 -I "${notes}/publish.py" check "${notes}/notes.md" || { echo "Release notes docs/releases/${version}.md missing or not in the format"; exit 1; }
+       # Also drafts, which the release workflow can't see before it fails on them
+       release="$(gh release view "v${version}" --repo elixir-cloud-aai/landing-page 2>&1)" && { echo "A release or draft of v${version} exists: delete a draft"; exit 1; }
+       [[ "${release}" == *"release not found"* ]] || { echo "Cannot check the releases: ${release}"; exit 1; }
        runs="$(gh api "repos/elixir-cloud-aai/landing-page/actions/workflows/ci.yml/runs?head_sha=${sha}&branch=dev&event=push&status=success&per_page=1" --jq .total_count)"
        (( runs >= 1 )) || { echo "No successful CI run for the push of ${sha} to dev"; exit 1; }
        git merge-base --is-ancestor origin/main "${sha}" || { echo "main can't be fast-forwarded to ${sha}"; exit 1; }
@@ -295,20 +319,23 @@ Releases are cut by the maintainers:
 4. Approve the jobs of the [release
    workflow](.github/workflows/release.yml) in the `release` environment, after
    checking that the run is for the tag you pushed. It checks that GitHub
-   verified the tag's signature, that its commit is on `main`, the version and
-   the CI run; pushes, scans, signs and tags the image, and publishes the GitHub
-   release with the generated notes. If a job fails, use "Re-run failed jobs",
-   not "Re-run all jobs": once the image is tagged, a new attempt of all jobs
-   stops at the existing tag and can't finish the release. If `prepare` fails
-   because CI hasn't finished for the commit, re-run the workflow once it
-   passed.
-5. Edit the release notes into the org's format: an intro paragraph; the
-   sections `## Breaking changes`, `## Features`, `## Security`, `## Fixes`,
-   `## Documentation` and `## Maintenance`, without the empty ones, each bullet
-   ending with its issue and pull request numbers; then the generated notes
-   under `## Commits` instead of `## What's Changed`, and last their
-   `**Full Changelog**` line.
-6. Check the site within a few minutes: Watchtower deploys the new image, if
+   verified the tag's signature, that its commit is on `main`, the version, the
+   release notes and the CI run; pushes, scans, signs and tags the image
+   (`Release image`), and then, without another approval, creates the GitHub
+   release (`Publish release`): the curated notes of the tagged commit, then
+   GitHub's generated notes under `## Commits` (without their
+   `## What's Changed` header, with "New Contributors"), and GitHub's
+   `**Full Changelog**` line last. Releases aren't edited after publishing (by
+   convention): fix mistakes in the notes of the next release. If a job fails,
+   use "Re-run failed jobs", not "Re-run all jobs": once the image is tagged, a
+   new attempt of all jobs stops at the existing tag and can't finish the
+   release, and once the GitHub release exists, `prepare` fails; a re-run of
+   `Publish release` passes without changes if an earlier attempt created the
+   release after all. `prepare` can't see draft releases and `Publish release`
+   fails on them, so delete any draft of the tag before you push the tag. If
+   `prepare` fails because CI hasn't finished for the commit, re-run the
+   workflow once it passed.
+5. Check the site within a few minutes: Watchtower deploys the new image, if
    this is the highest release (the workflow warns otherwise). After the first
    release, [move the host to Docker Hub](#moving-the-host-to-docker-hub).
 

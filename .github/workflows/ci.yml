@@ -63,7 +63,8 @@ jobs:
 
   # Lints all JavaScript and TypeScript sources with ESLint (Next.js's
   # recommended flat config with typescript-eslint, plus the project's rules
-  # in `eslint.config.js`); fails on errors and warnings
+  # in `eslint.config.js`); fails on errors and warnings. Also checks the
+  # curated release notes in `docs/releases/`
   lint:
     name: Lint
     runs-on: ubuntu-latest
@@ -85,6 +86,34 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      # The release workflow publishes the curated notes as they are and checks
+      # their format only after the tag is pushed: check them here, with the
+      # checker of the action that `release.yml` pins (keep the commit in
+      # sync), so that a release-prep pull request fails instead. Once
+      # `package.json` has a release version (`YYYY.M.MICRO`), its notes must
+      # exist, so that a pull request that sets a new version brings them
+      # (`0.1.0`, from before the first release, has none)
+      - name: Check release notes
+        env:
+          CHECKER: https://raw.githubusercontent.com/elixir-cloud-aai/.github/31f22fccc1f3c597ed7c1d1f75b2f85522155348/actions/publish-release/publish.py
+        run: |
+          version="$(jq -r .version package.json)"
+          if [[ "v${version}" =~ ^v20[0-9]{2}\.([1-9]|1[0-2])\.(0|[1-9][0-9]*)$ \
+              && ! -f "docs/releases/${version}.md" ]]; then
+              echo "::error file=package.json::No release notes docs/releases/${version}.md for version ${version}"
+              exit 1
+          fi
+          shopt -s nullglob
+          notes=(docs/releases/*.md)
+          if (( ${#notes[@]} == 0 )); then
+              echo "No release notes yet"
+              exit 0
+          fi
+          curl -fsSL "${CHECKER}" -o "${RUNNER_TEMP}/publish.py"
+          for file in "${notes[@]}"; do
+              python3 -I "${RUNNER_TEMP}/publish.py" check "${file}"
+          done
 
   test:
     name: Test
