@@ -126,7 +126,9 @@ services, products and Nodes, and that every referenced image exists.
 - `Build`: checks the formatting and types of `src/`, then builds the site.
 - `Audit`: fails on high and critical advisories in the production dependencies.
   To run it locally: `npm audit --omit=dev --audit-level=high`. Development
-  tools are not audited, as they don't reach the site. The job checks npm's
+  tools are not audited, as they don't reach the site; this includes tools that
+  only run during the build, such as `next-sitemap`, so they belong in
+  `devDependencies` (a test checks this). The job checks npm's
   advisory database as it is when the job runs, so a newly published advisory
   fails every new run, without a change to the code, and also keeps commits
   without a green run from being released (the release workflow requires one). Fix it by updating the package
@@ -363,6 +365,33 @@ of the latest release every Monday, and can be run by hand. It uploads the
 fixable findings to code scanning and a full report as a workflow artifact, and
 fails on fixable critical and high vulnerabilities: release a new version with
 the fix.
+
+### Caching
+
+The site sets its own `Cache-Control` headers, in the `headers` of
+[`next.config.js`](next.config.js), so they are the same in the Docker image
+and on Vercel:
+
+| Paths                                                    | `Cache-Control`                                        |
+| -------------------------------------------------------- | ------------------------------------------------------ |
+| `/_next/static/` (JavaScript, CSS, fonts; hashed names)  | `public, max-age=31536000, immutable` (set by Next.js) |
+| `/_next/image` (optimized images)                        | source's max-age, at least 4 hours (Next.js default)   |
+| Pages                                                    | `public, max-age=0, must-revalidate`                   |
+| Other files of `public/` (images, logos, flags, favicon) | `public, max-age=86400, stale-while-revalidate=604800` |
+| `robots.txt`, `sitemap.xml`, `sitemap-<n>.xml`           | `public, max-age=3600`                                 |
+| `sw.js` (removes the old PWA's worker, see above)        | `no-cache, no-store, must-revalidate`                  |
+
+Caches revalidate pages on every request (a cheap `304 Not Modified` if a
+page hasn't changed), so a deploy shows at once, and no cache serves a page
+that points at `/_next/static/` files of an older image. Files of `public/`
+have no hash in their names, so a changed image can take up to a day to
+show, and a cache may serve the old one once more on a visit within the
+following week (`stale-while-revalidate`); to replace one at once, give it a
+new file name. 404s for unknown paths are not cached. A reverse proxy in front of the site should pass these
+headers on and needs no cache rules of its own.
+[`src/test/cache-policy.test.ts`](src/test/cache-policy.test.ts) checks
+which rule applies to which path, and that every file in `public/` gets the
+policy meant for it.
 
 ## Contributing
 
