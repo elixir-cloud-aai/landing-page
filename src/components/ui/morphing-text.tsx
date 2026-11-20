@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, type ReactNode } from 'react';
+import { type ReactNode, useCallback, useEffect, useMemo, useRef } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import { cn } from '@/lib/utils';
@@ -20,14 +20,16 @@ const useMorphingText = (texts: ReactNode[]) => {
 
   // Render each text to HTML once instead of on every animation frame.
   const markup = useMemo(
-    () => texts.map((text) => renderToStaticMarkup(<>{text}</>)),
+    () => texts.map((text) => renderToStaticMarkup(text)),
     [texts],
   );
 
   const setStyles = useCallback(
     (fraction: number) => {
       const [current1, current2] = [text1Ref.current, text2Ref.current];
-      if (!current1 || !current2) return;
+      if (!current1 || !current2) {
+        return;
+      }
 
       current2.style.filter = `blur(${Math.min(8 / fraction - 8, 100)}px)`;
       current2.style.opacity = `${Math.pow(fraction, 0.4) * 100}%`;
@@ -89,8 +91,11 @@ const useMorphingText = (texts: ReactNode[]) => {
 
       cooldownRef.current -= dt;
 
-      if (cooldownRef.current <= 0) doMorph();
-      else doCooldown();
+      if (cooldownRef.current <= 0) {
+        doMorph();
+      } else {
+        doCooldown();
+      }
     };
 
     animate();
@@ -125,8 +130,8 @@ const Texts: React.FC<Pick<MorphingTextProps, 'texts'>> = ({ texts }) => {
 
 const SvgFilters: React.FC = () => (
   <svg
-    id="filters"
     className="fixed h-0 w-0"
+    id="filters"
     preserveAspectRatio="xMidYMid slice"
   >
     <defs>

@@ -1,12 +1,13 @@
-# Checks every pull request and push to dev: the pull request title, the tests
-# (with coverage, reported to Codecov), the build, an audit of the production
-# dependencies, and the Docker image and its scan for known vulnerabilities. The
-# gate `passed` ("CI passed") is the only check that the rules for dev need to
-# require. The Release workflow requires a successful run for the push of the
-# release commit to dev; main needs no runs, as it only moves forward to commits
-# of dev that are released. Runs also when a pull request is edited, so that the
-# title check follows the title; all jobs run then, as a run that skipped the
-# build would report "CI passed" for the commit.
+# Checks every pull request and push to dev: the pull request title, the
+# lint, the tests (with coverage, reported to Codecov), the build, an audit of
+# the production dependencies, and the Docker image and its scan for known
+# vulnerabilities. The gate `passed` ("CI passed") is the only check that the
+# rules for dev need to require. The Release workflow requires a successful
+# run for the push of the release commit to dev; main needs no runs, as it
+# only moves forward to commits of dev that are released. Runs also when a
+# pull request is edited, so that the title check follows the title; all jobs
+# run then, as a run that skipped the build would report "CI passed" for the
+# commit.
 name: CI
 
 on:
@@ -18,20 +19,27 @@ on:
 permissions:
   contents: read
 
-# Cancel superseded runs of a pull request. Runs for pushes get a group of their
-# own and aren't cancelled, as the Release workflow needs the run of the release
-# commit, also when other commits follow it quickly. Runs for edits that leave
-# the title unchanged (e.g. of the description, also by bots) share a group of
-# their own, so that they cancel each other but not the run for the pull
-# request's commit
+# Only a new head commit of a pull request cancels its runs in progress
+# (action `synchronize`, first attempt); runs for other actions and reruns
+# wait, so that a run on the same commit never leaves a cancelled, failed
+# `CI passed` (see "Cancelled runs" in `actions/gate/README.md` of
+# `elixir-cloud-aai/.github`). Runs for pushes get their own group, per
+# branch and commit, and aren't cancelled, as the Release workflow needs the
+# run of the release commit, also when other commits follow it quickly. Runs
+# for edits that leave the title unchanged (e.g. of the description, also by
+# bots) share a group of their own, so that they don't wait for the run for
+# the pull request's commit
 concurrency:
   group: >-
     ci-${{
-      github.event_name == 'push' && github.sha ||
+      github.event_name == 'push' && format('{0}-{1}', github.ref, github.sha) ||
       github.event.action == 'edited' && !github.event.changes.title &&
         format('{0}-edited', github.ref) ||
       github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  cancel-in-progress: >-
+    ${{ github.event_name == 'pull_request'
+    && github.event.action == 'synchronize'
+    && github.run_attempt == 1 }}
 
 jobs:
   # Pull request titles become the commit messages on `dev` (squash merges):
@@ -51,7 +59,32 @@ jobs:
     permissions: {}
     steps:
       - name: Check PR title
-        uses: elixir-cloud-aai/.github/actions/pr-title@743e82d290a53768454999e413756a924e383259 # v1.0.0
+        uses: elixir-cloud-aai/.github/actions/pr-title@31f22fccc1f3c597ed7c1d1f75b2f85522155348 # v1.1.0
+
+  # Lints all JavaScript and TypeScript sources with ESLint (Next.js's
+  # recommended flat config with typescript-eslint, plus the project's rules
+  # in `eslint.config.js`); fails on errors and warnings
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 26
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Lint
+        run: npm run lint
 
   test:
     name: Test
@@ -208,7 +241,7 @@ jobs:
         run: docker load -i "${RUNNER_TEMP}/image.tar"
 
       - name: Scan image
-        uses: elixir-cloud-aai/.github/actions/scan-image@743e82d290a53768454999e413756a924e383259 # v1.0.0
+        uses: elixir-cloud-aai/.github/actions/scan-image@31f22fccc1f3c597ed7c1d1f75b2f85522155348 # v1.1.0
         with:
           image: landing-page:ci
           category: image
@@ -224,11 +257,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     if: always()
-    needs: [title, test, build, audit, image, scan]
+    needs: [title, lint, test, build, audit, image, scan]
     permissions: {}
     steps:
       - name: Check results of all jobs
-        uses: elixir-cloud-aai/.github/actions/gate@743e82d290a53768454999e413756a924e383259 # v1.0.0
+        uses: elixir-cloud-aai/.github/actions/gate@31f22fccc1f3c597ed7c1d1f75b2f85522155348 # v1.1.0
         with:
           needs: ${{ toJSON(needs) }}
           allow-skipped: title

@@ -1,12 +1,14 @@
 version: 2
-# Every entry targets `dev`, the default branch (`target-branch`)
+# No entry sets `target-branch`: pull requests go to the default branch
+# (`dev`) anyway, and while `target-branch` is set, GitHub doesn't apply
+# the entry's options (`labels`, `ignore`, ...) to security updates
 updates:
   # Dependencies in `package.json` and the lock (`package-lock.json`)
   - package-ecosystem: npm
     directory: /
+    labels: ["type: dependencies"]
     schedule:
       interval: monthly
-    target-branch: dev
     groups:
       # Major updates stay in PRs of their own, so they can't block the rest
       node-dependencies:
@@ -17,27 +19,27 @@ updates:
   # `@<commit> # vX.Y.Z`)
   - package-ecosystem: github-actions
     directory: /
+    labels: ["type: dependencies"]
     schedule:
       interval: monthly
-    target-branch: dev
     groups:
       github-actions:
         patterns: ["*"]
   # Images in the `Dockerfile`
   - package-ecosystem: docker
     directory: /
+    labels: ["type: dependencies"]
     schedule:
       interval: monthly
-    target-branch: dev
     groups:
       docker:
         patterns: ["*"]
   # Images in `docker-compose.yaml`
   - package-ecosystem: docker-compose
     directory: /
+    labels: ["type: dependencies"]
     schedule:
       interval: monthly
-    target-branch: dev
     groups:
       docker-compose:
         patterns: ["*"]

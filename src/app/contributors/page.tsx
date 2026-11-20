@@ -1,17 +1,15 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Mail, ArrowUpRight, Sparkles, GitBranch } from 'lucide-react';
-import { Search, X, Users, LayoutGrid, List, ChevronDown } from 'lucide-react';
+import { ArrowUpRight, GitBranch, Mail, Sparkles } from 'lucide-react';
+import { ChevronDown, LayoutGrid, List, Search, Users, X } from 'lucide-react';
+import { FilterChips } from '@/components/catalog/shared';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { checkFilterIds, matchesAny } from '@/lib/filters';
+import { useUrlFilters } from '@/lib/use-url-filters';
 
 import contributors from '@/data/contributor.json';
 import { FaLinkedin } from 'react-icons/fa6';
@@ -45,9 +43,30 @@ function isGSoC(roles: string[] = []) {
   return roles.some((role) => role.toLowerCase().includes('gsoc'));
 }
 
+function isOSS(roles: string[] = []) {
+  return roles.some((role) => role.toLowerCase().includes('oss contributor'));
+}
+
+// The filters a contributor matches
+function filterIds(person: Contributor) {
+  return [
+    ...(isOSS(person.roles) ? ['oss'] : []),
+    ...(isGSoC(person.roles) ? ['gsoc'] : []),
+  ];
+}
+
+const gsocCount = people.filter((person) => isGSoC(person.roles)).length;
+const ossCount = people.filter((person) => isOSS(person.roles)).length;
+
+const filterOptions = checkFilterIds([
+  { value: 'oss', label: 'OSS', count: ossCount },
+  { value: 'gsoc', label: 'GSoC', count: gsocCount },
+]);
+const filterOptionIds = filterOptions.map((option) => option.value);
+
 export default function ContributorsPage() {
   const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState<'all' | 'oss' | 'gsoc'>('all');
+  const { selected, toggle, clear } = useUrlFilters(filterOptionIds);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -58,34 +77,21 @@ export default function ContributorsPage() {
         person.name.toLowerCase().includes(q) ||
         person.roles?.some((role) => role.toLowerCase().includes(q));
 
-      const matchesFilter =
-        filter === 'all' ||
-        (filter === 'oss' &&
-          person.roles?.some((role) =>
-            role.toLowerCase().includes('oss contributor'),
-          )) ||
-        (filter === 'gsoc' && isGSoC(person.roles));
-
-      return matchesSearch && matchesFilter;
+      return matchesSearch && matchesAny(selected, filterIds(person));
     });
-  }, [query, filter]);
+  }, [query, selected]);
   const [highlightedContributor, setHighlightedContributor] = useState<
     string | null
   >(null);
-  const gsocCount = people.filter((person) => isGSoC(person.roles)).length;
-  const ossCount = people.filter((person) =>
-    person.roles?.some((role) =>
-      role.toLowerCase().includes('oss contributor'),
-    ),
-  ).length;
   const INITIAL_COUNT = 20;
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
 
   // Reset visible count when query or filter changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- resetting on change; a refactor would change behaviour
     setVisibleCount(INITIAL_COUNT);
-  }, [query, filter]);
+  }, [query, selected]);
 
   // Paginated slice
   const visibleContributors = filtered.slice(0, visibleCount);
@@ -93,14 +99,14 @@ export default function ContributorsPage() {
   return (
     <main className="min-h-screen overflow-hidden bg-background dark:text-white">
       <AnimatedGridPattern
-        numSquares={30}
-        maxOpacity={0.5}
-        duration={3}
-        repeatDelay={1}
         className={cn(
           '[mask-image:radial-gradient(520px_circle_at_center,white,transparent)]',
           'inset-x-0 inset-y-[-30%] h-[200%] skew-y-12',
         )}
+        duration={3}
+        maxOpacity={0.5}
+        numSquares={30}
+        repeatDelay={1}
       />
       {/* Ambient background */}
       {/* <div className="pointer-events-none fixed inset-0 -z-10">
@@ -117,8 +123,8 @@ export default function ContributorsPage() {
             <div className="relative z-10 max-w-xl">
               {/* Badge */}
               <Badge
-                variant="secondary"
                 className="mb-6 rounded-full border border-border bg-card/85 px-4 py-1.5 text-xs font-medium shadow-sm"
+                variant="secondary"
               >
                 <Sparkles className="mr-1.5 h-3.5 w-3.5" />
                 Open source community
@@ -142,15 +148,15 @@ export default function ContributorsPage() {
               {/* Stats */}
               <div className="mt-10 grid max-w-lg grid-cols-3 overflow-hidden rounded-2xl border border-border bg-card/60 shadow-sm">
                 <div className="px-4 py-5">
-                  <Stat value={people.length} label="Contributors" />
+                  <Stat label="Contributors" value={people.length} />
                 </div>
 
                 <div className="border-l border-white/10 px-4 py-5">
-                  <Stat value={ossCount} label="OSS contributors" />
+                  <Stat label="OSS contributors" value={ossCount} />
                 </div>
 
                 <div className="border-l border-white/10 px-4 py-5">
-                  <Stat value={gsocCount} label="GSoC contributors" />
+                  <Stat label="GSoC contributors" value={gsocCount} />
                 </div>
               </div>
 
@@ -168,13 +174,13 @@ export default function ContributorsPage() {
               {/* Globe */}
               <div className="relative z-10 h-full w-full">
                 <Globe3D
-                  markers={contributorMarkers}
                   config={{
                     atmosphereColor: '#4da6ff',
                     atmosphereIntensity: 20,
                     bumpScale: 5,
                     autoRotateSpeed: 0.3,
                   }}
+                  markers={contributorMarkers}
                   onMarkerClick={(marker) => {
                     const contributor = people.find(
                       (person) => person.name === marker.label,
@@ -185,7 +191,7 @@ export default function ContributorsPage() {
                     }
 
                     setQuery('');
-                    setFilter('all');
+                    clear();
 
                     const contributorIndex = people.findIndex(
                       (person) => person.name === contributor.name,
@@ -244,65 +250,51 @@ export default function ContributorsPage() {
             <div className="relative flex-1 sm:w-72 sm:flex-initial">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                value={query}
+                className="h-10 rounded-xl pl-9 pr-9"
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search contributors..."
-                className="h-10 rounded-xl pl-9 pr-9"
+                value={query}
               />
               {query && (
                 <button
-                  onClick={() => setQuery('')}
                   aria-label="Clear search"
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition hover:text-foreground"
+                  onClick={() => setQuery('')}
                 >
                   <X className="h-4 w-4" />
                 </button>
               )}
             </div>
 
-            {/* Filter Tabs */}
-            <div className="flex rounded-xl border bg-muted/40 p-1">
-              <FilterButton
-                active={filter === 'all'}
-                onClick={() => setFilter('all')}
-              >
-                All
-              </FilterButton>
-              <FilterButton
-                active={filter === 'oss'}
-                onClick={() => setFilter('oss')}
-              >
-                OSS
-              </FilterButton>
-              <FilterButton
-                active={filter === 'gsoc'}
-                onClick={() => setFilter('gsoc')}
-              >
-                GSoC
-              </FilterButton>
-            </div>
+            {/* Filters */}
+            <FilterChips
+              onClear={clear}
+              onToggle={toggle}
+              options={filterOptions}
+              selected={selected}
+            />
 
             {/* View Toggle (Grid / List) */}
             <div className="flex rounded-xl border bg-muted/40 p-1">
               <button
-                onClick={() => setViewMode('grid')}
+                aria-label="Grid view"
                 className={`flex h-8 w-8 items-center justify-center rounded-lg transition-all ${
                   viewMode === 'grid'
                     ? 'bg-background text-foreground shadow-sm'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
-                aria-label="Grid view"
+                onClick={() => setViewMode('grid')}
               >
                 <LayoutGrid className="h-4 w-4" />
               </button>
               <button
-                onClick={() => setViewMode('list')}
+                aria-label="List view"
                 className={`flex h-8 w-8 items-center justify-center rounded-lg transition-all ${
                   viewMode === 'list'
                     ? 'bg-background text-foreground shadow-sm'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
-                aria-label="List view"
+                onClick={() => setViewMode('list')}
               >
                 <List className="h-4 w-4" />
               </button>
@@ -318,12 +310,12 @@ export default function ContributorsPage() {
               <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {visibleContributors.map((person) => (
                   <div
-                    key={person.name}
                     id={`contributor-${encodeURIComponent(person.name)}`}
+                    key={person.name}
                   >
                     <ContributorCard
-                      person={person}
                       highlighted={highlightedContributor === person.name}
+                      person={person}
                     />
                   </div>
                 ))}
@@ -332,12 +324,12 @@ export default function ContributorsPage() {
               <div className="flex flex-col gap-3">
                 {visibleContributors.map((person) => (
                   <div
-                    key={person.name}
                     id={`contributor-${encodeURIComponent(person.name)}`}
+                    key={person.name}
                   >
                     <ContributorListItem
-                      person={person}
                       highlighted={highlightedContributor === person.name}
+                      person={person}
                     />
                   </div>
                 ))}
@@ -348,10 +340,10 @@ export default function ContributorsPage() {
             {hasMore && (
               <div className="flex justify-center pt-4">
                 <Button
-                  onClick={() => setVisibleCount((prev) => prev + 20)}
-                  variant="outline"
-                  size="lg"
                   className="group rounded-full border-border/80 px-8 font-medium hover:border-primary/50 hover:bg-muted/50"
+                  onClick={() => setVisibleCount((prev) => prev + 20)}
+                  size="lg"
+                  variant="outline"
                 >
                   Load more contributors
                   <ChevronDown className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
@@ -370,12 +362,12 @@ export default function ContributorsPage() {
               Try a different name, role, or filter.
             </p>
             <Button
-              variant="outline"
               className="mt-5 rounded-xl"
               onClick={() => {
                 setQuery('');
-                setFilter('all');
+                clear();
               }}
+              variant="outline"
             >
               Reset filters
             </Button>
@@ -407,11 +399,12 @@ function ContributorListItem({
         <div className="relative shrink-0">
           <div className="h-11 w-11 overflow-hidden rounded-lg border bg-muted shadow-sm">
             {person.image ? (
-              <img
-                src={person.image}
+              <Image
                 alt={person.name}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                loading="lazy"
+                height={44}
+                src={person.image}
+                width={44}
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center bg-primary/10 text-xs font-bold text-primary">
@@ -429,8 +422,8 @@ function ContributorListItem({
             </h3>
             {isGSoC(roles) && (
               <Badge
-                variant="secondary"
                 className="rounded-full bg-primary/10 px-2 py-0 text-[10px] font-medium text-primary"
+                variant="secondary"
               >
                 GSoC
               </Badge>
@@ -446,17 +439,17 @@ function ContributorListItem({
       <div className="flex flex-wrap items-center gap-1.5 sm:justify-center">
         {roles.slice(0, 3).map((role) => (
           <Badge
+            className="rounded-md border-border/60 bg-muted/30 px-2 py-0.5 text-xs font-normal text-muted-foreground"
             key={role}
             variant="outline"
-            className="rounded-md border-border/60 bg-muted/30 px-2 py-0.5 text-xs font-normal text-muted-foreground"
           >
             {role}
           </Badge>
         ))}
         {roles.length > 3 && (
           <Badge
-            variant="outline"
             className="rounded-md border-border/60 bg-muted/20 px-2 py-0.5 text-xs font-normal text-muted-foreground"
+            variant="outline"
           >
             +{roles.length - 3}
           </Badge>
@@ -486,11 +479,11 @@ function ContributorListItem({
         {person.github ? (
           <Button
             asChild
+            className="h-8 gap-1 rounded-md px-2.5 text-xs font-medium hover:bg-primary hover:text-primary-foreground"
             size="sm"
             variant="ghost"
-            className="h-8 gap-1 rounded-md px-2.5 text-xs font-medium hover:bg-primary hover:text-primary-foreground"
           >
-            <a href={person.github} target="_blank" rel="noreferrer">
+            <a href={person.github} rel="noreferrer" target="_blank">
               Profile
               <ArrowUpRight className="h-3.5 w-3.5" />
             </a>
@@ -513,29 +506,6 @@ function Stat({ value, label }: { value: number; label: string }) {
         {label}
       </div>
     </div>
-  );
-}
-
-function FilterButton({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
-        active
-          ? 'bg-background text-foreground shadow-sm'
-          : 'text-muted-foreground hover:text-foreground'
-      }`}
-    >
-      {children}
-    </button>
   );
 }
 
@@ -571,11 +541,11 @@ function ContributorCard({
               <div className="h-16 w-16 overflow-hidden rounded-2xl border-2 border-primary/20 bg-muted shadow-lg transition-transform duration-500 group-hover:scale-105 group-hover:border-primary/50">
                 {person.image ? (
                   <Image
-                    src={person.image}
                     alt={person.name}
-                    width={64}
-                    height={64}
                     className="h-full w-full object-cover"
+                    height={64}
+                    src={person.image}
+                    width={64}
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-primary/15 text-base font-bold text-primary">
@@ -601,8 +571,8 @@ function ContributorCard({
 
           {isGSoC(roles) && (
             <Badge
-              variant="secondary"
               className="shrink-0 rounded-full bg-gradient-to-r from-primary/20 to-purple-500/20 px-3 py-1 text-xs font-bold text-primary border border-primary/30 shadow-sm flex items-center gap-1"
+              variant="secondary"
             >
               <Sparkles className="h-3 w-3" />
               GSoC
@@ -624,17 +594,17 @@ function ContributorCard({
             <div className="flex flex-wrap gap-1.5">
               {roles.slice(0, 4).map((role) => (
                 <Badge
+                  className="rounded-lg border-border bg-muted px-2.5 py-1 text-xs font-normal text-muted-foreground/90 transition-colors group-hover:border-primary/20"
                   key={role}
                   variant="outline"
-                  className="rounded-lg border-border bg-muted px-2.5 py-1 text-xs font-normal text-muted-foreground/90 transition-colors group-hover:border-primary/20"
                 >
                   {role}
                 </Badge>
               ))}
               {roles.length > 4 && (
                 <Badge
-                  variant="outline"
                   className="rounded-lg border-white/10 bg-white/5 px-2 py-1 text-xs font-normal text-muted-foreground/70"
+                  variant="outline"
                 >
                   +{roles.length - 4}
                 </Badge>
@@ -649,31 +619,31 @@ function ContributorCard({
         <div className="flex items-center gap-2">
           {person.github && (
             <a
-              href={person.github}
-              target="_blank"
-              rel="noreferrer"
               aria-label="GitHub Profile"
               className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
+              href={person.github}
+              rel="noreferrer"
+              target="_blank"
             >
               <GitBranch className="h-4 w-4" />
             </a>
           )}
           {person.linkedin && (
             <a
-              href={person.linkedin}
-              target="_blank"
-              rel="noreferrer"
               aria-label="LinkedIn Profile"
               className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
+              href={person.linkedin}
+              rel="noreferrer"
+              target="_blank"
             >
               <FaLinkedin className="h-4 w-4" />
             </a>
           )}
           {person.email && (
             <a
-              href={`mailto:${person.email}`}
               aria-label="Send Email"
               className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
+              href={`mailto:${person.email}`}
             >
               <Mail className="h-4 w-4" />
             </a>
@@ -683,14 +653,14 @@ function ContributorCard({
         {person.github ? (
           <Button
             asChild
-            size="sm"
             className="h-9 gap-1.5 rounded-xl px-4 text-xs font-semibold shadow-md shadow-primary/20 bg-primary text-primary-foreground hover:opacity-90 transition-all"
+            size="sm"
           >
             <a
-              href={person.github}
-              target="_blank"
-              rel="noreferrer"
               className="flex items-center gap-1.5"
+              href={person.github}
+              rel="noreferrer"
+              target="_blank"
             >
               View Profile
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -718,16 +688,16 @@ function IconButton({
   return (
     <Button
       asChild
-      variant="outline"
-      size="icon"
       className="h-8 w-8 rounded-lg"
+      size="icon"
       title={label}
+      variant="outline"
     >
       <a
-        href={href}
-        target={href.startsWith('mailto:') ? undefined : '_blank'}
-        rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
         aria-label={`${label} link`}
+        href={href}
+        rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
+        target={href.startsWith('mailto:') ? undefined : '_blank'}
       >
         {children}
       </a>

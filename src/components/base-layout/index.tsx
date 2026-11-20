@@ -1,10 +1,11 @@
 'use client';
-import React, { useEffect, useMemo, useState, FC } from 'react';
+import React, { FC, Suspense, useEffect, useMemo, useState } from 'react';
 import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
 import CookieConsent from '../cookie-consent';
 import Footer from '../footer';
 import NavBar from '../navbar';
 import { Theme, ThemeProvider } from '@/context/default-theme';
+import { FilterUrlSync } from '@/lib/use-url-filters';
 
 const LayoutInner: FC<{ children: React.ReactNode }> = ({ children }) => {
   const { resolvedTheme, setTheme } = useTheme();
@@ -12,6 +13,7 @@ const LayoutInner: FC<{ children: React.ReactNode }> = ({ children }) => {
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydration guard: renders the client-only parts after mount
     setMounted(true);
     try {
       setShowBanner(localStorage.getItem('banner-status') !== 'false');
@@ -36,15 +38,18 @@ const LayoutInner: FC<{ children: React.ReactNode }> = ({ children }) => {
     <ThemeProvider value={themeValue}>
       <div className="flex min-h-screen flex-col bg-background text-foreground">
         <NavBar
+          mounted={mounted}
           setShowBanner={setShowBanner}
           showBanner={showBanner}
           theme={theme}
-          mounted={mounted}
           toggleDarkMode={themeValue.toggleDarkMode}
         />
         <main className="flex-grow">{children}</main>
         <Footer />
         <CookieConsent />
+        <Suspense fallback={null}>
+          <FilterUrlSync />
+        </Suspense>
       </div>
     </ThemeProvider>
   );
@@ -54,8 +59,8 @@ const Layout: FC<{ children: React.ReactNode }> = ({ children }) => (
   <NextThemesProvider
     attribute="class"
     defaultTheme="system"
-    enableSystem
     disableTransitionOnChange
+    enableSystem
     storageKey="theme"
   >
     <LayoutInner>{children}</LayoutInner>

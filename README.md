@@ -42,6 +42,21 @@ Content lives in JSON files under [`src/data/`](src/data/):
 
 To change content, edit the relevant file and open a pull request.
 
+The listings (Products, Funding, Contributors) share one filter behaviour
+([`src/lib/filters.ts`](src/lib/filters.ts)): several filters can be selected,
+and an item is listed if it matches any of them. The selection is kept in the
+URL, so a link can open a listing with filters set, e.g.
+`/products?filter=ga4gh-tes,ga4gh-wes`. A filter's id is its label in lower
+case, with dashes for spaces and other characters.
+
+Every page sets its own title and description for search engines and link
+previews: in the `metadata` export of its `page.tsx`, or of the route's
+`layout.tsx` for pages that are client components (`'use client'`). Titles
+appear as `<title> | ELIXIR On-Cloud` (the template in
+[`src/seo/base-seo.ts`](src/seo/base-seo.ts)), except on the home page,
+which sets its full title. `src/app/metadata.test.ts` checks that every
+route has a title and description of its own; add new routes to its list.
+
 ## Development
 
 With [Node.js](https://nodejs.org/) 22 and npm installed, install the
@@ -57,11 +72,36 @@ Useful commands:
 
 - `npm run build`: production build (also generates the sitemap)
 - `npx tsc --noEmit`: type-check
+- `npm run lint`: lint the JavaScript and TypeScript sources with
+  [ESLint](https://eslint.org/) (Next.js's recommended config with
+  typescript-eslint, see [`eslint.config.js`](eslint.config.js)); fails on
+  warnings too. `npm run lint-fix` fixes what can be fixed automatically.
+  Images use `Image` from `next/image`, which sizes and optimizes them; the
+  lint rejects plain `<img>` tags. Images from other hosts need an entry in
+  `images.remotePatterns` in [`next.config.js`](next.config.js)
 - `npm test`: run the tests ([Vitest](https://vitest.dev/) with Testing
   Library); `npm run test:watch` reruns them on changes
 - `npm run test:coverage`: run the tests and write coverage to
   `coverage/lcov.info` (for Codecov)
-- `npm run check-links`: report dead outbound links in `src/`
+- `npm run check-links`: check the outbound links in `src/` (test files,
+  `*.test.json`/`*.spec.json` fixtures and `src/test/` excluded; sites that
+  block automated requests, such as LinkedIn, are listed as "skip" for a manual
+  check). A link is dead on 404/410, a TLS error, a DNS error that persists
+  after one retry, a malformed URL, or an address outside the public internet
+  (loopback, private, link-local, cloud metadata, IPv6 translation and 6to4,
+  and other reserved ranges).
+  The check follows redirects itself and checks every target the same way
+  before requesting it. This is a pre-check: the request resolves the name
+  again, so a host whose DNS answer changes in between isn't caught. Results
+  need public DNS: resolvers that answer with private or synthetic addresses
+  (some proxies, split-horizon DNS) make links look dead. Server errors (5xx)
+  and other network errors are retried once after a short delay and, if they
+  persist, reported as unverified, like other 4xx responses, redirects to other
+  schemes and chains of more than 10 redirects. The command exits with 2 on
+  dead links, with 0 otherwise. The [Link check](.github/workflows/links.yml)
+  workflow runs it every Monday (one run at a time), shows the summary (with
+  unverified links) in the run's job summary, or a failure note if the check
+  broke, and opens or updates an issue for dead links.
 
 Tests live next to the code they test (`*.test.ts(x)`). The data tests in
 `src/data/data.test.ts` check the JSON files: unique ids, references between
@@ -73,6 +113,8 @@ services, products and Nodes, and that every referenced image exists.
 
 - `PR title`: the title follows Conventional Commits and has at most 50
   characters (see [Contributing](#contributing)).
+- `Lint`: lints all JavaScript and TypeScript sources with ESLint
+  (`npm run lint`); errors and warnings fail it.
 - `Test`: runs the tests with coverage and reports it to
   [Codecov][badge-url-coverage]. [`codecov.yml`](codecov.yml) states the target
   of this repo (70%, working up from about 38%); the status only reports for
@@ -97,8 +139,6 @@ services, products and Nodes, and that every referenced image exists.
   [`.trivyignore.yaml`](.trivyignore.yaml), with a reason and an expiry date.
 - `CI passed`: the only check that the rules for `dev` require. It passes if all
   other jobs passed; only `PR title` may be skipped.
-
-ESLint isn't checked yet ([#179](../../issues/179)).
 
 ## Deployment
 

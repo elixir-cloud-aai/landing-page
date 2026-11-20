@@ -8,11 +8,17 @@ import { CONTACT_EMAIL } from '@/lib/site';
 // Apply the visitor's analytics choice. Runs on every page load once consent
 // exists (onConsent) and whenever it changes (onChange), not just the first time.
 const syncAnalytics = () => {
-  if (process.env.NODE_ENV !== 'production') return;
+  if (process.env.NODE_ENV !== 'production') {
+    return;
+  }
   if (CookieConsentApi.acceptedCategory('analytics')) {
-    if (window.GAConsentGranted) window.GAConsentGranted();
+    if (window.GAConsentGranted) {
+      window.GAConsentGranted();
+    }
     // The GA helper may load after us; it checks this flag on startup.
-    else window.__pendingGAConsent = true;
+    else {
+      window.__pendingGAConsent = true;
+    }
   } else {
     window.__pendingGAConsent = false;
     window.GAConsentRevoked?.();

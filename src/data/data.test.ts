@@ -10,6 +10,8 @@ import type {
 import contributors from './contributor.json';
 import nodesData from './nodes.json';
 import productsData from './product.json';
+import { GA4GH_DRIVER_PROJECT_URL } from '@/lib/site';
+import projects from './project.json';
 import servicesData from './services.json';
 
 // Most changes to the site are edits to these files. These tests catch broken
@@ -26,7 +28,9 @@ const duplicates = (values: string[]) =>
   values.filter((value, index) => values.indexOf(value) !== index);
 
 const expectHttpsOrNull = (url: string | null | undefined) => {
-  if (url == null) return;
+  if (url == null) {
+    return;
+  }
   // Throws for malformed values, e.g. "https://" without a host.
   const parsed = new URL(url);
   expect(parsed.protocol, url).toBe('https:');
@@ -34,7 +38,9 @@ const expectHttpsOrNull = (url: string | null | undefined) => {
 };
 
 const expectImageExists = (owner: Owner | null) => {
-  if (owner?.image) expect(publicFile(owner.image), owner.image).toBe(true);
+  if (owner?.image) {
+    expect(publicFile(owner.image), owner.image).toBe(true);
+  }
 };
 
 describe('product.json', () => {
@@ -74,7 +80,9 @@ describe('services.json', () => {
       expectHttpsOrNull(service.repoUrl);
       expectHttpsOrNull(service.trackingUrl);
       // A public endpoint means the service is live.
-      if (service.deploymentUrl) expect(service.status).toBe('Live');
+      if (service.deploymentUrl) {
+        expect(service.status).toBe('Live');
+      }
       if (service.relatedProductId) {
         expect(productIds).toContain(service.relatedProductId);
       }
@@ -98,7 +106,9 @@ describe('nodes.json', () => {
       expect(node.name).toBeTruthy();
       expect(['live', 'onboarding']).toContain(node.status);
       expect(publicFile(`flags/${node.code.toLowerCase()}.svg`)).toBe(true);
-      if (node.logo) expect(publicFile(node.logo), node.logo).toBe(true);
+      if (node.logo) {
+        expect(publicFile(node.logo), node.logo).toBe(true);
+      }
       expectHttpsOrNull(node.website);
       expectHttpsOrNull(node.contact?.url);
       expectImageExists(node.liaison);
@@ -112,5 +122,15 @@ describe('contributor.json', () => {
       .map((c) => c.image)
       .filter((image): image is string => !!image && !publicFile(image));
     expect(missing).toEqual([]);
+  });
+});
+
+describe('project.json', () => {
+  // The home page links the same GA4GH Driver Project page
+  it('links the GA4GH Driver Project the home page links', () => {
+    const project = projects.find((p) => p.slug === 'elixir-cloud-aai')!;
+    expect([project.url, project.links.live, project.links.website]).toEqual(
+      Array(3).fill(GA4GH_DRIVER_PROJECT_URL),
+    );
   });
 });

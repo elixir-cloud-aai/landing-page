@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import productsData from '@/data/product.json';
 import servicesData from '@/data/services.json';
 import { ProductCatalog } from './product-catalog';
@@ -37,38 +37,68 @@ describe('Monogram', () => {
   });
 });
 
+// Filters live in the URL; start every test unfiltered
+afterEach(() => {
+  window.history.replaceState(null, '', '/');
+});
+
+const filterButton = (name: RegExp) => screen.getByRole('button', { name });
+
 describe('FilterBar', () => {
-  it('reports searches, selections and clearing', async () => {
+  const options = [
+    { value: 'ga4gh-tes', label: 'GA4GH TES', count: 2 },
+    { value: 'ga4gh-wes', label: 'GA4GH WES', count: 1 },
+  ];
+
+  it('reports searches, toggles and clearing', async () => {
     const user = userEvent.setup();
     const onQueryChange = vi.fn();
-    const onSelect = vi.fn();
+    const onToggle = vi.fn();
+    const onClear = vi.fn();
     render(
       <FilterBar
-        query="tes"
-        onQueryChange={onQueryChange}
-        placeholder="Search"
-        options={[
-          { value: 'all', label: 'All', count: 3 },
-          { value: 'GA4GH TES', label: 'GA4GH TES', count: 2 },
-        ]}
-        selected="all"
-        onSelect={onSelect}
-        resultCount={1}
         noun="products"
+        onClear={onClear}
+        onQueryChange={onQueryChange}
+        onToggle={onToggle}
+        options={options}
+        placeholder="Search"
+        query="tes"
+        resultCount={1}
+        selected={['ga4gh-tes', 'ga4gh-wes']}
       />,
     );
 
     expect(screen.getByText('1 product')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /All/ })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
+    expect(filterButton(/GA4GH TES/)).toHaveAttribute('aria-pressed', 'true');
+    expect(filterButton(/GA4GH WES/)).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByRole('button', { name: /^All/ })).toBeNull();
 
-    await user.click(screen.getByRole('button', { name: /GA4GH TES/ }));
-    expect(onSelect).toHaveBeenCalledWith('GA4GH TES');
+    await user.click(filterButton(/GA4GH TES/));
+    expect(onToggle).toHaveBeenCalledWith('ga4gh-tes');
+
+    await user.click(screen.getByRole('button', { name: 'Remove filters' }));
+    expect(onClear).toHaveBeenCalled();
 
     await user.click(screen.getByRole('button', { name: 'Clear search' }));
     expect(onQueryChange).toHaveBeenCalledWith('');
+  });
+
+  it('offers "Remove filters" only while a filter is selected', () => {
+    render(
+      <FilterBar
+        noun="products"
+        onClear={() => {}}
+        onQueryChange={() => {}}
+        onToggle={() => {}}
+        options={options}
+        placeholder="Search"
+        query=""
+        resultCount={3}
+        selected={[]}
+      />,
+    );
+    expect(screen.queryByRole('button', { name: 'Remove filters' })).toBeNull();
   });
 });
 
@@ -78,15 +108,53 @@ describe('ProductCatalog', () => {
     expect(cardTitles()).toEqual(products.map((p) => p.name));
   });
 
+  const withStandard = (...standards: string[]) =>
+    products
+      .filter((p) => p.standards.some((s) => standards.includes(s)))
+      .map((p) => p.name);
+
   it('filters by standard', async () => {
     const user = userEvent.setup();
     render(<ProductCatalog products={products} />);
-    await user.click(screen.getByRole('button', { name: /^GA4GH WES/ }));
-    expect(cardTitles()).toEqual(
-      products
-        .filter((p) => p.standards.includes('GA4GH WES'))
-        .map((p) => p.name),
+    await user.click(filterButton(/^GA4GH WES/));
+    expect(cardTitles()).toEqual(withStandard('GA4GH WES'));
+  });
+
+  it('lists products matching any of several standards', async () => {
+    const user = userEvent.setup();
+    render(<ProductCatalog products={products} />);
+    await user.click(filterButton(/^GA4GH WES/));
+    await user.click(filterButton(/^GA4GH Service Registry/));
+
+    const expected = withStandard('GA4GH WES', 'GA4GH Service Registry');
+    // More than either filter alone, so the filters really are combined
+    expect(expected.length).toBeGreaterThan(withStandard('GA4GH WES').length);
+    expect(cardTitles()).toEqual(expected);
+    expect(window.location.search).toBe(
+      `?filter=${encodeURIComponent('ga4gh-wes,ga4gh-service-registry')}`,
     );
+
+    await user.click(filterButton(/^GA4GH WES/));
+    expect(cardTitles()).toEqual(withStandard('GA4GH Service Registry'));
+  });
+
+  it('removes all filters at once', async () => {
+    const user = userEvent.setup();
+    render(<ProductCatalog products={products} />);
+    await user.click(filterButton(/^GA4GH WES/));
+    await user.click(filterButton(/^GA4GH TES/));
+    await user.click(screen.getByRole('button', { name: 'Remove filters' }));
+
+    expect(cardTitles()).toEqual(products.map((p) => p.name));
+    expect(window.location.search).toBe('');
+    expect(screen.queryByRole('button', { name: 'Remove filters' })).toBeNull();
+  });
+
+  it('starts with the filters given in the URL', () => {
+    window.history.replaceState(null, '', '/products?filter=ga4gh-wes,nope');
+    render(<ProductCatalog products={products} />);
+    expect(cardTitles()).toEqual(withStandard('GA4GH WES'));
+    expect(filterButton(/^GA4GH WES/)).toHaveAttribute('aria-pressed', 'true');
   });
 
   it('searches and offers a reset when nothing matches', async () => {
@@ -133,12 +201,20 @@ describe('ServiceCatalog', () => {
     const user = userEvent.setup();
     render(<ServiceCatalog services={services} />);
 
-    await user.click(screen.getByRole('button', { name: /^Onboarding/ }));
+    await user.click(filterButton(/^Onboarding/));
     expect(cardTitles()).toEqual(
       services.filter((s) => s.status === 'Onboarding').map((s) => s.name),
     );
 
-    await user.click(screen.getByRole('button', { name: /^Live/ }));
+    // Adding "Live" lists both
+    await user.click(filterButton(/^Live/));
+    expect(cardTitles()).toEqual(
+      services
+        .filter((s) => s.status === 'Onboarding' || s.status === 'Live')
+        .map((s) => s.name),
+    );
+
+    await user.click(filterButton(/^Onboarding/));
     expect(cardTitles()).toEqual(
       services.filter((s) => s.status === 'Live').map((s) => s.name),
     );
