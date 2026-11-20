@@ -136,8 +136,9 @@ services, products and Nodes, and that every referenced image exists.
   `devDependencies` (a test checks this). The job checks npm's
   advisory database as it is when the job runs, so a newly published advisory
   fails every new run, without a change to the code, and also keeps commits
-  without a green run from being released (the release workflow requires one). Fix it by updating the package
-  (`npm update <package>` within its version range, otherwise
+  without a green run from being released (the release workflow requires one).
+  Fix it by updating the package (`npm update <package>` within its version
+  range, otherwise
   `npm install <package>@<fixed version>`, or the dependency that pulls it in).
   There is no list of accepted advisories: if no fix exists yet, a maintainer
   decides, in a pull request, whether to change the job for the time being.
@@ -310,7 +311,8 @@ Releases are cut by the maintainers:
            curl -fsSL "https://raw.githubusercontent.com/elixir-cloud-aai/.github/31f22fccc1f3c597ed7c1d1f75b2f85522155348/actions/publish-release/publish.py" -o "${notes}/publish.py" &&
            python3 -I "${notes}/publish.py" check "${notes}/notes.md" || { echo "Release notes docs/releases/${version}.md missing or not in the format"; exit 1; }
        # A tag is used up, also if its release failed
-       [[ -z "$(git ls-remote --tags origin "refs/tags/v${version}")" ]] || { echo "Tag v${version} exists already: use the next MICRO"; exit 1; }
+       tags="$(git ls-remote --tags origin "refs/tags/v${version}")" || { echo "Cannot list the tags"; exit 1; }
+       [[ -z "${tags}" ]] || { echo "Tag v${version} exists already: use the next MICRO"; exit 1; }
        # Also drafts, which the release workflow can't see before it fails on them
        release="$(gh release view "v${version}" --repo elixir-cloud-aai/landing-page 2>&1)" && { echo "A release or draft of v${version} exists: delete a draft"; exit 1; }
        [[ "${release}" == *"release not found"* ]] || { echo "Cannot check the releases: ${release}"; exit 1; }
@@ -340,7 +342,7 @@ Releases are cut by the maintainers:
    pushes the image by digest; `Scan release image` scans that digest;
    `Release image` (approval) attests, signs and tags it; and then
    `Publish release`, without another approval, creates the GitHub
-   release (`Publish release`): the curated notes of the tagged commit, then
+   release: the curated notes of the tagged commit, then
    GitHub's generated notes under `## Commits` (without their
    `## What's Changed` header, with "New Contributors"), and GitHub's
    `**Full Changelog**` line last. Releases aren't edited after publishing (by
