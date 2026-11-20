@@ -96,8 +96,19 @@ jobs:
       # (`0.1.0`, from before the first release, has none)
       - name: Check release notes
         env:
-          CHECKER: https://raw.githubusercontent.com/elixir-cloud-aai/.github/31f22fccc1f3c597ed7c1d1f75b2f85522155348/actions/publish-release/publish.py
+          CHECKER_SHA: 31f22fccc1f3c597ed7c1d1f75b2f85522155348 # v1.1.0
         run: |
+          # Dependabot bumps only the `uses:` pins of `release.yml`: the
+          # checker here and in the README's pre-tag block must follow them
+          pins="$(grep -ohE 'publish-release@[0-9a-f]{40}' .github/workflows/release.yml | sort -u)"
+          if [[ "${pins}" != "publish-release@${CHECKER_SHA}" ]]; then
+              echo "::error file=.github/workflows/ci.yml::The checker (${CHECKER_SHA}) doesn't match the publish-release pins of release.yml: ${pins//$'\n'/, }"
+              exit 1
+          fi
+          if ! grep -qF "elixir-cloud-aai/.github/${CHECKER_SHA}/actions/publish-release/publish.py" README.md; then
+              echo "::error file=README.md::The pre-tag block of README.md doesn't use the checker ${CHECKER_SHA}"
+              exit 1
+          fi
           version="$(jq -r .version package.json)"
           if [[ "v${version}" =~ ^v20[0-9]{2}\.([1-9]|1[0-2])\.(0|[1-9][0-9]*)$ \
               && ! -f "docs/releases/${version}.md" ]]; then
@@ -110,7 +121,8 @@ jobs:
               echo "No release notes yet"
               exit 0
           fi
-          curl -fsSL "${CHECKER}" -o "${RUNNER_TEMP}/publish.py"
+          curl -fsSL "https://raw.githubusercontent.com/elixir-cloud-aai/.github/${CHECKER_SHA}/actions/publish-release/publish.py" \
+              -o "${RUNNER_TEMP}/publish.py"
           for file in "${notes[@]}"; do
               python3 -I "${RUNNER_TEMP}/publish.py" check "${file}"
           done

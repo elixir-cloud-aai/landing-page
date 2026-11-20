@@ -128,8 +128,8 @@ services, products and Nodes, and that every referenced image exists.
   To run it locally: `npm audit --omit=dev --audit-level=high`. Development
   tools are not audited, as they don't reach the site. The job checks npm's
   advisory database as it is when the job runs, so a newly published advisory
-  fails every new run, without a change to the code, and also holds back
-  deployments of commits without a green run. Fix it by updating the package
+  fails every new run, without a change to the code, and also keeps commits
+  without a green run from being released (the release workflow requires one). Fix it by updating the package
   (`npm update <package>` within its version range, otherwise
   `npm install <package>@<fixed version>`, or the dependency that pulls it in).
   There is no list of accepted advisories: if no fix exists yet, a maintainer
@@ -275,7 +275,8 @@ Releases are cut by the maintainers:
    tagging: the release workflow checks the tagged commit, so a check that fails
    after the tag is pushed (other than a CI run that hasn't finished yet) fails
    again on re-runs, and the release then needs a new version. The commands
-   expect `origin` to be `elixir-cloud-aai/landing-page`.
+   expect `origin` to be `elixir-cloud-aai/landing-page`, and need `jq`, `curl`,
+   `python3` (3.10 or later) and `gh` (logged in).
 
    ```bash
    version=YYYY.M.MICRO  # e.g. 2026.11.0
@@ -318,10 +319,13 @@ Releases are cut by the maintainers:
 
 4. Approve the jobs of the [release
    workflow](.github/workflows/release.yml) in the `release` environment, after
-   checking that the run is for the tag you pushed. It checks that GitHub
+   checking that the run is for the tag you pushed. Its jobs run in this order,
+   and two of them wait for approval: `Prepare release` checks that GitHub
    verified the tag's signature, that its commit is on `main`, the version, the
-   release notes and the CI run; pushes, scans, signs and tags the image
-   (`Release image`), and then, without another approval, creates the GitHub
+   release notes and the CI run; `Push release image` (approval) builds and
+   pushes the image by digest; `Scan release image` scans that digest;
+   `Release image` (approval) attests, signs and tags it; and then
+   `Publish release`, without another approval, creates the GitHub
    release (`Publish release`): the curated notes of the tagged commit, then
    GitHub's generated notes under `## Commits` (without their
    `## What's Changed` header, with "New Contributors"), and GitHub's

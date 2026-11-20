@@ -149,9 +149,9 @@ jobs:
 
   # Builds the image of the release commit once and pushes it by digest only
   # (untagged, with SBOM and provenance attestations), for `scan` to scan and
-  # `release-image` to sign and tag. Digests of runs that fail (or fail the scan) are
-  # never signed or tagged, but stay on Docker Hub, untagged (pullable by digest
-  # only)
+  # `release-image` to sign and tag. Digests of runs that fail (or fail the
+  # scan) are never signed or tagged, but stay on Docker Hub, untagged
+  # (pullable by digest only)
   push:
     name: Push release image
     needs: prepare
@@ -173,8 +173,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
       # OCI labels with the version, commit and source; `tags` only sets the
-      # version label (the image is tagged by digest in `release-image`, after the
-      # scan)
+      # version label (the image is tagged by digest in `release-image`, after
+      # the scan)
       - name: Generate image labels
         id: meta
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
