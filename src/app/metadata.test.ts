@@ -2,27 +2,25 @@ import type { Metadata } from 'next';
 import { describe, expect, it } from 'vitest';
 import baseSeo from '@/seo/base-seo';
 import * as contributors from './contributors/layout';
+import * as demo from './demo/page';
 import * as funding from './funding/layout';
 import * as home from './page';
 import * as news from './news/page';
-import * as nodes from './nodes/page';
 import * as privacy from './privacy/page';
 import * as products from './products/page';
 import * as projects from './projects/page';
-import * as services from './services/page';
 
 // The metadata of every route, from its page or, for client-side pages, from
 // the route's layout.
 const routes: [string, Metadata][] = [
   ['/', home.metadata],
   ['/contributors', contributors.metadata],
+  ['/demo', demo.metadata],
   ['/funding', funding.metadata],
   ['/news', news.metadata],
-  ['/nodes', nodes.metadata],
   ['/privacy', privacy.metadata],
   ['/products', products.metadata],
   ['/projects', projects.metadata],
-  ['/services', services.metadata],
 ];
 
 // Every route of the app, from its page.tsx files
