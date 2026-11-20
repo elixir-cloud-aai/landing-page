@@ -1,10 +1,11 @@
 'use client';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, Suspense, useEffect, useMemo, useState } from 'react';
 import { ThemeProvider as NextThemesProvider, useTheme } from 'next-themes';
 import CookieConsent from '../cookie-consent';
 import Footer from '../footer';
 import NavBar from '../navbar';
 import { Theme, ThemeProvider } from '@/context/default-theme';
+import { FilterUrlSync } from '@/lib/use-url-filters';
 
 const LayoutInner: FC<{ children: React.ReactNode }> = ({ children }) => {
   const { resolvedTheme, setTheme } = useTheme();
@@ -46,6 +47,9 @@ const LayoutInner: FC<{ children: React.ReactNode }> = ({ children }) => {
         <main className="flex-grow">{children}</main>
         <Footer />
         <CookieConsent />
+        <Suspense fallback={null}>
+          <FilterUrlSync />
+        </Suspense>
       </div>
     </ThemeProvider>
   );

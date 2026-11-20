@@ -99,13 +99,84 @@ export function StandardChip({ label }: { label: string }) {
   );
 }
 
+export interface FilterOption {
+  value: string;
+  label: string;
+  count: number;
+}
+
+interface FilterChipsProps {
+  options: FilterOption[];
+  selected: readonly string[];
+  onToggle: (value: string) => void;
+  onClear: () => void;
+  className?: string;
+}
+
+// The filters of a listing: any number can be selected; "Remove filters"
+// appears while one is.
+export function FilterChips({
+  options,
+  selected,
+  onToggle,
+  onClear,
+  className,
+}: FilterChipsProps) {
+  return (
+    <div
+      aria-label="Filter"
+      className={cn('flex flex-wrap items-center gap-2', className)}
+      role="group"
+    >
+      {options.map((option) => {
+        const active = selected.includes(option.value);
+        return (
+          <button
+            aria-pressed={active}
+            className={cn(
+              'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
+              active
+                ? 'border-primary bg-primary text-primary-foreground'
+                : 'bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground',
+            )}
+            key={option.value}
+            onClick={() => onToggle(option.value)}
+            type="button"
+          >
+            {option.label}
+            <span
+              className={cn(
+                'rounded-full px-1.5 text-[10px]',
+                active ? 'bg-white/20' : 'bg-muted',
+              )}
+            >
+              {option.count}
+            </span>
+          </button>
+        );
+      })}
+      {selected.length > 0 && (
+        <button
+          className="inline-flex items-center gap-1 rounded-full px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          onClick={onClear}
+          type="button"
+        >
+          <X aria-hidden="true" className="h-3.5 w-3.5" />
+          Remove filters
+        </button>
+      )}
+    </div>
+  );
+}
+
 interface FilterBarProps {
   query: string;
   onQueryChange: (value: string) => void;
   placeholder: string;
-  options: { value: string; label: string; count: number }[];
-  selected: string;
-  onSelect: (value: string) => void;
+  options: FilterOption[];
+  selected: readonly string[];
+  onToggle: (value: string) => void;
+  onClear: () => void;
   resultCount: number;
   noun: string;
 }
@@ -116,7 +187,8 @@ export function FilterBar({
   placeholder,
   options,
   selected,
-  onSelect,
+  onToggle,
+  onClear,
   resultCount,
   noun,
 }: FilterBarProps) {
@@ -148,32 +220,12 @@ export function FilterBar({
           {resultCount} {resultCount === 1 ? noun.replace(/s$/, '') : noun}
         </p>
       </div>
-      <div aria-label="Filter" className="flex flex-wrap gap-2" role="group">
-        {options.map((option) => (
-          <button
-            aria-pressed={selected === option.value}
-            className={cn(
-              'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
-              selected === option.value
-                ? 'border-primary bg-primary text-primary-foreground'
-                : 'bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground',
-            )}
-            key={option.value}
-            onClick={() => onSelect(option.value)}
-            type="button"
-          >
-            {option.label}
-            <span
-              className={cn(
-                'rounded-full px-1.5 text-[10px]',
-                selected === option.value ? 'bg-white/20' : 'bg-muted',
-              )}
-            >
-              {option.count}
-            </span>
-          </button>
-        ))}
-      </div>
+      <FilterChips
+        onClear={onClear}
+        onToggle={onToggle}
+        options={options}
+        selected={selected}
+      />
     </div>
   );
 }

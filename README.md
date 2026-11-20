@@ -41,6 +41,13 @@ Content lives in JSON files under [`src/data/`](src/data/):
 
 To change content, edit the relevant file and open a pull request.
 
+The listings (Products, Funding, Contributors) share one filter behaviour
+([`src/lib/filters.ts`](src/lib/filters.ts)): several filters can be selected,
+and an item is listed if it matches any of them. The selection is kept in the
+URL, so a link can open a listing with filters set, e.g.
+`/products?filter=ga4gh-tes,ga4gh-wes`. A filter's id is its label in lower
+case, with dashes for spaces and other characters.
+
 Every page sets its own title and description for search engines and link
 previews: in the `metadata` export of its `page.tsx`, or of the route's
 `layout.tsx` for pages that are client components (`'use client'`). Titles

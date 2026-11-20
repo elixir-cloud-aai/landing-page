@@ -3,10 +3,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowUpRight, GitBranch, Mail, Sparkles } from 'lucide-react';
 import { ChevronDown, LayoutGrid, List, Search, Users, X } from 'lucide-react';
+import { FilterChips } from '@/components/catalog/shared';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { checkFilterIds, matchesAny } from '@/lib/filters';
+import { useUrlFilters } from '@/lib/use-url-filters';
 
 import contributors from '@/data/contributor.json';
 import { FaLinkedin } from 'react-icons/fa6';
@@ -40,9 +43,30 @@ function isGSoC(roles: string[] = []) {
   return roles.some((role) => role.toLowerCase().includes('gsoc'));
 }
 
+function isOSS(roles: string[] = []) {
+  return roles.some((role) => role.toLowerCase().includes('oss contributor'));
+}
+
+// The filters a contributor matches
+function filterIds(person: Contributor) {
+  return [
+    ...(isOSS(person.roles) ? ['oss'] : []),
+    ...(isGSoC(person.roles) ? ['gsoc'] : []),
+  ];
+}
+
+const gsocCount = people.filter((person) => isGSoC(person.roles)).length;
+const ossCount = people.filter((person) => isOSS(person.roles)).length;
+
+const filterOptions = checkFilterIds([
+  { value: 'oss', label: 'OSS', count: ossCount },
+  { value: 'gsoc', label: 'GSoC', count: gsocCount },
+]);
+const filterOptionIds = filterOptions.map((option) => option.value);
+
 export default function ContributorsPage() {
   const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState<'all' | 'oss' | 'gsoc'>('all');
+  const { selected, toggle, clear } = useUrlFilters(filterOptionIds);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -53,26 +77,12 @@ export default function ContributorsPage() {
         person.name.toLowerCase().includes(q) ||
         person.roles?.some((role) => role.toLowerCase().includes(q));
 
-      const matchesFilter =
-        filter === 'all' ||
-        (filter === 'oss' &&
-          person.roles?.some((role) =>
-            role.toLowerCase().includes('oss contributor'),
-          )) ||
-        (filter === 'gsoc' && isGSoC(person.roles));
-
-      return matchesSearch && matchesFilter;
+      return matchesSearch && matchesAny(selected, filterIds(person));
     });
-  }, [query, filter]);
+  }, [query, selected]);
   const [highlightedContributor, setHighlightedContributor] = useState<
     string | null
   >(null);
-  const gsocCount = people.filter((person) => isGSoC(person.roles)).length;
-  const ossCount = people.filter((person) =>
-    person.roles?.some((role) =>
-      role.toLowerCase().includes('oss contributor'),
-    ),
-  ).length;
   const INITIAL_COUNT = 20;
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
@@ -81,7 +91,7 @@ export default function ContributorsPage() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- resetting on change; a refactor would change behaviour
     setVisibleCount(INITIAL_COUNT);
-  }, [query, filter]);
+  }, [query, selected]);
 
   // Paginated slice
   const visibleContributors = filtered.slice(0, visibleCount);
@@ -181,7 +191,7 @@ export default function ContributorsPage() {
                     }
 
                     setQuery('');
-                    setFilter('all');
+                    clear();
 
                     const contributorIndex = people.findIndex(
                       (person) => person.name === contributor.name,
@@ -256,27 +266,13 @@ export default function ContributorsPage() {
               )}
             </div>
 
-            {/* Filter Tabs */}
-            <div className="flex rounded-xl border bg-muted/40 p-1">
-              <FilterButton
-                active={filter === 'all'}
-                onClick={() => setFilter('all')}
-              >
-                All
-              </FilterButton>
-              <FilterButton
-                active={filter === 'oss'}
-                onClick={() => setFilter('oss')}
-              >
-                OSS
-              </FilterButton>
-              <FilterButton
-                active={filter === 'gsoc'}
-                onClick={() => setFilter('gsoc')}
-              >
-                GSoC
-              </FilterButton>
-            </div>
+            {/* Filters */}
+            <FilterChips
+              onClear={clear}
+              onToggle={toggle}
+              options={filterOptions}
+              selected={selected}
+            />
 
             {/* View Toggle (Grid / List) */}
             <div className="flex rounded-xl border bg-muted/40 p-1">
@@ -369,7 +365,7 @@ export default function ContributorsPage() {
               className="mt-5 rounded-xl"
               onClick={() => {
                 setQuery('');
-                setFilter('all');
+                clear();
               }}
               variant="outline"
             >
@@ -510,29 +506,6 @@ function Stat({ value, label }: { value: number; label: string }) {
         {label}
       </div>
     </div>
-  );
-}
-
-function FilterButton({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
-        active
-          ? 'bg-background text-foreground shadow-sm'
-          : 'text-muted-foreground hover:text-foreground'
-      }`}
-      onClick={onClick}
-    >
-      {children}
-    </button>
   );
 }
 
