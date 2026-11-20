@@ -1,5 +1,9 @@
 # Weekly dead-link check. Not a required PR check, because external sites go
-# down at random and would block merges. Opens (or updates) one issue instead.
+# down at random and would block merges. Opens (or updates) one issue instead,
+# only for dead links (404/410, DNS or TLS errors, malformed URLs, non-public
+# destinations). Links that still fail with server or network errors after a
+# retry are unverified: they appear in the job summary of every run, and in
+# the issue when there are dead links too.
 name: Link check
 
 on:
@@ -11,12 +15,21 @@ permissions:
   contents: read
   issues: write
 
+# One run at a time, so that two runs can't both find no open issue and
+# create one each; a run that starts meanwhile waits (GitHub keeps only the
+# newest waiting run)
+concurrency:
+  group: link-check
+  cancel-in-progress: false
+
 jobs:
   links:
     name: Link check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -27,11 +40,26 @@ jobs:
         run: |
           set +e
           node scripts/check-links.mjs > links.txt
-          echo "status=$?" >> "$GITHUB_OUTPUT"
+          status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
           cat links.txt
+          # The summary starts with "Checked "; without it, the check broke
+          # before it finished (the error is in the job log)
+          if grep -q '^Checked ' links.txt; then
+            {
+              echo '```'
+              sed -n '/^Checked /,$p' links.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "The link check failed (exit code $status) before it finished; see the log of the step \"Check links\"." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          # 2 means dead links (reported below); anything else non-zero means
+          # the check itself broke
+          if [ "$status" != 0 ] && [ "$status" != 2 ]; then exit "$status"; fi
 
       - name: Report dead links
-        if: steps.check.outputs.status != '0'
+        if: steps.check.outputs.status == '2'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -43,7 +71,9 @@ jobs:
             sed -n '/^Checked /,$p' links.txt
             echo '```'
           } > body.md
-          existing=$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[0].number')
+          # Not --search: the search index lags behind new issues
+          existing=$(gh issue list --state open --limit 500 --json number,title \
+            --jq "map(select(.title == \"$title\")) | .[0].number // empty")
           if [ -n "$existing" ]; then
             gh issue comment "$existing" --body-file body.md
           else
