@@ -117,6 +117,11 @@ services, products and Nodes, and that every referenced image exists.
   (`npm run lint`); errors and warnings fail it. It also checks the curated
   release notes in `docs/releases/` (see [Releasing](#releasing)), and that
   those of the version in `package.json` exist once it is a release version.
+  Its checker must be the commit that `release.yml` pins for `publish-release`,
+  as must the one in the pre-tag block of [Releasing](#releasing): Dependabot
+  bumps only the pins, so its pull requests that bump them fail `Lint` until
+  `CHECKER_SHA` in `ci.yml` and the URL in the README are updated by hand on
+  their branch.
 - `Test`: runs the tests with coverage and reports it to
   [Codecov][badge-url-coverage]. [`codecov.yml`](codecov.yml) states the target
   of this repo (70%, working up from about 38%); the status only reports for
@@ -166,7 +171,12 @@ docker compose up -d
 ```
 
 Watchtower updates the image only: when `docker-compose.yaml` changes, run
-`git pull` and `docker compose up -d` on the host. The site listens on port 80
+`git pull` and `docker compose up -d` on the host. **Until the first release
+has finished, don't pull or restart a host that still serves the image from
+`ghcr.io`:** `latest` on Docker Hub is then an image from 2024, and the
+compose file of this version would put it live. Check the host's branch first
+(`git branch --show-current`; it must be `main`), and move the host as
+described [below](#moving-the-host-to-docker-hub). The site listens on port 80
 (change it in `docker-compose.yaml`). TLS is expected to be terminated by a
 reverse proxy in front of it. To build locally instead of pulling, run
 `docker compose up -d --build`.
@@ -299,6 +309,8 @@ Releases are cut by the maintainers:
        notes="$(mktemp -d)" && git show "${sha}:docs/releases/${version}.md" > "${notes}/notes.md" &&
            curl -fsSL "https://raw.githubusercontent.com/elixir-cloud-aai/.github/31f22fccc1f3c597ed7c1d1f75b2f85522155348/actions/publish-release/publish.py" -o "${notes}/publish.py" &&
            python3 -I "${notes}/publish.py" check "${notes}/notes.md" || { echo "Release notes docs/releases/${version}.md missing or not in the format"; exit 1; }
+       # A tag is used up, also if its release failed
+       [[ -z "$(git ls-remote --tags origin "refs/tags/v${version}")" ]] || { echo "Tag v${version} exists already: use the next MICRO"; exit 1; }
        # Also drafts, which the release workflow can't see before it fails on them
        release="$(gh release view "v${version}" --repo elixir-cloud-aai/landing-page 2>&1)" && { echo "A release or draft of v${version} exists: delete a draft"; exit 1; }
        [[ "${release}" == *"release not found"* ]] || { echo "Cannot check the releases: ${release}"; exit 1; }

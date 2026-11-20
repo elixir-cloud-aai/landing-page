@@ -7,7 +7,9 @@
 #   docker compose up -d          # start (or update this file and re-run)
 #   docker compose logs -f site   # follow the site's logs
 #
-# To move a host from GHCR (only after the first release) or to roll back, see
+# Until the first release has finished, `latest` on Docker Hub is an image
+# from 2024: don't pull or `docker compose up` a host that runs the GHCR image
+# with this file before then. To move a host from GHCR or to roll back, see
 # "Deployment" in README.md. To build locally instead of pulling:
 # docker compose up -d --build
 services:
