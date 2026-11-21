@@ -41,6 +41,13 @@ Content lives in JSON files under [`src/data/`](src/data/):
 
 To change content, edit the relevant file and open a pull request.
 
+In `funding.json`, `category` is the funding programme, `ELIXIR` or
+`Google Summer of Code`: it titles the grant's card, sets its logo and is
+its filter. `funder` is the detailed grant type, e.g. `ELIXIR Strategic
+Implementation Study`, shown under the title unless it equals the
+programme. Dates are `YYYY-MM-DD`; grants are listed by end date (newest
+first), then start date (oldest first), then name.
+
 The listings (Products, Funding, Contributors) share one filter behaviour
 ([`src/lib/filters.ts`](src/lib/filters.ts)): several filters can be selected,
 and an item is listed if it matches any of them. The selection is kept in the
