@@ -1,8 +1,17 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Mail, Sparkles, Star } from 'lucide-react';
-import { ChevronDown, LayoutGrid, List, Search, Users, X } from 'lucide-react';
+import {
+  ChevronDown,
+  LayoutGrid,
+  List,
+  Mail,
+  Search,
+  Sparkles,
+  Star,
+  Users,
+  X,
+} from 'lucide-react';
 import { FilterChips } from '@/components/catalog/shared';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -14,7 +23,7 @@ import { useUrlFilters } from '@/lib/use-url-filters';
 import {
   affiliation,
   type Contributor,
-  elixirNode,
+  isELIXIR,
   isExternal,
   isGSoC,
   isLead,
@@ -44,7 +53,7 @@ const filters = [
   {
     value: 'elixir',
     label: 'ELIXIR',
-    test: (p: Contributor) => !!elixirNode(p),
+    test: isELIXIR,
   },
   { value: 'oss', label: 'OSS', test: isOSS },
   { value: 'external', label: 'External', test: isExternal },

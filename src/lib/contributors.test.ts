@@ -3,6 +3,8 @@ import {
   affiliation,
   type Contributor,
   elixirNode,
+  hasAffiliation,
+  isELIXIR,
   isExternal,
   isGSoC,
   isLead,
@@ -70,6 +72,33 @@ describe('affiliations', () => {
     expect(isExternal(person('No roles'))).toBe(true);
     expect(isExternal(ossMember)).toBe(false);
     expect(isExternal(nodeMember)).toBe(false);
+  });
+});
+
+describe('isELIXIR', () => {
+  it('includes the Nodes, the Hub and EMBL-EBI', () => {
+    expect(isELIXIR(nodeMember)).toBe(true);
+    expect(isELIXIR(person('a', 'ELIXIR Hub'))).toBe(true);
+    expect(isELIXIR(person('b', 'EMBL-EBI'))).toBe(true);
+    expect(isELIXIR(ossMember)).toBe(false);
+  });
+
+  it('only knows Node names spelled exactly', () => {
+    expect(isELIXIR(person('a', 'Elixir Finland'))).toBe(false);
+    expect(isELIXIR(person('b', 'constructor'))).toBe(false);
+  });
+});
+
+describe('hasAffiliation', () => {
+  it('is true for a Node, OSS or external contributor', () => {
+    expect(hasAffiliation(nodeMember)).toBe(true);
+    expect(hasAffiliation(ossMember)).toBe(true);
+    expect(hasAffiliation(external)).toBe(true);
+  });
+
+  it('is false for roles proper only', () => {
+    expect(hasAffiliation(person('a', "GSoC '21 Contributor"))).toBe(false);
+    expect(hasAffiliation(person('b', 'Elixir Finland'))).toBe(false);
   });
 });
 

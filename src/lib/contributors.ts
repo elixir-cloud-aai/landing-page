@@ -43,9 +43,27 @@ export const LEADS: readonly string[] = [
 
 const lower = (role: string) => role.toLowerCase();
 
+// Node names must match NODE_FLAGS exactly (own keys only)
+const isNode = (role: string) => Object.hasOwn(NODE_FLAGS, role);
+
 /** The contributor's ELIXIR Node (or Hub), if any. */
 export function elixirNode(person: Contributor): string | null {
-  return person.roles?.find((role) => role in NODE_FLAGS) ?? null;
+  return person.roles?.find(isNode) ?? null;
+}
+
+/** Whether the contributor is with an ELIXIR Node, the Hub or EMBL-EBI. */
+export function isELIXIR(person: Contributor): boolean {
+  return !!elixirNode(person);
+}
+
+/**
+ * Whether one of the contributor's roles is an affiliation: an ELIXIR Node,
+ * "OSS Contributor" or "External Contributor".
+ */
+export function hasAffiliation(person: Contributor): boolean {
+  return (person.roles ?? []).some(
+    (role) => isNode(role) || [OSS, EXTERNAL].includes(lower(role)),
+  );
 }
 
 export function isOSS(person: Contributor): boolean {
@@ -86,7 +104,7 @@ export function affiliation(person: Contributor): {
 /** The roles to list on the tile: all but the affiliations. */
 export function roles(person: Contributor): string[] {
   return (person.roles ?? []).filter(
-    (role) => !(role in NODE_FLAGS) && ![OSS, EXTERNAL].includes(lower(role)),
+    (role) => !isNode(role) && ![OSS, EXTERNAL].includes(lower(role)),
   );
 }
 

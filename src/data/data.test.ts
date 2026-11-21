@@ -10,7 +10,7 @@ import type {
 import contributors from './contributor.json';
 import nodesData from './nodes.json';
 import productsData from './product.json';
-import { LEADS, NODE_FLAGS } from '@/lib/contributors';
+import { hasAffiliation, LEADS, NODE_FLAGS } from '@/lib/contributors';
 import { GA4GH_DRIVER_PROJECT_URL } from '@/lib/site';
 import projects from './project.json';
 import servicesData from './services.json';
@@ -130,11 +130,21 @@ describe('contributor.json', () => {
     const nodeLike = /^ELIXIR [A-Z][a-z]+( [A-Z][a-z]+)*$|^EMBL-EBI$/;
     const unknown = contributors
       .flatMap((c) => c.roles ?? [])
-      .filter((role) => nodeLike.test(role) && !(role in NODE_FLAGS));
+      .filter(
+        (role) => nodeLike.test(role) && !Object.hasOwn(NODE_FLAGS, role),
+      );
     expect(unknown).toEqual([]);
     Object.values(NODE_FLAGS).forEach((code) => {
       expect(publicFile(`flags/${code}.svg`), code).toBe(true);
     });
+  });
+
+  // Without one, a typo in a Node name would make the person "External"
+  it('gives everyone an affiliation', () => {
+    const without = contributors
+      .filter((c) => !hasAffiliation(c))
+      .map((c) => c.name);
+    expect(without).toEqual([]);
   });
 
   it('lists every lead', () => {
