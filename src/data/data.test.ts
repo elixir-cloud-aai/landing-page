@@ -126,6 +126,10 @@ describe('funding.json', () => {
     },
   );
 
+  it.each(PROGRAMMES.map(({ name }) => [name]))('has grants of %s', (name) => {
+    expect(funding.some((grant) => grant.category === name)).toBe(true);
+  });
+
   it('has unique ids', () => {
     expect(duplicates(funding.map((grant) => grant.id))).toEqual([]);
   });

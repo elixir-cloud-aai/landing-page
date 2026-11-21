@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import funding from '@/data/funding.json';
-import { grantType, PROGRAMMES, sortGrants } from '@/lib/funding';
+import { grantType, sortGrants } from '@/lib/funding';
 import FundingPage from './page';
 
 // The grant cards, in display order
@@ -14,6 +14,16 @@ describe('Funding page', () => {
       .getAllByTestId('stat')
       .map((stat) => stat.lastChild?.textContent);
     expect(labels).toEqual(['Total grants', 'ELIXIR grants', 'GSoC projects']);
+    const count = (category: string) =>
+      funding.filter((grant) => grant.category === category).length;
+    const values = screen
+      .getAllByTestId('stat')
+      .map((stat) => stat.firstChild?.textContent);
+    expect(values).toEqual(
+      [funding.length, count('ELIXIR'), count('Google Summer of Code')].map(
+        String,
+      ),
+    );
   });
 
   it('offers one filter per programme', () => {
@@ -21,7 +31,7 @@ describe('Funding page', () => {
     const filters = within(screen.getByRole('group', { name: 'Filter' }))
       .getAllByRole('button')
       .map((button) => button.firstChild?.textContent);
-    expect(filters).toEqual(PROGRAMMES.map(({ name }) => name));
+    expect(filters).toEqual(['ELIXIR', 'Google Summer of Code']);
   });
 
   it('sorts grants by end date, start date and name', () => {

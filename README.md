@@ -45,8 +45,9 @@ In `funding.json`, `category` is the funding programme, `ELIXIR` or
 `Google Summer of Code`: it titles the grant's card, sets its logo and is
 its filter. `funder` is the detailed grant type, e.g. `ELIXIR Strategic
 Implementation Study`, shown under the title unless it equals the
-programme. Dates are `YYYY-MM-DD`; grants are listed by end date (newest
-first), then start date (oldest first), then name. `formattedDuration` is
+programme; it starts with the programme's name. Dates are `YYYY-MM-DD`;
+grants are listed by end date (newest first), then start date (oldest
+first), then name. `formattedDuration` is
 the period as shown on the card; keep it in step with the dates. A new
 programme needs its logo in `public/` and an entry in `PROGRAMMES` in
 [`src/lib/funding.ts`](src/lib/funding.ts).

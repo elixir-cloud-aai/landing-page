@@ -57,6 +57,8 @@ export default function FundingPage() {
   }, [query, selected]);
 
   // Stat metrics
+  // The stats name the two programmes, as the issue for the page asks;
+  // a new programme gets a filter (PROGRAMMES) but no stat of its own
   const gsocCount = grants.filter(
     (g) => g.category === 'Google Summer of Code',
   ).length;
