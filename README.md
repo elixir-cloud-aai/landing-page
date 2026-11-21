@@ -46,7 +46,10 @@ In `funding.json`, `category` is the funding programme, `ELIXIR` or
 its filter. `funder` is the detailed grant type, e.g. `ELIXIR Strategic
 Implementation Study`, shown under the title unless it equals the
 programme. Dates are `YYYY-MM-DD`; grants are listed by end date (newest
-first), then start date (oldest first), then name.
+first), then start date (oldest first), then name. `formattedDuration` is
+the period as shown on the card; keep it in step with the dates. A new
+programme needs its logo in `public/` and an entry in `PROGRAMMES` in
+[`src/lib/funding.ts`](src/lib/funding.ts).
 
 The listings (Products, Funding, Contributors) share one filter behaviour
 ([`src/lib/filters.ts`](src/lib/filters.ts)): several filters can be selected,

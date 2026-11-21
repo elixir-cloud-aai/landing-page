@@ -15,7 +15,13 @@ export type Grant = {
   category: string;
 };
 
-// Dates are ISO 8601 (`YYYY-MM-DD`), so they compare as strings.
+// The funding programmes (`category`), in the order of the filters, with
+// their logos in `public/`. A new programme needs an entry here.
+export const PROGRAMMES: readonly { name: string; logo: string }[] = [
+  { name: 'ELIXIR', logo: '/elixir.png' },
+  { name: 'Google Summer of Code', logo: '/gsoc.svg' },
+];
+
 const compareText = (a: string, b: string) =>
   a.localeCompare(b, 'en', { numeric: true, sensitivity: 'base' });
 
@@ -25,6 +31,7 @@ const compareText = (a: string, b: string) =>
  * array.
  */
 export function sortGrants<T extends Grant>(grants: readonly T[]): T[] {
+  // Dates are ISO 8601 (`YYYY-MM-DD`), so they compare as strings
   return [...grants].sort(
     (a, b) =>
       b.endDate.localeCompare(a.endDate) ||

@@ -18,27 +18,22 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
 import { checkFilterIds, filterId, matchesAny } from '@/lib/filters';
-import { type Grant, grants, grantType } from '@/lib/funding';
+import { type Grant, grants, grantType, PROGRAMMES } from '@/lib/funding';
 import { useUrlFilters } from '@/lib/use-url-filters';
 import { cn } from '@/lib/utils';
 
-const GSOC = 'Google Summer of Code';
-
 // The logo of each programme (`category`)
-const LOGOS: Record<string, string> = {
-  ELIXIR: '/elixir.png',
-  [GSOC]: '/gsoc.svg',
-};
+const LOGOS = Object.fromEntries(
+  PROGRAMMES.map(({ name, logo }) => [name, logo]),
+);
 
-// One filter per programme, in the order the programmes first appear
+// One filter per programme, in the order of PROGRAMMES
 const categoryOptions = checkFilterIds(
-  Array.from(new Set(grants.map((grant) => grant.category))).map(
-    (category) => ({
-      value: filterId(category),
-      label: category,
-      count: grants.filter((grant) => grant.category === category).length,
-    }),
-  ),
+  PROGRAMMES.map(({ name }) => ({
+    value: filterId(name),
+    label: name,
+    count: grants.filter((grant) => grant.category === name).length,
+  })),
 );
 const categoryIds = categoryOptions.map((option) => option.value);
 
@@ -62,7 +57,9 @@ export default function FundingPage() {
   }, [query, selected]);
 
   // Stat metrics
-  const gsocCount = grants.filter((g) => g.category === GSOC).length;
+  const gsocCount = grants.filter(
+    (g) => g.category === 'Google Summer of Code',
+  ).length;
   const elixirCount = grants.filter((g) => g.category === 'ELIXIR').length;
 
   return (
