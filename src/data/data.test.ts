@@ -10,6 +10,7 @@ import type {
 import contributors from './contributor.json';
 import nodesData from './nodes.json';
 import productsData from './product.json';
+import { LEADS, NODE_FLAGS } from '@/lib/contributors';
 import { GA4GH_DRIVER_PROJECT_URL } from '@/lib/site';
 import projects from './project.json';
 import servicesData from './services.json';
@@ -122,6 +123,23 @@ describe('contributor.json', () => {
       .map((c) => c.image)
       .filter((image): image is string => !!image && !publicFile(image));
     expect(missing).toEqual([]);
+  });
+
+  // A Node affiliation without a flag would show as a role, not a subtitle
+  it('names only ELIXIR Nodes that have a flag', () => {
+    const nodeLike = /^ELIXIR [A-Z][a-z]+( [A-Z][a-z]+)*$|^EMBL-EBI$/;
+    const unknown = contributors
+      .flatMap((c) => c.roles ?? [])
+      .filter((role) => nodeLike.test(role) && !(role in NODE_FLAGS));
+    expect(unknown).toEqual([]);
+    Object.values(NODE_FLAGS).forEach((code) => {
+      expect(publicFile(`flags/${code}.svg`), code).toBe(true);
+    });
+  });
+
+  it('lists every lead', () => {
+    const names = contributors.map((c) => c.name);
+    LEADS.forEach((lead) => expect(names).toContain(lead));
   });
 });
 
