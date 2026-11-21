@@ -1,13 +1,12 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Image from 'next/image';
 import {
   Award,
-  Building2,
   Calendar,
   HeartHandshake,
   Search,
-  Sparkles,
   Users,
   X,
 } from 'lucide-react';
@@ -19,25 +18,19 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
 import { checkFilterIds, filterId, matchesAny } from '@/lib/filters';
+import { type Grant, grants, grantType } from '@/lib/funding';
 import { useUrlFilters } from '@/lib/use-url-filters';
 import { cn } from '@/lib/utils';
 
-import fundingData from '@/data/funding.json';
+const GSOC = 'Google Summer of Code';
 
-type FundingItem = {
-  id: string;
-  funder: string;
-  project: string;
-  recipients: string[];
-  startDate: string;
-  endDate: string;
-  formattedDuration: string;
-  category: string;
+// The logo of each programme (`category`)
+const LOGOS: Record<string, string> = {
+  ELIXIR: '/elixir.png',
+  [GSOC]: '/gsoc.svg',
 };
 
-const grants = fundingData as FundingItem[];
-
-// One filter per category, in the order the categories first appear
+// One filter per programme, in the order the programmes first appear
 const categoryOptions = checkFilterIds(
   Array.from(new Set(grants.map((grant) => grant.category))).map(
     (category) => ({
@@ -69,10 +62,8 @@ export default function FundingPage() {
   }, [query, selected]);
 
   // Stat metrics
-  const gsocCount = grants.filter((g) =>
-    g.funder.includes('Google Summer of Code'),
-  ).length;
-  const elixirCount = grants.filter((g) => g.funder.includes('ELIXIR')).length;
+  const gsocCount = grants.filter((g) => g.category === GSOC).length;
+  const elixirCount = grants.filter((g) => g.category === 'ELIXIR').length;
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-background">
@@ -116,9 +107,9 @@ export default function FundingPage() {
 
           {/* Stats Bar */}
           <div className="mx-auto mt-12 grid max-w-3xl grid-cols-3 divide-x rounded-2xl border bg-card/70 p-1 shadow-sm">
-            <Stat label="Total Grants" value={grants.length} />
-            <Stat label="GSoC Projects" value={gsocCount} />
-            <Stat label="ELIXIR Grants" value={elixirCount} />
+            <Stat label="Total grants" value={grants.length} />
+            <Stat label="ELIXIR grants" value={elixirCount} />
+            <Stat label="GSoC projects" value={gsocCount} />
           </div>
         </div>
       </section>
@@ -205,42 +196,46 @@ export default function FundingPage() {
 
 /* Helper Components */
 
-function FundingCard({ item }: { item: FundingItem }) {
-  const isGSoC = item.funder.includes('Google Summer of Code');
+function FundingCard({ item }: { item: Grant }) {
+  const logo = LOGOS[item.category];
+  const type = grantType(item);
 
   return (
-    <Card className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5">
+    <Card
+      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5"
+      role="article"
+    >
       {/* Background Hover Effect */}
       <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-primary/10 blur-2xl transition-opacity duration-300 opacity-0 group-hover:opacity-100" />
 
       <div className="relative flex-1 space-y-4">
-        {/* Funder Header Row */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border bg-muted/50 text-primary">
-              {isGSoC ? (
-                <Sparkles className="h-4 w-4 text-amber-500" />
-              ) : (
-                <Building2 className="h-4 w-4 text-blue-500" />
-              )}
-            </div>
-            <div className="min-w-0">
-              <h4 className="truncate text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                {item.funder}
-              </h4>
-            </div>
+        {/* Programme: logo, title and detailed grant type. The logo tile
+            stays white, as the logos are made for light backgrounds. */}
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border bg-white p-1.5">
+            {logo && (
+              <Image
+                alt={`${item.category} logo`}
+                className="h-full w-full object-contain"
+                height={24}
+                src={logo}
+                width={24}
+              />
+            )}
           </div>
-
-          <Badge
-            className={`shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-medium ${
-              isGSoC
-                ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
-                : 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
-            }`}
-            variant="secondary"
-          >
-            {isGSoC ? 'GSoC' : 'Grant'}
-          </Badge>
+          <div className="min-w-0">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              {item.category}
+            </h4>
+            {type && (
+              <p
+                className="mt-0.5 text-xs text-muted-foreground"
+                data-testid="grant-type"
+              >
+                {type}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Project Title */}
@@ -273,7 +268,7 @@ function FundingCard({ item }: { item: FundingItem }) {
 
 function Stat({ value, label }: { value: number; label: string }) {
   return (
-    <div className="px-3 py-4 text-center sm:px-6">
+    <div className="px-3 py-4 text-center sm:px-6" data-testid="stat">
       <div className="text-xl font-bold tracking-tight sm:text-2xl">
         {value}
       </div>
