@@ -33,8 +33,12 @@ const tileOf = (name: string) =>
       within(tile).getByRole('heading', { level: 3 }).textContent === name,
   )!;
 
-const find = (test: (person: Contributor) => boolean) => {
-  const person = contributors.find(test);
+// The first matching contributor; `firstPage`: among the 20 shown before
+// "Load more" without filters
+const find = (test: (person: Contributor) => boolean, firstPage = true) => {
+  const person = (firstPage ? contributors.slice(0, 20) : contributors).find(
+    test,
+  );
   if (!person) {
     throw new Error('No contributor in the data matches the test');
   }
@@ -93,8 +97,7 @@ describe('Contributors page', () => {
     // Filtered, so that the person is on the first page
     window.history.replaceState(null, '', `/contributors?filter=${filter}`);
     render(<ContributorsPage />);
-    const person = find(test);
-    expect(person, label).toBeDefined();
+    const person = find(test, false);
     const tile = within(tileOf(person.name));
     expect(tile.getByTestId('affiliation').textContent).toBe(label);
     expect(tile.queryByAltText(/^Flag of/)).toBeNull();

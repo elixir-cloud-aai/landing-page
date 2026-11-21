@@ -46,6 +46,10 @@ const lower = (role: string) => role.toLowerCase();
 // Node names must match NODE_FLAGS exactly (own keys only)
 const isNode = (role: string) => Object.hasOwn(NODE_FLAGS, role);
 
+// An ELIXIR Node, "OSS Contributor" or "External Contributor"
+const isAffiliation = (role: string) =>
+  isNode(role) || [OSS, EXTERNAL].includes(lower(role));
+
 /** The contributor's ELIXIR Node (or Hub), if any. */
 export function elixirNode(person: Contributor): string | null {
   return person.roles?.find(isNode) ?? null;
@@ -61,9 +65,7 @@ export function isELIXIR(person: Contributor): boolean {
  * "OSS Contributor" or "External Contributor".
  */
 export function hasAffiliation(person: Contributor): boolean {
-  return (person.roles ?? []).some(
-    (role) => isNode(role) || [OSS, EXTERNAL].includes(lower(role)),
-  );
+  return (person.roles ?? []).some(isAffiliation);
 }
 
 export function isOSS(person: Contributor): boolean {
@@ -103,9 +105,7 @@ export function affiliation(person: Contributor): {
 
 /** The roles to list on the tile: all but the affiliations. */
 export function roles(person: Contributor): string[] {
-  return (person.roles ?? []).filter(
-    (role) => !isNode(role) && ![OSS, EXTERNAL].includes(lower(role)),
-  );
+  return (person.roles ?? []).filter((role) => !isAffiliation(role));
 }
 
 /** The ELIXIR Nodes that contributors come from (the Hub isn't one). */
