@@ -18,7 +18,14 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
 import { checkFilterIds, filterId, matchesAny } from '@/lib/filters';
-import { type Grant, grants, grantType, PROGRAMMES } from '@/lib/funding';
+import {
+  ELIXIR,
+  type Grant,
+  grants,
+  grantType,
+  GSOC,
+  PROGRAMMES,
+} from '@/lib/funding';
 import { useUrlFilters } from '@/lib/use-url-filters';
 import { cn } from '@/lib/utils';
 
@@ -57,12 +64,8 @@ export default function FundingPage() {
   }, [query, selected]);
 
   // Stat metrics
-  // The stats name the two programmes, as the issue for the page asks;
-  // a new programme gets a filter (PROGRAMMES) but no stat of its own
-  const gsocCount = grants.filter(
-    (g) => g.category === 'Google Summer of Code',
-  ).length;
-  const elixirCount = grants.filter((g) => g.category === 'ELIXIR').length;
+  const gsocCount = grants.filter((g) => g.category === GSOC).length;
+  const elixirCount = grants.filter((g) => g.category === ELIXIR).length;
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-background">

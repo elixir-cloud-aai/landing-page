@@ -1,12 +1,18 @@
 import { describe, expect, it } from 'vitest';
-import { type Grant, grantType, sortGrants } from './funding';
+import {
+  checkGrants,
+  type Grant,
+  grantType,
+  type Programme,
+  sortGrants,
+} from './funding';
 
 const grant = (
   project: string,
   startDate: string,
   endDate: string,
-  category = 'ELIXIR',
-  funder = category,
+  category: Programme = 'ELIXIR',
+  funder: string = category,
 ): Grant => ({
   id: project,
   funder,
@@ -81,5 +87,20 @@ describe('grantType', () => {
         grant('a', '2020-01-01', '2021-01-01', 'Google Summer of Code'),
       ),
     ).toBeNull();
+  });
+});
+
+describe('checkGrants', () => {
+  it('accepts grants of known programmes', () => {
+    const grants = [grant('a', '2020-01-01', '2021-01-01')];
+    expect(checkGrants(grants)).toBe(grants);
+  });
+
+  it('rejects a grant of an unknown programme', () => {
+    expect(() =>
+      checkGrants([
+        { ...grant('a', '2020-01-01', '2021-01-01'), category: 'Other' },
+      ]),
+    ).toThrow('The grant "a" has the unknown programme "Other"');
   });
 });
