@@ -141,8 +141,11 @@ describe('Contributors page', () => {
     const user = userEvent.setup();
     render(<ContributorsPage />);
     await user.click(screen.getByRole('button', { name: 'List view' }));
-    const person = find((p) => isLead(p) && roles(p).length > 0);
+    const person = find((p) => isLead(p) && roles(p).length > 0 && !!p.github);
     const item = within(tileOf(person.name));
+    expect(
+      item.getByRole('link', { name: 'GitHub profile' }).getAttribute('href'),
+    ).toBe(person.github);
     expect(item.getByTestId('affiliation').textContent).toBe(
       affiliation(person).label,
     );

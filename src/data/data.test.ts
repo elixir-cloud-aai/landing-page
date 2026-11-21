@@ -125,6 +125,20 @@ describe('contributor.json', () => {
     expect(missing).toEqual([]);
   });
 
+  // A Node spelt with other capitals would show as a role, not a subtitle
+  it('spells ELIXIR Nodes exactly', () => {
+    const nodes = new Map(
+      Object.keys(NODE_FLAGS).map((node) => [node.toLowerCase(), node]),
+    );
+    const misspelt = contributors
+      .flatMap((c) => c.roles ?? [])
+      .filter((role) => {
+        const node = nodes.get(role.trim().toLowerCase());
+        return node !== undefined && node !== role;
+      });
+    expect(misspelt).toEqual([]);
+  });
+
   // A Node affiliation without a flag would show as a role, not a subtitle
   it('names only ELIXIR Nodes that have a flag', () => {
     const nodeLike = /^ELIXIR [A-Z][a-z]+( [A-Z][a-z]+)*$|^EMBL-EBI$/;

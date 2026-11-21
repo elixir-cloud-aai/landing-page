@@ -3,12 +3,14 @@ import {
   affiliation,
   type Contributor,
   elixirNode,
+  emailAddress,
   hasAffiliation,
   isELIXIR,
   isExternal,
   isGSoC,
   isLead,
   isOSS,
+  LEADS,
   nodesRepresented,
   roles,
   sortContributors,
@@ -107,6 +109,34 @@ describe('roles', () => {
     expect(roles(nodeMember)).toEqual(['ELIXIR Compute Platform: Lead']);
     expect(roles(ossMember)).toEqual(["GSoC '21 Contributor"]);
     expect(roles(external)).toEqual([]);
+  });
+});
+
+describe('nodesRepresented with several Nodes', () => {
+  it('counts every Node of a contributor', () => {
+    expect(
+      nodesRepresented([person('a', 'ELIXIR Finland', 'ELIXIR Germany')]),
+    ).toEqual(['ELIXIR Finland', 'ELIXIR Germany']);
+  });
+});
+
+describe('emailAddress', () => {
+  it('reads the address from a Markdown link', () => {
+    expect(emailAddress('[a@b.org](mailto:a@b.org)')).toBe('a@b.org');
+  });
+
+  it('keeps a plain address', () => {
+    expect(emailAddress(' a@b.org ')).toBe('a@b.org');
+  });
+});
+
+describe('LEADS', () => {
+  it('names the leads of ELIXIR On-Cloud', () => {
+    expect([...LEADS].sort()).toEqual([
+      'Alex Kanitz',
+      'Jonathan Tedds',
+      'Martin Kuba',
+    ]);
   });
 });
 

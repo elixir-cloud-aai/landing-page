@@ -23,6 +23,7 @@ import { useUrlFilters } from '@/lib/use-url-filters';
 import {
   affiliation,
   type Contributor,
+  emailAddress,
   isELIXIR,
   isExternal,
   isGSoC,
@@ -565,8 +566,8 @@ function ContributorCard({
   );
 }
 
-// The ELIXIR Node (with its flag) or "OSS contributor" or "External
-// contributor", on one line
+// The ELIXIR Node, the ELIXIR Hub or EMBL-EBI (with its flag), or else
+// "OSS contributor" or "External contributor", on one line
 function Affiliation({ person }: { person: Contributor }) {
   const { label, flag } = affiliation(person);
   return (
@@ -642,7 +643,7 @@ function ContactLinks({ person }: { person: Contributor }) {
         <a
           aria-label="Send email"
           className={linkClass}
-          href={`mailto:${person.email}`}
+          href={`mailto:${emailAddress(person.email)}`}
         >
           <Mail className="h-4 w-4" />
         </a>

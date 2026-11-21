@@ -50,7 +50,10 @@ const isNode = (role: string) => Object.hasOwn(NODE_FLAGS, role);
 const isAffiliation = (role: string) =>
   isNode(role) || [OSS, EXTERNAL].includes(lower(role));
 
-/** The contributor's ELIXIR Node (or Hub), if any. */
+/**
+ * The contributor's ELIXIR affiliation, if any: an ELIXIR Node, the ELIXIR
+ * Hub or EMBL-EBI (the first, if several).
+ */
 export function elixirNode(person: Contributor): string | null {
   return person.roles?.find(isNode) ?? null;
 }
@@ -108,15 +111,29 @@ export function roles(person: Contributor): string[] {
   return (person.roles ?? []).filter((role) => !isAffiliation(role));
 }
 
-/** The ELIXIR Nodes that contributors come from (the Hub isn't one). */
+/**
+ * The ELIXIR Nodes that contributors come from, EMBL-EBI included, the Hub
+ * not (it isn't a Node). Counts every Node of a contributor with several.
+ */
 export function nodesRepresented(people: readonly Contributor[]): string[] {
   return Array.from(
     new Set(
-      people
-        .map(elixirNode)
-        .filter((node): node is string => !!node && !NOT_NODES.has(node)),
+      people.flatMap((person) =>
+        (person.roles ?? []).filter(
+          (role) => isNode(role) && !NOT_NODES.has(role),
+        ),
+      ),
     ),
   );
+}
+
+/**
+ * The address to mail, also from a Markdown link such as
+ * `[a@b.org](mailto:a@b.org)`.
+ */
+export function emailAddress(email: string): string {
+  const link = /^\[[^\]]*\]\(mailto:([^)]+)\)$/.exec(email.trim());
+  return link ? link[1] : email.trim();
 }
 
 /** Orders contributors by name (ascending, alphanumerical); a new array. */
