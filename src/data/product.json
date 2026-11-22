@@ -17,16 +17,17 @@
         "Needs no database or other services of its own"
       ],
       "howItWorks": [
-        "The API pod (Tomcat web server) receives and validates TES requests and turns them into Kubernetes jobs.",
-        "The API pod creates a taskmaster pod for each task.",
-        "The taskmaster starts a filer pod that creates a PVC as scratch space and downloads input files into the locations given in the TES request.",
-        "The taskmaster runs the executors as pods, one after the other.",
-        "The filer runs once more to push outputs to remote locations; then the PVC is scrubbed and deleted and the task completes."
+        "The API validates each task it receives and creates a taskmaster job for it.",
+        "For a task with inputs, outputs or volumes, the taskmaster creates a temporary volume (PVC) as its scratch space.",
+        "The filer downloads the inputs into the volume, from HTTP(S), FTP, S3 or a shared file system.",
+        "The executors run one after the other, each as a job with the volume mounted.",
+        "The filer uploads the outputs; then the volume is deleted and the task ends."
       ],
       "requirements": [
-        "A working Kubernetes cluster, version 1.9 or later",
-        "A default storage class supporting RWO mode (needed for tasks with I/O)",
-        "An FTP account or an accessible PVC (only for workflow-manager integration)"
+        "A Kubernetes cluster, version 1.23 or later; TESK needs access to one namespace only",
+        "Helm 3",
+        "A default storage class (ReadWriteOnce is enough) for the temporary volume of each task with inputs or outputs",
+        "For inputs and outputs over anything but HTTP(S): an FTP account, a shared file system (a ReadWriteMany volume) or S3"
       ],
       "deployment": ["Kubernetes (Helm chart in charts/tesk)"],
       "relatedRepos": [
@@ -85,9 +86,10 @@
         "Docker Compose (development/testing)"
       ],
       "quickStart": [
-        "git clone https://github.com/elixir-cloud-aai/proTES.git && cd proTES",
-        "docker-compose up -d --build",
-        "Open the Swagger UI at http://localhost:8080/ga4gh/tes/v1/ui"
+        "git clone https://github.com/elixir-cloud-aai/protes.git && cd protes",
+        "docker compose up --build -d",
+        "Open the Swagger UI at http://localhost:8080/ga4gh/tes/v1/ui",
+        "List your TES instances under custom.tes.backends in config.dev.yaml, and set your identity provider there"
       ],
       "status": "Pre-release; breaking changes may occur",
       "standards": ["GA4GH TES"],
@@ -223,19 +225,19 @@
       "license": "Apache-2.0",
       "logo": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/cloud-components",
-      "docsUrl": "https://cloud-components.2.rahtiapp.fi/docs/introduction",
+      "docsUrl": "https://cloud-components.readthedocs.io/",
       "extraLinks": [
         {
           "label": "Installation",
-          "url": "https://cloud-components.2.rahtiapp.fi/docs/installation"
+          "url": "https://cloud-components.readthedocs.io/en/latest/docs/installation/"
         },
         {
           "label": "Customization",
-          "url": "https://cloud-components.2.rahtiapp.fi/docs/customization"
+          "url": "https://cloud-components.readthedocs.io/en/latest/docs/customization/"
         },
         {
-          "label": "Usage",
-          "url": "https://cloud-components.2.rahtiapp.fi/docs/usage"
+          "label": "Providers",
+          "url": "https://cloud-components.readthedocs.io/en/latest/docs/providers/"
         }
       ],
       "owner": {
@@ -316,7 +318,7 @@
       "license": "Apache-2.0",
       "logo": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/Pubgrade",
-      "docsUrl": null,
+      "docsUrl": "https://pubgrade.readthedocs.io/",
       "owner": {
         "name": "Akash Saini",
         "email": null,
