@@ -445,6 +445,80 @@
         "email": "alexander.kanitz@unibas.ch",
         "image": "/contributors/alex_kanitz.jpg"
       }
+    },
+    {
+      "id": "funnel",
+      "name": "Funnel",
+      "tagline": "GA4GH TES for HPC and cloud batch",
+      "blurb": "A task execution service that runs containerized tasks on HPC schedulers, Kubernetes and cloud batch services, with their inputs and outputs in local or cloud storage.",
+      "description": "Funnel lets workflow engines and users run containerized tasks on the compute systems they already have. It implements the GA4GH TES API: for each task, it finds a worker, downloads the inputs, runs the containers, uploads the outputs and records the logs. Compute backends include Slurm, HTCondor, Grid Engine, PBS/Torque, Kubernetes, AWS Batch and Google Cloud Batch; storage backends include S3, Google Cloud Storage, Swift, HTTP, FTP and local files. Funnel comes with a web dashboard.",
+      "audience": [
+        "Workflow engines and users who submit tasks through TES",
+        "Operators who offer TES on HPC clusters or cloud accounts"
+      ],
+      "features": [
+        "Implements the GA4GH TES API",
+        "Runs tasks on Slurm, HTCondor, PBS/Torque, Grid Engine, Kubernetes and cloud batch",
+        "Stages data in S3, Google Cloud Storage, Swift, HTTP, FTP or local files",
+        "Shows tasks in a web dashboard"
+      ],
+      "standards": ["GA4GH TES"],
+      "tags": ["GA4GH", "TES", "HPC"],
+      "license": "MIT",
+      "logo": null,
+      "repoUrl": "https://github.com/calypr/funnel",
+      "docsUrl": "https://calypr.org/tools/funnel/",
+      "owner": null
+    },
+    {
+      "id": "krini",
+      "name": "Krini",
+      "tagline": "Web portal for GA4GH compute services",
+      "blurb": "A web portal that lets researchers find compute services in a Cloud Registry, run tasks and workflows on them and follow their runs, without writing code.",
+      "description": "Krini gives researchers one web interface for running analyses on the compute services of a network. It finds GA4GH TES and WES services in a Cloud Registry and lets logged-in users create tasks, submit workflow runs, follow their state and cancel them. Users log in through an OpenID Connect provider that the operator configures, and Krini passes their access token to the services. Operators deploy it with its image or Helm chart for their own registry, login provider and services.",
+      "audience": [
+        "Researchers who run tasks and workflows without writing code",
+        "Operators who offer a portal to the services of their network"
+      ],
+      "features": [
+        "Works with the GA4GH TES, WES and Service Registry APIs",
+        "Lists the TES and WES services of a Cloud Registry",
+        "Creates and cancels tasks, submits workflow runs and follows both",
+        "Logs users in through a configurable OpenID Connect provider"
+      ],
+      "status": "In development; no release yet",
+      "standards": ["GA4GH TES", "GA4GH WES", "GA4GH Service Registry"],
+      "tags": ["GA4GH", "TES", "WES", "Portal"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/krini",
+      "docsUrl": "https://krini.readthedocs.io/",
+      "owner": null
+    },
+    {
+      "id": "trs-filer",
+      "name": "TRS-Filer",
+      "tagline": "GA4GH TRS for your tools and workflows",
+      "blurb": "A registry of tools and workflows that lets workflow engines and execution services find them, with their versions and descriptors, and fetch their files.",
+      "description": "TRS-Filer gives a project, network or infrastructure a registry of tools and workflows. It implements the GA4GH TRS API, so that workflow engines and execution services can find tools, their versions and classes, and fetch descriptors, test files and container image definitions, also as a ZIP archive. Additional endpoints register, update and delete entries, so it can host your own tools or index tools published elsewhere. Run it with Docker Compose, or deploy it to Kubernetes with its Helm chart.",
+      "audience": [
+        "Workflow and tool authors who publish their tools",
+        "Developers of workflow engines and execution services that fetch tools"
+      ],
+      "features": [
+        "Implements the GA4GH TRS API",
+        "Serves descriptors, test files and container image definitions, also as ZIP",
+        "Registers, updates and deletes tools, versions and tool classes",
+        "Indexes tools that are published elsewhere"
+      ],
+      "status": "Pre-release; breaking changes may occur",
+      "standards": ["GA4GH TRS"],
+      "tags": ["GA4GH", "TRS", "Workflows"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/trs-filer",
+      "docsUrl": "https://trs-filer.readthedocs.io/",
+      "owner": null
     }
   ]
 }
