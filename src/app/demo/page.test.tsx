@@ -142,7 +142,10 @@ describe('Demo page: AAAI providers', () => {
     expect(card.getByRole('heading', { level: 3 })).toHaveTextContent(
       'Life Science Login',
     );
-    expect(card.getByAltText('Life Science Login logo')).toBeInTheDocument();
+    expect(card.getByAltText('Life Science Login logo')).toHaveAttribute(
+      'src',
+      expect.stringContaining('ls-login.png'),
+    );
     expect(card.getByAltText('Flag of European Union')).toHaveAttribute(
       'src',
       expect.stringContaining('eu.svg'),
@@ -162,8 +165,12 @@ describe('Demo page: AAAI providers', () => {
 
   it('keeps "Node liaison" on the Node cards', () => {
     render(<DemoPage />);
-    nodeCards().forEach((card) => {
-      expect(within(card).queryByText('Provider liaison')).toBeNull();
+    nodes.forEach((node) => {
+      const card = within(cardFor(node));
+      expect(card.queryByText('Provider liaison')).toBeNull();
+      if (node.liaison) {
+        expect(card.getByText('Node liaison')).toBeInTheDocument();
+      }
     });
   });
 });
@@ -221,9 +228,12 @@ describe('Demo page: Nodes', () => {
       (card) => nodes.find((node) => card.id === node.code.toLowerCase())!.name,
     );
     expect(names).toEqual(
-      [...names].sort((a, b) => a.localeCompare(b, 'en', { numeric: true })),
+      nodes
+        .map((node) => node.name)
+        .sort((a, b) => a.localeCompare(b, 'en', { numeric: true })),
     );
-    expect(names).toHaveLength(nodes.length);
+    // nodes.json is not in this order, so the page does the sorting
+    expect(nodes.map((node) => node.name)).not.toEqual(names);
   });
 
   // The registry lists the services of each Node
@@ -232,6 +242,9 @@ describe('Demo page: Nodes', () => {
     nodeCards().forEach((card) => {
       expect(card).not.toHaveTextContent(/ELIXIR On-Cloud services/i);
       expect(card).not.toHaveTextContent(/None yet/);
+      servicesData.services.forEach((s) =>
+        expect(within(card).queryByText(s.name, { exact: false })).toBeNull(),
+      );
     });
   });
 
