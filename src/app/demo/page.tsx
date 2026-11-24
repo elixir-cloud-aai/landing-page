@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { ArrowDown, ExternalLink, Mail, Network } from 'lucide-react';
+import aaaiData from '@/data/aaai.json';
 import nodesData from '@/data/nodes.json';
 import servicesData from '@/data/services.json';
 import { FeedbackCallout, PageHero } from '@/components/catalog/page-hero';
@@ -10,18 +11,25 @@ import type { ElixirNode, Service } from '@/components/catalog/types';
 import { CONTACT_EMAIL, DOCS_OPERATORS_URL } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
+const DESCRIPTION =
+  'Whether you are a prospective adopter or implementer: Try our reference federation, deployed across various ELIXIR Nodes.';
+
 export const metadata: Metadata = {
   title: 'Demo',
-  description:
-    'The ELIXIR On-Cloud reference federation: its live services and the ELIXIR Nodes that run them.',
+  description: DESCRIPTION,
 };
 
-const nodes = nodesData.nodes as ElixirNode[];
+// By name, ascending, alphanumerical
+const nodes = [...(nodesData.nodes as ElixirNode[])].sort((a, b) =>
+  a.name.localeCompare(b.name, 'en', { numeric: true, sensitivity: 'base' }),
+);
 const services = servicesData.services as Service[];
+// The AAAI providers that the federation's services trust for login
+const providers = aaaiData.providers as ElixirNode[];
 
-// The services the landing page shows; the Cloud Registry lists all others.
-// The Krini portal joins once it is live.
-const CORE_SERVICE_IDS = ['elixir-on-cloud-registry'];
+// The core services, in this order: the portal on the left, the registry on
+// the right. The registry lists all other services.
+const CORE_SERVICE_IDS = ['elixir-on-cloud-portal', 'elixir-on-cloud-registry'];
 const coreServices = CORE_SERVICE_IDS.map((id) =>
   services.find((service) => service.id === id)!,
 );
@@ -36,13 +44,15 @@ const hostLabel = (url: string) => {
   }
 };
 
-const servicesAt = (code: string) =>
-  services.filter((service) =>
-    service.nodes.some((node) => node.code === code),
-  );
-
-function NodeCard({ node }: { node: ElixirNode }) {
-  const hosted = servicesAt(node.code);
+// The card of an ELIXIR Node, also used for AAAI providers (same fields: the
+// provider's name as `institute`, its infrastructure as `name`)
+function NodeCard({
+  node,
+  liaisonLabel = 'Node liaison',
+}: {
+  node: ElixirNode;
+  liaisonLabel?: string;
+}) {
   const contactEmail = node.contact?.email ?? null;
   const contactUrl = node.contact?.url ?? null;
 
@@ -103,45 +113,14 @@ function NodeCard({ node }: { node: ElixirNode }) {
           </span>
         </div>
 
-        <div className="mt-5">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            ELIXIR On-Cloud services
-          </p>
-          {hosted.length ? (
-            <ul className="flex flex-wrap gap-1.5">
-              {hosted.map((service) => {
-                // A service can list this Node as still onboarding (e.g. a joining TES node).
-                const onboarding = service.nodes.some(
-                  (n) => n.code === node.code && n.status === 'onboarding',
-                );
-                return (
-                  <li key={service.id}>
-                    <span
-                      className={cn(
-                        'inline-flex gap-1 rounded-md border px-2 py-0.5 text-xs font-medium',
-                        onboarding
-                          ? 'border-dashed text-muted-foreground'
-                          : 'bg-secondary text-secondary-foreground',
-                      )}
-                    >
-                      {service.name}
-                      {onboarding && (
-                        <span className="font-normal">· onboarding</span>
-                      )}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <p className="text-sm text-muted-foreground">None yet</p>
-          )}
-        </div>
-
+        {/* The registry lists the services of each Node: no copy here, which
+            would drift */}
+        {/* Pushes the liaison down, in line across the cards of a row */}
+        <div aria-hidden="true" className="min-h-5 flex-1" />
         {node.liaison && (
-          <div className="mt-5 border-t pt-4">
+          <div className="border-t pt-4">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Node liaison
+              {liaisonLabel}
             </p>
             <OwnerChip owner={node.liaison} role={null} />
           </div>
@@ -185,8 +164,6 @@ function NodeCard({ node }: { node: ElixirNode }) {
 }
 
 export default function DemoPage() {
-  const live = nodes.filter((node) => node.status === 'live');
-
   return (
     <div className="bg-background">
       <PageHero
@@ -210,23 +187,19 @@ export default function DemoPage() {
             </a>
           </>
         }
-        description="The reference federation demonstrates the ELIXIR On-Cloud products: live services, run by ELIXIR Nodes, each with its own contact point."
+        description={DESCRIPTION}
         eyebrow="Demo"
         icon={<Network className="h-3.5 w-3.5" />}
         stats={[
-          { value: coreServices.length, label: 'Live services' },
-          { value: live.length, label: 'Live Nodes' },
-          { value: nodes.length - live.length, label: 'Onboarding' },
-          {
-            value: new Set(nodes.map((n) => n.country)).size,
-            label: 'Countries',
-          },
+          { value: coreServices.length, label: 'Core services' },
+          { value: providers.length, label: 'AAAI providers' },
+          { value: nodes.length, label: 'Nodes' },
         ]}
         title={
           <>
-            The{' '}
+            ELIXIR On-Cloud&apos;s{' '}
             <span className="bg-gradient-to-r from-elixirgreen via-teal-500 to-elixirblue bg-clip-text text-transparent">
-              reference federation
+              Federation Sandbox
             </span>
           </>
         }
@@ -241,11 +214,35 @@ export default function DemoPage() {
           className="mb-6 text-2xl font-semibold tracking-tight"
           id="services-heading"
         >
-          Live services
+          Core services
         </h2>
-        <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {/* Two columns at every width from md up, so the registry is always
+            on the right */}
+        <div className="grid auto-rows-fr gap-6 md:grid-cols-2">
           {coreServices.map((service) => (
             <ServiceCard key={service.id} service={service} />
+          ))}
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="aaai-heading"
+        className="mx-auto max-w-7xl scroll-mt-24 px-6 pt-14 lg:px-8"
+        id="aaai"
+      >
+        <h2
+          className="mb-6 text-2xl font-semibold tracking-tight"
+          id="aaai-heading"
+        >
+          AAAI providers
+        </h2>
+        <div className="grid auto-rows-fr gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {providers.map((provider) => (
+            <NodeCard
+              key={provider.code}
+              liaisonLabel="Provider liaison"
+              node={provider}
+            />
           ))}
         </div>
       </section>
@@ -261,7 +258,7 @@ export default function DemoPage() {
         >
           Nodes
         </h2>
-        <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid auto-rows-fr gap-6 md:grid-cols-2 xl:grid-cols-3">
           {nodes.map((node) => (
             <NodeCard key={node.code} node={node} />
           ))}

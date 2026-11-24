@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   BookOpen,
@@ -11,8 +12,8 @@ import {
 } from 'lucide-react';
 import { FaGithub, FaGitlab } from 'react-icons/fa6';
 import { cn } from '@/lib/utils';
-import { isGitlabUrl, Monogram, OwnerChip, StandardChip } from './shared';
-import type { Service, ServiceNode } from './types';
+import { isGitlabUrl, Monogram, OwnerChip } from './shared';
+import type { Service } from './types';
 
 export function StatusBadge({ status }: { status: Service['status'] }) {
   if (status === 'Live') {
@@ -35,31 +36,6 @@ export function StatusBadge({ status }: { status: Service['status'] }) {
     );
   }
   return null;
-}
-
-export function NodeChip({ node }: { node: ServiceNode }) {
-  return (
-    <span
-      className={cn(
-        'inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-[11px] font-medium',
-        node.status === 'live'
-          ? 'bg-card text-foreground'
-          : 'border-dashed bg-transparent text-muted-foreground',
-      )}
-      title={`${node.name} (${node.status})`}
-    >
-      <span
-        className={cn(
-          'h-1.5 w-1.5 rounded-full',
-          node.status === 'live' ? 'bg-success' : 'bg-warning',
-        )}
-      />
-      {node.code}
-      {node.status === 'onboarding' && (
-        <span className="font-normal">onboarding</span>
-      )}
-    </span>
-  );
 }
 
 const linkButton =
@@ -111,25 +87,6 @@ export function ServiceCard({ service }: { service: Service }) {
           </ul>
         )}
 
-        {!!service.nodes.length && (
-          <div className="mt-5">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Node coverage
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {service.nodes.map((node) => (
-                <NodeChip key={node.code} node={node} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="mt-5 flex flex-wrap gap-1.5">
-          {service.standards.map((standard) => (
-            <StandardChip key={standard} label={standard} />
-          ))}
-        </div>
-
         {service.relatedProductId && (
           <Link
             className="mt-4 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-primary hover:underline"
@@ -140,10 +97,35 @@ export function ServiceCard({ service }: { service: Service }) {
           </Link>
         )}
 
+        {/* Pushes the owner down, in line across the cards of a row */}
+        <div aria-hidden="true" className="min-h-5 flex-1" />
         {service.owners.length > 0 && (
-          <div className="mt-5 flex flex-wrap gap-4 border-t pt-4">
-            {service.owners.map((owner) => (
-              <OwnerChip key={owner.name} owner={owner} />
+          <div className="border-t pt-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Service owner
+            </p>
+            <div className="flex flex-wrap gap-4">
+              {service.owners.map((owner) => (
+                <OwnerChip key={owner.name} owner={owner} role={null} />
+              ))}
+            </div>
+            {/* The Nodes that run the service, linked to their cards below */}
+            {service.nodes.map((node) => (
+              <a
+                className="mt-3 flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-primary"
+                href={`#${node.code.toLowerCase()}`}
+                key={node.code}
+              >
+                {/* Decorative: the Node's name follows */}
+                <Image
+                  alt=""
+                  className="h-4 w-6 shrink-0 rounded-[2px] object-cover ring-1 ring-border"
+                  height={16}
+                  src={`/flags/${node.code.toLowerCase()}.svg`}
+                  width={24}
+                />
+                {node.name}
+              </a>
             ))}
           </div>
         )}
