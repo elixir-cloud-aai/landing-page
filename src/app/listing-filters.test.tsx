@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import contributors from '@/data/contributor.json';
+import { contributors, isExternal, isLead } from '@/lib/contributors';
 import funding from '@/data/funding.json';
+import { sortGrants } from '@/lib/funding';
 import ContributorsPage from './contributors/page';
 import FundingPage from './funding/page';
 
@@ -28,8 +29,10 @@ const removeFilters = () =>
   screen.queryByRole('button', { name: 'Remove filters' });
 
 describe('Funding page filters', () => {
+  // Grants in display order
+  const sorted = sortGrants(funding);
   const inCategories = (...categories: string[]) =>
-    funding
+    sorted
       .filter((grant) => categories.includes(grant.category))
       .map((grant) => grant.project);
   const count = (...categories: string[]) => inCategories(...categories).length;
@@ -37,23 +40,23 @@ describe('Funding page filters', () => {
   const shown = () =>
     screen.getByText(/^Showing \d+ of \d+ project grants\.$/).textContent;
 
-  it('lists grants of any selected category', async () => {
+  it('lists grants of any selected programme', async () => {
     const user = userEvent.setup();
     render(<FundingPage />);
     expect(removeFilters()).toBeNull();
 
-    await user.click(filterButton(/^ELIXIR Services/));
+    await user.click(filterButton(/^ELIXIR/));
     expect(shown()).toBe(
-      `Showing ${count('ELIXIR Services')} of ${funding.length} project grants.`,
+      `Showing ${count('ELIXIR')} of ${funding.length} project grants.`,
     );
-    expect(listedGrants()).toEqual(inCategories('ELIXIR Services'));
+    expect(listedGrants()).toEqual(inCategories('ELIXIR'));
 
-    await user.click(filterButton(/^ELIXIR Platform Tasks/));
+    await user.click(filterButton(/^Google Summer of Code/));
     expect(shown()).toBe(
-      `Showing ${count('ELIXIR Services', 'ELIXIR Platform Tasks')} of ${funding.length} project grants.`,
+      `Showing ${funding.length} of ${funding.length} project grants.`,
     );
     expect(listedGrants()).toEqual(
-      inCategories('ELIXIR Services', 'ELIXIR Platform Tasks'),
+      inCategories('ELIXIR', 'Google Summer of Code'),
     );
 
     await user.click(removeFilters()!);
@@ -63,16 +66,13 @@ describe('Funding page filters', () => {
   });
 
   it('starts with the filters given in the URL', () => {
-    window.history.replaceState(null, '', '/funding?filter=elixir-services');
+    window.history.replaceState(null, '', '/funding?filter=elixir');
     render(<FundingPage />);
     expect(shown()).toBe(
-      `Showing ${count('ELIXIR Services')} of ${funding.length} project grants.`,
+      `Showing ${count('ELIXIR')} of ${funding.length} project grants.`,
     );
-    expect(listedGrants()).toEqual(inCategories('ELIXIR Services'));
-    expect(filterButton(/^ELIXIR Services/)).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
+    expect(listedGrants()).toEqual(inCategories('ELIXIR'));
+    expect(filterButton(/^ELIXIR/)).toHaveAttribute('aria-pressed', 'true');
   });
 });
 
@@ -116,5 +116,18 @@ describe('Contributors page filters', () => {
     render(<ContributorsPage />);
     expect(shown()).toContain(`of ${matching('gsoc')} people`);
     expect(listedPeople()).toEqual(firstPage(matchingNames('gsoc')));
+  });
+
+  it('combines the External and Lead filters', () => {
+    window.history.replaceState(null, '', '/contributors?filter=external,lead');
+    render(<ContributorsPage />);
+    const names = contributors
+      .filter((person) => isExternal(person) || isLead(person))
+      .map((person) => person.name);
+    expect(names.length).toBeGreaterThan(
+      contributors.filter(isExternal).length,
+    );
+    expect(shown()).toContain(`of ${names.length} people`);
+    expect(listedPeople()).toEqual(firstPage(names));
   });
 });
