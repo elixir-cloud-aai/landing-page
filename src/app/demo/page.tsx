@@ -5,6 +5,7 @@ import aaaiData from '@/data/aaai.json';
 import nodesData from '@/data/nodes.json';
 import servicesData from '@/data/services.json';
 import { FeedbackCallout, PageHero } from '@/components/catalog/page-hero';
+import { SameHeight } from '@/components/catalog/same-height';
 import { ServiceCard } from '@/components/catalog/service-catalog';
 import { OwnerChip } from '@/components/catalog/shared';
 import type { ElixirNode, Service } from '@/components/catalog/types';
@@ -45,7 +46,10 @@ const hostLabel = (url: string) => {
 };
 
 // The card of an ELIXIR Node, also used for AAAI providers (same fields: the
-// provider's name as `institute`, its infrastructure as `name`)
+// provider's name as `institute`, its infrastructure as `name`). All have one
+// height, across both sections.
+const NODE_CARDS = 'node-card';
+
 function NodeCard({
   node,
   liaisonLabel = 'Node liaison',
@@ -64,6 +68,7 @@ function NodeCard({
           ? 'border-dashed hover:border-warning/50'
           : 'hover:border-primary/40',
       )}
+      data-same-height={NODE_CARDS}
       id={node.code.toLowerCase()}
     >
       {/* Logos are made for white backgrounds, so they sit on a white panel
@@ -264,6 +269,8 @@ export default function DemoPage() {
           ))}
         </div>
       </section>
+
+      <SameHeight group={NODE_CARDS} />
 
       <FeedbackCallout subject="Node" />
     </div>
