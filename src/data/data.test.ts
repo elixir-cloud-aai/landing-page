@@ -8,6 +8,8 @@ import type {
   Service,
 } from '@/components/catalog/types';
 import contributors from './contributor.json';
+import { PROGRAMMES } from '@/lib/funding';
+import funding from './funding.json';
 import nodesData from './nodes.json';
 import productsData from './product.json';
 import { hasAffiliation, LEADS, NODE_FLAGS } from '@/lib/contributors';
@@ -113,6 +115,39 @@ describe('nodes.json', () => {
       expectHttpsOrNull(node.website);
       expectHttpsOrNull(node.contact?.url);
       expectImageExists(node.liaison);
+    },
+  );
+});
+
+describe('funding.json', () => {
+  it.each(PROGRAMMES.map(({ name, logo }) => [name, logo]))(
+    'has the logo of %s',
+    (_, logo) => {
+      expect(publicFile(logo), logo).toBe(true);
+    },
+  );
+
+  it.each(PROGRAMMES.map(({ name }) => [name]))('has grants of %s', (name) => {
+    expect(funding.some((grant) => grant.category === name)).toBe(true);
+  });
+
+  it('has unique ids', () => {
+    expect(duplicates(funding.map((grant) => grant.id))).toEqual([]);
+  });
+
+  it.each(funding.map((grant) => [grant.project, grant] as const))(
+    '%s names its programme and dates',
+    (_, grant) => {
+      // The programme is the card's title, filter and logo
+      expect(PROGRAMMES.map(({ name }) => name)).toContain(grant.category);
+      expect(grant.funder.startsWith(grant.category)).toBe(true);
+      // ISO dates, as the listing sorts them as text
+      expect(grant.startDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(grant.endDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(grant.startDate <= grant.endDate).toBe(true);
+      expect(grant.project).toBeTruthy();
+      expect(grant.recipients.length).toBeGreaterThan(0);
+      expect(grant.formattedDuration).toBeTruthy();
     },
   );
 });

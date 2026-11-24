@@ -3,32 +3,31 @@
     {
       "id": "tesk",
       "name": "TESK",
-      "tagline": "Task Execution Service for Kubernetes",
-      "blurb": "An implementation of the GA4GH Task Execution Service (TES) API that runs containerized tasks on any Kubernetes cluster.",
-      "description": "TESK is a task execution engine based on the GA4GH TES standard that runs on Kubernetes. It exposes the TES endpoints, validates incoming task requests and translates them into Kubernetes batch jobs, so tasks run on any standard Kubernetes cluster. It can also stage task inputs and outputs and integrate with workflow managers.",
+      "tagline": "GA4GH TES for any Kubernetes cluster",
+      "blurb": "A task execution service that runs containerized tasks as Kubernetes jobs and needs no database or other services of its own.",
+      "description": "TESK lets workflow engines and WES implementations run containerized tasks on a Kubernetes cluster. It implements the GA4GH TES API and runs each task as Kubernetes jobs in one namespace, staging its inputs and outputs in a temporary volume. Inputs and outputs can come from and go to HTTP(S), FTP, S3 or a shared file system, depending on the storage that a deployment configures. TESK needs no database of its own and is deployed with a Helm chart.",
       "audience": [
-        "Admins deploying a TES endpoint",
-        "Workflow-manager integrators"
+        "Workflow engines and WES implementations that submit tasks through TES",
+        "Operators who offer TES on Kubernetes, without a database to run"
       ],
       "features": [
-        "Implements the GA4GH Task Execution Service (TES) API",
-        "Translates TES tasks into Kubernetes batch jobs",
-        "Designed to support any Kubernetes cluster",
-        "Handles task inputs and outputs using temporary persistent volume claims (PVCs) as scratch space",
-        "Integrates with workflow managers via an FTP account or an accessible PVC",
-        "Each task gets its own taskmaster, PVC and executor pods; only the API pod is shared across tasks"
+        "Implements the GA4GH TES API",
+        "Runs each task as Kubernetes jobs in one namespace",
+        "Stages data via HTTP(S), FTP, S3 or a shared file system",
+        "Needs no database or other services of its own"
       ],
       "howItWorks": [
-        "The API pod (Tomcat web server) receives and validates TES requests and turns them into Kubernetes jobs.",
-        "The API pod creates a taskmaster pod for each task.",
-        "The taskmaster starts a filer pod that creates a PVC as scratch space and downloads input files into the locations given in the TES request.",
-        "The taskmaster runs the executors as pods, one after the other.",
-        "The filer runs once more to push outputs to remote locations; then the PVC is scrubbed and deleted and the task completes."
+        "The API validates each task it receives and creates a taskmaster job for it.",
+        "For a task with inputs, outputs or volumes, the taskmaster creates a temporary volume (PVC) as its scratch space.",
+        "The filer downloads the inputs into the volume, from HTTP(S), FTP, S3 or a shared file system.",
+        "The executors run one after the other, each as a job with the volume mounted.",
+        "The filer uploads the outputs; then the volume is deleted and the task ends."
       ],
       "requirements": [
-        "A working Kubernetes cluster, version 1.9 or later",
-        "A default storage class supporting RWO mode (needed for tasks with I/O)",
-        "An FTP account or an accessible PVC (only for workflow-manager integration)"
+        "A Kubernetes cluster, version 1.23 or later; TESK needs access to one namespace only",
+        "Helm 3",
+        "A default storage class (ReadWriteOnce is enough) for the temporary volume of each task with inputs or outputs",
+        "For inputs and outputs over anything but HTTP(S): an FTP account, a shared file system (a ReadWriteMany volume) or S3"
       ],
       "deployment": ["Kubernetes (Helm chart in charts/tesk)"],
       "relatedRepos": [
@@ -53,26 +52,24 @@
         "name": "Alex Kanitz",
         "email": "alexander.kanitz@unibas.ch",
         "image": "/contributors/alex_kanitz.jpg"
-      }
+      },
+      "status": "Pre-release; breaking changes may occur"
     },
     {
       "id": "protes",
       "name": "proTES",
-      "tagline": "Plugin-based gateway for GA4GH TES",
-      "blurb": "A GA4GH TES gateway that runs each task through a pipeline of plugins, which check it, route it and record its provenance, before forwarding it to independent TES nodes.",
-      "description": "proTES is a scalable GA4GH TES API gateway that provides centralized features to a federated network of independently operated TES instances. It processes each incoming task with FOCA's plugin engine: plugins check or change the task, choose the TES instances to send it to and their order, and record its provenance, which users can read through the API. It can act as a compatibility layer, a load balancer, a public entry point to an enclave of compute nodes, or a way to collect telemetry.",
+      "tagline": "GA4GH TES gateway for federated compute",
+      "blurb": "A gateway that gives clients one GA4GH TES endpoint for a network of TES instances, and forwards each task to an instance that its plugins choose.",
+      "description": "proTES lets operators offer one TES endpoint for independently operated TES instances. It implements the GA4GH TES API, so clients send tasks to it as to any TES instance; each task passes a pipeline of plugins, is forwarded and is tracked. By default, tasks go to a random instance; plugins can route them closest to their input data, or add access control and validation. Run it with Docker Compose, or deploy it to Kubernetes with its Helm chart.",
       "audience": [
-        "Operators of federated compute networks",
-        "Developers writing gateway plugins"
+        "Operators who federate several TES instances behind one endpoint",
+        "Developers who write plugins for gateways"
       ],
       "features": [
-        "Plugin pipeline built on FOCA: plugins check or change tasks and choose the TES instances to use, in order",
-        "Ships the routing plugins of foca-plugins: tes.routing.distance sends tasks to the TES instance closest to their input data, with generic.routing.random as the fallback",
-        "Records the provenance of each task, readable through the API",
-        "Requires access tokens; each task belongs to the user who created it",
-        "Discovers TES instances in a service registry, such as the ELIXIR On-Cloud Registry",
-        "Calls TES instances with credentials of its own and forwards each task exactly once",
-        "Helm chart for production and Docker Compose for development"
+        "Implements the GA4GH TES API",
+        "Forwards each task to a TES instance that its plugin pipeline chooses",
+        "Routes tasks to the instance closest to their data, as an opt-in plugin",
+        "Requires access tokens and keeps each task with the user who created it"
       ],
       "techStack": [
         "Flask",
@@ -89,11 +86,12 @@
         "Docker Compose (development/testing)"
       ],
       "quickStart": [
-        "git clone https://github.com/elixir-cloud-aai/proTES.git && cd proTES",
-        "docker-compose up -d --build",
-        "Open the Swagger UI at http://localhost:8080/ga4gh/tes/v1/ui"
+        "git clone https://github.com/elixir-cloud-aai/protes.git && cd protes",
+        "docker compose up --build -d",
+        "Open the Swagger UI at http://localhost:8080/ga4gh/tes/v1/ui",
+        "List your TES instances under custom.tes.backends in config.dev.yaml, and set your identity provider there"
       ],
-      "status": "Beta; the API may change without notice",
+      "status": "Pre-release; breaking changes may occur",
       "standards": ["GA4GH TES"],
       "tags": ["GA4GH", "TES", "Gateway", "Plugins"],
       "license": "Apache-2.0",
@@ -116,21 +114,18 @@
     {
       "id": "cloud-registry",
       "name": "Cloud Registry",
-      "tagline": "GA4GH Service Registry for ELIXIR On-Cloud",
-      "blurb": "An implementation of the GA4GH Service Registry API for registering and discovering GA4GH-compliant services in a federated cloud network.",
-      "description": "Cloud Registry implements the GA4GH Service Registry API for ELIXIR On-Cloud. Service entries comply with the ExternalService schema defined by the GA4GH Service Registry specification. Once deployed, the API is served under /ga4gh/registry/v1/ with an interactive Swagger UI at /ga4gh/registry/v1/ui, and it can be probed with simple HTTP calls, for example GET /services.",
+      "tagline": "GA4GH Service Registry for your network",
+      "blurb": "A registry of web services that lets clients find the GA4GH and other services of a project, network or infrastructure, with their types, versions and operators.",
+      "description": "Cloud Registry gives a project, network or infrastructure one place to list its web services, so that clients can find them. It implements the GA4GH Service Registry API, with entries in its ExternalService schema. Anyone can read the entries unless login is required; users who log in through a trusted OpenID Connect provider register and manage their services, and admins verify them and curate service types. Run it with Docker Compose, or deploy it to Kubernetes with its Helm chart.",
       "audience": [
-        "Admins deploying a service registry",
-        "Developers building on GA4GH service discovery"
+        "Operators who need one list of the services in their network",
+        "Service providers and client developers who register or find services"
       ],
       "features": [
         "Implements the GA4GH Service Registry API",
-        "Owner-based access control: services belong to the users who register them",
-        "Admin mode: admins act as admins only when they switch it on, and can verify services and change their identifiers",
-        "Trusts several token issuers, with user identifiers namespaced by issuer",
-        "Curated service types, with the modes open, controlled and moderated",
-        "Publishes the deployment's rules for registrations in its service info",
-        "Helm chart for cloud-native deployments and Docker Compose for development"
+        "Lets logged-in users register and manage the services they own",
+        "Lets admins verify services and curate service types",
+        "Trusts several OpenID Connect providers at the same time"
       ],
       "requirements": ["git", "docker", "docker-compose"],
       "deployment": [
@@ -142,7 +137,7 @@
         "docker-compose up --build -d",
         "Open http://localhost:8080/ga4gh/registry/v1/ui"
       ],
-      "status": "Beta; the API may change without notice",
+      "status": "Pre-release; breaking changes may occur",
       "standards": ["GA4GH Service Registry"],
       "tags": ["GA4GH", "Service Registry", "Discovery"],
       "license": "Apache-2.0",
@@ -158,20 +153,18 @@
     {
       "id": "foca",
       "name": "FOCA",
-      "tagline": "API-first Python microservice archetype",
-      "blurb": "An opinionated, API-first framework for building Python microservices from an OpenAPI specification. The ELIXIR On-Cloud services, including proTES and Cloud Registry, are built on it.",
-      "description": "FOCA turns an OpenAPI specification and a YAML configuration into a running Flask microservice, with authentication, access control, database access, error handling and background tasks built in. Gateway apps such as proTES use its plugin engine to process requests in operator-defined pipelines. A Helm library chart (foca-common) gives FOCA apps a common deployment.",
+      "tagline": "Archetype for OpenAPI web services in Python",
+      "blurb": "A Python archetype that builds a web service from OpenAPI specifications and one configuration file, so that developers write only the controllers and logic of their app.",
+      "description": "FOCA lets Python developers build OpenAPI-based web services, such as GA4GH API implementations, without writing the common parts themselves. It builds a Connexion app on Flask from the specifications and a validated configuration, and adds token validation, access control with Casbin, MongoDB, background tasks and errors as problem details. Its plugin engine lets gateway apps check, change and route requests in pipelines that operators set. Signed Docker base images and a Helm library chart deploy FOCA apps.",
       "audience": [
-        "Developers building GA4GH or other OpenAPI-based services",
-        "Operators of FOCA-based services such as proTES and Cloud Registry"
+        "Developers who build GA4GH or other OpenAPI-based services in Python",
+        "Operators who deploy and configure FOCA-based services"
       ],
       "features": [
-        "Builds a Flask microservice from an OpenAPI specification and YAML configuration",
-        "Auth model with access tokens, service (client-credentials) tokens, resource ownership and opt-in roles such as an admin mode",
-        "Access control with Casbin policies",
-        "Plugin engine for gateway apps: pinned plugins, per-request pipelines, failover routing, provenance and a plugin test kit",
-        "HTTP client for untrusted URLs, guarded against SSRF",
-        "Helm library chart for FOCA apps (foca-common)"
+        "Builds a web service from OpenAPI specifications and a configuration file",
+        "Validates access tokens and enforces access control with Casbin policies",
+        "Runs plugin pipelines that check, change and route requests in gateways",
+        "Ships signed Docker base images and a Helm library chart"
       ],
       "relatedRepos": [
         {
@@ -198,67 +191,77 @@
         "name": "Alex Kanitz",
         "email": "alexander.kanitz@unibas.ch",
         "image": "/contributors/alex_kanitz.jpg"
-      }
+      },
+      "status": "Pre-release; breaking changes may occur"
     },
     {
       "id": "cloud-components",
       "name": "Cloud Components",
-      "tagline": "The component library for federated cloud services",
-      "blurb": "Modular, customizable and extensible web components for building interfaces that interact with cloud infrastructure.",
-      "description": "Cloud Components (ECC) is a library of web components for interacting with cloud infrastructure. Because they are standard web components, they are framework-agnostic and can be dropped into React, Vue, vanilla HTML or any other front-end stack. Components can be restyled to match your brand and extended with your own.",
-      "audience": ["Front-end developers building cloud service UIs"],
+      "tagline": "Web components for GA4GH API front ends",
+      "blurb": "A library of web components that lets developers add views and forms for GA4GH and ELIXIR On-Cloud API services to any web front end, in any framework or in plain HTML.",
+      "description": "Cloud Components gives front-end developers ready-made components for listing, viewing and managing the resources of ELIXIR On-Cloud and GA4GH API services. Its npm packages work with the GA4GH Service Registry, TRS, WES and DRS APIs, and with ELIXIR On-Cloud's Cloud Registry, TRS-Filer and DRS-Filer. Built with Lit and TypeScript, the components work in any framework, come with React wrappers and connect to your endpoints through providers. A shared design package adapts them to your brand.",
+      "audience": [
+        "Front-end developers who build portals for GA4GH and ELIXIR On-Cloud services",
+        "Service developers who need a web interface for their API"
+      ],
       "features": [
-        "Built as web components, so they work in React, Vue, vanilla HTML and other frameworks",
-        "Modular and extensible, with documented guidance for making your own components",
-        "Themeable: brand color, corner radius, depth, density, sizing, font size and motion are configurable",
-        "Client components for GA4GH services, for example a WES runs component (@elixir-cloud/wes)"
+        "Works with the GA4GH Service Registry, TRS, WES and DRS APIs and ELIXIR On-Cloud Services",
+        "Runs in any web framework or plain HTML, with React wrappers",
+        "Connects to your API endpoints through replaceable providers",
+        "Adapts to your brand through a shared design package"
       ],
       "usageExample": {
         "language": "jsx",
         "code": "import { ECCClientGa4ghWesRuns } from '@elixir-cloud/wes/dist/react/runs/index';\n\n<ECCClientGa4ghWesRuns baseURL=\"https://your-wes-endpoint.com\" />"
       },
       "techStack": ["Web Components"],
-      "standards": ["GA4GH WES"],
+      "standards": [
+        "GA4GH Service Registry",
+        "GA4GH TRS",
+        "GA4GH WES",
+        "GA4GH DRS"
+      ],
       "tags": ["Web Components", "UI", "GA4GH", "WES"],
       "license": "Apache-2.0",
       "logo": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/cloud-components",
-      "docsUrl": "https://cloud-components.2.rahtiapp.fi/docs/introduction",
+      "docsUrl": "https://cloud-components.readthedocs.io/",
       "extraLinks": [
         {
           "label": "Installation",
-          "url": "https://cloud-components.2.rahtiapp.fi/docs/installation"
+          "url": "https://cloud-components.readthedocs.io/en/latest/docs/installation/"
         },
         {
           "label": "Customization",
-          "url": "https://cloud-components.2.rahtiapp.fi/docs/customization"
+          "url": "https://cloud-components.readthedocs.io/en/latest/docs/customization/"
         },
         {
-          "label": "Usage",
-          "url": "https://cloud-components.2.rahtiapp.fi/docs/usage"
+          "label": "Providers",
+          "url": "https://cloud-components.readthedocs.io/en/latest/docs/providers/"
         }
       ],
       "owner": {
         "name": "Anurag Gupta",
         "email": null,
         "image": "/contributors/anurag_gupta.jpg"
-      }
+      },
+      "status": "Pre-release; breaking changes may occur"
     },
     {
       "id": "poiesis",
       "name": "Poiesis",
       "tagline": "GA4GH TES v1.1 on Kubernetes",
-      "blurb": "A cloud-native GA4GH Task Execution Service (TES) v1.1.0 implementation for Kubernetes.",
-      "description": "Poiesis is a cloud-native implementation of the GA4GH Task Execution Service (TES) v1.1.0, designed for Kubernetes. Like TESK and Funnel it exposes a standards-compliant TES API for running containerized workloads, with an architecture that emphasizes stateless execution, strong authentication and Kubernetes-native operations.",
+      "blurb": "A task execution service that runs each containerized task as one Kubernetes pod and keeps the tasks, their states and their logs in PostgreSQL.",
+      "description": "Poiesis lets workflow engines and users run containerized tasks on a Kubernetes cluster. It implements version 1.1 of the GA4GH TES API; each task runs as one pod that stages its inputs and outputs, and a controller records its state and logs in PostgreSQL. Users log in through an OpenID Connect provider and see only their own tasks; task pods run with restricted security settings, in a namespace of their own. Poiesis is deployed with a Helm chart.",
       "audience": [
-        "Admins deploying a TES endpoint on Kubernetes",
-        "Node operators joining the TES network"
+        "Workflow engines and users who submit tasks through TES",
+        "Operators who offer TES on Kubernetes, with login and a task history"
       ],
       "features": [
-        "Implements GA4GH TES v1.1.0",
-        "Kubernetes-native task execution",
-        "Stateless execution design",
-        "Built-in authentication"
+        "Implements version 1.1 of the GA4GH TES API",
+        "Runs each task as one pod, in a namespace separate from the service",
+        "Records tasks, their states and their logs in PostgreSQL",
+        "Shows users only their own tasks, after OpenID Connect login"
       ],
       "deployment": ["Kubernetes"],
       "relatedRepos": [
@@ -288,19 +291,18 @@
     {
       "id": "pubgrade",
       "name": "Pubgrade",
-      "tagline": "Publish-subscribe CI/CD for deployments",
-      "blurb": "A decoupled publish-subscribe CI/CD service that builds images and notifies subscribed deployments, which update themselves through Pubgrade-Sidecar.",
-      "description": "Pubgrade (Publish-Upgrade) is a decoupled, publish-subscribe-based continuous integration and delivery service. Developers register a Git repository; Pubgrade builds and publishes images and notifies subscribed deployments, which decide autonomously what to do with an update. Pubgrade-Sidecar is co-deployed next to a subscribed service and applies those updates in the cluster. Pubgrade can optionally link to the Cloud Registry.",
+      "tagline": "Image update notifications for deployments",
+      "blurb": "A publish-subscribe service that notifies deployments of new images of the software they run, so that each deployment can update itself.",
+      "description": "Pubgrade lets software developers tell every deployment of their software about a new image at once. A repository's CI publishes the image to Pubgrade, which notifies all deployments that subscribed to that branch or tag, and records the result for each. Each deployment decides what to do with a notification; Pubgrade-Sidecar, running next to a Kubernetes Deployment, updates its image. Deploy Pubgrade to Kubernetes or OpenShift with its Helm chart.",
       "audience": [
-        "Developers publishing service updates",
-        "Node operators who want deployments to update themselves"
+        "Developers who publish new images of their software",
+        "Operators who want their deployments to update themselves"
       ],
       "features": [
-        "Register Git repositories",
-        "Create and publish image builds",
-        "Register subscriptions per branch or tag",
-        "Notify subscribers on new builds",
-        "Pubgrade-Sidecar updates the subscribed Kubernetes deployment"
+        "Receives new images from a repository's CI",
+        "Notifies all deployments that subscribed to a branch or tag",
+        "Records the result of each notification per subscriber",
+        "Updates Kubernetes Deployments through Pubgrade-Sidecar"
       ],
       "deployment": ["Kubernetes (Helm chart)"],
       "relatedRepos": [
@@ -310,13 +312,13 @@
           "url": "https://github.com/elixir-cloud-aai/Pubgrade-Sidecar"
         }
       ],
-      "status": "Beta; the API may change without notice",
+      "status": "Pre-release; breaking changes may occur",
       "standards": [],
       "tags": ["CI/CD", "Kubernetes", "Publish-Subscribe"],
       "license": "Apache-2.0",
       "logo": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/Pubgrade",
-      "docsUrl": null,
+      "docsUrl": "https://pubgrade.readthedocs.io/",
       "owner": {
         "name": "Akash Saini",
         "email": null,
@@ -326,21 +328,28 @@
     {
       "id": "ga4gh-sdk",
       "name": "GA4GH SDK & CLI",
-      "tagline": "One SDK and CLI for GA4GH API services",
-      "blurb": "A generic Rust SDK and command-line client for GA4GH API services such as TES and WES.",
-      "description": "The GA4GH SDK is a generic software development kit and CLI for GA4GH API services, written in Rust. Its models are generated from the services' OpenAPI specifications, so it can be extended to further GA4GH or custom OpenAPI-backed services. It is tested against Funnel (TES) and the GA4GH Starter Kit WES.",
+      "tagline": "Rust SDK and CLI for GA4GH APIs",
+      "blurb": "A software development kit and command-line client that let developers and users work with GA4GH TES, WES, DRS, TRS and Service Registry services from one library.",
+      "description": "The GA4GH SDK lets developers build clients for GA4GH API services, and lets users call those services from the command line or from scripts. It works with the GA4GH TES, WES, DRS, TRS and Service Registry APIs, reads what each service supports from its service info, and handles authentication. The Rust library comes with Python bindings and a CLI; SDKs for services with API extensions can build on it without forking it.",
       "audience": [
-        "Developers building clients for GA4GH services",
-        "Users scripting TES and WES from the command line"
+        "Developers who build clients for GA4GH services in Rust or Python",
+        "Users who script tasks and workflow runs from the command line"
       ],
       "features": [
-        "Generic SDK and CLI for GA4GH APIs",
-        "Models auto-generated from OpenAPI specifications",
-        "Tested against TES (Funnel) and WES (Starter Kit) servers"
+        "Works with the GA4GH TES, WES, DRS, TRS and Service Registry APIs",
+        "Offers the same clients as a Rust library, Python bindings and a CLI",
+        "Reads what each service supports from its service info",
+        "Lets other SDKs add endpoints and commands without forking it"
       ],
       "techStack": ["Rust"],
-      "status": "Pre-release; breaking changes may occur",
-      "standards": ["GA4GH TES", "GA4GH WES"],
+      "status": "In development; no release yet",
+      "standards": [
+        "GA4GH TES",
+        "GA4GH WES",
+        "GA4GH DRS",
+        "GA4GH TRS",
+        "GA4GH Service Registry"
+      ],
       "tags": ["GA4GH", "SDK", "CLI", "Rust"],
       "license": "Apache-2.0",
       "logo": null,
@@ -351,19 +360,18 @@
     {
       "id": "conquest",
       "name": "Conquest",
-      "tagline": "WES control plane for Nextflow, WDL and Snakemake",
-      "blurb": "A GA4GH Workflow Execution Service that runs Nextflow, WDL and Snakemake pipelines on Kubernetes, with S3 as the data plane.",
-      "description": "Conquest implements a GA4GH WES control plane with an internal TES backend. A single Go binary acts as API server, workflow runner and task file stager. Each run gets a runner job on Kubernetes; the workflow engine submits individual tasks to Conquest's TES API, and each task stages its inputs from and outputs to S3-compatible object storage. PostgreSQL is the system of record.",
+      "tagline": "GA4GH WES for Nextflow, WDL and Snakemake",
+      "blurb": "A workflow execution service that runs Nextflow, WDL and Snakemake workflows on Kubernetes, with their inputs and outputs in S3-compatible object storage.",
+      "description": "Conquest lets researchers and platforms run Nextflow, WDL and Snakemake workflows on a Kubernetes cluster through one API. It implements the GA4GH WES API for runs and the GA4GH TES API for their tasks; each task runs as a Kubernetes job that stages its data from and to S3-compatible storage. Routing rules can send selected tasks to other TES services. Conquest is a single Go binary with PostgreSQL as its database, deployed with a Helm chart.",
       "audience": [
-        "Researchers running Nextflow, WDL or Snakemake workflows",
-        "Admins deploying a WES endpoint"
+        "Researchers who run Nextflow, WDL or Snakemake workflows",
+        "Operators who offer workflow execution on Kubernetes"
       ],
       "features": [
-        "GA4GH WES v1.1 API",
-        "Nextflow, WDL (miniwdl) and Snakemake engines, version selectable per run",
-        "Per-task CPU, memory and disk control with platform floors and ceilings",
-        "S3/MinIO object storage as the data plane",
-        "Helm chart for Kubernetes"
+        "Implements the GA4GH WES and TES APIs",
+        "Runs Nextflow, WDL and Snakemake, with the engine version chosen per run",
+        "Sets CPU, memory and disk per task, within platform limits",
+        "Sends selected tasks to other TES services, by routing rules"
       ],
       "techStack": ["Go", "PostgreSQL", "Kubernetes", "S3/MinIO"],
       "deployment": ["Kubernetes (Helm chart in deploy/charts/conquest)"],
@@ -377,7 +385,8 @@
         "name": "Anurag Gupta",
         "email": null,
         "image": "/contributors/anurag_gupta.jpg"
-      }
+      },
+      "status": "In development; no release yet"
     },
     {
       "id": "tes-dashboard",
@@ -438,6 +447,80 @@
         "email": "alexander.kanitz@unibas.ch",
         "image": "/contributors/alex_kanitz.jpg"
       }
+    },
+    {
+      "id": "funnel",
+      "name": "Funnel",
+      "tagline": "GA4GH TES for HPC and cloud batch",
+      "blurb": "A task execution service that runs containerized tasks on HPC schedulers, Kubernetes and cloud batch services, with their inputs and outputs in local or cloud storage.",
+      "description": "Funnel lets workflow engines and users run containerized tasks on the compute systems they already have. It implements the GA4GH TES API: for each task, it finds a worker, downloads the inputs, runs the containers, uploads the outputs and records the logs. Compute backends include Slurm, HTCondor, Grid Engine, PBS/Torque, Kubernetes, AWS Batch and Google Cloud Batch; storage backends include S3, Google Cloud Storage, Swift, HTTP, FTP and local files. Funnel comes with a web dashboard.",
+      "audience": [
+        "Workflow engines and users who submit tasks through TES",
+        "Operators who offer TES on HPC clusters or cloud accounts"
+      ],
+      "features": [
+        "Implements the GA4GH TES API",
+        "Runs tasks on Slurm, HTCondor, PBS/Torque, Grid Engine, Kubernetes and cloud batch",
+        "Stages data in S3, Google Cloud Storage, Swift, HTTP, FTP or local files",
+        "Shows tasks in a web dashboard"
+      ],
+      "standards": ["GA4GH TES"],
+      "tags": ["GA4GH", "TES", "HPC"],
+      "license": "MIT",
+      "logo": null,
+      "repoUrl": "https://github.com/calypr/funnel",
+      "docsUrl": "https://calypr.org/tools/funnel/",
+      "owner": null
+    },
+    {
+      "id": "krini",
+      "name": "Krini",
+      "tagline": "Web portal for GA4GH compute services",
+      "blurb": "A web portal that lets researchers find compute services in a Cloud Registry, run tasks and workflows on them and follow their runs, without writing code.",
+      "description": "Krini gives researchers one web interface for running analyses on the compute services of a network. It finds GA4GH TES and WES services in a Cloud Registry and lets logged-in users create tasks, submit workflow runs, follow their state and cancel them. Users log in through an OpenID Connect provider that the operator configures, and Krini passes their access token to the services. Operators deploy it with its image or Helm chart for their own registry, login provider and services.",
+      "audience": [
+        "Researchers who run tasks and workflows without writing code",
+        "Operators who offer a portal to the services of their network"
+      ],
+      "features": [
+        "Works with the GA4GH TES, WES and Service Registry APIs",
+        "Lists the TES and WES services of a Cloud Registry",
+        "Creates and cancels tasks, submits workflow runs and follows both",
+        "Logs users in through a configurable OpenID Connect provider"
+      ],
+      "status": "In development; no release yet",
+      "standards": ["GA4GH TES", "GA4GH WES", "GA4GH Service Registry"],
+      "tags": ["GA4GH", "TES", "WES", "Portal"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/krini",
+      "docsUrl": "https://krini.readthedocs.io/",
+      "owner": null
+    },
+    {
+      "id": "trs-filer",
+      "name": "TRS-Filer",
+      "tagline": "GA4GH TRS for your tools and workflows",
+      "blurb": "A registry of tools and workflows that lets workflow engines and execution services find them, with their versions and descriptors, and fetch their files.",
+      "description": "TRS-Filer gives a project, network or infrastructure a registry of tools and workflows. It implements the GA4GH TRS API, so that workflow engines and execution services can find tools, their versions and classes, and fetch descriptors, test files and container image definitions, also as a ZIP archive. Additional endpoints register, update and delete entries, so it can host your own tools or index tools published elsewhere. Run it with Docker Compose, or deploy it to Kubernetes with its Helm chart.",
+      "audience": [
+        "Workflow and tool authors who publish their tools",
+        "Developers of workflow engines and execution services that fetch tools"
+      ],
+      "features": [
+        "Implements the GA4GH TRS API",
+        "Serves descriptors, test files and container image definitions, also as ZIP",
+        "Registers, updates and deletes tools, versions and tool classes",
+        "Indexes tools that are published elsewhere"
+      ],
+      "status": "Pre-release; breaking changes may occur",
+      "standards": ["GA4GH TRS"],
+      "tags": ["GA4GH", "TRS", "Workflows"],
+      "license": "Apache-2.0",
+      "logo": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/trs-filer",
+      "docsUrl": "https://trs-filer.readthedocs.io/",
+      "owner": null
     }
   ]
 }

@@ -1,13 +1,13 @@
 [
   {
     "id": "1",
-    "funder": "ELIXIR Commissioned Services: Technology",
+    "funder": "ELIXIR Commissioned Service: Technology",
     "project": "24-TECH-Compute",
     "recipients": ["ELIXIR Compute Platform"],
     "startDate": "2024-01-01",
     "endDate": "2026-12-31",
     "formattedDuration": "1 January 2024 - 31 December 2026",
-    "category": "ELIXIR Services"
+    "category": "ELIXIR"
   },
   {
     "id": "2",
@@ -77,7 +77,7 @@
     "startDate": "2022-01-01",
     "endDate": "2023-12-31",
     "formattedDuration": "1 January 2022 - 31 December 2023",
-    "category": "ELIXIR Platform Tasks"
+    "category": "ELIXIR"
   },
   {
     "id": "9",
@@ -117,7 +117,7 @@
     "startDate": "2021-06-01",
     "endDate": "2023-05-31",
     "formattedDuration": "1 June 2021 - 31 May 2023",
-    "category": "ELIXIR Implementation Studies"
+    "category": "ELIXIR"
   },
   {
     "id": "13",
@@ -187,7 +187,7 @@
     "startDate": "2019-06-01",
     "endDate": "2021-05-31",
     "formattedDuration": "1 June 2019 - 31 May 2021",
-    "category": "ELIXIR Implementation Studies"
+    "category": "ELIXIR"
   },
   {
     "id": "20",
@@ -197,7 +197,7 @@
     "startDate": "2019-06-01",
     "endDate": "2021-05-31",
     "formattedDuration": "1 June 2019 - 31 May 2021",
-    "category": "ELIXIR Platform Tasks"
+    "category": "ELIXIR"
   },
   {
     "id": "21",
