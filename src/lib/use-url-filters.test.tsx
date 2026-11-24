@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ProductCatalog } from '@/components/catalog/product-catalog';
 import type { Product } from '@/components/catalog/types';
 import productsData from '@/data/product.json';
+import { sortProducts } from './products';
 import { FilterUrlSync } from './use-url-filters';
 
 // Stands in for Next.js's router: tests set the search params it reports
@@ -12,7 +13,8 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => searchParams,
 }));
 
-const products = productsData.products as Product[];
+// In the order of the listing
+const products = sortProducts(productsData.products as Product[]);
 
 // In the app, a navigation doesn't necessarily re-render the listing (its
 // props don't change); memo() makes sure it doesn't here either.

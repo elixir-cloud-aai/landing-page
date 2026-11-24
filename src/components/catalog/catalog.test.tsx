@@ -4,12 +4,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import productsData from '@/data/product.json';
 import servicesData from '@/data/services.json';
 import { filterId } from '@/lib/filters';
+import { sortProducts } from '@/lib/products';
 import { ProductCatalog } from './product-catalog';
 import { ServiceCard } from './service-catalog';
 import { FilterBar, isGitlabUrl, matchesQuery, Monogram } from './shared';
 import type { Product, Service } from './types';
 
-const products = productsData.products as Product[];
+// In the order of the listing
+const products = sortProducts(productsData.products as Product[]);
 const services = servicesData.services as Service[];
 
 const cardTitles = () =>
@@ -104,9 +106,22 @@ describe('FilterBar', () => {
 });
 
 describe('ProductCatalog', () => {
-  it('lists every product', () => {
-    render(<ProductCatalog products={products} />);
-    expect(cardTitles()).toEqual(products.map((p) => p.name));
+  it('lists every product, sorted by name', () => {
+    render(<ProductCatalog products={productsData.products as Product[]} />);
+    expect(cardTitles()).toEqual([
+      'Cloud Components',
+      'Cloud Registry',
+      'Conquest',
+      'FOCA',
+      'Funnel',
+      'GA4GH SDK',
+      'Krini',
+      'Poiesis',
+      'proTES',
+      'Pubgrade',
+      'TESK',
+      'TRS-Filer',
+    ]);
   });
 
   const withStandard = (...standards: string[]) =>

@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { BookOpen, Check, ChevronDown, ExternalLink } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa6';
 import { checkFilterIds, filterId, matchesAny } from '@/lib/filters';
+import { sortProducts } from '@/lib/products';
 import { useUrlFilters } from '@/lib/use-url-filters';
 import {
   EmptyState,
@@ -213,7 +214,12 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
-export function ProductCatalog({ products }: { products: Product[] }) {
+export function ProductCatalog({
+  products: unsorted,
+}: {
+  products: Product[];
+}) {
+  const products = useMemo(() => sortProducts(unsorted), [unsorted]);
   const [query, setQuery] = useState('');
 
   const options = useMemo(() => {
@@ -259,7 +265,9 @@ export function ProductCatalog({ products }: { products: Product[] }) {
         selected={selected}
       />
       {filtered.length ? (
-        <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
+        // Cards are all one height; while a card shows its details, only its
+        // row grows
+        <div className="grid auto-rows-fr gap-6 md:grid-cols-2 xl:grid-cols-3 has-[details[open]]:auto-rows-auto">
           {filtered.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
