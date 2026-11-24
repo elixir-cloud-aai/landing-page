@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import productsData from '@/data/product.json';
 import servicesData from '@/data/services.json';
+import { filterId } from '@/lib/filters';
 import { ProductCatalog } from './product-catalog';
 import { ServiceCard } from './service-catalog';
 import { FilterBar, isGitlabUrl, matchesQuery, Monogram } from './shared';
@@ -130,8 +131,17 @@ describe('ProductCatalog', () => {
     // More than either filter alone, so the filters really are combined
     expect(expected.length).toBeGreaterThan(withStandard('GA4GH WES').length);
     expect(cardTitles()).toEqual(expected);
+    // In the order of the filters on the page, whatever the click order
+    const buttons = within(
+      screen.getByRole('group', { name: 'Filter' }),
+    ).getAllByRole('button');
+    const position = (label: string) =>
+      buttons.indexOf(filterButton(new RegExp(`^${label}`)));
+    const ids = ['GA4GH WES', 'GA4GH Service Registry']
+      .sort((a, b) => position(a) - position(b))
+      .map(filterId);
     expect(window.location.search).toBe(
-      `?filter=${encodeURIComponent('ga4gh-wes,ga4gh-service-registry')}`,
+      `?filter=${encodeURIComponent(ids.join(','))}`,
     );
 
     await user.click(filterButton(/^GA4GH WES/));

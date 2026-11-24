@@ -389,66 +389,6 @@
       "status": "In development; no release yet"
     },
     {
-      "id": "tes-dashboard",
-      "name": "TES Dashboard",
-      "tagline": "Monitor and manage federated TES instances",
-      "blurb": "A dashboard for monitoring TES gateways and nodes, submitting tasks and workflows, and administering a federated TES network.",
-      "description": "The TES Dashboard monitors and manages GA4GH TES instances and workflow execution across federated cloud infrastructure. It shows the health of the gateway and each node, a network map of TES instances, and lets users submit and follow tasks and CWL, Nextflow or Snakemake workflows. Admin tools cover node management and the proTES middleware pipeline.",
-      "audience": [
-        "Researchers submitting tasks and workflows",
-        "Operators of a federated TES network"
-      ],
-      "features": [
-        "Real-time service status of the gateway and federated nodes",
-        "Interactive network map of TES instances",
-        "Task and workflow submission and tracking (CWL, Nextflow, Snakemake)",
-        "Node, instance and middleware management for admins"
-      ],
-      "techStack": ["React", "Flask", "Docker Compose"],
-      "deployment": ["Docker Compose"],
-      "standards": ["GA4GH TES"],
-      "tags": ["GA4GH", "TES", "Dashboard", "Monitoring"],
-      "license": null,
-      "logo": null,
-      "repoUrl": "https://github.com/elixir-cloud-aai/tes-dashboard",
-      "docsUrl": null,
-      "owner": null
-    },
-    {
-      "id": "ga4gh-io-schema",
-      "name": "GA4GH I/O Schema",
-      "tagline": "A JSON Schema profile for workflow inputs and outputs",
-      "blurb": "An incubating GA4GH JSON Schema profile that gives workflows and tools a machine-readable input/output contract, with a Python validator.",
-      "description": "The GA4GH I/O Schema profile proposes a strict, machine-readable contract for workflow and tool parameters that sits above workflow languages such as CWL, WDL and Nextflow. Generic WES clients can use it to generate input forms and validate complex inputs, such as sample tables, on the client, and AI agents can use it to build valid execution requests. The repository ships the meta-schema and a validation CLI (deliverable D4.3).",
-      "audience": [
-        "Workflow and tool authors",
-        "Developers of WES clients and registries"
-      ],
-      "features": [
-        "Meta-schema based on JSON Schema Draft 2020-12",
-        "UI widget vocabulary for generated forms",
-        "ga4gh-io-schema-validator command-line tool",
-        "Planned as an IO_SCHEMA file type for TRS"
-      ],
-      "quickStart": [
-        "git clone https://github.com/uniqueg/ga4gh-io-schema.git && cd ga4gh-io-schema",
-        "pip install -e \".[dev]\"",
-        "ga4gh-io-schema-validator --schema path/to/your-schema.json --meta-schema schemas/ga4gh-io-profile.schema.json"
-      ],
-      "status": "Incubating proposal",
-      "standards": ["GA4GH WES", "GA4GH TRS"],
-      "tags": ["GA4GH", "JSON Schema", "Workflows", "Standards"],
-      "license": "Apache-2.0",
-      "logo": null,
-      "repoUrl": "https://github.com/uniqueg/ga4gh-io-schema",
-      "docsUrl": null,
-      "owner": {
-        "name": "Alex Kanitz",
-        "email": "alexander.kanitz@unibas.ch",
-        "image": "/contributors/alex_kanitz.jpg"
-      }
-    },
-    {
       "id": "funnel",
       "name": "Funnel",
       "tagline": "GA4GH TES for HPC and cloud batch",
