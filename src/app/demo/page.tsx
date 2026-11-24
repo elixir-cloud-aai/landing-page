@@ -115,8 +115,10 @@ function NodeCard({
 
         {/* The registry lists the services of each Node: no copy here, which
             would drift */}
+        {/* Pushes the liaison down, in line across the cards of a row */}
+        <div aria-hidden="true" className="min-h-5 flex-1" />
         {node.liaison && (
-          <div className="mt-5 border-t pt-4">
+          <div className="border-t pt-4">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {liaisonLabel}
             </p>
@@ -214,7 +216,7 @@ export default function DemoPage() {
         >
           Core services
         </h2>
-        <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid auto-rows-fr gap-6 md:grid-cols-2 xl:grid-cols-3">
           {coreServices.map((service) => (
             <ServiceCard key={service.id} service={service} />
           ))}
@@ -232,7 +234,7 @@ export default function DemoPage() {
         >
           AAAI providers
         </h2>
-        <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid auto-rows-fr gap-6 md:grid-cols-2 xl:grid-cols-3">
           {providers.map((provider) => (
             <NodeCard
               key={provider.code}
@@ -254,7 +256,7 @@ export default function DemoPage() {
         >
           Nodes
         </h2>
-        <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid auto-rows-fr gap-6 md:grid-cols-2 xl:grid-cols-3">
           {nodes.map((node) => (
             <NodeCard key={node.code} node={node} />
           ))}

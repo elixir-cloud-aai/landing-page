@@ -97,8 +97,10 @@ export function ServiceCard({ service }: { service: Service }) {
           </Link>
         )}
 
+        {/* Pushes the owner down, in line across the cards of a row */}
+        <div aria-hidden="true" className="min-h-5 flex-1" />
         {service.owners.length > 0 && (
-          <div className="mt-5 border-t pt-4">
+          <div className="border-t pt-4">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Service owner
             </p>
