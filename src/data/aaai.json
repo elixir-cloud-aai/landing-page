@@ -1,0 +1,22 @@
+{
+  "providers": [
+    {
+      "code": "EU",
+      "name": "Life Science-RI",
+      "country": "European Union",
+      "status": "live",
+      "institute": "Life Science Login",
+      "website": "https://lifescience-ri.eu/",
+      "logo": "/aaai/ls-login.png",
+      "liaison": {
+        "name": "Jan Pavlíček",
+        "email": null,
+        "image": null
+      },
+      "contact": {
+        "email": "cloud-service@elixir-europe.org",
+        "url": null
+      }
+    }
+  ]
+}

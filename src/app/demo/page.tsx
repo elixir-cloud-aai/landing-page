@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { ArrowDown, ExternalLink, Mail, Network } from 'lucide-react';
+import aaaiData from '@/data/aaai.json';
 import nodesData from '@/data/nodes.json';
 import servicesData from '@/data/services.json';
 import { FeedbackCallout, PageHero } from '@/components/catalog/page-hero';
@@ -21,6 +22,8 @@ const nodes = [...(nodesData.nodes as ElixirNode[])].sort((a, b) =>
   a.name.localeCompare(b.name, 'en', { numeric: true, sensitivity: 'base' }),
 );
 const services = servicesData.services as Service[];
+// The AAAI providers that the federation's services trust for login
+const providers = aaaiData.providers as ElixirNode[];
 
 // The services the landing page shows; the Cloud Registry lists all others.
 // The Krini portal joins once it is live.
@@ -39,7 +42,15 @@ const hostLabel = (url: string) => {
   }
 };
 
-function NodeCard({ node }: { node: ElixirNode }) {
+// The card of an ELIXIR Node, also used for AAAI providers (same fields: the
+// provider's name as `institute`, its infrastructure as `name`)
+function NodeCard({
+  node,
+  liaisonLabel = 'Node liaison',
+}: {
+  node: ElixirNode;
+  liaisonLabel?: string;
+}) {
   const contactEmail = node.contact?.email ?? null;
   const contactUrl = node.contact?.url ?? null;
 
@@ -105,7 +116,7 @@ function NodeCard({ node }: { node: ElixirNode }) {
         {node.liaison && (
           <div className="mt-5 border-t pt-4">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Node liaison
+              {liaisonLabel}
             </p>
             <OwnerChip owner={node.liaison} role={null} />
           </div>
@@ -210,6 +221,28 @@ export default function DemoPage() {
         <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
           {coreServices.map((service) => (
             <ServiceCard key={service.id} service={service} />
+          ))}
+        </div>
+      </section>
+
+      <section
+        aria-labelledby="aaai-heading"
+        className="mx-auto max-w-7xl scroll-mt-24 px-6 pt-14 lg:px-8"
+        id="aaai"
+      >
+        <h2
+          className="mb-6 text-2xl font-semibold tracking-tight"
+          id="aaai-heading"
+        >
+          AAAI providers
+        </h2>
+        <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {providers.map((provider) => (
+            <NodeCard
+              key={provider.code}
+              liaisonLabel="Provider liaison"
+              node={provider}
+            />
           ))}
         </div>
       </section>

@@ -39,6 +39,41 @@ describe('Demo page', () => {
   });
 });
 
+describe('Demo page: AAAI providers', () => {
+  it('shows Life Science Login like a Node, with its liaison', () => {
+    render(<DemoPage />);
+    const cards = region('AAAI providers').getAllByRole('article');
+    expect(cards).toHaveLength(1);
+    const card = within(cards[0]);
+    expect(card.getByRole('heading', { level: 3 })).toHaveTextContent(
+      'Life Science Login',
+    );
+    expect(card.getByAltText('Life Science Login logo')).toBeInTheDocument();
+    expect(card.getByAltText('Flag of European Union')).toHaveAttribute(
+      'src',
+      expect.stringContaining('eu.svg'),
+    );
+    expect(card.getByText('Life Science-RI')).toBeInTheDocument();
+    expect(card.getByText('Live')).toBeInTheDocument();
+    expect(card.getByText('Provider liaison')).toBeInTheDocument();
+    expect(card.getByText('Jan Pavlíček')).toBeInTheDocument();
+    expect(
+      card.getByRole('link', { name: 'lifescience-ri.eu' }),
+    ).toHaveAttribute('href', 'https://lifescience-ri.eu/');
+    expect(card.getByRole('link', { name: 'Contact' })).toHaveAttribute(
+      'href',
+      'mailto:cloud-service@elixir-europe.org',
+    );
+  });
+
+  it('keeps "Node liaison" on the Node cards', () => {
+    render(<DemoPage />);
+    nodeCards().forEach((card) => {
+      expect(within(card).queryByText('Provider liaison')).toBeNull();
+    });
+  });
+});
+
 describe('Demo page: Nodes', () => {
   it('shows one card per Node, titled with its institute', () => {
     render(<DemoPage />);
