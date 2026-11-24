@@ -49,14 +49,24 @@ export function PageHero({
           )}
         </div>
 
-        <dl className="mx-auto mt-12 grid max-w-3xl grid-cols-2 overflow-hidden rounded-2xl border bg-card shadow-sm sm:grid-cols-4">
+        {/* Three stats share one row; four take two rows on small screens */}
+        <dl
+          className={
+            'mx-auto mt-12 grid max-w-3xl overflow-hidden rounded-2xl border bg-card shadow-sm ' +
+            (stats.length === 3 ? 'grid-cols-3' : 'grid-cols-2 sm:grid-cols-4')
+          }
+        >
           {stats.map((stat, index) => (
             <div
               className={
                 'flex flex-col-reverse px-4 py-5 text-center ' +
-                (index % 2 === 1 ? 'border-l ' : '') +
-                (index >= 2 ? 'border-t sm:border-t-0 ' : '') +
-                (index === 2 ? 'sm:border-l' : '')
+                (stats.length === 3
+                  ? index > 0
+                    ? 'border-l'
+                    : ''
+                  : (index % 2 === 1 ? 'border-l ' : '') +
+                    (index >= 2 ? 'border-t sm:border-t-0 ' : '') +
+                    (index === 2 ? 'sm:border-l' : ''))
               }
               key={stat.label}
             >

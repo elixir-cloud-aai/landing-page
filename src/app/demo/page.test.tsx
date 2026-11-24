@@ -91,6 +91,42 @@ describe('Demo page: core services', () => {
 });
 
 describe('Demo page', () => {
+  it('shows the title, description and stats of the sandbox', () => {
+    const { container } = render(<DemoPage />);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      "ELIXIR On-Cloud's Federation Sandbox",
+    );
+    expect(
+      screen.getByText(
+        'Whether you are a prospective adopter or implementer: Try our reference federation, deployed across various ELIXIR Nodes.',
+      ),
+    ).toBeInTheDocument();
+    // Each stat is a <dd> value after its <dt> label (shown in reverse)
+    const stats = Array.from(container.querySelectorAll('dl > div')).map(
+      (stat) => [
+        stat.querySelector('dt')!.textContent,
+        stat.querySelector('dd')!.textContent,
+      ],
+    );
+    expect(stats).toEqual([
+      ['Core services', '2'],
+      ['AAAI providers', '1'],
+      ['Nodes', String(nodes.length)],
+    ]);
+    expect(nodes).toHaveLength(5);
+  });
+
+  it('has the three sections in order', () => {
+    render(<DemoPage />);
+    // The labelled sections, i.e. without the feedback note at the end
+    expect(
+      screen
+        .getAllByRole('region')
+        .map((section) => section.getAttribute('aria-labelledby'))
+        .map((id) => document.getElementById(id!)!.textContent),
+    ).toEqual(['Core services', 'AAAI providers', 'Nodes']);
+  });
+
   it('no longer links Node services to the removed Services page', () => {
     const { container } = render(<DemoPage />);
     expect(container.querySelector('a[href^="/services"]')).toBeNull();

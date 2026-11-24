@@ -11,10 +11,12 @@ import type { ElixirNode, Service } from '@/components/catalog/types';
 import { CONTACT_EMAIL, DOCS_OPERATORS_URL } from '@/lib/site';
 import { cn } from '@/lib/utils';
 
+const DESCRIPTION =
+  'Whether you are a prospective adopter or implementer: Try our reference federation, deployed across various ELIXIR Nodes.';
+
 export const metadata: Metadata = {
   title: 'Demo',
-  description:
-    'The ELIXIR On-Cloud reference federation: its live services and the ELIXIR Nodes that run them.',
+  description: DESCRIPTION,
 };
 
 // By name, ascending, alphanumerical
@@ -160,8 +162,6 @@ function NodeCard({
 }
 
 export default function DemoPage() {
-  const live = nodes.filter((node) => node.status === 'live');
-
   return (
     <div className="bg-background">
       <PageHero
@@ -185,23 +185,19 @@ export default function DemoPage() {
             </a>
           </>
         }
-        description="The reference federation demonstrates the ELIXIR On-Cloud products: live services, run by ELIXIR Nodes, each with its own contact point."
+        description={DESCRIPTION}
         eyebrow="Demo"
         icon={<Network className="h-3.5 w-3.5" />}
         stats={[
-          { value: coreServices.length, label: 'Live services' },
-          { value: live.length, label: 'Live Nodes' },
-          { value: nodes.length - live.length, label: 'Onboarding' },
-          {
-            value: new Set(nodes.map((n) => n.country)).size,
-            label: 'Countries',
-          },
+          { value: coreServices.length, label: 'Core services' },
+          { value: providers.length, label: 'AAAI providers' },
+          { value: nodes.length, label: 'Nodes' },
         ]}
         title={
           <>
-            The{' '}
+            ELIXIR On-Cloud&apos;s{' '}
             <span className="bg-gradient-to-r from-elixirgreen via-teal-500 to-elixirblue bg-clip-text text-transparent">
-              reference federation
+              Federation Sandbox
             </span>
           </>
         }
