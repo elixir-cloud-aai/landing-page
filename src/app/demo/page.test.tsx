@@ -86,6 +86,26 @@ describe('Demo page: Nodes', () => {
     });
   });
 
+  it('sorts the Nodes by name', () => {
+    render(<DemoPage />);
+    const names = nodeCards().map(
+      (card) => nodes.find((node) => card.id === node.code.toLowerCase())!.name,
+    );
+    expect(names).toEqual(
+      [...names].sort((a, b) => a.localeCompare(b, 'en', { numeric: true })),
+    );
+    expect(names).toHaveLength(nodes.length);
+  });
+
+  // The registry lists the services of each Node
+  it('lists no services on the Node cards', () => {
+    render(<DemoPage />);
+    nodeCards().forEach((card) => {
+      expect(card).not.toHaveTextContent(/ELIXIR On-Cloud services/i);
+      expect(card).not.toHaveTextContent(/None yet/);
+    });
+  });
+
   it('never says "Planned"', () => {
     const { container } = render(<DemoPage />);
     expect(container).not.toHaveTextContent(/planned/i);

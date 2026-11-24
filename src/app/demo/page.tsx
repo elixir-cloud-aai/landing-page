@@ -16,7 +16,10 @@ export const metadata: Metadata = {
     'The ELIXIR On-Cloud reference federation: its live services and the ELIXIR Nodes that run them.',
 };
 
-const nodes = nodesData.nodes as ElixirNode[];
+// By name, ascending, alphanumerical
+const nodes = [...(nodesData.nodes as ElixirNode[])].sort((a, b) =>
+  a.name.localeCompare(b.name, 'en', { numeric: true, sensitivity: 'base' }),
+);
 const services = servicesData.services as Service[];
 
 // The services the landing page shows; the Cloud Registry lists all others.
@@ -36,13 +39,7 @@ const hostLabel = (url: string) => {
   }
 };
 
-const servicesAt = (code: string) =>
-  services.filter((service) =>
-    service.nodes.some((node) => node.code === code),
-  );
-
 function NodeCard({ node }: { node: ElixirNode }) {
-  const hosted = servicesAt(node.code);
   const contactEmail = node.contact?.email ?? null;
   const contactUrl = node.contact?.url ?? null;
 
@@ -103,41 +100,8 @@ function NodeCard({ node }: { node: ElixirNode }) {
           </span>
         </div>
 
-        <div className="mt-5">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            ELIXIR On-Cloud services
-          </p>
-          {hosted.length ? (
-            <ul className="flex flex-wrap gap-1.5">
-              {hosted.map((service) => {
-                // A service can list this Node as still onboarding (e.g. a joining TES node).
-                const onboarding = service.nodes.some(
-                  (n) => n.code === node.code && n.status === 'onboarding',
-                );
-                return (
-                  <li key={service.id}>
-                    <span
-                      className={cn(
-                        'inline-flex gap-1 rounded-md border px-2 py-0.5 text-xs font-medium',
-                        onboarding
-                          ? 'border-dashed text-muted-foreground'
-                          : 'bg-secondary text-secondary-foreground',
-                      )}
-                    >
-                      {service.name}
-                      {onboarding && (
-                        <span className="font-normal">· onboarding</span>
-                      )}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <p className="text-sm text-muted-foreground">None yet</p>
-          )}
-        </div>
-
+        {/* The registry lists the services of each Node: no copy here, which
+            would drift */}
         {node.liaison && (
           <div className="mt-5 border-t pt-4">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
