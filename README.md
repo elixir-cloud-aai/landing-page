@@ -30,14 +30,15 @@ there is no backend and no build-time secret.
 
 Content lives in JSON files under [`src/data/`](src/data/):
 
-| File               | Page                                                                                             |
-| ------------------ | ------------------------------------------------------------------------------------------------ |
-| `product.json`     | [Products](https://elixir-on.cloud/products)                                                     |
-| `services.json`    | [Demo](https://elixir-on.cloud/demo): live services                                              |
-| `nodes.json`       | [Demo](https://elixir-on.cloud/demo): Nodes (flags in `public/flags/`, logos in `public/nodes/`) |
-| `project.json`     | [Projects](https://elixir-on.cloud/projects) (parked: online, not in the menu or the sitemap)    |
-| `contributor.json` | [Contributors][contributors]                                                                     |
-| `funding.json`     | [Funding](https://elixir-on.cloud/funding)                                                       |
+| File               | Page                                                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `product.json`     | [Products](https://elixir-on.cloud/products)                                                                 |
+| `services.json`    | [Demo](https://elixir-on.cloud/demo): core services (those in `CORE_SERVICE_IDS` of `src/app/demo/page.tsx`) |
+| `aaai.json`        | [Demo](https://elixir-on.cloud/demo): AAAI providers, in the fields of a Node (logos in `public/aaai/`)      |
+| `nodes.json`       | [Demo](https://elixir-on.cloud/demo): Nodes (flags in `public/flags/`, logos in `public/nodes/`)             |
+| `project.json`     | [Projects](https://elixir-on.cloud/projects) (parked: online, not in the menu or the sitemap)                |
+| `contributor.json` | [Contributors][contributors]                                                                                 |
+| `funding.json`     | [Funding](https://elixir-on.cloud/funding)                                                                   |
 
 To change content, edit the relevant file and open a pull request.
 
