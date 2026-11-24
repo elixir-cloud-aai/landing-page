@@ -4,7 +4,13 @@ import { useMemo, useState } from 'react';
 import { BookOpen, Check, ChevronDown, ExternalLink } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa6';
 import { checkFilterIds, filterId, matchesAny } from '@/lib/filters';
-import { sortProducts } from '@/lib/products';
+import {
+  CLOUD_NATIVE,
+  OWN_PRODUCTS,
+  PARTNER_PRODUCTS,
+  productFilters,
+  sortProducts,
+} from '@/lib/products';
 import { useUrlFilters } from '@/lib/use-url-filters';
 import {
   EmptyState,
@@ -85,6 +91,16 @@ function ProductCard({ product }: { product: Product }) {
         )}
 
         <div className="mt-5 flex flex-wrap gap-1.5">
+          {product.partner && (
+            <span className="inline-flex items-center rounded-md bg-elixirblue/15 px-2 py-0.5 text-[11px] font-semibold text-sky-700 dark:text-sky-300">
+              Partner product
+            </span>
+          )}
+          {product.cloudNative && (
+            <span className="inline-flex items-center rounded-md bg-elixirgreen/15 px-2 py-0.5 text-[11px] font-semibold text-green-700 dark:text-green-300">
+              Cloud native
+            </span>
+          )}
           {product.standards.map((standard) => (
             <StandardChip key={standard} label={standard} />
           ))}
@@ -175,14 +191,18 @@ function ProductCard({ product }: { product: Product }) {
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t px-6 py-4">
+        {/* Partner products have no maintainer here: that isn't ours to
+            decide */}
         {product.owner ? (
           <OwnerChip owner={product.owner} />
         ) : (
-          <span className="text-xs text-muted-foreground">
-            ELIXIR On-Cloud community
-          </span>
+          !product.partner && (
+            <span className="text-xs text-muted-foreground">
+              ELIXIR On-Cloud community
+            </span>
+          )
         )}
-        <div className="flex gap-2">
+        <div className="ml-auto flex gap-2">
           {product.repoUrl && (
             <a
               aria-label={`${product.name} source code`}
@@ -222,15 +242,19 @@ export function ProductCatalog({
   const products = useMemo(() => sortProducts(unsorted), [unsorted]);
   const [query, setQuery] = useState('');
 
+  // Whose products and cloud native first, then the standards, the most
+  // common first
   const options = useMemo(() => {
-    const counts = new Map<string, number>();
-    products.forEach((product) =>
-      product.standards.forEach((s) => counts.set(s, (counts.get(s) ?? 0) + 1)),
-    );
+    const count = (label: string) =>
+      products.filter((product) => productFilters(product).includes(label))
+        .length;
+    const standards = Array.from(
+      new Set(products.flatMap((product) => product.standards)),
+    ).sort((a, b) => count(b) - count(a));
     return checkFilterIds(
-      Array.from(counts.entries())
-        .sort((a, b) => b[1] - a[1])
-        .map(([label, count]) => ({ value: filterId(label), label, count })),
+      [OWN_PRODUCTS, PARTNER_PRODUCTS, CLOUD_NATIVE, ...standards].map(
+        (label) => ({ value: filterId(label), label, count: count(label) }),
+      ),
     );
   }, [products]);
   const ids = useMemo(() => options.map((option) => option.value), [options]);
@@ -240,7 +264,7 @@ export function ProductCatalog({
     () =>
       products.filter(
         (product) =>
-          matchesAny(selected, product.standards.map(filterId)) &&
+          matchesAny(selected, productFilters(product).map(filterId)) &&
           matchesQuery(query, [
             product.name,
             product.tagline,

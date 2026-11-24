@@ -197,6 +197,76 @@ describe('ProductCatalog', () => {
     expect(screen.getAllByRole('article')).toHaveLength(products.length);
   });
 
+  const names = (match: (product: Product) => boolean) =>
+    products.filter(match).map((p) => p.name);
+
+  it('starts with the product filters, then the standards', () => {
+    render(<ProductCatalog products={products} />);
+    const labels = within(screen.getByRole('group', { name: 'Filter' }))
+      .getAllByRole('button')
+      .map((button) => button.textContent);
+    expect(labels.slice(0, 3)).toEqual([
+      'ELIXIR On-Cloud products8',
+      'Partner products4',
+      'Cloud native6',
+    ]);
+    expect(labels.slice(3).every((label) => label?.startsWith('GA4GH'))).toBe(
+      true,
+    );
+  });
+
+  it('filters by owner and by cloud native', async () => {
+    const user = userEvent.setup();
+    render(<ProductCatalog products={products} />);
+
+    await user.click(filterButton(/^ELIXIR On-Cloud products/));
+    expect(cardTitles()).toEqual(names((p) => !p.partner));
+
+    await user.click(filterButton(/^ELIXIR On-Cloud products/));
+    await user.click(filterButton(/^Partner products/));
+    expect(cardTitles()).toEqual([
+      'Conquest',
+      'Funnel',
+      'GA4GH SDK',
+      'Poiesis',
+    ]);
+
+    await user.click(filterButton(/^Partner products/));
+    await user.click(filterButton(/^Cloud native/));
+    expect(cardTitles()).toEqual([
+      'Cloud Registry',
+      'Conquest',
+      'Poiesis',
+      'proTES',
+      'Pubgrade',
+      'TRS-Filer',
+    ]);
+    expect(window.location.search).toBe('?filter=cloud-native');
+  });
+
+  it('marks partner and cloud native products', () => {
+    render(<ProductCatalog products={products} />);
+    products.forEach((product) => {
+      const card = within(
+        screen.getAllByRole('article').find((c) => c.id === product.id)!,
+      );
+      expect(!!card.queryByText('Partner product')).toBe(product.partner);
+      expect(!!card.queryByText('Cloud native')).toBe(product.cloudNative);
+    });
+  });
+
+  it('names no maintainer for partner products', () => {
+    render(<ProductCatalog products={products} />);
+    products
+      .filter((product) => product.partner)
+      .forEach((product) => {
+        const card = screen
+          .getAllByRole('article')
+          .find((c) => c.id === product.id)!;
+        expect(card).not.toHaveTextContent(/Maintainer|community/);
+      });
+  });
+
   it('links each product to its code and docs', () => {
     render(<ProductCatalog products={products} />);
     products.forEach((product) => {
