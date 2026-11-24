@@ -1,20 +1,46 @@
 {
   "services": [
     {
-      "id": "elixir-on-cloud-registry",
-      "name": "ELIXIR On-Cloud Registry",
-      "tagline": "The service registry of the ELIXIR On-Cloud network",
-      "blurb": "The ELIXIR On-Cloud deployment of the GA4GH Service Registry, with a web dashboard for browsing and monitoring registered services across environments.",
-      "description": "The ELIXIR On-Cloud Registry is a running deployment of the Cloud Registry product, the GA4GH Service Registry API implementation for ELIXIR On-Cloud. It gives the network one place to see which services exist, who runs them, in which environment and at which version. The web dashboard is built for managing and monitoring registered services across all environments.",
+      "id": "elixir-on-cloud-portal",
+      "name": "ELIXIR On-Cloud Portal",
+      "tagline": "Run tasks and workflows in the federation",
+      "blurb": "The ELIXIR On-Cloud deployment of Krini, where researchers log in with Life Science Login and run tasks and workflows on the compute services of the federation.",
+      "description": "The ELIXIR On-Cloud Portal is the place to try the reference federation. It lists the TES and WES services of the ELIXIR On-Cloud Registry and lets users who log in with Life Science Login create tasks, submit workflow runs and follow them. Its user guide lists example tasks and workflows that are known to run. The portal runs Krini, which you can deploy for your own network.",
       "audience": [
-        "Anyone looking for services in the ELIXIR On-Cloud network",
-        "Node operators registering their services"
+        "Researchers and prospective adopters who want to try federated analyses",
+        "Implementers who want to test their compute services from a portal"
       ],
       "features": [
-        "Services overview listing each registered service with its ID, name, artifact, organization, environment and version",
-        "Service Types view",
-        "Service Info view",
-        "Light and dark theme toggle"
+        "Lists the TES and WES services of the ELIXIR On-Cloud Registry",
+        "Runs tasks and workflows after login with Life Science Login",
+        "Shows the state and logs of your tasks and runs"
+      ],
+      "standards": ["GA4GH TES", "GA4GH WES", "GA4GH Service Registry"],
+      "relatedProductId": "krini",
+      "nodes": [],
+      "status": "Live",
+      "tags": ["GA4GH", "TES", "WES", "Portal"],
+      "logo": null,
+      "deploymentUrl": "https://portal.elixir-on.cloud",
+      "docsUrl": null,
+      "repoUrl": "https://github.com/elixir-cloud-aai/krini",
+      "trackingUrl": null,
+      "owners": []
+    },
+    {
+      "id": "elixir-on-cloud-registry",
+      "name": "ELIXIR On-Cloud Registry",
+      "tagline": "Find the services of the federation",
+      "blurb": "The ELIXIR On-Cloud deployment of Cloud Registry, where anyone can find the services of the federation and service providers register their own.",
+      "description": "The ELIXIR On-Cloud Registry is the list of services in the reference federation, such as the TES and WES services of the nodes, with their types, versions and operators. Anyone can browse and search it; providers who log in with Life Science Login register and manage their services, and admins verify them. The registry runs Cloud Registry with its web front end, which you can deploy for your own network.",
+      "audience": [
+        "Anyone looking for the services of the reference federation",
+        "Service providers who register their services"
+      ],
+      "features": [
+        "Lists the services of the federation with their types, versions and operators",
+        "Registers and manages services after login with Life Science Login",
+        "Serves its entries through the GA4GH Service Registry API"
       ],
       "standards": ["GA4GH Service Registry"],
       "relatedProductId": "cloud-registry",
@@ -25,39 +51,6 @@
       "deploymentUrl": "https://registry.elixir-on.cloud",
       "docsUrl": "https://cloud-registry.readthedocs.io/",
       "repoUrl": "https://github.com/elixir-cloud-aai/cloud-registry",
-      "trackingUrl": null,
-      "owners": [
-        {
-          "name": "Valentin Schneider-Lunitz",
-          "email": null,
-          "image": null
-        }
-      ]
-    },
-    {
-      "id": "elixir-on-cloud-demonstrator",
-      "name": "ELIXIR On-Cloud Demonstrator",
-      "tagline": "Try federated task execution in the browser",
-      "blurb": "A live demonstrator of GA4GH TES-based task execution across the ELIXIR On-Cloud network, built on the TES Dashboard.",
-      "description": "The Demonstrator is a public deployment of the TES Dashboard. It shows the ELIXIR On-Cloud compute stack end to end: submit tasks and workflows, follow them as they run on the TES network, and inspect the health of the gateway and the federated nodes.",
-      "audience": [
-        "Researchers evaluating ELIXIR On-Cloud",
-        "Node operators and developers who want to see the stack in action"
-      ],
-      "features": [
-        "Submit and track tasks across the federation",
-        "Network map of TES instances",
-        "Service health of the gateway and federated nodes"
-      ],
-      "standards": ["GA4GH TES"],
-      "relatedProductId": "tes-dashboard",
-      "nodes": [{ "code": "DE", "name": "ELIXIR Germany", "status": "live" }],
-      "status": "Live",
-      "tags": ["GA4GH", "TES", "Demonstrator"],
-      "logo": null,
-      "deploymentUrl": "https://demo.elixir-on.cloud/",
-      "docsUrl": null,
-      "repoUrl": "https://github.com/elixir-cloud-aai/tes-dashboard",
       "trackingUrl": null,
       "owners": [
         {
