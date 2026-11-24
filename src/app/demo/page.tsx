@@ -216,7 +216,9 @@ export default function DemoPage() {
         >
           Core services
         </h2>
-        <div className="grid auto-rows-fr gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {/* Two columns at every width from md up, so the registry is always
+            on the right */}
+        <div className="grid auto-rows-fr gap-6 md:grid-cols-2">
           {coreServices.map((service) => (
             <ServiceCard key={service.id} service={service} />
           ))}
