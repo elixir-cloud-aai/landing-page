@@ -43,6 +43,8 @@
         }
       ],
       "standards": ["GA4GH TES"],
+      "partner": false,
+      "cloudNative": false,
       "tags": ["GA4GH", "TES", "Kubernetes"],
       "license": "Apache-2.0",
       "logo": null,
@@ -93,6 +95,8 @@
       ],
       "status": "Pre-release; breaking changes may occur",
       "standards": ["GA4GH TES"],
+      "partner": false,
+      "cloudNative": true,
       "tags": ["GA4GH", "TES", "Gateway", "Plugins"],
       "license": "Apache-2.0",
       "logo": null,
@@ -139,6 +143,8 @@
       ],
       "status": "Pre-release; breaking changes may occur",
       "standards": ["GA4GH Service Registry"],
+      "partner": false,
+      "cloudNative": true,
       "tags": ["GA4GH", "Service Registry", "Discovery"],
       "license": "Apache-2.0",
       "logo": null,
@@ -182,6 +188,8 @@
         "Helm"
       ],
       "standards": [],
+      "partner": false,
+      "cloudNative": false,
       "tags": ["Python", "Microservices", "OpenAPI", "Framework"],
       "license": "Apache-2.0",
       "logo": null,
@@ -221,6 +229,8 @@
         "GA4GH WES",
         "GA4GH DRS"
       ],
+      "partner": false,
+      "cloudNative": false,
       "tags": ["Web Components", "UI", "GA4GH", "WES"],
       "license": "Apache-2.0",
       "logo": null,
@@ -277,16 +287,14 @@
         }
       ],
       "standards": ["GA4GH TES"],
+      "partner": true,
+      "cloudNative": true,
       "tags": ["GA4GH", "TES", "Kubernetes"],
       "license": "Apache-2.0",
       "logo": null,
       "repoUrl": "https://github.com/JaeAeich/poiesis",
       "docsUrl": "https://poiesis.jaeaeich.com/",
-      "owner": {
-        "name": "Javed Habib",
-        "email": null,
-        "image": null
-      }
+      "owner": null
     },
     {
       "id": "pubgrade",
@@ -314,6 +322,8 @@
       ],
       "status": "Pre-release; breaking changes may occur",
       "standards": [],
+      "partner": false,
+      "cloudNative": true,
       "tags": ["CI/CD", "Kubernetes", "Publish-Subscribe"],
       "license": "Apache-2.0",
       "logo": null,
@@ -350,6 +360,8 @@
         "GA4GH TRS",
         "GA4GH Service Registry"
       ],
+      "partner": true,
+      "cloudNative": false,
       "tags": ["GA4GH", "SDK", "CLI", "Rust"],
       "license": "Apache-2.0",
       "logo": null,
@@ -376,16 +388,14 @@
       "techStack": ["Go", "PostgreSQL", "Kubernetes", "S3/MinIO"],
       "deployment": ["Kubernetes (Helm chart in deploy/charts/conquest)"],
       "standards": ["GA4GH WES", "GA4GH TES"],
+      "partner": true,
+      "cloudNative": true,
       "tags": ["GA4GH", "WES", "Workflows", "Kubernetes"],
       "license": null,
       "logo": null,
       "repoUrl": "https://github.com/anuragxxd/conquest",
       "docsUrl": null,
-      "owner": {
-        "name": "Anurag Gupta",
-        "email": null,
-        "image": "/contributors/anurag_gupta.jpg"
-      },
+      "owner": null,
       "status": "In development; no release yet"
     },
     {
@@ -405,6 +415,8 @@
         "Shows tasks in a web dashboard"
       ],
       "standards": ["GA4GH TES"],
+      "partner": true,
+      "cloudNative": false,
       "tags": ["GA4GH", "TES", "HPC"],
       "license": "MIT",
       "logo": null,
@@ -430,6 +442,8 @@
       ],
       "status": "In development; no release yet",
       "standards": ["GA4GH TES", "GA4GH WES", "GA4GH Service Registry"],
+      "partner": false,
+      "cloudNative": false,
       "tags": ["GA4GH", "TES", "WES", "Portal"],
       "license": "Apache-2.0",
       "logo": null,
@@ -455,6 +469,8 @@
       ],
       "status": "Pre-release; breaking changes may occur",
       "standards": ["GA4GH TRS"],
+      "partner": false,
+      "cloudNative": true,
       "tags": ["GA4GH", "TRS", "Workflows"],
       "license": "Apache-2.0",
       "logo": null,
