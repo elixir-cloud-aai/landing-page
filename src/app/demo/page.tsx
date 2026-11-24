@@ -25,9 +25,9 @@ const services = servicesData.services as Service[];
 // The AAAI providers that the federation's services trust for login
 const providers = aaaiData.providers as ElixirNode[];
 
-// The services the landing page shows; the Cloud Registry lists all others.
-// The Krini portal joins once it is live.
-const CORE_SERVICE_IDS = ['elixir-on-cloud-registry'];
+// The core services, in this order: the portal on the left, the registry on
+// the right. The registry lists all other services.
+const CORE_SERVICE_IDS = ['elixir-on-cloud-portal', 'elixir-on-cloud-registry'];
 const coreServices = CORE_SERVICE_IDS.map((id) =>
   services.find((service) => service.id === id)!,
 );
@@ -216,7 +216,7 @@ export default function DemoPage() {
           className="mb-6 text-2xl font-semibold tracking-tight"
           id="services-heading"
         >
-          Live services
+          Core services
         </h2>
         <div className="grid items-start gap-6 md:grid-cols-2 xl:grid-cols-3">
           {coreServices.map((service) => (

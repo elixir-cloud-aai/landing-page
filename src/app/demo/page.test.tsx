@@ -15,24 +15,82 @@ const nodeCards = () => region('Nodes').getAllByRole('article');
 const cardFor = (node: ElixirNode) =>
   nodeCards().find((card) => card.id === node.code.toLowerCase())!;
 
-describe('Demo page', () => {
-  it('shows the Cloud Registry as a live service, not the demonstrator', () => {
+const service = (id: string) => servicesData.services.find((s) => s.id === id)!;
+
+const coreCards = () => region('Core services').getAllByRole('article');
+
+describe('Demo page: core services', () => {
+  it('shows the portal on the left and the registry on the right', () => {
     render(<DemoPage />);
-    const services = region('Live services');
-    const registry = servicesData.services.find(
-      (service) => service.id === 'elixir-on-cloud-registry',
-    )!;
     expect(
-      services.getByRole('heading', { level: 3, name: registry.name }),
-    ).toBeInTheDocument();
-    expect(
-      services
-        .getAllByRole('link')
-        .some((link) => link.getAttribute('href') === registry.deploymentUrl),
-    ).toBe(true);
-    expect(services.queryByText(/Demonstrator/)).toBeNull();
+      coreCards().map(
+        (card) => within(card).getByRole('heading', { level: 3 }).textContent,
+      ),
+    ).toEqual([
+      service('elixir-on-cloud-portal').name,
+      service('elixir-on-cloud-registry').name,
+    ]);
+    coreCards().forEach((card, index) => {
+      const { deploymentUrl } = service(
+        ['elixir-on-cloud-portal', 'elixir-on-cloud-registry'][index],
+      );
+      expect(
+        within(card).getByRole('link', { name: /Open service/ }),
+      ).toHaveAttribute('href', deploymentUrl);
+    });
+    expect(region('Core services').queryByText(/Demonstrator/)).toBeNull();
   });
 
+  it('shows no filters, search, Node coverage or standard badges', () => {
+    render(<DemoPage />);
+    expect(screen.queryByRole('searchbox')).toBeNull();
+    expect(screen.queryByRole('textbox')).toBeNull();
+    coreCards().forEach((card, index) => {
+      expect(card).not.toHaveTextContent(/Node coverage/i);
+      // A badge is an element with just the standard's name; the texts may
+      // still mention the standard
+      const { standards } = service(
+        ['elixir-on-cloud-portal', 'elixir-on-cloud-registry'][index],
+      );
+      expect(standards.length).toBeGreaterThan(0);
+      standards.forEach((standard) =>
+        expect(within(card).queryByText(standard)).toBeNull(),
+      );
+    });
+  });
+
+  it('names the service owner and the Node that runs each service', () => {
+    render(<DemoPage />);
+    coreCards().forEach((card) => {
+      const tile = within(card);
+      expect(tile.getByText('Service owner')).toBeInTheDocument();
+      expect(tile.getByText('Valentin Schneider-Lunitz')).toBeInTheDocument();
+      // Links to the Node's card further down the page
+      expect(
+        tile.getByRole('link', { name: 'ELIXIR Germany' }),
+      ).toHaveAttribute('href', '#de');
+    });
+    // The link's target exists
+    expect(nodeCards().map((card) => card.id)).toContain('de');
+  });
+
+  it('links the docs of the deployment, not of the product', () => {
+    render(<DemoPage />);
+    const [portal, registry] = coreCards();
+    // No deployment docs for Krini yet
+    expect(
+      within(portal).queryByRole('link', { name: /documentation/ }),
+    ).toBeNull();
+    expect(
+      within(registry).getByRole('link', { name: /documentation/ }),
+    ).toHaveAttribute(
+      'href',
+      'https://docs.elixir-on.cloud/en/latest/operators/cloud-registry/',
+    );
+  });
+});
+
+describe('Demo page', () => {
   it('no longer links Node services to the removed Services page', () => {
     const { container } = render(<DemoPage />);
     expect(container.querySelector('a[href^="/services"]')).toBeNull();

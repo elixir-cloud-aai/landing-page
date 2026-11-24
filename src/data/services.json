@@ -17,7 +17,7 @@
       ],
       "standards": ["GA4GH TES", "GA4GH WES", "GA4GH Service Registry"],
       "relatedProductId": "krini",
-      "nodes": [],
+      "nodes": [{ "code": "DE", "name": "ELIXIR Germany", "status": "live" }],
       "status": "Live",
       "tags": ["GA4GH", "TES", "WES", "Portal"],
       "logo": null,
@@ -25,7 +25,13 @@
       "docsUrl": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/krini",
       "trackingUrl": null,
-      "owners": []
+      "owners": [
+        {
+          "name": "Valentin Schneider-Lunitz",
+          "email": null,
+          "image": null
+        }
+      ]
     },
     {
       "id": "elixir-on-cloud-registry",
@@ -44,12 +50,12 @@
       ],
       "standards": ["GA4GH Service Registry"],
       "relatedProductId": "cloud-registry",
-      "nodes": [],
+      "nodes": [{ "code": "DE", "name": "ELIXIR Germany", "status": "live" }],
       "status": "Live",
       "tags": ["GA4GH", "Service Registry", "Discovery"],
       "logo": null,
       "deploymentUrl": "https://registry.elixir-on.cloud",
-      "docsUrl": "https://cloud-registry.readthedocs.io/",
+      "docsUrl": "https://docs.elixir-on.cloud/en/latest/operators/cloud-registry/",
       "repoUrl": "https://github.com/elixir-cloud-aai/cloud-registry",
       "trackingUrl": null,
       "owners": [
