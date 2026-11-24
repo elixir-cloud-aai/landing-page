@@ -143,7 +143,7 @@
       "license": "Apache-2.0",
       "logo": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/cloud-registry",
-      "docsUrl": "https://cloud-registry.readthedocs.io/en/latest/",
+      "docsUrl": "https://cloud-registry.readthedocs.io/",
       "owner": {
         "name": "Alex Kanitz",
         "email": "alexander.kanitz@unibas.ch",
@@ -327,7 +327,7 @@
     },
     {
       "id": "ga4gh-sdk",
-      "name": "GA4GH SDK & CLI",
+      "name": "GA4GH SDK",
       "tagline": "Rust SDK and CLI for GA4GH APIs",
       "blurb": "A software development kit and command-line client that let developers and users work with GA4GH TES, WES, DRS, TRS and Service Registry services from one library.",
       "description": "The GA4GH SDK lets developers build clients for GA4GH API services, and lets users call those services from the command line or from scripts. It works with the GA4GH TES, WES, DRS, TRS and Service Registry APIs, reads what each service supports from its service info, and handles authentication. The Rust library comes with Python bindings and a CLI; SDKs for services with API extensions can build on it without forking it.",
@@ -354,7 +354,7 @@
       "license": "Apache-2.0",
       "logo": null,
       "repoUrl": "https://github.com/ga4gh/ga4gh-sdk",
-      "docsUrl": null,
+      "docsUrl": "https://ga4gh-sdk.readthedocs.io/",
       "owner": null
     },
     {
