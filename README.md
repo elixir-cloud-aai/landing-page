@@ -39,6 +39,17 @@ Content lives in JSON files under [`src/data/`](src/data/):
 | `contributor.json` | [Contributors][contributors]                                                                     |
 | `funding.json`     | [Funding](https://elixir-on.cloud/funding)                                                       |
 
+In `contributor.json`, `roles` holds a contributor's affiliation and their
+roles. The affiliation is an ELIXIR Node (e.g. `ELIXIR Finland`, also
+`ELIXIR Hub` and `EMBL-EBI`), `OSS Contributor` or `External Contributor`;
+it is shown under the name, a Node with its flag, and sets the ELIXIR, OSS
+and External filters. A new Node needs its flag in `public/flags/` and an
+entry in `NODE_FLAGS` in
+[`src/lib/contributors.ts`](src/lib/contributors.ts), which also lists the
+leads (Lead filter and badge). Node names must match it exactly. All other
+entries, e.g. `GSoC '21 Contributor`, are listed as roles; those with
+`GSoC` set the GSoC filter and badge. Contributors are listed by name.
+
 To change content, edit the relevant file and open a pull request.
 
 In `funding.json`, `category` is the funding programme, `ELIXIR` or

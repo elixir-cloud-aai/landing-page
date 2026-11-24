@@ -1,8 +1,17 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowUpRight, GitBranch, Mail, Sparkles } from 'lucide-react';
-import { ChevronDown, LayoutGrid, List, Search, Users, X } from 'lucide-react';
+import {
+  ChevronDown,
+  LayoutGrid,
+  List,
+  Mail,
+  Search,
+  Sparkles,
+  Star,
+  Users,
+  X,
+} from 'lucide-react';
 import { FilterChips } from '@/components/catalog/shared';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,24 +20,25 @@ import { Input } from '@/components/ui/input';
 import { checkFilterIds, matchesAny } from '@/lib/filters';
 import { useUrlFilters } from '@/lib/use-url-filters';
 
-import contributors from '@/data/contributor.json';
-import { FaLinkedin } from 'react-icons/fa6';
+import {
+  affiliation,
+  type Contributor,
+  emailAddress,
+  isELIXIR,
+  isExternal,
+  isGSoC,
+  isLead,
+  isOSS,
+  nodesRepresented,
+  contributors as people,
+  roles as rolesOf,
+} from '@/lib/contributors';
+import { FaGithub, FaLinkedin } from 'react-icons/fa6';
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
 import { cn } from 'cn';
 import Globe3D from '@/components/ui/globe-lazy';
 import { contributorMarkers } from '@/lib/contributor-markers';
 import Image from 'next/image';
-
-type Contributor = {
-  name: string;
-  image?: string;
-  roles?: string[];
-  email?: string;
-  github?: string;
-  linkedin?: string;
-};
-
-const people = contributors as Contributor[];
 
 function initials(name: string) {
   return name
@@ -39,29 +49,36 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-function isGSoC(roles: string[] = []) {
-  return roles.some((role) => role.toLowerCase().includes('gsoc'));
-}
-
-function isOSS(roles: string[] = []) {
-  return roles.some((role) => role.toLowerCase().includes('oss contributor'));
-}
+// The filters, in display order: affiliations, then roles
+const filters = [
+  {
+    value: 'elixir',
+    label: 'ELIXIR',
+    test: isELIXIR,
+  },
+  { value: 'oss', label: 'OSS', test: isOSS },
+  { value: 'external', label: 'External', test: isExternal },
+  { value: 'gsoc', label: 'GSoC', test: isGSoC },
+  { value: 'lead', label: 'Lead', test: isLead },
+];
 
 // The filters a contributor matches
 function filterIds(person: Contributor) {
-  return [
-    ...(isOSS(person.roles) ? ['oss'] : []),
-    ...(isGSoC(person.roles) ? ['gsoc'] : []),
-  ];
+  return filters
+    .filter((filter) => filter.test(person))
+    .map((filter) => filter.value);
 }
 
-const gsocCount = people.filter((person) => isGSoC(person.roles)).length;
-const ossCount = people.filter((person) => isOSS(person.roles)).length;
+const ossCount = people.filter(isOSS).length;
+const nodeCount = nodesRepresented(people).length;
 
-const filterOptions = checkFilterIds([
-  { value: 'oss', label: 'OSS', count: ossCount },
-  { value: 'gsoc', label: 'GSoC', count: gsocCount },
-]);
+const filterOptions = checkFilterIds(
+  filters.map(({ value, label, test }) => ({
+    value,
+    label,
+    count: people.filter(test).length,
+  })),
+);
 const filterOptionIds = filterOptions.map((option) => option.value);
 
 export default function ContributorsPage() {
@@ -156,7 +173,7 @@ export default function ContributorsPage() {
                 </div>
 
                 <div className="border-l border-white/10 px-4 py-5">
-                  <Stat label="GSoC contributors" value={gsocCount} />
+                  <Stat label="ELIXIR Nodes represented" value={nodeCount} />
                 </div>
               </div>
 
@@ -307,7 +324,7 @@ export default function ContributorsPage() {
           <div className="space-y-8">
             {/* Grid or List Layout */}
             {viewMode === 'grid' ? (
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {visibleContributors.map((person) => (
                   <div
                     id={`contributor-${encodeURIComponent(person.name)}`}
@@ -384,7 +401,7 @@ function ContributorListItem({
   person: Contributor;
   highlighted?: boolean;
 }) {
-  const roles = person.roles || [];
+  const roles = rolesOf(person);
 
   return (
     <div
@@ -393,6 +410,7 @@ function ContributorListItem({
         highlighted &&
           'border-primary ring-2 ring-primary/60 bg-primary/[0.06]',
       )}
+      role="article"
     >
       {/* Left section: Avatar & Info */}
       <div className="flex items-center gap-3.5 min-w-0">
@@ -416,81 +434,31 @@ function ContributorListItem({
         </div>
 
         <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <h3 className="truncate text-sm font-semibold text-card-foreground">
-              {person.name}
-            </h3>
-            {isGSoC(roles) && (
-              <Badge
-                className="rounded-full bg-primary/10 px-2 py-0 text-[10px] font-medium text-primary"
-                variant="secondary"
-              >
-                GSoC
-              </Badge>
-            )}
-          </div>
-          <p className="truncate text-xs text-muted-foreground">
-            Open source contributor
-          </p>
+          <h3 className="break-words text-sm font-semibold text-card-foreground">
+            {person.name}
+          </h3>
+          <Affiliation person={person} />
         </div>
       </div>
 
-      {/* Middle section: Roles / Skills */}
+      {/* Middle section: Roles */}
       <div className="flex flex-wrap items-center gap-1.5 sm:justify-center">
-        {roles.slice(0, 3).map((role) => (
+        {roles.map((role) => (
           <Badge
             className="rounded-md border-border/60 bg-muted/30 px-2 py-0.5 text-xs font-normal text-muted-foreground"
+            data-testid="role"
             key={role}
             variant="outline"
           >
             {role}
           </Badge>
         ))}
-        {roles.length > 3 && (
-          <Badge
-            className="rounded-md border-border/60 bg-muted/20 px-2 py-0.5 text-xs font-normal text-muted-foreground"
-            variant="outline"
-          >
-            +{roles.length - 3}
-          </Badge>
-        )}
       </div>
 
-      {/* Right section: Links & Profile */}
+      {/* Right section: Links & Badges */}
       <div className="flex items-center justify-between gap-3 border-t border-border/40 pt-3 sm:border-0 sm:pt-0">
-        <div className="flex items-center gap-0.5">
-          {person.github && (
-            <IconButton href={person.github} label="GitHub">
-              <GitBranch className="h-4 w-4" />
-            </IconButton>
-          )}
-          {person.linkedin && (
-            <IconButton href={person.linkedin} label="LinkedIn">
-              <FaLinkedin className="h-4 w-4" />
-            </IconButton>
-          )}
-          {person.email && (
-            <IconButton href={`mailto:${person.email}`} label="Email">
-              <Mail className="h-4 w-4" />
-            </IconButton>
-          )}
-        </div>
-
-        {person.github ? (
-          <Button
-            asChild
-            className="h-8 gap-1 rounded-md px-2.5 text-xs font-medium hover:bg-primary hover:text-primary-foreground"
-            size="sm"
-            variant="ghost"
-          >
-            <a href={person.github} rel="noreferrer" target="_blank">
-              Profile
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
-          </Button>
-        ) : (
-          <span className="text-xs text-muted-foreground/60">Contributor</span>
-        )}
+        <ContactLinks person={person} />
+        <Markers person={person} />
       </div>
     </div>
   );
@@ -498,7 +466,7 @@ function ContributorListItem({
 
 function Stat({ value, label }: { value: number; label: string }) {
   return (
-    <div className="px-3 py-4 text-center sm:px-6">
+    <div className="px-3 py-4 text-center sm:px-6" data-testid="stat">
       <div className="text-xl font-bold tracking-tight sm:text-2xl">
         {value}
       </div>
@@ -516,7 +484,7 @@ function ContributorCard({
   person: Contributor;
   highlighted?: boolean;
 }) {
-  const roles = person.roles ?? [];
+  const roles = rolesOf(person);
 
   return (
     <Card
@@ -528,179 +496,158 @@ function ContributorCard({
           'border-primary ring-2 ring-primary/60 shadow-[0_0_40px_rgba(59,130,246,0.35)] bg-primary/[0.08]',
         ],
       )}
+      role="article"
     >
       {/* Top accent line & ambient glow */}
       <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-primary/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-primary/20 blur-3xl transition-all duration-700 opacity-0 group-hover:opacity-100" />
 
       <div className="relative z-10 space-y-5">
-        {/* Header: Avatar, Name, and GSoC Badge */}
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="relative shrink-0">
-              <div className="h-16 w-16 overflow-hidden rounded-2xl border-2 border-primary/20 bg-muted shadow-lg transition-transform duration-500 group-hover:scale-105 group-hover:border-primary/50">
-                {person.image ? (
-                  <Image
-                    alt={person.name}
-                    className="h-full w-full object-cover"
-                    height={64}
-                    src={person.image}
-                    width={64}
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-primary/15 text-base font-bold text-primary">
-                    {initials(person.name)}
-                  </div>
-                )}
-              </div>
-              <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-background bg-emerald-500 shadow-sm" />
+        {/* Header: Avatar, Name and Affiliation */}
+        <div className="flex items-center gap-4">
+          <div className="relative shrink-0">
+            <div className="h-16 w-16 overflow-hidden rounded-2xl border-2 border-primary/20 bg-muted shadow-lg transition-transform duration-500 group-hover:scale-105 group-hover:border-primary/50">
+              {person.image ? (
+                <Image
+                  alt={person.name}
+                  className="h-full w-full object-cover"
+                  height={64}
+                  src={person.image}
+                  width={64}
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-primary/15 text-base font-bold text-primary">
+                  {initials(person.name)}
+                </div>
+              )}
             </div>
-
-            <div className="min-w-0">
-              <h3 className="text-lg font-bold tracking-tight text-foreground group-hover:text-primary transition-colors truncate">
-                {person.name}
-              </h3>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="inline-block h-2 w-2 rounded-full bg-primary animate-pulse" />
-                <p className="text-xs font-medium text-muted-foreground">
-                  Open Source Contributor
-                </p>
-              </div>
-            </div>
+            <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-background bg-emerald-500 shadow-sm" />
           </div>
 
-          {isGSoC(roles) && (
-            <Badge
-              className="shrink-0 rounded-full bg-gradient-to-r from-primary/20 to-purple-500/20 px-3 py-1 text-xs font-bold text-primary border border-primary/30 shadow-sm flex items-center gap-1"
-              variant="secondary"
-            >
-              <Sparkles className="h-3 w-3" />
-              GSoC
-            </Badge>
-          )}
+          {/* Names wrap rather than being cut off */}
+          <div className="min-w-0">
+            <h3 className="break-words text-lg font-bold leading-snug tracking-tight text-foreground transition-colors group-hover:text-primary">
+              {person.name}
+            </h3>
+            <div className="mt-0.5">
+              <Affiliation person={person} />
+            </div>
+          </div>
         </div>
 
-        {/* Roles & Expertise Badges */}
+        {/* Roles; affiliations are in the subtitle */}
         {roles.length > 0 && (
           <div className="space-y-2 pt-2">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
-                Expertise & Focus
-              </span>
-              <span className="text-[10px] text-muted-foreground/60">
-                {roles.length} skills
-              </span>
-            </div>
+            <span className="text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+              Roles
+            </span>
             <div className="flex flex-wrap gap-1.5">
-              {roles.slice(0, 4).map((role) => (
+              {roles.map((role) => (
                 <Badge
                   className="rounded-lg border-border bg-muted px-2.5 py-1 text-xs font-normal text-muted-foreground/90 transition-colors group-hover:border-primary/20"
+                  data-testid="role"
                   key={role}
                   variant="outline"
                 >
                   {role}
                 </Badge>
               ))}
-              {roles.length > 4 && (
-                <Badge
-                  className="rounded-lg border-white/10 bg-white/5 px-2 py-1 text-xs font-normal text-muted-foreground/70"
-                  variant="outline"
-                >
-                  +{roles.length - 4}
-                </Badge>
-              )}
             </div>
           </div>
         )}
       </div>
 
-      {/* Footer Action Area */}
-      <div className="relative z-10 mt-6 flex items-center justify-between border-t border-white/10 pt-4">
-        <div className="flex items-center gap-2">
-          {person.github && (
-            <a
-              aria-label="GitHub Profile"
-              className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
-              href={person.github}
-              rel="noreferrer"
-              target="_blank"
-            >
-              <GitBranch className="h-4 w-4" />
-            </a>
-          )}
-          {person.linkedin && (
-            <a
-              aria-label="LinkedIn Profile"
-              className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
-              href={person.linkedin}
-              rel="noreferrer"
-              target="_blank"
-            >
-              <FaLinkedin className="h-4 w-4" />
-            </a>
-          )}
-          {person.email && (
-            <a
-              aria-label="Send Email"
-              className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
-              href={`mailto:${person.email}`}
-            >
-              <Mail className="h-4 w-4" />
-            </a>
-          )}
-        </div>
-
-        {person.github ? (
-          <Button
-            asChild
-            className="h-9 gap-1.5 rounded-xl px-4 text-xs font-semibold shadow-md shadow-primary/20 bg-primary text-primary-foreground hover:opacity-90 transition-all"
-            size="sm"
-          >
-            <a
-              className="flex items-center gap-1.5"
-              href={person.github}
-              rel="noreferrer"
-              target="_blank"
-            >
-              View Profile
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-          </Button>
-        ) : (
-          <span className="text-xs font-medium text-muted-foreground/60 px-3 py-1 rounded-lg bg-white/5 border border-white/10">
-            Contributor
-          </span>
-        )}
+      {/* Footer: Links and Badges */}
+      <div className="relative z-10 mt-6 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
+        <ContactLinks person={person} />
+        <Markers person={person} />
       </div>
     </Card>
   );
 }
 
-function IconButton({
-  href,
-  label,
-  children,
-}: {
-  href: string;
-  label: string;
-  children: React.ReactNode;
-}) {
+// The ELIXIR Node, the ELIXIR Hub or EMBL-EBI (with its flag), or else
+// "OSS contributor" or "External contributor", on one line
+function Affiliation({ person }: { person: Contributor }) {
+  const { label, flag } = affiliation(person);
   return (
-    <Button
-      asChild
-      className="h-8 w-8 rounded-lg"
-      size="icon"
-      title={label}
-      variant="outline"
-    >
-      <a
-        aria-label={`${label} link`}
-        href={href}
-        rel={href.startsWith('mailto:') ? undefined : 'noreferrer'}
-        target={href.startsWith('mailto:') ? undefined : '_blank'}
-      >
-        {children}
-      </a>
-    </Button>
+    <p className="flex items-center gap-1.5 whitespace-nowrap text-xs font-medium text-muted-foreground">
+      {flag && (
+        <Image
+          alt={`Flag of ${label}`}
+          className="h-3 w-[18px] shrink-0 rounded-[2px] object-cover ring-1 ring-border"
+          height={12}
+          src={`/flags/${flag}.svg`}
+          width={18}
+        />
+      )}
+      <span data-testid="affiliation">{label}</span>
+    </p>
+  );
+}
+
+// The GSoC and Lead badges
+function Markers({ person }: { person: Contributor }) {
+  const markers = [
+    ...(isGSoC(person) ? [{ label: 'GSoC', Icon: Sparkles }] : []),
+    ...(isLead(person) ? [{ label: 'Lead', Icon: Star }] : []),
+  ];
+  if (!markers.length) {
+    return null;
+  }
+  return (
+    <div className="flex shrink-0 items-center gap-1.5">
+      {markers.map(({ label, Icon }) => (
+        <Badge
+          className="flex shrink-0 items-center gap-1 rounded-full border border-primary/30 bg-gradient-to-r from-primary/20 to-purple-500/20 px-3 py-1 text-xs font-bold text-primary shadow-sm"
+          key={label}
+          variant="secondary"
+        >
+          <Icon aria-hidden="true" className="h-3 w-3" />
+          {label}
+        </Badge>
+      ))}
+    </div>
+  );
+}
+
+const linkClass =
+  'flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-white/10 text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all';
+
+function ContactLinks({ person }: { person: Contributor }) {
+  return (
+    <div className="flex items-center gap-2">
+      {person.github && (
+        <a
+          aria-label="GitHub profile"
+          className={linkClass}
+          href={person.github}
+          rel="noreferrer"
+          target="_blank"
+        >
+          <FaGithub className="h-4 w-4" />
+        </a>
+      )}
+      {person.linkedin && (
+        <a
+          aria-label="LinkedIn profile"
+          className={linkClass}
+          href={person.linkedin}
+          rel="noreferrer"
+          target="_blank"
+        >
+          <FaLinkedin className="h-4 w-4" />
+        </a>
+      )}
+      {person.email && (
+        <a
+          aria-label="Send email"
+          className={linkClass}
+          href={`mailto:${emailAddress(person.email)}`}
+        >
+          <Mail className="h-4 w-4" />
+        </a>
+      )}
+    </div>
   );
 }

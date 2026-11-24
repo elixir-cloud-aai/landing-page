@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import contributors from '@/data/contributor.json';
+import { contributors, isExternal, isLead } from '@/lib/contributors';
 import funding from '@/data/funding.json';
 import { sortGrants } from '@/lib/funding';
 import ContributorsPage from './contributors/page';
@@ -116,5 +116,18 @@ describe('Contributors page filters', () => {
     render(<ContributorsPage />);
     expect(shown()).toContain(`of ${matching('gsoc')} people`);
     expect(listedPeople()).toEqual(firstPage(matchingNames('gsoc')));
+  });
+
+  it('combines the External and Lead filters', () => {
+    window.history.replaceState(null, '', '/contributors?filter=external,lead');
+    render(<ContributorsPage />);
+    const names = contributors
+      .filter((person) => isExternal(person) || isLead(person))
+      .map((person) => person.name);
+    expect(names.length).toBeGreaterThan(
+      contributors.filter(isExternal).length,
+    );
+    expect(shown()).toContain(`of ${names.length} people`);
+    expect(listedPeople()).toEqual(firstPage(names));
   });
 });
