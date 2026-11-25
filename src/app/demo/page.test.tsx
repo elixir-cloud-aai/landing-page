@@ -163,6 +163,22 @@ describe('Demo page: AAAI providers', () => {
     );
   });
 
+  // One height for all cards of the Node type, in both sections; the core
+  // service cards are another type
+  it('gives the provider and Node cards one height', () => {
+    render(<DemoPage />);
+    const marked = [
+      ...region('AAAI providers').getAllByRole('article'),
+      ...nodeCards(),
+    ];
+    marked.forEach((card) =>
+      expect(card).toHaveAttribute('data-same-height', 'node-card'),
+    );
+    coreCards().forEach((card) =>
+      expect(card).not.toHaveAttribute('data-same-height'),
+    );
+  });
+
   it('keeps "Node liaison" on the Node cards', () => {
     render(<DemoPage />);
     nodes.forEach((node) => {
