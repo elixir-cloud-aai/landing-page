@@ -289,8 +289,9 @@ export function ProductCatalog({
         selected={selected}
       />
       {filtered.length ? (
-        // Cards are all one height; while a card shows its details, only its
-        // row grows
+        // Cards are all one height; while a card shows its details, each row
+        // takes the height of its tallest card (the cards of a row still
+        // line up)
         <div className="grid auto-rows-fr gap-6 md:grid-cols-2 xl:grid-cols-3 has-[details[open]]:auto-rows-auto">
           {filtered.map((product) => (
             <ProductCard key={product.id} product={product} />

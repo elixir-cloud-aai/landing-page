@@ -104,6 +104,17 @@ describe('services.json', () => {
   );
 });
 
+// Removed products, which no text should still point to
+const REMOVED_PRODUCTS = ['TES Dashboard', 'GA4GH I/O Schema'];
+
+it.each(REMOVED_PRODUCTS)(
+  'no product or service text mentions the %s',
+  (name) => {
+    const texts = JSON.stringify([productsData, servicesData]);
+    expect(texts).not.toContain(name);
+  },
+);
+
 describe('nodes.json', () => {
   it('has unique country codes', () => {
     expect(duplicates(nodes.map((n) => n.code))).toEqual([]);
