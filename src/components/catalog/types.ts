@@ -28,6 +28,11 @@ export interface Product {
   usageExample?: { language: string; code: string };
   status?: string;
   standards: string[];
+  // Made by others and listed for how well it fits; the other products are
+  // ELIXIR On-Cloud's own (elixir-cloud-aai on GitHub)
+  partner: boolean;
+  // Runs natively on Kubernetes
+  cloudNative: boolean;
   tags: string[];
   license: string | null;
   logo: string | null;

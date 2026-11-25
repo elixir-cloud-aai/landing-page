@@ -71,6 +71,13 @@ URL, so a link can open a listing with filters set, e.g.
 `/products?filter=ga4gh-tes,ga4gh-wes`. A filter's id is its label in lower
 case, with dashes for spaces and other characters.
 
+In `product.json`, `partner` marks the products of others (they list no
+`owner`: their maintainers aren't ours to name), and `cloudNative` the ones
+that run natively on Kubernetes. Besides the GA4GH standards, the Products
+page filters by both, and by "ELIXIR On-Cloud products" (all that aren't
+partner products). Each stat in its header opens the listing with its
+filters set.
+
 Every page sets its own title and description for search engines and link
 previews: in the `metadata` export of its `page.tsx`, or of the route's
 `layout.tsx` for pages that are client components (`'use client'`). Titles

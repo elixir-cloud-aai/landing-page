@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import Link from 'next/link';
 import { MessageSquarePlus } from 'lucide-react';
 import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
 import { FEEDBACK_URL } from '@/lib/site';
@@ -9,7 +10,8 @@ interface PageHeroProps {
   title: ReactNode;
   description: string;
   actions?: ReactNode;
-  stats: { value: string | number; label: string }[];
+  // With an `href`, the whole stat links there, e.g. to a filtered listing
+  stats: { value: string | number; label: string; href?: string }[];
 }
 
 export function PageHero({
@@ -59,7 +61,8 @@ export function PageHero({
           {stats.map((stat, index) => (
             <div
               className={
-                'flex flex-col-reverse px-4 py-5 text-center ' +
+                'relative flex flex-col-reverse px-4 py-5 text-center ' +
+                (stat.href ? 'transition-colors hover:bg-muted ' : '') +
                 (stats.length === 3
                   ? index > 0
                     ? 'border-l'
@@ -74,7 +77,18 @@ export function PageHero({
                 {stat.label}
               </dt>
               <dd className="text-2xl font-bold tracking-tight">
-                {stat.value}
+                {stat.href ? (
+                  // Stretched over the stat, so the label is clickable too
+                  <Link
+                    aria-label={`${stat.value} ${stat.label}`}
+                    className="outline-none after:absolute after:inset-0 focus-visible:after:ring-2 focus-visible:after:ring-inset focus-visible:after:ring-ring"
+                    href={stat.href}
+                  >
+                    {stat.value}
+                  </Link>
+                ) : (
+                  stat.value
+                )}
               </dd>
             </div>
           ))}

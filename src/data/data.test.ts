@@ -61,6 +61,12 @@ describe('product.json', () => {
       expectHttpsOrNull(product.docsUrl);
       product.relatedRepos?.forEach((repo) => expectHttpsOrNull(repo.url));
       expectImageExists(product.owner);
+      expect(typeof product.partner).toBe('boolean');
+      expect(typeof product.cloudNative).toBe('boolean');
+      // Maintaining partner products isn't ours to decide
+      if (product.partner) {
+        expect(product.owner).toBeNull();
+      }
     },
   );
 });
