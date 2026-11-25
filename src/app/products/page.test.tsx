@@ -59,7 +59,7 @@ describe('Products page', () => {
       ['ELIXIR On-Cloud products', '8'],
       ['Partner products', '4'],
       ['GA4GH standards', '5'],
-      ['Cloud native', '6'],
+      ['Cloud native', '7'],
     ]);
   });
 

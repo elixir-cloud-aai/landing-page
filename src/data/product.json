@@ -44,7 +44,7 @@
       ],
       "standards": ["GA4GH TES"],
       "partner": false,
-      "cloudNative": false,
+      "cloudNative": true,
       "tags": ["GA4GH", "TES", "Kubernetes"],
       "license": "Apache-2.0",
       "logo": null,
@@ -449,7 +449,11 @@
       "logo": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/krini",
       "docsUrl": "https://krini.readthedocs.io/",
-      "owner": null
+      "owner": {
+        "name": "Chitransh Verma",
+        "email": null,
+        "image": null
+      }
     },
     {
       "id": "trs-filer",
@@ -476,7 +480,11 @@
       "logo": null,
       "repoUrl": "https://github.com/elixir-cloud-aai/trs-filer",
       "docsUrl": "https://trs-filer.readthedocs.io/",
-      "owner": null
+      "owner": {
+        "name": "Alex Kanitz",
+        "email": "alexander.kanitz@unibas.ch",
+        "image": "/contributors/alex_kanitz.jpg"
+      }
     }
   ]
 }

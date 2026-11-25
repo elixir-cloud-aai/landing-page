@@ -208,7 +208,7 @@ describe('ProductCatalog', () => {
     expect(labels.slice(0, 3)).toEqual([
       'ELIXIR On-Cloud products8',
       'Partner products4',
-      'Cloud native6',
+      'Cloud native7',
     ]);
     expect(labels.slice(3).every((label) => label?.startsWith('GA4GH'))).toBe(
       true,
@@ -239,6 +239,7 @@ describe('ProductCatalog', () => {
       'Poiesis',
       'proTES',
       'Pubgrade',
+      'TESK',
       'TRS-Filer',
     ]);
     expect(window.location.search).toBe('?filter=cloud-native');
