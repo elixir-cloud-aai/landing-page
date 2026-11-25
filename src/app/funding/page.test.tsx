@@ -61,4 +61,13 @@ describe('Funding page', () => {
       expect(header.queryByText(/^(Grant|GSoC)$/)).toBeNull();
     });
   });
+
+  // One height for all grant cards, in every row
+  it('gives the grant cards one height', () => {
+    render(<FundingPage />);
+    const grids = new Set(cards().map((card) => card.parentElement));
+    expect(grids.size).toBe(1);
+    expect([...grids][0]).toHaveClass('grid', 'auto-rows-fr');
+    cards().forEach((card) => expect(card).toHaveClass('h-full'));
+  });
 });

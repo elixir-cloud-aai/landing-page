@@ -155,4 +155,15 @@ describe('Contributors page', () => {
     expect(item.getByText('Lead')).toBeInTheDocument();
     expect(screen.queryByText(/^Profile$/)).toBeNull();
   });
+
+  // One height for all contributor cards, in every row
+  it('gives the contributor cards one height', () => {
+    render(<ContributorsPage />);
+    const grids = new Set(
+      tiles().map((tile) => tile.parentElement?.parentElement),
+    );
+    expect(grids.size).toBe(1);
+    expect([...grids][0]).toHaveClass('grid', 'auto-rows-fr');
+    tiles().forEach((tile) => expect(tile).toHaveClass('h-full'));
+  });
 });

@@ -162,7 +162,7 @@ export default function FundingPage() {
 
         {/* Funding Cards Grid */}
         {filteredGrants.length > 0 ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filteredGrants.map((item) => (
               <FundingCard item={item} key={item.id} />
             ))}

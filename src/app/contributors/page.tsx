@@ -324,7 +324,7 @@ export default function ContributorsPage() {
           <div className="space-y-8">
             {/* Grid or List Layout */}
             {viewMode === 'grid' ? (
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {visibleContributors.map((person) => (
                   <div
                     id={`contributor-${encodeURIComponent(person.name)}`}
