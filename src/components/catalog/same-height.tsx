@@ -10,10 +10,12 @@ import { useEffect } from 'react';
  */
 export function SameHeight({ group }: { group: string }) {
   useEffect(() => {
+    let items: HTMLElement[] = [];
     const update = () => {
-      const items = Array.from(
-        document.querySelectorAll<HTMLElement>(`[data-same-height="${group}"]`),
-      );
+      // Compared as text, so any group name works (no selector to escape)
+      items = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-same-height]'),
+      ).filter((item) => item.dataset.sameHeight === group);
       // Measure the natural heights first
       items.forEach((item) => {
         item.style.minHeight = '';
@@ -35,6 +37,10 @@ export function SameHeight({ group }: { group: string }) {
     return () => {
       active = false;
       window.removeEventListener('resize', update);
+      // Cards that stay, e.g. when the group changes, get their own height back
+      items.forEach((item) => {
+        item.style.minHeight = '';
+      });
     };
   }, [group]);
 

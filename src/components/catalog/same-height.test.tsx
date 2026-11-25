@@ -45,4 +45,33 @@ describe('SameHeight', () => {
       HTMLElement.prototype.getBoundingClientRect = original;
     }
   });
+
+  it('works with any group name and gives heights back on unmount', () => {
+    const original = HTMLElement.prototype.getBoundingClientRect;
+    HTMLElement.prototype.getBoundingClientRect = function () {
+      return heights(this);
+    };
+    const group = 'say "hi"]';
+    try {
+      const { rerender } = render(
+        <>
+          <div data-h={100} data-same-height={group} data-testid="a" />
+          <div data-h={150} data-same-height={group} data-testid="b" />
+          <SameHeight group={group} />
+        </>,
+      );
+      expect(screen.getByTestId('a').style.minHeight).toBe('150px');
+
+      rerender(
+        <>
+          <div data-h={100} data-same-height={group} data-testid="a" />
+          <div data-h={150} data-same-height={group} data-testid="b" />
+        </>,
+      );
+      expect(screen.getByTestId('a').style.minHeight).toBe('');
+      expect(screen.getByTestId('b').style.minHeight).toBe('');
+    } finally {
+      HTMLElement.prototype.getBoundingClientRect = original;
+    }
+  });
 });
