@@ -3,12 +3,15 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import productsData from '@/data/product.json';
 import servicesData from '@/data/services.json';
+import { filterId } from '@/lib/filters';
+import { sortProducts } from '@/lib/products';
 import { ProductCatalog } from './product-catalog';
 import { ServiceCard } from './service-catalog';
 import { FilterBar, isGitlabUrl, matchesQuery, Monogram } from './shared';
 import type { Product, Service } from './types';
 
-const products = productsData.products as Product[];
+// In the order of the listing
+const products = sortProducts(productsData.products as Product[]);
 const services = servicesData.services as Service[];
 
 const cardTitles = () =>
@@ -103,9 +106,22 @@ describe('FilterBar', () => {
 });
 
 describe('ProductCatalog', () => {
-  it('lists every product', () => {
-    render(<ProductCatalog products={products} />);
-    expect(cardTitles()).toEqual(products.map((p) => p.name));
+  it('lists every product, sorted by name', () => {
+    render(<ProductCatalog products={productsData.products as Product[]} />);
+    expect(cardTitles()).toEqual([
+      'Cloud Components',
+      'Cloud Registry',
+      'Conquest',
+      'FOCA',
+      'Funnel',
+      'GA4GH SDK',
+      'Krini',
+      'Poiesis',
+      'proTES',
+      'Pubgrade',
+      'TESK',
+      'TRS-Filer',
+    ]);
   });
 
   const withStandard = (...standards: string[]) =>
@@ -130,8 +146,17 @@ describe('ProductCatalog', () => {
     // More than either filter alone, so the filters really are combined
     expect(expected.length).toBeGreaterThan(withStandard('GA4GH WES').length);
     expect(cardTitles()).toEqual(expected);
+    // In the order of the filters on the page, whatever the click order
+    const buttons = within(
+      screen.getByRole('group', { name: 'Filter' }),
+    ).getAllByRole('button');
+    const position = (label: string) =>
+      buttons.indexOf(filterButton(new RegExp(`^${label}`)));
+    const ids = ['GA4GH WES', 'GA4GH Service Registry']
+      .sort((a, b) => position(a) - position(b))
+      .map(filterId);
     expect(window.location.search).toBe(
-      `?filter=${encodeURIComponent('ga4gh-wes,ga4gh-service-registry')}`,
+      `?filter=${encodeURIComponent(ids.join(','))}`,
     );
 
     await user.click(filterButton(/^GA4GH WES/));
@@ -170,6 +195,77 @@ describe('ProductCatalog', () => {
     expect(screen.queryAllByRole('article')).toHaveLength(0);
     await user.click(screen.getByRole('button', { name: 'Clear filters' }));
     expect(screen.getAllByRole('article')).toHaveLength(products.length);
+  });
+
+  const names = (match: (product: Product) => boolean) =>
+    products.filter(match).map((p) => p.name);
+
+  it('starts with the product filters, then the standards', () => {
+    render(<ProductCatalog products={products} />);
+    const labels = within(screen.getByRole('group', { name: 'Filter' }))
+      .getAllByRole('button')
+      .map((button) => button.textContent);
+    expect(labels.slice(0, 3)).toEqual([
+      'ELIXIR On-Cloud products8',
+      'Partner products4',
+      'Cloud native7',
+    ]);
+    expect(labels.slice(3).every((label) => label?.startsWith('GA4GH'))).toBe(
+      true,
+    );
+  });
+
+  it('filters by owner and by cloud native', async () => {
+    const user = userEvent.setup();
+    render(<ProductCatalog products={products} />);
+
+    await user.click(filterButton(/^ELIXIR On-Cloud products/));
+    expect(cardTitles()).toEqual(names((p) => !p.partner));
+
+    await user.click(filterButton(/^ELIXIR On-Cloud products/));
+    await user.click(filterButton(/^Partner products/));
+    expect(cardTitles()).toEqual([
+      'Conquest',
+      'Funnel',
+      'GA4GH SDK',
+      'Poiesis',
+    ]);
+
+    await user.click(filterButton(/^Partner products/));
+    await user.click(filterButton(/^Cloud native/));
+    expect(cardTitles()).toEqual([
+      'Cloud Registry',
+      'Conquest',
+      'Poiesis',
+      'proTES',
+      'Pubgrade',
+      'TESK',
+      'TRS-Filer',
+    ]);
+    expect(window.location.search).toBe('?filter=cloud-native');
+  });
+
+  it('marks partner and cloud native products', () => {
+    render(<ProductCatalog products={products} />);
+    products.forEach((product) => {
+      const card = within(
+        screen.getAllByRole('article').find((c) => c.id === product.id)!,
+      );
+      expect(!!card.queryByText('Partner product')).toBe(product.partner);
+      expect(!!card.queryByText('Cloud native')).toBe(product.cloudNative);
+    });
+  });
+
+  it('names no maintainer for partner products', () => {
+    render(<ProductCatalog products={products} />);
+    products
+      .filter((product) => product.partner)
+      .forEach((product) => {
+        const card = screen
+          .getAllByRole('article')
+          .find((c) => c.id === product.id)!;
+        expect(card).not.toHaveTextContent(/Maintainer|community/);
+      });
   });
 
   it('links each product to its code and docs', () => {
