@@ -154,7 +154,7 @@
       "id": "conquest-service",
       "name": "Conquest",
       "tagline": "Nextflow, WDL and Snakemake runs through GA4GH WES",
-      "blurb": "A public Conquest deployment, the second WES backend for running Nextflow, WDL and Snakemake workflows from the TES Dashboard.",
+      "blurb": "A public Conquest deployment, the second WES backend for running Nextflow, WDL and Snakemake workflows.",
       "description": "Conquest is implemented but not yet deployed for ELIXIR On-Cloud. The first deployment will run tasks on Conquest's own internal TES/Kubernetes backend; it will later submit tasks to the proTES Gateway so that they run on the TES network.",
       "audience": ["Researchers running Nextflow, WDL or Snakemake workflows"],
       "features": [
