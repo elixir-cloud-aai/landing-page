@@ -314,6 +314,23 @@ describe('ServiceCard', () => {
       }
     },
   );
+
+  // E.g. TES Network and WESkit @ BIH name Nodes but no owner
+  it.each(
+    services
+      .filter((service) => service.nodes.length > 0)
+      .map((service) => [service.name, service] as const),
+  )('links the Nodes of %s, with or without an owner', (_, service) => {
+    render(<ServiceCard service={service} />);
+    const card = within(screen.getByRole('article'));
+    service.nodes.forEach((node) => {
+      expect(card.getByRole('link', { name: node.name })).toHaveAttribute(
+        'href',
+        `#${node.code.toLowerCase()}`,
+      );
+    });
+    expect(!!card.queryByText('Service owner')).toBe(service.owners.length > 0);
+  });
 });
 
 describe('isGitlabUrl', () => {

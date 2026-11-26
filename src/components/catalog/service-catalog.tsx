@@ -99,20 +99,25 @@ export function ServiceCard({ service }: { service: Service }) {
 
         {/* Pushes the owner down, in line across the cards of a row */}
         <div aria-hidden="true" className="min-h-5 flex-1" />
-        {service.owners.length > 0 && (
+        {(service.owners.length > 0 || service.nodes.length > 0) && (
           <div className="border-t pt-4">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Service owner
-            </p>
-            <div className="flex flex-wrap gap-4">
-              {service.owners.map((owner) => (
-                <OwnerChip key={owner.name} owner={owner} role={null} />
-              ))}
-            </div>
-            {/* The Nodes that run the service, linked to their cards below */}
+            {service.owners.length > 0 && (
+              <>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Service owner
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  {service.owners.map((owner) => (
+                    <OwnerChip key={owner.name} owner={owner} role={null} />
+                  ))}
+                </div>
+              </>
+            )}
+            {/* The Nodes that run the service, linked to their cards below,
+                also when it names no owner */}
             {service.nodes.map((node) => (
               <a
-                className="mt-3 flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-primary"
+                className="mt-3 flex w-fit items-center gap-2 text-sm text-muted-foreground first:mt-0 hover:text-primary"
                 href={`#${node.code.toLowerCase()}`}
                 key={node.code}
               >
